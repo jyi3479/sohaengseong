@@ -205,6 +205,7 @@ const initialState = {
     ],
     target:{
         challengeId:"0",
+        userId:"0",
         title:"일상",
         content:"우리의 운동조건은 열심히 하는 것 단 하나 입니다",   
         category:"일상",
@@ -224,6 +225,26 @@ const initialState = {
             },
             {
                 userId:"1",
+                nickname:"닉네임2",
+                profileImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg"
+            },
+            {
+                userId:"2",
+                nickname:"닉네임2",
+                profileImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg"
+            },
+            {
+                userId:"3",
+                nickname:"닉네임2",
+                profileImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg"
+            },
+            {
+                userId:"4",
+                nickname:"닉네임2",
+                profileImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg"
+            },
+            {
+                userId:"5",
                 nickname:"닉네임2",
                 profileImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg"
             },

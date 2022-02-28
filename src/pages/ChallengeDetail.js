@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore,{  Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/pagination';
 import { history } from "../redux/configureStore";
 import {Grid} from "../elements/index";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
@@ -11,6 +15,7 @@ const ChallengeDetail = (props) => {
     const target = useSelector(state => state.challenge.target);
     const  tagList = target.tagName;
     const members = target.members;
+    const king = target.userId;
 
     const confirm = () => {
         window.confirm("다른 사람들을 위해 신중하게 선택하세요! 확인을 클릭 시 챌린지에 입장합니다");
@@ -37,9 +42,20 @@ const ChallengeDetail = (props) => {
     return(
         <>
             <Grid>
-                <Grid width="200px"> 
-                    <img src={target.challengeImage}/>
-                </Grid>
+                <Grid>
+                    <Swiper
+                        modules={[ Pagination]}
+                        spaceBetween={0}
+                        slidesPerView={1}
+                        pagination={{ clickable: true }}
+                        onSlideChange={() => console.log('slide change')}
+                        onSwiper={(swiper) => console.log(swiper)}
+                        >
+                        <SwiperSlide><img src={target.challengeImage}/></SwiperSlide>
+                        <SwiperSlide><img src={target.challengeImage}/></SwiperSlide>
+                        <SwiperSlide><img src={target.challengeImage}/></SwiperSlide>
+                    </Swiper>
+                </Grid>                
                 <Grid>
                     <p>{target.title}</p>
                     <p>{target.content}</p>
@@ -52,9 +68,9 @@ const ChallengeDetail = (props) => {
                     <Grid>
                         {members.map((el, i) => {
                             return (
-                                <div style={{display:"inline-block"}} key={el.userId}>
-                                    <img src={el.profileImage} style={{width:"30px", height:"30px",borderRadius:"50%"}}/>
-                                </div>                                
+                                <MemberBox key={el.userId} className={king === el.userId? "king" : ""} src={el.profileImage}>
+    
+                                </MemberBox>
                             );
                         })}
                     </Grid>
@@ -78,6 +94,22 @@ const Tag = styled.p`
   display: inline-block;
   margin: 0;
   margin-right: 5px;
+`;
+const MemberBox = styled.div` 
+    display: inline-block;
+    width:30px;
+    height:30px;      
+    border-radius:50%;    
+    overflow: hidden;
+    &:nth-child(n+6) {//5번째 멤버 이후로는 미노출
+        display: none;
+    }
+    &.king {
+        border: 3px solid #000;
+    }
+    background-image: url("${(props) => props.src}");
+    background-size: cover;
+    background-position: center;
 `;
 
 export default ChallengeDetail;
