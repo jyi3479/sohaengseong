@@ -5,14 +5,13 @@ import { history } from "../redux/configureStore";
 import styled from "styled-components";
 
 //page import
+import MobileFrame from "../components/MobileFrame";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Main from "../pages/Main";
-import MobileFrame from "../components/MobileFrame";
-
-
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import ChallengeDetail from "../pages/ChallengeDetail";
 
 
 
@@ -30,7 +29,8 @@ function App() {
             <Header/>
             <Footer/>
             <Wrap>
-              <Route path="/" exact component={Main} />{/* 메인 */}      
+              <Route path="/" exact component={Main} />{/* 메인 */}
+              <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
             </Wrap>          
           </MobileFrame>
         </ConnectedRouter>
