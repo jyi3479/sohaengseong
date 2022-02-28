@@ -2,25 +2,25 @@ import axios from "axios";
 
 const apis = axios.create({
     baseURL:
-        "", //서버 주소
+        process.env.REACT_APP_SERVER_PORT, //서버 주소
 });
 
 const imageApis = axios.create({
     baseURL:
-        "",
+        process.env.REACT_APP_SERVER_PORT,
 });
 
 apis.interceptors.request.use(function (config) {
-    //const token = getCookie("token");
+    const token = getCookie("token");
     config.headers["Content-Type"] = "application/json;charset=UTF-8; charset=UTF-8";
-    //config.headers.common["authorization"] = `${token}`;
+    config.headers.common["authorization"] = `${token}`;
     return config;
 });
 
 imageApis.interceptors.request.use(function (config) {
-    //const token = getCookie("token");
+    const token = getCookie("token");
     config.headers["Content-Type"] = "multipart/form-data";
-    //config.headers.common["authorization"] = `${token}`;
+    config.headers.common["authorization"] = `${token}`;
     return config;
 });
 
@@ -41,8 +41,6 @@ export const userApis = {
 
     //비밀번호 찾기    
     pwdCheck: (password) => apis.post("/auth/password",password),
-
-    //소셜로그인
 
     //로그인 유저 확인
     pwdCheck: () => apis.get("/auth/user-info"),

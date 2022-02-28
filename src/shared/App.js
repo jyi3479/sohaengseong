@@ -9,7 +9,6 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 
 function App() {
-  console.log(process.env.REACT_APP_SERVER_PORT );
   return ( 
     <>
       <ConnectedRouter history={history}>
