@@ -11,16 +11,16 @@ const imageApis = axios.create({
 });
 
 apis.interceptors.request.use(function (config) {
-    const token = getCookie("token");
+    //const token = getCookie("token");
     config.headers["Content-Type"] = "application/json;charset=UTF-8; charset=UTF-8";
-    config.headers.common["authorization"] = `${token}`;
+    //config.headers.common["authorization"] = `${token}`;
     return config;
 });
 
 imageApis.interceptors.request.use(function (config) {
-    const token = getCookie("token");
+    //const token = getCookie("token");
     config.headers["Content-Type"] = "multipart/form-data";
-    config.headers.common["authorization"] = `${token}`;
+    //config.headers.common["authorization"] = `${token}`;
     return config;
 });
 

@@ -1,13 +1,20 @@
 import React from "react";
 import { ConnectedRouter } from "connected-react-router";
-import { Route } from "react-router-dom";
+import { Route , Switch} from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 
 //page import
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import Main from "../pages/Main";
 import MobileFrame from "../components/MobileFrame";
+
+
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+
 
 function App() {
   return (
@@ -17,10 +24,14 @@ function App() {
           <BackgroundOpacity />
           {/* <Background className="BackgroundPage" /> */}
           <MobileFrame className="MobileFramePage">
-            <Route path="/" exact component={Login} />
-            {/* 로그인 */}
-            <Route path="/signup" exact component={Signup} />
-            {/* 회원가입 */}
+            
+            <Route path="/login" exact component={Login} />{/* 로그인 */}
+            <Route path="/signup" exact component={Signup} />{/* 회원가입 */}            
+            <Header/>
+            <Footer/>
+            <Wrap>
+              <Route path="/" exact component={Main} />{/* 메인 */}      
+            </Wrap>          
           </MobileFrame>
         </ConnectedRouter>
       </Wrapper>
@@ -68,6 +79,11 @@ const BackgroundOpacity = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
+`;
+
+const Wrap = styled.div`
+  margin: 60px 0 ;
+  height: calc(100vh - 120px);
 `;
 
 export default App;
