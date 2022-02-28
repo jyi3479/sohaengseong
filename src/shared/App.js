@@ -5,14 +5,14 @@ import { history } from "../redux/configureStore";
 import styled from "styled-components";
 
 //page import
+import MobileFrame from "../components/MobileFrame";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Main from "../pages/Main";
+import ChallengeDetail from "../pages/ChallengeDetail";
 import MyPage from "../pages/MyPage";
-import MobileFrame from "../components/MobileFrame";
-
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 function App() {
   return (
@@ -31,7 +31,14 @@ function App() {
             <Wrap>
               <Route path="/" exact component={Main} />
               {/* 메인 */}
-              <Route path="/mypage" exact component={MyPage} />
+              <Route
+                path="/challenge/:challengeId"
+                exact
+                component={ChallengeDetail}
+              />
+              {/* 챌린지 소개 */}
+              <Route path="/mypage" exact component={MyPage} />{" "}
+              {/* 마이페이지 */}
             </Wrap>
           </MobileFrame>
         </ConnectedRouter>
