@@ -12,6 +12,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Main from "../pages/Main";
 import ChallengeDetail from "../pages/ChallengeDetail";
+import CategoryMain from "../pages/CategoryMain";
 
 
 
@@ -31,6 +32,7 @@ function App() {
             <Wrap>
               <Route path="/" exact component={Main} />{/* 메인 */}
               <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
+              <Route path="/category/:categoryId" exact component={CategoryMain} />{/* 카테고리리스트 */}
             </Wrap>          
           </MobileFrame>
         </ConnectedRouter>
@@ -83,7 +85,6 @@ const BackgroundOpacity = styled.div`
 
 const Wrap = styled.div`
   margin: 60px 0 ;
-  height: calc(100vh - 120px);
 `;
 
 export default App;
