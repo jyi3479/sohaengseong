@@ -4,23 +4,24 @@ import { useSelector } from "react-redux";
 import { Grid } from "../elements";
 
 const MyLevel = (props) => {
+  const my_level = useSelector((state) => state.mypage.user);
+  console.log(my_level);
   return (
     <Wrap>
-      <Icon
-        size={130}
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlwiGD-SGQ1o7a3LV6bv845DCONAKTsd7yw&usqp=CAU"
-      />
-      <p>닉네임</p>
-      <Grid>
-        <p>LV.1/10</p>
+      <Icon size={130} src={my_level.levelIcon} />
+      <p>
+        {my_level.nickname}
+        <span onClick={() => console.log("프로필 수정 페이지로 이동")}>⚙️</span>
+      </p>
+      <Grid is_flex>
+        <p>{my_level.levelName}/5</p>
       </Grid>
-      <Progress />
+      <Progress my_level={my_level} />
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
-  background-color: red;
   padding: 10px;
   display: flex;
   justify-content: center;
@@ -45,6 +46,7 @@ const Icon = styled.img`
 export default MyLevel;
 
 const Progress = (props) => {
+  const my_level = props.my_level;
   //   const bucket_list = useSelector((state) => state.bucket.list);
   //   console.log(bucket_list);
 
@@ -57,7 +59,9 @@ const Progress = (props) => {
   return (
     <ProgressBar>
       {/* <HighLight width={(count / bucket_list.length) * 100 + "%"}></HighLight> */}
-      <HighLight width={(20 / 100) * 100 + "%"}></HighLight>
+      <HighLight
+        width={(my_level.point / my_level.experiencePoint) * 100 + "%"}
+      ></HighLight>
       <Circle></Circle>
     </ProgressBar>
   );

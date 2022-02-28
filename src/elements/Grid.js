@@ -5,6 +5,7 @@ const Grid = ({
   children,
   display,
   width,
+  height,
   padding,
   margin,
   bg,
@@ -18,6 +19,7 @@ const Grid = ({
   const styles = {
     display,
     width,
+    height,
     margin,
     padding,
     bg,

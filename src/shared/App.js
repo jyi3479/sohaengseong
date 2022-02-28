@@ -13,6 +13,8 @@ import Signup from "../pages/Signup";
 import Main from "../pages/Main";
 import ChallengeDetail from "../pages/ChallengeDetail";
 import MyPage from "../pages/MyPage";
+import MemberDetail from "../pages/MemberDetail";
+import MemberPost from "../pages/MemberPost";
 
 function App() {
   return (
@@ -37,8 +39,16 @@ function App() {
                 component={ChallengeDetail}
               />
               {/* 챌린지 소개 */}
-              <Route path="/mypage" exact component={MyPage} />{" "}
+              <Route path="/mypage" exact component={MyPage} />
               {/* 마이페이지 */}
+              <Route
+                path="/member/:challengeId"
+                exact
+                component={MemberDetail}
+              />
+              {/* 챌린지 멤버 전용 */}
+              <Route path="/post/:challengeId" exact component={MemberPost} />
+              {/* 챌린지 멤버 전용 속 인증 페이지 */}
             </Wrap>
           </MobileFrame>
         </ConnectedRouter>
@@ -91,7 +101,6 @@ const BackgroundOpacity = styled.div`
 
 const Wrap = styled.div`
   margin: 60px 0;
-  height: calc(100vh - 120px);
 `;
 
 export default App;
