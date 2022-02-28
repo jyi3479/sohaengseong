@@ -10,7 +10,6 @@ import Signup from "../pages/Signup";
 import MobileFrame from "../components/MobileFrame";
 
 function App() {
-  console.log(process.env.REACT_APP_SERVER_PORT);
   return (
     <>
       <Wrapper>
