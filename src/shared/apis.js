@@ -103,7 +103,7 @@ export const mainApis = {
     category: () => apis.get("/category"),
 
     //랭킹 조회
-    ranking: () => apis.get("/ranking"),    
+    ranking: () => apis.get("/ranking"),
 }
 
 export const mypageApis = {

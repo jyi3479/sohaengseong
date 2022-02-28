@@ -3,8 +3,17 @@ import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 
+import User from "./modules/user"; 
+import Challenge from "./modules/challenge"; 
+import Ranking from "./modules/ranking"; 
+import Mypage from "./modules/mypage"; 
+
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({ //우리가 만든 리듀서 뭉치기
+    user:User,
+    challenge:Challenge,
+    ranking:Ranking,
+    mypage:Mypage,
     router: connectRouter(history),
 });
 
