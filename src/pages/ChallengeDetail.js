@@ -68,8 +68,7 @@ const ChallengeDetail = (props) => {
                     <Grid>
                         {members.map((el, i) => {
                             return (
-                                <MemberBox key={el.userId} className={king === el.userId? "king" : ""} src={el.profileImage}>
-    
+                                <MemberBox key={el.userId} className={king === el.userId? "king" : ""} src={el.profileImage}>    
                                 </MemberBox>
                             );
                         })}
