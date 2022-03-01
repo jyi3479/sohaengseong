@@ -12,6 +12,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Main from "../pages/Main";
 import ChallengeDetail from "../pages/ChallengeDetail";
+import CategoryMain from "../pages/CategoryMain";
 import MyPage from "../pages/MyPage";
 import MemberDetail from "../pages/MemberDetail";
 import MemberPost from "../pages/MemberPost";
@@ -31,14 +32,9 @@ function App() {
             <Header />
             <Footer />
             <Wrap>
-              <Route path="/" exact component={Main} />
-              {/* 메인 */}
-              <Route
-                path="/challenge/:challengeId"
-                exact
-                component={ChallengeDetail}
-              />
-              {/* 챌린지 소개 */}
+              <Route path="/" exact component={Main} />{/* 메인 */}
+              <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
+              <Route path="/category/:categoryId" exact component={CategoryMain} />{/* 카테고리리스트 */}
               <Route path="/mypage" exact component={MyPage} />
               {/* 마이페이지 */}
               <Route
