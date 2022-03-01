@@ -9,6 +9,7 @@ const Button = ({
   margin,
   padding,
   font_size,
+  radius,
   _disabled,
   _onClick,
   ...props
@@ -20,6 +21,7 @@ const Button = ({
     padding,
     font_size,
     height,
+    radius,
   };
 
   return (
@@ -32,13 +34,14 @@ const Button = ({
 Button.defaultProps = {
   children: null,
   width: "100%",
-  height: "35px",
+  height: "40px",
   margin: false,
   padding: false,
   _disabled: false,
   is_circle: false,
+  radius:"7px",
   _onClick: () => {},
-  bg: "#61b165",
+  bg: "#666",
 };
 
 const Btn = styled.button`
@@ -48,12 +51,13 @@ const Btn = styled.button`
   height: ${(props) => props.height};
   background-color: ${(props) => (props.disabled ? "#acacac" : props.bg)};
   border: none;
-  border-radius: 5px;
+  border-radius: ${(props) => (props.radius?  props.radius : "7px")};
   font-family: inherit; // font 상속
   color: white;
-  ${(props) => (props.font_size ? `font-size: ${props.font_size};` : "")};
+  ${(props) => (props.font_size ? `font-size: ${props.font_size};` : `font-size: 16px;`)};
   cursor: pointer;
   box-sizing: border-box;
+  line-height: 19px;
 `;
 
 export default Button;
