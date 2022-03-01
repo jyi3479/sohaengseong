@@ -1,19 +1,22 @@
 import React from "react";
 import { ConnectedRouter } from "connected-react-router";
-import { Route , Switch} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 //page import
-import Login from "../pages/Login";
-import Signup from "../pages/Signup";
-import Main from "../pages/Main";
 import MobileFrame from "../components/MobileFrame";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-
+import Login from "../pages/Login";
+import Signup from "../pages/Signup";
+import Main from "../pages/Main";
+import ChallengeDetail from "../pages/ChallengeDetail";
+import CategoryMain from "../pages/CategoryMain";
+import MyPage from "../pages/MyPage";
+import MemberDetail from "../pages/MemberDetail";
+import MemberPost from "../pages/MemberPost";
 
 
 
@@ -33,14 +36,27 @@ function App() {
           <BackgroundOpacity />
           {/* <Background className="BackgroundPage" /> */}
           <MobileFrame className="MobileFramePage">
-            
-            <Route path="/login" exact component={Login} />{/* 로그인 */}
-            <Route path="/signup" exact component={Signup} />{/* 회원가입 */}            
-            <Header/>
-            <Footer/>
+            <Route path="/login" exact component={Login} />
+            {/* 로그인 */}
+            <Route path="/signup" exact component={Signup} />
+            {/* 회원가입 */}
+            <Header />
+            <Footer />
             <Wrap>
-              <Route path="/" exact component={Main} />{/* 메인 */}      
-            </Wrap>          
+              <Route path="/" exact component={Main} />{/* 메인 */}
+              <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
+              <Route path="/category/:categoryId" exact component={CategoryMain} />{/* 카테고리리스트 */}
+              <Route path="/mypage" exact component={MyPage} />
+              {/* 마이페이지 */}
+              <Route
+                path="/member/:challengeId"
+                exact
+                component={MemberDetail}
+              />
+              {/* 챌린지 멤버 전용 */}
+              <Route path="/post/:challengeId" exact component={MemberPost} />
+              {/* 챌린지 멤버 전용 속 인증 페이지 */}
+            </Wrap>
           </MobileFrame>
         </ConnectedRouter>
       </Wrapper>
@@ -91,8 +107,7 @@ const BackgroundOpacity = styled.div`
 `;
 
 const Wrap = styled.div`
-  margin: 60px 0 ;
-  
+  margin: 60px 0;
 `;
 
 export default App;
