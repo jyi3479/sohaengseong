@@ -7,7 +7,7 @@ const Main = (props) => {
     
     
     return(
-        <>
+        <Grid>
             <div>
                 <h3>랭킹</h3>
                 <div style={{border:"1px solid #000", padding:"20px"}}>
@@ -28,7 +28,7 @@ const Main = (props) => {
                 
             </div>
             
-        </>
+        </Grid>
     );
 };
 

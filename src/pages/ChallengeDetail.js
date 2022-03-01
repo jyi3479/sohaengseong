@@ -1,11 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
+
+//이미지 슬라이더(Swiper) import 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore,{  Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { history } from "../redux/configureStore";
+
+//사용자 import
 import {Grid} from "../elements/index";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 
@@ -13,9 +17,9 @@ const ChallengeDetail = (props) => {
     const dispatch = useDispatch();
     const challengeId = props.match.params.challengeId;
     const target = useSelector(state => state.challenge.target);
-    const  tagList = target.tagName;
+    const tagList = target.tagName;
     const members = target.members;
-    const king = target.userId;
+    const admin = target.userId;
 
     const confirm = () => {
         window.confirm("다른 사람들을 위해 신중하게 선택하세요! 확인을 클릭 시 챌린지에 입장합니다");
@@ -68,13 +72,14 @@ const ChallengeDetail = (props) => {
                     <Grid>
                         {members.map((el, i) => {
                             return (
-                                <MemberBox key={el.userId} className={king === el.userId? "king" : ""} src={el.profileImage}>    
+                                //만약에 방을 만든 userId와 멤버의 userId가 같은 경우(방장인 경우) className을 붙여준다.
+                                <MemberBox key={el.userId} className={admin === el.userId? "admin" : ""} src={el.profileImage}>    
                                 </MemberBox>
                             );
                         })}
                     </Grid>
                 </Grid>
-                {target.isPrivate? (                    
+                {target.isPrivate? ( //비밀방이라면 비밀번호 입력창 show                
                     <button type="button" onClick={
                         prompt
                     }>챌린지 참여하기</button>                    
@@ -103,7 +108,7 @@ const MemberBox = styled.div`
     &:nth-child(n+6) {//5번째 멤버 이후로는 미노출
         display: none;
     }
-    &.king {
+    &.admin { //방장일 경우
         border: 3px solid #000;
     }
     background-image: url("${(props) => props.src}");
