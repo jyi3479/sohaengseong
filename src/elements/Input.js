@@ -44,6 +44,7 @@ const Input = ({
         <TextAreaField
           rows={10}
           ref={ref}
+          value={value}
           placeholder={placeholder}
           onChange={_onChange}
           onKeyPress={(e) => {
@@ -53,9 +54,7 @@ const Input = ({
           }}
           style={{ margin, padding, width, height }}
           {...props}
-        >
-          {value}
-        </TextAreaField>
+        ></TextAreaField>
       </label>
     );
   } else {
