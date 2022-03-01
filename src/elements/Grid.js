@@ -69,7 +69,6 @@ const GridContainer = styled.div`
     props.is_flex
       ? `display: flex; align-items: center; justify-content: space-between; `
       : ""};
-  border-radius: 5px;
   box-sizing: border-box;
   width: ${(props) => props.width};
   ${(props) => (props.flexWrap ? "flex-wrap: wrap" : "flex-wrap: nowrap")};

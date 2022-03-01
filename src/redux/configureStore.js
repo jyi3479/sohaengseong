@@ -9,6 +9,7 @@ import Ranking from "./modules/ranking";
 import Mypage from "./modules/mypage";
 import Member from "./modules/member";
 import Search from "./modules/search";
+import Base from "./modules/base";
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   mypage: Mypage,
   member: Member,
   search:Search,
+  base:Base,
   router: connectRouter(history),
 });
 
