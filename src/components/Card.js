@@ -24,11 +24,18 @@ const Card = (props) => {
 
 const Box = styled.div`
   display: inline-block;
+<<<<<<< jini
   width: calc(50% - 30px);
   ${(props) => (props.bg ? `background-color: ${props.bg};` : "")};
   border: 1px solid #000;
   padding: 10px;
   cursor: pointer;  
+=======
+  ${(props) => (props.bg ? `background-color: ${props.bg};` : "")};
+  border: 1px solid #000;
+  padding: 10px;
+  cursor: pointer;
+>>>>>>> develop
 `;
 
 const Tag = styled.p`

@@ -28,7 +28,7 @@ const Grid = ({
     align,
     border,
     is_flex,
-    flexWrap
+    flexWrap,
   };
 
   return (
@@ -51,11 +51,12 @@ Grid.defaultProps = {
   align: null,
   border: null,
   is_flex: false,
-  flexWrap:"nowrap",
+  flexWrap: "nowrap",
 };
 
 const GridContainer = styled.div`
-  ${(props) => (!props.is_flex  && props.display ? `display: ${props.display};` : "block")};
+  ${(props) =>
+    !props.is_flex && props.display ? `display: ${props.display};` : "block"};
   ${(props) => (props.padding ? `padding: ${props.padding};` : "")};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   width: ${(props) => props.width};
@@ -65,9 +66,9 @@ const GridContainer = styled.div`
   ${(props) => (props.center ? `text-align: center;` : "")}
   ${(props) => (props.border ? `border: ${props.border};` : "")}
   ${(props) =>
-        props.is_flex
-        ? `display: flex; align-items: center; justify-content: space-between; `
-        : ""};
+    props.is_flex
+      ? `display: flex; align-items: center; justify-content: space-between; `
+      : ""};
   border-radius: 5px;
   box-sizing: border-box;
   width: ${(props) => props.width};
