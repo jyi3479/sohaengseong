@@ -17,17 +17,14 @@ import CategoryMain from "../pages/CategoryMain";
 import MyPage from "../pages/MyPage";
 import MemberDetail from "../pages/MemberDetail";
 import MemberPost from "../pages/MemberPost";
-
-
+import ChallengeWrite from "../pages/ChallengeWrite";
 
 function App() {
   const dispatch = useDispatch();
-  
+
   React.useEffect(() => {
-   if(document.cookie)
-   dispatch(userActions.loginCheckDB)
-  
-  }, [])
+    if (document.cookie) dispatch(userActions.loginCheckDB);
+  }, []);
 
   return (
     <>
@@ -43,9 +40,20 @@ function App() {
             <Header />
             <Footer />
             <Wrap>
-              <Route path="/" exact component={Main} />{/* 메인 */}
-              <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
-              <Route path="/category/:categoryId" exact component={CategoryMain} />{/* 카테고리리스트 */}
+              <Route path="/" exact component={Main} />
+              {/* 메인 */}
+              <Route
+                path="/challenge/:challengeId"
+                exact
+                component={ChallengeDetail}
+              />
+              {/* 챌린지 소개 */}
+              <Route
+                path="/category/:categoryId"
+                exact
+                component={CategoryMain}
+              />
+              {/* 카테고리리스트 */}
               <Route path="/mypage" exact component={MyPage} />
               {/* 마이페이지 */}
               <Route
@@ -56,6 +64,18 @@ function App() {
               {/* 챌린지 멤버 전용 */}
               <Route path="/post/:challengeId" exact component={MemberPost} />
               {/* 챌린지 멤버 전용 속 인증 페이지 */}
+              <Route
+                path="/challengewrite"
+                exact
+                component={ChallengeWrite}
+              />{" "}
+              {/* 챌린지 작성 페이지 */}
+              <Route
+                path="/challengewrite/:challengeId"
+                exact
+                component={ChallengeWrite}
+              />
+              {/* 챌린지 수정 페이지 */}
             </Wrap>
           </MobileFrame>
         </ConnectedRouter>
