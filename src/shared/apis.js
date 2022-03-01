@@ -13,7 +13,7 @@ const imageApis = axios.create({
 apis.interceptors.request.use(function (config) {
     //const token = getCookie("token");
     config.headers["Content-Type"] = "application/json;charset=UTF-8; charset=UTF-8";
-    //config.headers.common["authorization"] = `${token}`;
+    //config.headers.common["authorization"] = `Bearer ${token}`;
     return config;
 });
 
@@ -43,10 +43,9 @@ export const userApis = {
     pwdCheck: (password) => apis.post("/auth/password",password),
 
     //로그인 유저 확인
-    pwdCheck: () => apis.get("/auth/user-info"),
+    useInfo: () => apis.get("/auth/user-info"),
 }
-
-
+ 
 export const challengeApis = {
     //챌린지 전체 조회
     getChallenge: () => apis.get("/challenge"),

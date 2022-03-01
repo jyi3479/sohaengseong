@@ -3,20 +3,29 @@ import { ConnectedRouter } from "connected-react-router";
 import { Route , Switch} from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
-
+import { useDispatch } from "react-redux";
 //page import
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Main from "../pages/Main";
 import MobileFrame from "../components/MobileFrame";
-
-
+import { ActionCreators as userActions } from "../redux/modules/user";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 
 
+
+
 function App() {
+  const dispatch = useDispatch();
+  
+  React.useEffect(() => {
+   if(document.cookie)
+   dispatch(userActions.loginCheckDB)
+  
+  }, [])
+
   return (
     <>
       <Wrapper>
@@ -83,7 +92,7 @@ const BackgroundOpacity = styled.div`
 
 const Wrap = styled.div`
   margin: 60px 0 ;
-  height: calc(100vh - 120px);
+  
 `;
 
 export default App;
