@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Grid, Input, button, Button } from "../elements";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
-import { KAKAO_AUTH_URL } from "../shared/Oauth";
+//import { KAKAO_AUTH_URL } from "../shared/Oauth";
 const Login = (props) => {
   const dispatch = useDispatch();
   const [email, setemail] = React.useState("");
@@ -75,7 +75,7 @@ const Login = (props) => {
           비밀번호찾기
         </Button>
         <Button _onClick={() => history.push("/signup")}>회원가입</Button>
-        <button href={KAKAO_AUTH_URL}>
+        <button >
           <img></img>
           <span>카카오계정 로그인</span>
         </button>
