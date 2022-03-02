@@ -22,6 +22,7 @@ const Find = (props) => {
         setOption(e.target.innerText);
         setActive(false);
         if(option!=="직접 입력"){
+            console.log("직");
             setDomain(e.target.innerText);
         }        
     };    
@@ -55,7 +56,7 @@ const Find = (props) => {
                         onChange={(e) => {
                             setDomain(e.target.value);
                         }}
-                        disabled={option==="직접 입력"?"":"disabled"} value={option==="직접 입력"?option:domain}
+                        disabled={option==="직접 입력"?"":"disabled"} value={option==="직접 입력"?domain:option}
                     ></EmailInput>
                 </Grid>
                 <Select>
