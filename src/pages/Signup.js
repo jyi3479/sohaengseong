@@ -3,7 +3,7 @@ import {Grid, Input, Button} from "../elements"
 import {useDispatch, useSelector} from 'react-redux'
 import * as baseAction from '../redux/modules/base';
 import { ActionCreators as userActions } from "../redux/modules/user";
-
+import { history } from "../redux/configureStore";
 const Signup = (props) => {
   const dispatch = useDispatch();
   const [email, setemail] = React.useState("");

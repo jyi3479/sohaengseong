@@ -5,13 +5,12 @@ import { Grid, Input, Button } from "../elements";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import kakao from "../image/icons/ic_kakao@2x.png";
-
 //import { KAKAO_AUTH_URL } from "../shared/Oauth";
 const Login = (props) => {
   const dispatch = useDispatch();
   const [email, setemail] = React.useState("");
   const [password, setpassword] = React.useState("");
-
+  
   const login = () => {
     if (email === "" || password === "") {
       window.alert("아이디 혹은 비밀번호가 공란입니다! 입력해주세요!");
@@ -66,7 +65,7 @@ const Login = (props) => {
           {/* target="_blank" 새창으로 열겠다는 뜻*/}
           <Kakao href="" target="_blank">카카오톡으로 시작하기</Kakao>
         </Grid>
-        
+      
       </Grid>
     </React.Fragment>
   );
@@ -97,3 +96,4 @@ const Kakao = styled.a`
 `;
 
 export default Login;
+
