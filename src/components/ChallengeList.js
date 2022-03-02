@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
-import {Grid} from "../elements/index";
 import Card from "./Card";
 
 const ChallengeList = (props) => {

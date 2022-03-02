@@ -45,8 +45,7 @@ function App() {
                   <Header />
                   <Footer />
                   <Route path="/" exact component={Main} />{/* 메인 */}
-                    
-                </Wrap>
+                </Wrap>         
               </>
               <>
                 <Header detail/>
@@ -107,7 +106,7 @@ const BackgroundOpacity = styled.div`
 `;
 
 const Wrap = styled.div`
-  margin: 60px 0;
+  margin-bottom:64px;
 `;
 
 export default App;

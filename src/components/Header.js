@@ -38,12 +38,13 @@ const Wrap = styled.div`
     justify-content: space-between;
     width: 100%;
     height: 48px;
-    background-color: #000;
+    background-color: transparent;
     position: fixed;
     top: 0;
     left: 0;
     padding: 11px 20px;
-    box-sizing: border-box;    
+    box-sizing: border-box;  
+    z-index: 10;
     >p {
         font-size: 16px;
         margin: 0px;

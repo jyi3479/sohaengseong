@@ -92,7 +92,7 @@ export const searchApis = {
   recommend: () => apis.get("/challenge/recommend"),
 
   //검색 결과 조회
-  getSearch: (searchWord) => apis.get(`/challenge?search=${searchWord}`),
+  getSearch: (searchWord) => apis.get(`/challenge/search?keyword=${searchWord}`),
 };
 
 export const mainApis = {

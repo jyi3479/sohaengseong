@@ -72,6 +72,7 @@ const GridContainer = styled.div`
   box-sizing: border-box;
   width: ${(props) => props.width};
   ${(props) => (props.flexWrap ? "flex-wrap: wrap" : "flex-wrap: nowrap")};
+  overflow: hidden;
 `;
 
 export default Grid;
