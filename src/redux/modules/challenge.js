@@ -24,7 +24,7 @@ const initialState = {
     list:[
         {
             challengeId:"0",
-            title:"일상",
+            title:"제목이 길다면?제목이 길다면?제목이 길다면?",
             content:"우리의 운동조건은 열심히 하는 것 단 하나 입니다",   
             category:"일상",
             challengeImage:"",
@@ -32,9 +32,9 @@ const initialState = {
             currentMember:0,
             startDate:"2022-02-28",
             endDate:"2022-03-10",
-            isPrivate:false,
+            isPrivate:true,
             password:1234,
-            tagName:["해시태그1", "해시태그2", "해시태그3"],
+            tagName:["미라클모닝", "갓생살기프로젝트"],
             status:"ing"
         },
         {

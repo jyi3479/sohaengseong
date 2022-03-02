@@ -7,7 +7,7 @@ import my from "../image/icons/ic_my@2x.png";
 
 const Footer = (props) => {
     return(
-        <Wrap>          
+        <Wrap>
             <a href="/">
                 <img src={home}></img>
                 <p>홈</p>
@@ -52,7 +52,7 @@ const Wrap = styled.div`
         p {
             color: #000;
             font-size: 11px;
-            line-height: 20px;
+            line-height: 0;
             margin: 0;
         }
     }

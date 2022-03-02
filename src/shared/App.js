@@ -42,18 +42,15 @@ function App() {
               <Route path="/search" exact component={Search} />{/* 검색페이지 */}
               <>
                 <Wrap>
-                  <Header />
-                  <Footer />
+                  <Header />                  
                   <Route path="/" exact component={Main} />{/* 메인 */}
-                </Wrap>         
-              </>
-              <>
-                <Header detail/>
-                <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
-                <Route path="/category/:categoryId" exact component={CategoryMain} />{/* 카테고리리스트 */}
-                <Route path="/mypage" exact component={MyPage} />{/* 마이페이지 */}              
-                <Route path="/member/:challengeId" exact component={MemberDetail}/>{/* 챌린지 멤버 전용 */}              
-                <Route path="/post/:challengeId" exact component={MemberPost} />{/* 챌린지 멤버 전용 속 인증 페이지 */}
+                  <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
+                  <Route path="/category/:categoryId" exact component={CategoryMain} />{/* 카테고리리스트 */}
+                  <Route path="/mypage" exact component={MyPage} />{/* 마이페이지 */}              
+                  <Route path="/member/:challengeId" exact component={MemberDetail}/>{/* 챌린지 멤버 전용 */}              
+                  <Route path="/post/:challengeId" exact component={MemberPost} />{/* 챌린지 멤버 전용 속 인증 페이지 */}
+                  <Footer />
+                </Wrap>
               </>
             </Switch>            
           </MobileFrame>

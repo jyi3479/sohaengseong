@@ -14,7 +14,7 @@ const initialState = {
     list:[
         {
             challengeId:"0",
-            title:"일상",
+            title:"제목이 길다면?",
             content:"우리의 운동조건은 열심히 하는 것 단 하나 입니다",   
             category:"일상",
             challengeImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg",

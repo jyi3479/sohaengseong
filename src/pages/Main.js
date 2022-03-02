@@ -1,7 +1,7 @@
 import React from "react";
 import {Grid,Button, Container} from "../elements/index";
 import ChallengeList from "../components/ChallengeList";
-import CategoryList from "../components/CategoryList";
+import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import RankingCard from "../components/RankingCard";
@@ -25,7 +25,10 @@ const Main = (props) => {
                             <p>닉네임 님의 오늘의 습관</p>
                             <p><b>1</b>개</p>
                         </Grid>
-                       <Button font_size="14px" style={{fontWeight:"bold"}}>인증하기</Button>
+                       <Button font_size="14px" style={{fontWeight:"bold"}} 
+                       _onClick={()=>{
+                           history.push("/mypage");
+                       }}>인증하기</Button>
                     </Info>
 
                     <Grid padding="0" margin="90px 0 28px" >  
