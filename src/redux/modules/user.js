@@ -190,16 +190,17 @@ const loginBykakao = (code) => {
       .loginByKakao(code)
       .then((res) => {
         console.log(res);
-        const ACCESS_TOKEN = res.data.accessToken;
+        const ACCESS_TOKEN = res.data.token;
 
         localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
-
-        // history.replace("/main") // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+        // setCookie("token", ACCESS_TOKEN); // 쿠키로 저장하면 메인갔을 때 쿠키값이 사라짐..
+        history.push("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+        // history.go(0);
       })
       .catch((err) => {
         console.log("소셜로그인 에러", err);
         window.alert("로그인에 실패하였습니다.");
-        // history.replace("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
+        history.replace("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
       });
   };
 };
