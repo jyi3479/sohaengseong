@@ -16,7 +16,7 @@ const Sendmail = (props) => {
                 <Button width="calc(50% - 4px)" radius="0" bg="#eee" font_size="14px" style={{color:"#000"}} 
                 _onClick={()=>{
                     history.push("/");
-                }}>메인으로 가기</Button>
+                }}>메일함으로 가기</Button>
                 <Button width="calc(50% - 4px)" radius="0" bg="#eee" font_size="14px" style={{color:"#000"}}_onClick={()=>{
                     history.push("/login");
                 }}>로그인하기</Button>

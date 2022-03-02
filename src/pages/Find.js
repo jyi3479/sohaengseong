@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from '../redux/modules/base';
-import {Grid,Button,Input} from "../elements/index";
+import {Grid,Button} from "../elements/index";
 
 const Find = (props) => {
     const dispatch = useDispatch();
+    const [active,setActive] = React.useState(false);    
+    const [email,setEmail] = React.useState("");
+    const [option,setOption] = React.useState("");
+    const [domain, setDomain] = React.useState("");
+    
+ 
+    // 라벨을 클릭시 옵션 목록이 열림/닫힘
+    const selectClick = () => {        
+        setActive(!active);
+        console.log("눌림",active);
+    };
+    const optionClick = (e) => {
+        setOption(e.target.innerText);
+        setActive(false);
+        if(option!=="직접 입력"){
+            setDomain(e.target.innerText);
+        }        
+    };    
+
 
     React.useEffect(() => {
         dispatch(baseAction.setHeader(true,"비밀번호 찾기"));
@@ -17,25 +36,42 @@ const Find = (props) => {
         }
     }, []);
 
-    const [email,setEmail] = React.useState("");
+    
     return(
-        <Grid padding="0 40px" margin="120px 0 0" height="auto">
+        <Grid padding="0 40px" margin="120px 0 0" height="70vh">
             <Content>
                 <h1>가입 시 등록한<br/>이메일을 입력해주세요.</h1>
                 <p>입력하신 이메일로 임시 비밀번호가 발송됩니다.</p>
             </Content>
-            <Grid padding="0">
-                <Input
-                    value={email}
-                    label="이메일"
-                    placeholder="이메일을 입력해 주세요."
-                    is_submit
-                    _onChange={(e) => {
+            <Grid padding="0" style={{overflow: "revert"}}>
+                <label style={{fontSize:"14px"}}>이메일</label>
+                <Grid padding="0" margin="9px 0 0" is_flex>
+                    <EmailInput  
+                    onChange={(e) => {
                         setEmail(e.target.value);
-                    }}
-                />                
+                    }}></EmailInput>
+                    <p style={{fontSize:"14px"}}>@</p>
+                    <EmailInput 
+                        onChange={(e) => {
+                            setDomain(e.target.value);
+                        }}
+                        disabled={option==="직접 입력"?"":"disabled"} value={option==="직접 입력"?option:domain}
+                    ></EmailInput>
+                </Grid>
+                <Select>
+                    <button className="label" onClick={()=>{selectClick()}}>{option?option:"선택하세요"}</button>
+                    <ul className="optionList" style={{display:active?"block":"none"}}>
+                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>naver.com</li>
+                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>nate.com</li>
+                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>daum.net</li>
+                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>hanmail.net</li>
+                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>gmail.com</li>
+                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>직접 입력</li>
+                    </ul>
+                </Select>
                 <Button margin="50px 0 0" _onClick={()=>{
                    console.log("이메일 인증하기 누름");
+                   console.log(`${email}@${domain}`)
                 }}>이메일 인증하기</Button>
             </Grid>
             
@@ -54,5 +90,57 @@ const Content = styled.div`
         font-size: 14px;
     }
 `;
+
+const EmailInput = styled.input`
+    width: calc(50% - 10px);
+    height: 40px;
+    border: solid 1px #999;
+    outline: none;
+    padding: 10px;
+`;
+
+const Select = styled.div`
+    position: relative;
+    width: 100%;
+    height: 40px;
+    border: solid 1px #999;
+    outline: none;
+    margin-top:5px;
+    .label {
+        display: flex;
+        align-items: center;
+        width: inherit;
+        height: inherit;
+        border: 0 none;
+        outline: 0 none;
+        padding-left: 10px;
+        background: transparent;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .optionList {
+        position: absolute; 
+        top: 40px;
+        left: 0;
+        width: 100%;
+        height: 157px;
+        background: #fff;
+        color: #fff;
+        overflow: hidden;
+        transition: .3s ease-in;
+        padding: 10px;
+        border: solid 1px #999;
+        >li {
+            font-size: 12px;
+            color:#000;
+            line-height: 1.5;
+            margin-bottom: 2px;
+            cursor: pointer;
+        }
+    }
+
+`;
+
+
 
 export default Find;

@@ -5,7 +5,7 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import RankingCard from "../components/RankingCard";
-
+import plus from "../image/icons/ic_more_l@2x.png";
 const Main = (props) => {    
     const dispatch = useDispatch();
     const ranking = useSelector(state => state.ranking.list);   
@@ -19,7 +19,7 @@ const Main = (props) => {
                 <Planet></Planet>
             </Grid>
             <Wrap>
-                <Grid>
+                <Grid style={{overflow: "hidden"}}>
                     <Info>
                         <Grid padding="0" is_flex height="auto" margin="0 0 16px">
                             <p>닉네임 님의 오늘의 습관</p>
@@ -53,8 +53,8 @@ const Main = (props) => {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href={`/category/all`}>
-                                        <div></div>
+                                    <a href={`/category`}>
+                                        <div><img src={plus} style={{width:"32px",paddingTop:"22px"}}/></div>
                                         <p>전체보기</p>
                                     </a>
                                 </li>
@@ -82,7 +82,7 @@ const Main = (props) => {
                         <div>
                             <Grid is_flex padding="0">
                                 <Title>오늘의 소행성</Title>
-                                <a href={`/category/all`} style={{fontSize:"12px"}}>더보기</a>
+                                <a href={`/category/all`} style={{fontSize:"12px", fontWeight:"bold"}}>더보기</a>
                             </Grid>                            
                             <SubTitle>따끈따끈한 습관 챌린지</SubTitle>                            
                             <Grid padding="0">
