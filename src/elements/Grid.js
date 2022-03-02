@@ -14,6 +14,7 @@ const Grid = ({
   align,
   border,
   is_flex,
+  flexWrap,
   ...props
 }) => {
   const styles = {
@@ -27,6 +28,7 @@ const Grid = ({
     align,
     border,
     is_flex,
+    flexWrap,
   };
 
   return (
@@ -49,6 +51,7 @@ Grid.defaultProps = {
   align: null,
   border: null,
   is_flex: false,
+  flexWrap: "nowrap",
 };
 
 const GridContainer = styled.div`
@@ -68,6 +71,8 @@ const GridContainer = styled.div`
       : ""};
   border-radius: 5px;
   box-sizing: border-box;
+  width: ${(props) => props.width};
+  ${(props) => (props.flexWrap ? "flex-wrap: wrap" : "flex-wrap: nowrap")};
 `;
 
 export default Grid;

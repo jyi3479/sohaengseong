@@ -17,10 +17,13 @@ apis.interceptors.request.use(function (config) {
 });
 
 imageApis.interceptors.request.use(function (config) {
+
   //const token = getCookie("token");
   config.headers["Content-Type"] = "multipart/form-data";
   //config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
+
+
 });
 
 export const userApis = {
@@ -41,6 +44,7 @@ export const userApis = {
   //로그인 유저 확인
   useInfo: () => apis.get("/auth/user-info"),
 
+
   //인증 메일 확인
   emailCheckToken: () => apis.get("/auth/check-email-token"),
 
@@ -55,6 +59,7 @@ export const userApis = {
     apis.post(
       "https://kauth.kakao.com/oauth/authorize?client_id=74db9f0835ac0be7fa34c1dfb64beafc&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code"
     ),
+
 };
 
 export const challengeApis = {
