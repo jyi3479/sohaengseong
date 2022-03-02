@@ -22,10 +22,11 @@ import Search from "../pages/Search";
 import CategoryMain from "../pages/CategoryMain";
 import Complete from "../pages/Complete";
 import Find from "../pages/Find";
+import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
 
 function App() {
   const dispatch = useDispatch();
-  
+
   React.useEffect(() => {
     if (document.cookie) dispatch(userActions.loginCheckDB);
   }, []);
@@ -40,8 +41,9 @@ function App() {
             <Switch>
               <Route path="/login" exact component={Login} />
               {/* 로그인 */}
-              <Route path="/signup/complete" exact component={Complete} />{/* 회원가입완료 */}
-              
+              <Route path="/signup/complete" exact component={Complete} />
+              {/* 회원가입완료 */}
+
               <Route path="/search" exact component={Search} />
               {/* 검색페이지 */}
               <>
@@ -53,13 +55,23 @@ function App() {
                   <Route path="/signup" exact component={Signup} />
                   {/* 회원가입 */}
                   <Route
+                    path="/auth/kakao/callback"
+                    component={OAuth2RedirectHandler}
+                  ></Route>
+                  <Route
                     path="/challenge/:challengeId"
                     exact
                     component={ChallengeDetail}
                   />
                   {/* 챌린지 소개 */}
-                  <Route path="/category" exact component={CategoryMain} />{/* 카테고리메인*/}
-                  <Route path="/category/:categoryId" exact component={CategoryTab} />{/* 카테고리리스트 */}
+                  <Route path="/category" exact component={CategoryMain} />
+                  {/* 카테고리메인*/}
+                  <Route
+                    path="/category/:categoryId"
+                    exact
+                    component={CategoryTab}
+                  />
+                  {/* 카테고리리스트 */}
                   <Route path="/mypage" exact component={MyPage} />
                   {/* 마이페이지 */}
                   <Route
@@ -86,7 +98,8 @@ function App() {
                     component={ChallengeWrite}
                   />
                   {/* 챌린지 수정 페이지 */}
-                  <Route path="/find" exact component={Find} />{/* 비밀번호찾기 */}
+                  <Route path="/find" exact component={Find} />
+                  {/* 비밀번호찾기 */}
                 </Wrap>
               </>
             </Switch>
@@ -140,7 +153,7 @@ const BackgroundOpacity = styled.div`
 `;
 
 const Wrap = styled.div`
-  margin-bottom:64px;
+  margin-bottom: 64px;
 `;
 
 export default App;

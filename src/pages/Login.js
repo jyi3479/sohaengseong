@@ -5,12 +5,13 @@ import { Grid, Input, Button } from "../elements";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import kakao from "../image/icons/ic_kakao@2x.png";
-//import { KAKAO_AUTH_URL } from "../shared/Oauth";
+import { KAKAO_AUTH_URL } from "../shared/OAuth";
+
 const Login = (props) => {
   const dispatch = useDispatch();
   const [email, setemail] = React.useState("");
   const [password, setpassword] = React.useState("");
-  
+
   const login = () => {
     if (email === "" || password === "") {
       window.alert("아이디 혹은 비밀번호가 공란입니다! 입력해주세요!");
@@ -24,7 +25,14 @@ const Login = (props) => {
     <React.Fragment>
       <Grid padding="0px 64px">
         {/* 플랫폼 로고 들어갈 부분 ▼*/}
-        <div style={{width:"200px",height:"100px",backgroundColor:"#ccc",margin:"100px auto 75px"}}></div>
+        <div
+          style={{
+            width: "200px",
+            height: "100px",
+            backgroundColor: "#ccc",
+            margin: "100px auto 75px",
+          }}
+        ></div>
         <Grid padding="0">
           <Input
             value={email}
@@ -34,7 +42,7 @@ const Login = (props) => {
               setemail(e.target.value);
             }}
           />
-        </Grid>        
+        </Grid>
         <Grid padding="0px" margin="0 0 20px">
           <Input
             value={password}
@@ -48,7 +56,7 @@ const Login = (props) => {
         </Grid>
         <Button
           radius="20px"
-            style={{fontWeight: "300"}}
+          style={{ fontWeight: "300" }}
           _onClick={() => {
             login();
           }}
@@ -60,12 +68,13 @@ const Login = (props) => {
           <Link href="/signup">회원가입</Link>
         </Grid>
 
-        <Grid padding="0" style={{textAlign:"center"}}>
-          <p style={{fontSize:"12px", marginBottom:"9px"}}>간편 로그인</p>
+        <Grid padding="0" style={{ textAlign: "center" }}>
+          <p style={{ fontSize: "12px", marginBottom: "9px" }}>간편 로그인</p>
           {/* target="_blank" 새창으로 열겠다는 뜻*/}
-          <Kakao href="" target="_blank">카카오톡으로 시작하기</Kakao>
+          <Kakao href={KAKAO_AUTH_URL} target="_blank">
+            카카오톡으로 시작하기
+          </Kakao>
         </Grid>
-      
       </Grid>
     </React.Fragment>
   );
@@ -79,7 +88,7 @@ const Link = styled.a`
   font-size: 12px;
   &:first-child {
     border-right: 1px solid #000;
-  }  
+  }
 `;
 
 const Kakao = styled.a`
@@ -89,11 +98,10 @@ const Kakao = styled.a`
   padding: 7px 20px 7px 48px;
   background-color: #eeeeee;
   background-image: url(${kakao});
-  background-size: 28px;  
-  background-position:20px;
+  background-size: 28px;
+  background-position: 20px;
   background-repeat: no-repeat;
   font-size: 16px;
 `;
 
 export default Login;
-

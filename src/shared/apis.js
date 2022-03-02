@@ -2,7 +2,8 @@ import axios from "axios";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
 const apis = axios.create({
-  baseURL: server_port, //서버 주소
+  // baseURL: server_port, //서버 주소
+  baseURL: "http://13.125.107.22",
 });
 
 const imageApis = axios.create({
@@ -18,13 +19,10 @@ apis.interceptors.request.use(function (config) {
 });
 
 imageApis.interceptors.request.use(function (config) {
-
   //const token = getCookie("token");
   config.headers["Content-Type"] = "multipart/form-data";
   //config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
-
-
 });
 
 export const userApis = {
@@ -34,17 +32,20 @@ export const userApis = {
   signup: (email, nickname, password, passwordCheck) =>
     apis.post("/auth/signup", { email, nickname, password, passwordCheck }),
   //이메일 인증 (아이디 중복체크)
-  emailCheck: (email) => apis.post("/auth/email-check", email),
+  emailCheck: (email) =>
+    apis.post("/auth/email-check", {
+      email: email,
+    }),
 
   //닉네임 중복체크
-  nicknameCheck: (nickname) => apis.post("/auth/nickname-check", nickname),
+  nicknameCheck: (nickname) =>
+    apis.post("/auth/nickname-check", { nickname: nickname }),
 
   //비밀번호 찾기
   pwdCheck: (password) => apis.post("/auth/password", password),
 
   //로그인 유저 확인
   useInfo: () => apis.get("/auth/user-info"),
-
 
   //인증 메일 확인
   emailCheckToken: () => apis.get("/auth/check-email-token"),
@@ -55,12 +56,9 @@ export const userApis = {
   //임시 비밀번호 발급
   tempPasswordSend: (email) => apis.post("/auth/send-temp-password"),
 
-  //소셜로그인(카카오)
-  loginByKakao: () =>
-    apis.post(
-      "https://kauth.kakao.com/oauth/authorize?client_id=74db9f0835ac0be7fa34c1dfb64beafc&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code"
-    ),
-
+  // 소셜로그인(카카오)
+  // loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),
+  loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),
 };
 
 export const challengeApis = {
@@ -114,7 +112,8 @@ export const searchApis = {
   recommend: () => apis.get("/challenge/recommend"),
 
   //검색 결과 조회
-  getSearch: (searchWord) => apis.get(`/challenge/search?keyword=${searchWord}`),
+  getSearch: (searchWord) =>
+    apis.get(`/challenge/search?keyword=${searchWord}`),
 };
 
 export const mainApis = {
