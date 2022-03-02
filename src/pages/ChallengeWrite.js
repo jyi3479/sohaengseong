@@ -26,6 +26,8 @@ const ChallengeWrite = (props) => {
   const [content, setContent] = React.useState("");
   const [image, setImage] = React.useState([]);
   const [preview, setPreview] = React.useState([]);
+  const [category, setCategory] = React.useState("");
+  const [maxMember, setMaxMember] = React.useState();
   //해시태그 부분
   //onChange로 관리할 문자열
   const [hashtag, setHashtag] = React.useState("");
@@ -36,7 +38,7 @@ const ChallengeWrite = (props) => {
   const [endDate, setEndDate] = React.useState(null);
   // 방 공개 여부
   const [checkedInputs, setCheckedInputs] = React.useState(null);
-  const [password, setPassword] = React.useState("");
+  const [password, setPassword] = React.useState(null);
 
   const changeHandler = (checked, id) => {
     if (checked) {
@@ -114,7 +116,7 @@ const ChallengeWrite = (props) => {
   };
 
   // 인증 게시글 추가하기
-  const addPost = () => {
+  const addChallenge = () => {
     // 서버에 보내기 위한 작업
     console.log(image);
     let formData = new FormData();
@@ -123,22 +125,38 @@ const ChallengeWrite = (props) => {
       return;
     }
 
-    formData.append("content", content);
-    formData.append("postImage", image);
-
+    const data = {
+      title: title,
+      content: content,
+      category: category,
+      maxMember: parseInt(maxMember),
+      startDate: startDate,
+      endDate: endDate,
+      isPrivate: checkedInputs === "private" ? true : false,
+      password: checkedInputs === "private" ? password : null,
+      tagName: hashArr,
+    };
+    formData.append("challengeImage", image); // multipart 설정하기
+    formData.append("challenge", data); // json 타입으로 설정하기
     // formData api랑 통신하는 부분으로 dispatch 하기
 
     // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
     // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
-    const post = {
-      nickname: "닉네임",
-      profileImage: "",
-      content: content,
-      postImage: preview, // 임시로 지정해둠
-      comments: [], // 첫 게시글에는 댓글이 없으니까 일단 이렇게 설정했습니다.
-    };
 
-    dispatch(memberActions.addPost(post));
+    const challenge = {
+      title: title,
+      content: content,
+      category: category,
+      challengeImage: preview,
+      maxMember: parseInt(maxMember),
+      startDate: startDate,
+      endDate: endDate,
+      isPrivate: checkedInputs === "private" ? true : false,
+      password: checkedInputs === "private" ? password : null,
+      tagName: hashArr,
+    };
+    console.log(challenge);
+    // dispatch(memberActions.addPost(post));
   };
 
   return (
@@ -152,17 +170,21 @@ const ChallengeWrite = (props) => {
       <div>
         <Select
           name="evaluation"
-          //   onChange={(e) => {
-          //     setEvaluation(e.target.value);
-          //   }}
-          //   value={evaluation}
+          onChange={(e) => {
+            setCategory(e.target.value);
+          }}
+          value={category}
         >
           <option value="">유형 선택</option>
-          <option value="아주좋음">아주좋음</option>
-          <option value="좋음">좋음</option>
-          <option value="보통">보통</option>
-          <option value="별로">별로</option>
-          <option value="최악">최악</option>
+          <option value="일상 루틴">일상 루틴</option>
+          <option value="운동">운동</option>
+          <option value="스터디">스터디</option>
+          <option value="식습관">식습관</option>
+          <option value="힐링">힐링</option>
+          <option value="취미">취미</option>
+          <option value="셀프케어">셀프케어</option>
+          <option value="펫">펫</option>
+          <option value="친환경">친환경</option>
         </Select>
 
         <Input
@@ -192,7 +214,7 @@ const ChallengeWrite = (props) => {
       {/* 태그 부분 */}
       <div>
         <p style={{ fontSize: "14px", margin: "0px 0px 10px" }}>
-          태그를 작성해주세요
+          태그를 작성해주세요.
         </p>
         <HashWrap className="HashWrap">
           {/* 동적으로 생성되는 태그를 담을 div */}
@@ -212,6 +234,7 @@ const ChallengeWrite = (props) => {
 
       <DatePicker
         locale={ko} // 달력 한글화
+        dateFormat="yyyy-MM-dd" // 날짜형식
         showPopperArrow={false} // popover 화살표 없애기
         fixedHeight // 고정된 height에서 남은 공간은 다음 달로 채워지기
         selected={startDate} // 날짜 state
@@ -232,6 +255,8 @@ const ChallengeWrite = (props) => {
       <Input
         label="인원수를 선택해주세요. *"
         placeholder="최대 30명"
+        value={maxMember}
+        _onChange={(e) => setMaxMember(e.target.value)}
         height="46px"
         margin="0px 0px 20px"
       />
@@ -267,7 +292,7 @@ const ChallengeWrite = (props) => {
                   style={{
                     width: "74px",
                     height: "74px",
-                    margin: "17px 8px 28px 20px",
+                    margin: "17px 8px 0px 0px",
                   }}
                 />
                 <span
@@ -286,26 +311,25 @@ const ChallengeWrite = (props) => {
           })}
           {preview.length < 3 && (
             <ImageLabel className="input-file-button" htmlFor="input-file">
-              <div
+              <img
+                src={plus}
+                style={{
+                  width: "74px",
+                  height: "74px",
+                  margin: "17px 8px 0px 0px",
+                  display: "inline-block",
+                  position: "relative",
+                  border: "solid 1px #808080",
+                }}
+              ></img>
+              {/* <div
                 style={{
                   width: "74px",
                   height: "74px",
                   display: "inline-block",
                   position: "relative",
                 }}
-              >
-                <img
-                  src={plus}
-                  style={{
-                    width: "74px",
-                    height: "74px",
-                    margin: "17px 8px 28px 20px",
-                    display: "inline-block",
-                    position: "relative",
-                    border: "solid 1px #808080",
-                  }}
-                />
-              </div>
+              ></div> */}
             </ImageLabel>
           )}
         </div>
@@ -364,7 +388,7 @@ const ChallengeWrite = (props) => {
           />
         )}
       </>
-      <Button>등록하기</Button>
+      <Button _onClick={addChallenge}>등록하기</Button>
     </Grid>
   );
 };
