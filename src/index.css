@@ -6,12 +6,9 @@
   box-sizing: border-box;
   list-style: none;
 }
-
-
-
 body {
   margin: 0;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 button {
@@ -22,4 +19,3 @@ a {
   text-decoration: none;
   color: initial;
 }
-

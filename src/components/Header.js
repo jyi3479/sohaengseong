@@ -2,35 +2,45 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
-import { FiArrowLeft } from 'react-icons/fi';
-import searchIcon from '../image/icons/ic_search.png';
+import { FiArrowLeft } from "react-icons/fi";
+import searchIcon from "../image/icons/ic_search.png";
 
 const Header = (props) => {
-    const text = useSelector(state => state.base.header.text);
-    const detail = useSelector(state => state.base.header.detail);
+  const text = useSelector((state) => state.base.header.text);
+  const detail = useSelector((state) => state.base.header.detail);
 
-    if(detail){
-        return(
-            <Wrap id="Header" {...props} className="detailHeader">
-                <button onClick={()=>{
-                    history.push(-1);
-                }}><FiArrowLeft/></button>
-                <p>{text}</p>
-            </Wrap>
-        );
-    }
-    return(        
-        <Wrap id="Header" {...props}>
-            <h1><a href="/">소행성</a></h1>
-            <button onClick={()=>{
-                history.push("/search");
-            }}><img src={searchIcon}></img></button>
-        </Wrap>
+  if (detail) {
+    return (
+      <Wrap id="Header" {...props} className="detailHeader">
+        <button
+          onClick={() => {
+            history.push(-1);
+          }}
+        >
+          <FiArrowLeft />
+        </button>
+        <p>{text}</p>
+      </Wrap>
     );
+  }
+  return (
+    <Wrap id="Header" {...props}>
+      <h1>
+        <a href="/">소행성</a>
+      </h1>
+      <button
+        onClick={() => {
+          history.push("/search");
+        }}
+      >
+        <img src={searchIcon}></img>
+      </button>
+    </Wrap>
+  );
 };
 
-Header.defaultProps ={
-    detail:false,
+Header.defaultProps = {
+  detail: false,
 };
 
 const Wrap = styled.div`
@@ -57,15 +67,18 @@ const Wrap = styled.div`
         }
         font-size: 18px;
         margin: 0;
+
     }
-    >button {
-        background-color: transparent;
-        border:none;
-        padding: 0;
-        cursor: pointer;
-        >img {
-            width: 28px;
-        }
+    font-size: 18px;
+    margin: 0;
+  }
+  > button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    > img {
+      width: 28px;
     }
     &.detailHeader {
         display: block;
@@ -80,11 +93,9 @@ const Wrap = styled.div`
             padding: 0;
             font-size: 25px;
         }
+
     }
+  }
 `;
 
-
 export default Header;
-
-
-

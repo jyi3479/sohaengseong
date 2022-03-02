@@ -57,7 +57,8 @@ Grid.defaultProps = {
 const GridContainer = styled.div`
   ${(props) =>
     !props.is_flex && props.display ? `display: ${props.display};` : "block"};
-  ${(props) => (props.padding ? `padding: ${props.padding};` : `padding:0 20px;`)};
+  ${(props) =>
+    props.padding ? `padding: ${props.padding};` : `padding:0 20px;`};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   width: ${(props) => props.width};
   height: ${(props) => props.height};

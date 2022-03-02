@@ -20,6 +20,7 @@ const Input = ({
   ...props
 }) => {
 
+
   if(double){
     return (
       <Double>      
@@ -43,7 +44,6 @@ const Input = ({
       </Double>
     );
   }
-
   if (is_submit) {
     return (
       <Label>
@@ -123,7 +123,8 @@ Input.defaultProps = {
 const InputField = styled.input`
   ${(props) => (props.width ? `width: ${props.width};` : `width: 100%;`)};
   ${(props) => (props.height ? `height: ${props.height};` : `height: 40px;`)};
-  ${(props) => (props.padding ? `padding: ${props.padding};` : `padding: 10px;`)};
+  ${(props) =>
+    props.padding ? `padding: ${props.padding};` : `padding: 10px;`};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   box-sizing: border-box;
   border: 1px solid #999;
@@ -135,20 +136,21 @@ const InputField = styled.input`
   ::placeholder {
     color:#999;
   }
+
 `;
 
 const Label = styled.div`
-  >p:first-child {
-      font-size: 14px;
-      color: #000;
-      margin: 0;
-    }
-  >p:nth-child(2) {
+  > p:first-child {
+    font-size: 14px;
+    color: #000;
+    margin: 0;
+  }
+  > p:nth-child(2) {
     font-size: 12px;
-    color:#808080;
+    color: #808080;
     margin: 0 0 10px;
   }
-  >p:last-child {
+  > p:last-child {
     margin: 0 0 10px !important;
   }
 `;
