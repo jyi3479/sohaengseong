@@ -1,11 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import home from "../image/icons/ic_home@2x.png";
 import create from "../image/icons/ic_create@2x.png";
 import chat from "../image/icons/ic_chat@2x.png";
 import my from "../image/icons/ic_my@2x.png";
 
 const Footer = (props) => {
+    const hide = useSelector(state => state.base.gnb);
+
+    if(!hide){
+        return null;
+    }
     return(
         <Wrap>
             <a href="/">

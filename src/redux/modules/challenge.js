@@ -88,50 +88,45 @@ const initialState = {
         {
             categoryId:0,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-            categoryLabel:"일상"
+            categoryLabel:"일상 루틴"
         },
         {
             categoryId:1,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-            categoryLabel:"루틴"
+            categoryLabel:"운동"
         },
         {
             categoryId:2,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-            categoryLabel:"운동"
+            categoryLabel:"스터디"
         },
         {
             categoryId:3,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-            categoryLabel:"스터디"
+            categoryLabel:"식습관"
         },
         {
             categoryId:4,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-            categoryLabel:"식습관"
+            categoryLabel:"힐링"
         },
         {
             categoryId:5,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-            categoryLabel:"힐링"
+            categoryLabel:"취미"
         },
         {
             categoryId:6,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-            categoryLabel:"취미"
+            categoryLabel:"셀프케어"
         },
         {
             categoryId:7,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-            categoryLabel:"셀프케어"
-        },
-        {
-            categoryId:8,
-            categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
             categoryLabel:"펫"
         },
         {
-            categoryId:9,
+            categoryId:8,
             categoryIcon:"https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
             categoryLabel:"친환경"
         },
@@ -142,7 +137,7 @@ const initialState = {
                 challengeId:"0",
                 title:"일상",
                 content:"우리의 운동조건은 열심히 하는 것 단 하나 입니다",   
-                category:"일상",
+                category:"일상 루틴",
                 challengeImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg",
                 maxMember:10,
                 currentMember:0,
@@ -157,7 +152,7 @@ const initialState = {
                 challengeId:"1",
                 title:"일상2",
                 content:"공부하자!공부!",   
-                category:"일상",
+                category:"일상 루틴",
                 challengeImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg",
                 maxMember:20,
                 currentMember:10,
@@ -174,7 +169,7 @@ const initialState = {
                 challengeId:"2",
                 title:"루틴",
                 content:"우리의 운동조건은 열심히 하는 것 단 하나 입니다",   
-                category:"루틴",
+                category:"운동",
                 challengeImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg",
                 maxMember:10,
                 currentMember:0,
@@ -189,7 +184,7 @@ const initialState = {
                 challengeId:"3",
                 title:"루틴",
                 content:"공부하자!공부!",   
-                category:"루틴",
+                category:"스터디",
                 challengeImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg",
                 maxMember:20,
                 currentMember:10,
@@ -208,7 +203,7 @@ const initialState = {
         userId:"0",
         title:"일상",
         content:"우리의 운동조건은 열심히 하는 것 단 하나 입니다",   
-        category:"일상",
+        category:"일상 루틴",
         challengeImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg",
         maxMember:10,
         currentMember:0,

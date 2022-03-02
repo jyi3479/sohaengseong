@@ -1,5 +1,5 @@
 import React from "react";
-import {Grid,Button, Container} from "../elements/index";
+import {Grid,Button} from "../elements/index";
 import ChallengeList from "../components/ChallengeList";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
