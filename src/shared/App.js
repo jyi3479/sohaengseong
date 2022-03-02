@@ -17,17 +17,15 @@ import CategoryMain from "../pages/CategoryMain";
 import MyPage from "../pages/MyPage";
 import MemberDetail from "../pages/MemberDetail";
 import MemberPost from "../pages/MemberPost";
+import ChallengeWrite from "../pages/ChallengeWrite";
 import Search from "../pages/Search";
-
-
 
 function App() {
   const dispatch = useDispatch();
-  
+
   React.useEffect(() => {
-   if(document.cookie)
-   dispatch(userActions.loginCheckDB)
-  }, [])
+    if (document.cookie) dispatch(userActions.loginCheckDB);
+  }, []);
 
   return (
     <>
@@ -35,24 +33,61 @@ function App() {
         <ConnectedRouter history={history}>
           <BackgroundOpacity />
           {/* <Background className="BackgroundPage" /> */}
-          <MobileFrame className="MobileFramePage">           
-            <Switch>   
-              <Route path="/login" exact component={Login} />{/* 로그인 */}
-              <Route path="/signup" exact component={Signup} />{/* 회원가입 */}
-              <Route path="/search" exact component={Search} />{/* 검색페이지 */}
+          <MobileFrame className="MobileFramePage">
+            <Switch>
+              <Route path="/login" exact component={Login} />
+              {/* 로그인 */}
+              <Route path="/signup" exact component={Signup} />
+              {/* 회원가입 */}
+              <Route path="/search" exact component={Search} />
+              {/* 검색페이지 */}
               <>
                 <Wrap>
                   <Header />
                   <Footer />
-                  <Route path="/" exact component={Main} />{/* 메인 */}
-                  <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
-                  <Route path="/category/:categoryId" exact component={CategoryMain} />{/* 카테고리리스트 */}
-                  <Route path="/mypage" exact component={MyPage} />{/* 마이페이지 */}              
-                  <Route path="/member/:challengeId" exact component={MemberDetail}/>{/* 챌린지 멤버 전용 */}              
-                  <Route path="/post/:challengeId" exact component={MemberPost} />{/* 챌린지 멤버 전용 속 인증 페이지 */}  
+                  <Route path="/" exact component={Main} />
+                  {/* 메인 */}
+                  <Route
+                    path="/challenge/:challengeId"
+                    exact
+                    component={ChallengeDetail}
+                  />
+                  {/* 챌린지 소개 */}
+                  <Route
+                    path="/category/:categoryId"
+                    exact
+                    component={CategoryMain}
+                  />
+                  {/* 카테고리리스트 */}
+                  <Route path="/mypage" exact component={MyPage} />
+                  {/* 마이페이지 */}
+                  <Route
+                    path="/member/:challengeId"
+                    exact
+                    component={MemberDetail}
+                  />
+                  {/* 챌린지 멤버 전용 */}
+                  <Route
+                    path="/post/:challengeId"
+                    exact
+                    component={MemberPost}
+                  />
+                  {/* 챌린지 멤버 전용 속 인증 페이지 */}
+                  <Route
+                    path="/challengewrite"
+                    exact
+                    component={ChallengeWrite}
+                  />
+                  {/* 챌린지 작성 페이지 */}
+                  <Route
+                    path="/challengewrite/:challengeId"
+                    exact
+                    component={ChallengeWrite}
+                  />
+                  {/* 챌린지 수정 페이지 */}
                 </Wrap>
-              </>              
-            </Switch>            
+              </>
+            </Switch>
           </MobileFrame>
         </ConnectedRouter>
       </Wrapper>
