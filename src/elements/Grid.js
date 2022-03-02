@@ -42,7 +42,7 @@ Grid.defaultProps = {
   children: null,
   display: "block",
   width: "100%",
-  height: "100%",
+  height: "auto",
   padding: "0 20px",
   margin: false,
   bg: false,
@@ -73,6 +73,7 @@ const GridContainer = styled.div`
   box-sizing: border-box;
   width: ${(props) => props.width};
   ${(props) => (props.flexWrap ? "flex-wrap: wrap" : "flex-wrap: nowrap")};
+  overflow: hidden;
 `;
 
 export default Grid;
