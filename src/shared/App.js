@@ -22,6 +22,7 @@ import Search from "../pages/Search";
 import CategoryMain from "../pages/CategoryMain";
 import Complete from "../pages/Complete";
 import Find from "../pages/Find";
+import Sendmail from "../pages/Sendmail";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ function App() {
               <Route path="/login" exact component={Login} />
               {/* 로그인 */}
               <Route path="/signup/complete" exact component={Complete} />{/* 회원가입완료 */}
-              
+              <Route path="/password/mail" exact component={Sendmail} />{/* 비밀번호 재발급 */}
               <Route path="/search" exact component={Search} />
               {/* 검색페이지 */}
               <>

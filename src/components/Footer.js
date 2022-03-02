@@ -18,7 +18,7 @@ const Footer = (props) => {
                 <img src={home}></img>
                 <p>홈</p>
             </a>        
-            <a href="/">
+            <a href="/challengewrite">
                 <img src={create}></img>
                 <p>개설하기</p>
             </a>            

@@ -4,13 +4,13 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import {Grid,Button} from "../elements/index";
 
-const Complete = (props) => {
+const Sendmail = (props) => {
     return(
-        <Grid padding="0 44px" margin="100px 0 0" height="auto">
+        <Grid padding="0 39px" margin="100px 0 0" height="auto">
             <div style={{width:"180px", height:"180px", backgroundColor:"#ccc" , margin:"0 auto"}}></div>
             <Content>
-                <h1>회원가입 완료되었습니다!</h1>
-                <p>가입하신 이메일로 확인 메일을 보냈어요.<br/>이메일 인증을 하셔야 로그인이 가능합니다.</p>
+                <h1>메일함을 확인해주세요!</h1>
+                <p>가입하신 이메일로 임시 비밀번호를 보냈어요.<br/>로그인 후 비밀번호를 변경하시길 바랍니다.</p>
             </Content>
             <Grid is_flex padding="0">
                 <Button width="calc(50% - 4px)" radius="0" bg="#eee" font_size="14px" style={{color:"#000"}} 
@@ -37,7 +37,8 @@ const Content = styled.div`
     p {
         font-size: 16px;
         line-height: 1.5;
+        letter-spacing: -0.2px;
     }
 `;
 
-export default Complete;
+export default Sendmail;

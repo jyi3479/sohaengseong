@@ -1,6 +1,7 @@
 import axios from "axios";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
+console.log(process.env.REACT_APP_SERVER_PORT);
 const apis = axios.create({
   baseURL: server_port, //서버 주소
 });
