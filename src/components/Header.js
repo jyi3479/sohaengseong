@@ -34,6 +34,7 @@ Header.defaultProps ={
 };
 
 const Wrap = styled.div`
+
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -57,6 +58,7 @@ const Wrap = styled.div`
         }
         font-size: 18px;
         margin: 0;
+
     }
     >button {
         background-color: transparent;

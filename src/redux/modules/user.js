@@ -31,6 +31,7 @@ const loginDB = (email, password) => {
   return function (dispatch, getState, { history }) {
     console.log(email, password);
 
+
     userApis
       .login(email, password)
       .then((res) => {
@@ -66,9 +67,11 @@ export const signupDB = (email, nickname, password, passwordcheck) => {
       .catch((error) => {
         window.alert("회원가입 오류입니다!");
         //console.log("회원가입 실패:",error);
+
       });
   };
 };
+
 
 //이메일 인증 (아이디 중복체크)
 const emailCheck = (email) => {
@@ -118,6 +121,7 @@ const emailCheckToken = () => {
         alert("인증메일이 전송되지 않았습니다");
       });
   };
+
 };
 //인증 메일 재전송
 const emailCheckResend = (email) => {
@@ -147,6 +151,7 @@ const tempPasswordSend = (email) => {
       });
   };
 };
+
 //비밀번호 찾기
 const findPassword = (password) => {
   return function (dispatch, getState, { history }) {
@@ -184,9 +189,25 @@ const loginCheckDB = () => {
   };
 };
 //카카오 로그인
-const loginBykakao = () => {
+
+const loginBykakao = (code) => {
   return function (dispatch, getState, { history }) {
-    userApis.loginByKakao().then((res) => {});
+    userApis
+      .loginByKakao(code)
+      .then((res) => {
+        console.log(res);
+        const ACCESS_TOKEN = res.data.accessToken;
+
+        localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
+
+        // history.replace("/main") // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+      })
+      .catch((err) => {
+        console.log("소셜로그인 에러", err);
+        window.alert("로그인에 실패하였습니다.");
+        // history.replace("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
+      });
+
   };
 };
 //로그아웃 get
@@ -238,4 +259,6 @@ const ActionCreators = {
   tempPasswordSend,
 };
 
+
 export { ActionCreators };
+

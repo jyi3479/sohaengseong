@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 // 기간 선택 라이브러리
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 
-import { actionCreators as memberActions } from "../redux/modules/member";
+import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { Grid, Input, Button } from "../elements";
 import plus from "../image/icons/btn_number_plus_l@2x.png";
@@ -14,31 +15,51 @@ import plus from "../image/icons/btn_number_plus_l@2x.png";
 const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
 
+  //수정 / 작성 유무 판별
+  const params = useParams();
+  const isEdit = params.challengeId ? true : false;
+  const target = useSelector((state) => state.challenge.target);
+  console.log(target);
+  // Header 적용 (수정/작성 분기)
   React.useEffect(() => {
-    dispatch(baseAction.setHeader(true, "개설하기"));
+    dispatch(baseAction.setHeader(true, isEdit ? "수정하기" : "개설하기"));
+    if (isEdit) {
+      //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
+      dispatch(challengeAction.getOneChallengeDB(params.challengeId));
+    }
     return () => {
       dispatch(baseAction.setHeader(false, ""));
     };
   }, []);
 
-  //  인증 게시글 수정은 어디서 할건지에 따라 is_edit 변수 활용하기
-  const [title, setTitle] = React.useState("");
-  const [content, setContent] = React.useState("");
-  const [image, setImage] = React.useState([]);
-  const [preview, setPreview] = React.useState([]);
-  const [category, setCategory] = React.useState("");
-  const [maxMember, setMaxMember] = React.useState();
+  const [title, setTitle] = React.useState(isEdit ? target.title : "");
+  const [content, setContent] = React.useState(isEdit ? target.content : "");
+  const [category, setCategory] = React.useState(isEdit ? target.category : "");
+  const [maxMember, setMaxMember] = React.useState(
+    isEdit ? target.maxMember : ""
+  );
+
+  //이미지 부분
+  const [image, setImage] = React.useState(isEdit ? target.challengeImage : []);
+  const [preview, setPreview] = React.useState(
+    isEdit ? target.challengeImage : []
+  );
+
   //해시태그 부분
   //onChange로 관리할 문자열
   const [hashtag, setHashtag] = React.useState("");
   // 해시태그 담을 배열
-  const [hashArr, setHashArr] = React.useState([]);
+  const [hashArr, setHashArr] = React.useState(isEdit ? target.tagName : []);
   // 날짜 선택 부분
   const [startDate, setStartDate] = React.useState(new Date()); // 기본값 null로?
   const [endDate, setEndDate] = React.useState(null);
   // 방 공개 여부
-  const [checkedInputs, setCheckedInputs] = React.useState(null);
-  const [password, setPassword] = React.useState(null);
+  const [checkedInputs, setCheckedInputs] = React.useState(
+    isEdit ? (target.isPrivate ? "private" : "public") : null
+  );
+  const [password, setPassword] = React.useState(
+    isEdit ? target.password : null
+  );
 
   const changeHandler = (checked, id) => {
     if (checked) {
@@ -51,13 +72,24 @@ const ChallengeWrite = (props) => {
   // 날짜 선택 input 커스텀
   const CustomInput = ({ value, onClick }) => (
     <div>
-      <Input
-        label="기간을 선택해주세요. *"
-        placeholder={value}
-        height="46px"
-        margin="0px 0px 20px"
-        onClick={onClick}
-      />
+      {isEdit ? (
+        <Input
+          label="기간을 선택해주세요. (변경 불가)"
+          placeholder={`${target.startDate} - ${target.endDate}`}
+          height="46px"
+          margin="0px 0px 20px"
+          onClick={onClick}
+          disabled
+        />
+      ) : (
+        <Input
+          label="기간을 선택해주세요. *"
+          placeholder={value}
+          height="46px"
+          margin="0px 0px 20px"
+          onClick={onClick}
+        />
+      )}
     </div>
   );
 
@@ -117,14 +149,14 @@ const ChallengeWrite = (props) => {
 
   // 인증 게시글 추가하기
   const addChallenge = () => {
-    // 서버에 보내기 위한 작업
-    console.log(image);
-    let formData = new FormData();
     if (content === "") {
       window.alert("내용을 입력해주세요!");
       return;
     }
-
+    // 서버에 보내기 위한 작업
+    // 폼데이터 생성
+    let formData = new FormData();
+    // 보낼 데이터 묶음 (이미지 제외)
     const data = {
       title: title,
       content: content,
@@ -136,13 +168,21 @@ const ChallengeWrite = (props) => {
       password: checkedInputs === "private" ? password : null,
       tagName: hashArr,
     };
-    formData.append("challengeImage", image); // multipart 설정하기
-    formData.append("challenge", data); // json 타입으로 설정하기
-    // formData api랑 통신하는 부분으로 dispatch 하기
+
+    // 폼데이터에 이미지와 데이터 묶어서 보내기
+    formData.append("challengeImage", image);
+    formData.append(
+      "challenge",
+      new Blob([JSON.stringify(data)], { type: "application/json" })
+    );
+
+    // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
+    dispatch(challengeAction.addChallengeDB(formData));
 
     // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
     // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
-
+    // 페이지 이동이 있다면 reducer 작업 필요없을듯..
+    // 실험용
     const challenge = {
       title: title,
       content: content,
@@ -156,7 +196,7 @@ const ChallengeWrite = (props) => {
       tagName: hashArr,
     };
     console.log(challenge);
-    // dispatch(memberActions.addPost(post));
+    dispatch(challengeAction.addChallenge(challenge));
   };
 
   return (
@@ -252,14 +292,27 @@ const ChallengeWrite = (props) => {
       />
 
       {/* 인원수 선택 부분 */}
-      <Input
-        label="인원수를 선택해주세요. *"
-        placeholder="최대 30명"
-        value={maxMember}
-        _onChange={(e) => setMaxMember(e.target.value)}
-        height="46px"
-        margin="0px 0px 20px"
-      />
+      {isEdit ? (
+        <Input
+          label="인원수를 선택해주세요. (변경 불가)"
+          placeholder="최대 30명"
+          value={maxMember}
+          _onChange={(e) => setMaxMember(e.target.value)}
+          height="46px"
+          margin="0px 0px 20px"
+          disabled
+        />
+      ) : (
+        <Input
+          label="인원수를 선택해주세요. *"
+          placeholder="최대 30명"
+          value={maxMember}
+          _onChange={(e) => setMaxMember(e.target.value)}
+          height="46px"
+          margin="0px 0px 20px"
+        />
+      )}
+
       {/* 이미지 업로드 부분 */}
       <div>
         <p style={{ fontSize: "14px", margin: "0px" }}>
@@ -349,32 +402,55 @@ const ChallengeWrite = (props) => {
       <>
         <Grid is_flex padding="0px">
           <p>방 공개 여부</p>
-          <Grid is_flex width="auto">
-            <Grid width="auto">
-              <input
-                type="checkbox"
-                id="public"
-                onChange={(e) => {
-                  changeHandler(e.currentTarget.checked, "public");
-                  console.log(e.currentTarget.checked);
-                }}
-                checked={checkedInputs === "public" ? true : false}
-              />
-              <label htmlFor="public">공개</label>
+          {isEdit ? (
+            <Grid is_flex width="auto">
+              <Grid width="auto">
+                <input
+                  type="checkbox"
+                  id="public"
+                  checked={checkedInputs === "public" ? true : false}
+                  disabled
+                />
+                <label htmlFor="public">공개</label>
+              </Grid>
+              <Grid width="auto">
+                <input
+                  type="checkbox"
+                  id="private"
+                  checked={checkedInputs === "private" ? true : false}
+                  disabled
+                />
+                <label htmlFor="private">비밀</label>
+              </Grid>
             </Grid>
-            <Grid width="auto">
-              <input
-                type="checkbox"
-                id="private"
-                onChange={(e) => {
-                  changeHandler(e.currentTarget.checked, "private");
-                  console.log(e.currentTarget.checked);
-                }}
-                checked={checkedInputs === "private" ? true : false}
-              />
-              <label htmlFor="private">비밀</label>
+          ) : (
+            <Grid is_flex width="auto">
+              <Grid width="auto">
+                <input
+                  type="checkbox"
+                  id="public"
+                  onChange={(e) => {
+                    changeHandler(e.currentTarget.checked, "public");
+                    console.log(e.currentTarget.checked);
+                  }}
+                  checked={checkedInputs === "public" ? true : false}
+                />
+                <label htmlFor="public">공개</label>
+              </Grid>
+              <Grid width="auto">
+                <input
+                  type="checkbox"
+                  id="private"
+                  onChange={(e) => {
+                    changeHandler(e.currentTarget.checked, "private");
+                    console.log(e.currentTarget.checked);
+                  }}
+                  checked={checkedInputs === "private" ? true : false}
+                />
+                <label htmlFor="private">비밀</label>
+              </Grid>
             </Grid>
-          </Grid>
+          )}
         </Grid>
         {checkedInputs === "private" && (
           <Input
