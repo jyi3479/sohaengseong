@@ -96,13 +96,8 @@ Input.defaultProps = {
 const InputField = styled.input`
   ${(props) => (props.width ? `width: ${props.width};` : `width: 100%;`)};
   ${(props) => (props.height ? `height: ${props.height};` : `height: 40px;`)};
-<<<<<<< HEAD
   ${(props) =>
     props.padding ? `padding: ${props.padding};` : `padding: 10px;`};
-=======
-  ${(props) =>
-    props.padding ? `padding: ${props.padding};` : `padding: 10px;`};
->>>>>>> jini
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   box-sizing: border-box;
   border: 1px solid #999;
