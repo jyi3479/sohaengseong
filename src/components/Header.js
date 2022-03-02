@@ -68,6 +68,7 @@ const Wrap = styled.div`
         }
     }
     &.detailHeader {
+        display: block;
         text-align: center;
         background-color: white;
         border-bottom: solid 1px #e2e2e2;
