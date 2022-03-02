@@ -42,8 +42,8 @@ Grid.defaultProps = {
   children: null,
   display: "block",
   width: "100%",
-  height: "100%",
-  padding: false,
+  height: "auto",
+  padding: "0 20px",
   margin: false,
   bg: false,
   center: false,
@@ -57,7 +57,8 @@ Grid.defaultProps = {
 const GridContainer = styled.div`
   ${(props) =>
     !props.is_flex && props.display ? `display: ${props.display};` : "block"};
-  ${(props) => (props.padding ? `padding: ${props.padding};` : "")};
+  ${(props) =>
+    props.padding ? `padding: ${props.padding};` : `padding:0 20px;`};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
@@ -69,10 +70,10 @@ const GridContainer = styled.div`
     props.is_flex
       ? `display: flex; align-items: center; justify-content: space-between; `
       : ""};
-  border-radius: 5px;
   box-sizing: border-box;
   width: ${(props) => props.width};
   ${(props) => (props.flexWrap ? "flex-wrap: wrap" : "flex-wrap: nowrap")};
+  overflow: hidden;
 `;
 
 export default Grid;

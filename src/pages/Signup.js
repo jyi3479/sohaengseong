@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Grid, Input, Button } from "../elements";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useState} from "react"
+import {Grid, Input, Button} from "../elements"
+import {useDispatch, useSelector} from 'react-redux'
+import * as baseAction from '../redux/modules/base';
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 const Signup = (props) => {
@@ -25,74 +26,80 @@ const Signup = (props) => {
     dispatch(userActions.emailCheck(email));
   };
 
-  return (
-    <>
-      <React.Fragment>
-        <Grid padding="16px">
-          <p>회원가입</p>
+  const nicknameCheck = () => {
+    dispatch(userActions.nicknameCheck(nickname));
+  }
 
-          <Grid margin="5%" width="50%" height="10%" padding="16px 0px">
-            <Input
-              label="아이디"
-              value={email}
-              is_submit
-              placeholder="이메일 아이디를 입력해주세요."
-              _onChange={(e) => {
-                setemail(e.target.value);
-              }}
-            />
-          </Grid>
-          <br />
-          <Button width="20%" _onClick={emailchk}>
-            중복확인
-          </Button>
+  React.useEffect(() => {
+    dispatch(baseAction.setHeader(true,"회원가입"));
+    dispatch(baseAction.setGnb(false));
+    return()=>{
+        dispatch(baseAction.setHeader(false,""));
+        dispatch(baseAction.setGnb(true));
+    }
+  }, [])
 
-          <Grid margin="5%" width="50%" height="10%" padding="16px 0px">
-            <Input
-              label="닉네임"
-              value={nickname}
-              is_submit
-              placeholder="닉네임을 입력해주세요."
-              _onChange={(e) => {
-                setnickname(e.target.value);
-              }}
-            />
-          </Grid>
-
-          <Grid margin="5%" width="50%" height="10%" padding="16px 0px">
-            <Input
-              type="password"
-              label="비밀번호"
-              value={password}
-              is_submit
-              placeholder="비밀번호를 입력해주세요."
-              _onChange={(e) => {
-                setpassword(e.target.value);
-              }}
-            />
-          </Grid>
-
-          <Grid margin="5%" width="50%" height="10%" padding="16px 0px">
-            <Input
-              type="password"
-              label="비밀번호 확인"
-              value={passwordCheck}
-              is_submit
-              placeholder="비밀번호를 다시 입력해주세요."
-              _onChange={(e) => {
-                setpasswordCheck(e.target.value);
-              }}
-            />
-          </Grid>
-          <br />
-
-          <Button width="50%" margin="10px" _onClick={signup}>
-            회원가입하기
-          </Button>
+    return (     
+      <Grid padding="0 40px" margin="113px 0 0">
+        <Grid padding="0" margin="0 0 17px">
+          <Input
+            double
+            label="이메일"
+            value={email}
+            is_submit
+            placeholder="이메일을 입력해 주세요."
+            _onChange={(e) => {
+              setemail(e.target.value);
+            }}
+            btnClick={emailchk}
+            style={{width:"calc(100% - 50px)"}}
+          />
         </Grid>
-      </React.Fragment>
-    </>
-  );
+        <Grid padding="0" margin="0 0 17px">
+          <Input
+            double
+            label="닉네임"
+            value={nickname}
+            is_submit
+            placeholder="닉네임을 입력해 주세요."
+            btnClick={nicknameCheck}
+            _onChange={(e) => {
+              setnickname(e.target.value);
+            }}
+            style={{width:"calc(100% - 50px)"}}
+          />
+        </Grid>
+
+        <Grid padding="0" margin="0 0 17px">
+          <Input
+            type="password"
+            label="비밀번호"
+            value={password}
+            is_submit
+            placeholder="비밀번호를 입력해 주세요."
+            _onChange={(e) => {
+              setpassword(e.target.value);
+            }}
+          />
+        </Grid>
+
+        <Grid padding="0" margin="0 0 149px">
+          <Input
+            type="password"
+            label="비밀번호 확인"
+            value={passwordCheck}
+            is_submit
+            placeholder="비밀번호를 재입력해 주세요."
+            _onChange={(e) => {
+              setpasswordCheck(e.target.value);
+            }}
+          />
+        </Grid>
+        <br />
+        <Button _onClick={signup}>가입하기</Button>
+      </Grid>
+       
+    );
 };
 
 export default Signup;
