@@ -1,11 +1,12 @@
 import axios from "axios";
+const server_port = process.env.REACT_APP_SERVER_PORT;
 
 const apis = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_PORT, //서버 주소
+  baseURL: server_port, //서버 주소
 });
 
 const imageApis = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_PORT,
+  baseURL: server_port,
 });
 
 apis.interceptors.request.use(function (config) {

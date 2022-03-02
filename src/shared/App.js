@@ -26,7 +26,6 @@ import Find from "../pages/Find";
 
 function App() {
   const dispatch = useDispatch();
-  
   React.useEffect(() => {
    if(document.cookie)
    dispatch(userActions.loginCheckDB)
@@ -40,14 +39,14 @@ function App() {
           {/* <Background className="BackgroundPage" /> */}
           <MobileFrame className="MobileFramePage">           
             <Switch>   
-              <Route path="/login" exact component={Login} />{/* 로그인 */}
-              <Route path="/signup" exact component={Signup} />{/* 회원가입 */}
+              <Route path="/login" exact component={Login} />{/* 로그인 */}              
               <Route path="/signup/complete" exact component={Complete} />{/* 회원가입완료 */}
               <Route path="/search" exact component={Search} />{/* 검색페이지 */}
               <>
                 <Wrap>
                   <Header />                  
                   <Route path="/" exact component={Main} />{/* 메인 */}
+                  <Route path="/signup" exact component={Signup} />{/* 회원가입 */}
                   <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />{/* 챌린지 소개 */}
                   <Route path="/category" exact component={CategoryMain} />{/* 카테고리메인*/}
                   <Route path="/category/:categoryId" exact component={CategoryTab} />{/* 카테고리리스트 */}

@@ -42,7 +42,7 @@ Grid.defaultProps = {
   children: null,
   display: "block",
   width: "100%",
-  height: "100%",
+  height: "auto",
   padding: "0 20px",
   margin: false,
   bg: false,

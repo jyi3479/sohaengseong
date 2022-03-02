@@ -15,7 +15,7 @@ const Find = (props) => {
             dispatch(baseAction.setHeader(false,""));
             dispatch(baseAction.setGnb(true));
         }
-    }, [])
+    }, []);
 
     const [email,setEmail] = React.useState("");
     return(
