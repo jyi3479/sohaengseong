@@ -19,8 +19,8 @@ const rootReducer = combineReducers({
   ranking: Ranking,
   mypage: Mypage,
   member: Member,
-  search:Search,
-  base:Base,
+  search: Search,
+  base: Base,
   router: connectRouter(history),
 });
 
