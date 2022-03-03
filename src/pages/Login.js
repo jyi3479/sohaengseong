@@ -6,6 +6,7 @@ import { ActionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import kakao from "../image/icons/ic_kakao@2x.png";
 import { KAKAO_AUTH_URL } from "../shared/OAuth";
+import WarningText from "../components/WarningText";
 
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -53,7 +54,8 @@ const Login = (props) => {
               setpassword(e.target.value);
             }}
           />
-        </Grid>
+          <WarningText/>
+        </Grid>        
         <Button
           radius="20px"
           style={{ fontWeight: "300" }}

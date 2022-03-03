@@ -10,7 +10,7 @@ const LOGOUT = "LOGOUT";
 const SET_USER = "SET_USER";
 const EMAIL_CHECK = "EMAIL_CHECK";
 const NICK_CHECK = "NICK_CHECK";
-
+const SET_WARNING = "SET_WARNING";
 
 const logIn = createAction(LOGIN, (is_login) => ({is_login}));
 const logOut = createAction(LOGOUT, (user) => ({ user }));
@@ -19,13 +19,20 @@ const idCheck = createAction(EMAIL_CHECK, (emailCheckres) => ({ emailCheckres })
 const nickCheck = createAction(NICK_CHECK, (nickCheckres) => ({
   nickCheckres,
 }));
+const setWarning = createAction(SET_WARNING, (detail, text) => ({
+  detail,
+  text,
+}));
 
 const initialState = {
   user: null,
   is_login: null,
   emailCk: null,
   nickCk: null,
-  verification_code: "",
+  setwarning: {
+    detail: false,
+    text: "",
+  },
 };
 
 //로그인
@@ -50,14 +57,12 @@ const loginDB = (email, password) => {
           );
         })
         .catch((error) => console.log("유저정보저장오류",error));
-
-
         history.push("/");
       })
       
       .catch((code, message) => {
         console.log("로그인오류입니다!", code, message);
-        window.alert("로그인에 실패했습니다");
+        dispatch(setWarning(true,'이메일 또는 비밀번호를 잘못 입력했습니다.\n 입력하신 내용을 다시 확인해주세요.'))
       });
   };
 };
@@ -245,6 +250,11 @@ export default handleActions(
     [NICK_CHECK]: (state, action) =>
       produce(state, (draft) => {
         draft.nickCk = action.payload.nickCheckres.result;
+      }),
+     [SET_WARNING]:(state, action) => 
+      produce(state, (draft) => {
+        draft.setwarning.detail = action.payload.detail;
+        draft.setwarning.text = action.payload.text;
       }),
   },
   initialState

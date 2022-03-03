@@ -36,7 +36,7 @@ function App() {
   
   React.useEffect(() => {
     if (token && !user) {
-      dispatch(userActions.loginCheckDB);
+      dispatch(userActions.loginCheckDB());
     }
   }, []);
 
