@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import { addDays, subDays } from "date-fns";
 
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
@@ -33,6 +32,39 @@ const ChallengeWrite = (props) => {
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
       dispatch(challengeAction.getOneChallengeDB(params.challengeId));
+      // 기존에 입력한 태그 보여주기
+      const $HashWrapOuter = document.querySelector(".HashWrapOuter");
+      const $HashWrapInner = document.createElement("span");
+      $HashWrapInner.className = "HashWrapInner";
+      // 삭제 버튼 만들기
+      const $HashDelete = document.createElement("a");
+      $HashDelete.className = "HashDelete";
+
+      /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
+      $HashDelete.addEventListener("click", () => {
+        $HashWrapOuter?.removeChild($HashWrapInner);
+
+        console.log($HashWrapInner.innerHTML);
+        setHashArr(hashArr.filter((hashtag) => hashtag));
+      });
+
+      // 입력했던 태그가 있을 경우
+      if (hashArr.length > 0) {
+        console.log(hashArr);
+        // hashArr.map((el, idx)=>{
+        //   $HashWrapInner.innerHTML = e.target.value;
+        //         $HashWrapOuter?.appendChild($HashWrapInner);
+        //         $HashDelete.innerHTML = "x";
+        //         $HashWrapInner?.appendChild($HashDelete);
+        //   return null;
+        // })
+        // $HashWrapInner.innerHTML = e.target.value;
+        // $HashWrapOuter?.appendChild($HashWrapInner);
+        // $HashDelete.innerHTML = "x";
+        // $HashWrapInner?.appendChild($HashDelete);
+        // setHashArr((hashArr) => [...hashArr, hashtag]);
+        // setHashtag("");
+      }
     }
     return () => {
       dispatch(baseAction.setHeader(false, ""));
@@ -63,9 +95,7 @@ const ChallengeWrite = (props) => {
   const [checkedInputs, setCheckedInputs] = React.useState(
     isEdit ? (target.isPrivate ? "private" : "public") : null
   );
-  const [password, setPassword] = React.useState(
-    isEdit ? target.password : null
-  );
+  const [password, setPassword] = React.useState(isEdit ? target.password : "");
 
   // 비밀방 여부 체크 함수
   const changeHandler = (checked, id) => {
@@ -77,8 +107,8 @@ const ChallengeWrite = (props) => {
   };
 
   // 날짜 선택 input 커스텀
-  const CustomInput = ({ value, onClick }) => (
-    <InputBox>
+  const CustomInput = forwardRef(({ value, onClick }, ref) => (
+    <InputBox ref={ref}>
       {isEdit ? (
         <Input
           label="기간을 선택해주세요. (변경 불가)"
@@ -97,7 +127,7 @@ const ChallengeWrite = (props) => {
         />
       )}
     </InputBox>
-  );
+  ));
 
   // 태그 관련 함수
   // 1. 태그 직접 입력 시
@@ -106,7 +136,7 @@ const ChallengeWrite = (props) => {
       //   if (process.browser) {
       /* 요소 불러오기, 만들기*/
       const $HashWrapOuter = document.querySelector(".HashWrapOuter");
-      const $HashWrapInner = document.createElement("a");
+      const $HashWrapInner = document.createElement("span");
       $HashWrapInner.className = "HashWrapInner";
       // 삭제 버튼 만들기
       const $HashDelete = document.createElement("a");
@@ -140,31 +170,32 @@ const ChallengeWrite = (props) => {
       //   if (process.browser) {
       /* 요소 불러오기, 만들기*/
       const $HashWrapOuter = document.querySelector(".HashWrapOuter");
-      const $HashWrapInner = document.createElement("a");
+      const $HashWrapInner = document.createElement("span");
       $HashWrapInner.className = "HashWrapInner";
       // 삭제 버튼 만들기
       const $HashDelete = document.createElement("a");
       $HashDelete.className = "HashDelete";
 
-      /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
-      $HashDelete.addEventListener("click", () => {
-        $HashWrapOuter?.removeChild($HashWrapInner);
-
-        console.log($HashWrapInner.innerHTML);
-        setHashArr(hashArr.filter((hashtag) => hashtag));
-      });
-
-      console.log("Enter Key 입력됨!", keyword);
+      console.log("추천 키워드 입력!", keyword);
       $HashWrapInner.innerHTML = keyword;
       $HashWrapOuter?.appendChild($HashWrapInner);
       $HashDelete.innerHTML = "x";
       $HashWrapInner?.appendChild($HashDelete);
       setHashArr((hashArr) => [...hashArr, keyword]);
       setHashtag("");
+      console.log(hashArr);
+
+      /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
+      $HashDelete.addEventListener("click", () => {
+        console.log(keyword, hashArr);
+        $HashWrapOuter?.removeChild($HashWrapInner);
+        console.log($HashWrapInner.innerHTML);
+        setHashArr(hashArr.filter((hashtag) => hashtag));
+      });
     },
     [hashtag, hashArr]
   );
-
+  console.log(hashArr);
   // 이미지 업로드 부분
   const fileInput = React.useRef();
 
@@ -279,7 +310,7 @@ const ChallengeWrite = (props) => {
     );
 
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
-    dispatch(challengeAction.addChallengeDB(formData));
+    dispatch(challengeAction.editChallengeDB(params.challengeId, formData));
 
     // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
     // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
@@ -298,7 +329,7 @@ const ChallengeWrite = (props) => {
       tagName: hashArr,
     };
     console.log(challenge);
-    dispatch(challengeAction.addChallenge(challenge));
+    dispatch(challengeAction.editChallenge(params.challengeId, challenge));
   };
 
   return (
@@ -360,29 +391,23 @@ const ChallengeWrite = (props) => {
             태그를 작성해주세요.
           </p>
           {/* 태그 입력 부분 */}
+
           <HashWrap className="HashWrap">
             {/* 동적으로 생성되는 태그를 담을 div */}
-            <span className="HashWrapOuter">
-              {isEdit &&
-                hashArr.map((el, idx) => {
-                  return (
-                    <a className="HashWrapInner">
-                      {el}
-                      <a className="HashDelete">x</a>
-                    </a>
-                  );
-                })}
-            </span>
+            <span className="HashWrapOuter"></span>
             <input
               className="HashInput"
               placeholder={
-                hashArr.length ? "" : "챌린지를 설명할 수 있는 단어를 적습니다."
+                hashArr.length > 0
+                  ? ""
+                  : "챌린지를 설명할 수 있는 단어를 적습니다."
               }
               value={hashtag}
               onChange={(e) => setHashtag(e.target.value)}
               onKeyUp={onKeyUp}
             />
           </HashWrap>
+
           {/* 추천키워드 부분 */}
           <Grid margin="14px 0px" padding="0px">
             <span
@@ -482,6 +507,7 @@ const ChallengeWrite = (props) => {
             {preview.map((el, idx) => {
               return (
                 <div
+                  key={idx}
                   style={{
                     padding: "0px",
                     width: "auto",
@@ -490,7 +516,6 @@ const ChallengeWrite = (props) => {
                   }}
                 >
                   <img
-                    key={idx}
                     src={
                       preview[idx]
                         ? preview[idx]
@@ -548,7 +573,7 @@ const ChallengeWrite = (props) => {
             onChange={selectFile}
             ref={fileInput}
             // disabled={is_uploading}
-            multiple // 다중 업로드 가능
+            // multiple // 다중 업로드 가능
             accept="image/*, video/*" // 이미지에 해당하는 모든 파일 허용
             style={{ display: "none" }}
           />
@@ -663,7 +688,7 @@ const Select = styled.select`
   width: 335px;
   height: 46px;
   margin: 10px 20px 28px 0px;
-  padding: 14px 22.3px 13px 20px;
+  padding: 13px 10px;
   border: solid 1px #999;
   font-family: inherit;
   color: #808080;
@@ -673,10 +698,12 @@ const Select = styled.select`
     color: #000;
   }
 
-  /* 방향 화살표 없애기 */
-  /* -webkit-appearance: none;
+  /* 방향 화살표 없애기 + 화살표 모양 바꾸기 */
+  /* -webkit-appearance: none; 
   -moz-appearance: none;
-  appearance: none; */
+  appearance: none;
+  background: url("../image/icons/ic_dropdown@2x.png") no-repeat right 9px
+    center; */
 `;
 
 const InputBox = styled.div`
@@ -707,7 +734,7 @@ const HashWrap = styled.div`
   display: flex;
   flex-wrap: nowrap;
   letter-spacing: -0.6px;
-  color: #444241;
+
   border: solid 1px #999;
   /* padding: 2px 2px 8px 2px; */
 
@@ -719,11 +746,11 @@ const HashWrap = styled.div`
     padding-left: 10px;
     margin-top: 5px;
   }
-  // 생성된 태그 내용물 a 태그 css
+  // 생성된 태그 내용물 span 태그 css
   .HashWrapInner {
     height: 22px;
     background: #ededed;
-    opacity: 0.5;
+    opacity: 0.9;
     border-radius: 5px;
     margin: 5px 5px 0px 0px;
     padding: 2px 4px;
@@ -737,8 +764,9 @@ const HashWrap = styled.div`
   }
   //생성된 태그 삭제 표시 css
   .HashDelete {
-    margin: 0px 0px 5px 4px;
+    margin: 0px 3px 2px 4px;
     color: #000000 !important;
+    font-family: inherit;
     font-weight: 700;
     cursor: pointer;
   }
@@ -751,7 +779,7 @@ const HashWrap = styled.div`
     outline: none;
     cursor: text;
     line-height: 2rem;
-    min-width: 8rem;
+    /* min-width: 8rem; */
     border: none;
     font-family: inherit;
   }
@@ -759,9 +787,11 @@ const HashWrap = styled.div`
 
 // 추천키워드 버튼
 const HashButton = styled.button`
-  height: 22px;
   background: #ededed;
-  opacity: 0.5;
+  color: #7b7b7b;
+  height: 22px;
+  ${(props) => (props.disabled ? `opacity: 0.5;` : `opacity: 0.9;`)};
+
   border-radius: 5px;
   border: none;
   margin: 5px 5px 0px 6px;
@@ -771,7 +801,6 @@ const HashButton = styled.button`
   font-family: inherit;
   font-size: 12px;
   text-align: center;
-  color: #7b7b7b;
 `;
 
 export default ChallengeWrite;

@@ -9,7 +9,7 @@ const TARGET_CHALLENGE = "TARGET_CHALLENGE";
 const GET_CATEGORY = "GET_CATEGORY";
 const GET_CATEGORY_LIST = "GET_CATEGORY_LIST";
 const ADD_CHALLENGE = "ADD_CHALLENGE";
-const EDIT_CHALLENGE = "ADD_CHALLENGE";
+const EDIT_CHALLENGE = "EDIT_CHALLENGE";
 const DELETE_CHALLENGE = "DELETE_CHALLENGE";
 
 const getChallenge = createAction(GET_CHALLENGE, (challenge_list) => ({
@@ -317,6 +317,18 @@ const addChallengeDB = (challenge) => {
     //   });
   };
 };
+const editChallengeDB = (challengeId, challenge) => {
+  return function (dispatch, getState, { history }) {
+    // challengeApis
+    //   .editChallenge(challengeId, challenge)
+    //   .then((res) => {
+    //     console.log("챌린지 수정", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log("챌린지 수정 오류", err);
+    //   });
+  };
+};
 
 export default handleActions(
   {
@@ -329,6 +341,15 @@ export default handleActions(
       produce(state, (draft) => {
         draft.list.unshift(action.payload.challenge);
       }),
+
+    [EDIT_CHALLENGE]: (state, action) =>
+      produce(state, (draft) => {
+        let idx = draft.list.findIndex(
+          (p) => p.challengeId === action.payload.challengeId
+        );
+        draft.list[idx] = { ...draft.list[idx], ...action.payload.challenge };
+      }),
+
     [TARGET_CHALLENGE]: (state, action) =>
       produce(state, (draft) => {
         draft.target = action.payload.target;
@@ -355,6 +376,8 @@ const actionCreators = {
   joinChallengeDB,
   addChallenge, //실험용 -> 서버랑 연결 후 지울 것
   addChallengeDB,
+  editChallengeDB,
+  editChallenge,
 };
 
 export { actionCreators };
