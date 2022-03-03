@@ -28,11 +28,12 @@ imageApis.interceptors.request.use(function (config) {
 export const userApis = {
   //로그인요청
   login: (email, password) => apis.post("/auth/signin", { email, password }),
+  
   // 회원가입 요청
-  signup: (email, nickname, password, passwordCheck) =>
-    apis.post("/auth/signup", { email, nickname, password, passwordCheck }),
-  //이메일 인증 (아이디 중복체크)
+  signup: (signup) =>
+    apis.post("/auth/signup", signup),
 
+  //이메일 인증 (아이디 중복체크)
   emailCheck: (email) =>
     apis.post("/auth/email-check", {
       email: email,

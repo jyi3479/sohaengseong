@@ -9,6 +9,8 @@ const Complete = (props) => {
     const send = () => {
         setActive(true);      
     }
+
+    
     return(
         <Grid padding="0 64px" margin="100px 0 0" height="auto">
             <div style={{width:"180px", height:"180px", backgroundColor:"#ccc" , margin:"0 auto"}}></div>

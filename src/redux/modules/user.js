@@ -8,21 +8,23 @@ import { setCookie, deleteCookie } from "../../shared/cookie";
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
 const SET_USER = "SET_USER";
-const VALID_EMAIL = "VALID_EMAIL";
-const VERIFICATION_CODE = "VERIFICATION_CODE";
+const EMAIL_CHECK = "EMAIL_CHECK";
+const NICK_CHECK = "NICK_CHECK";
+
 
 const logIn = createAction(LOGIN, (user) => ({ user }));
 const logOut = createAction(LOGOUT, (user) => ({ user }));
 const setUser = createAction(SET_USER, (user) => ({ user }));
-const validEmail = createAction(VALID_EMAIL, (validemail) => ({ validemail }));
-const verificationCode = createAction(
-  VERIFICATION_CODE,
-  (verification_code) => ({ verification_code })
-);
+const idCheck = createAction(EMAIL_CHECK, (emailCheckres) => ({ emailCheckres }));
+const nickCheck = createAction(NICK_CHECK, (nickCheckres) => ({
+  nickCheckres,
+}));
+
 const initialState = {
   user: null,
   is_login: null,
-  validemail: false,
+  emailCk: null,
+  nickCk: null,
   verification_code: "",
 };
 
@@ -30,8 +32,6 @@ const initialState = {
 const loginDB = (email, password) => {
   return function (dispatch, getState, { history }) {
     console.log(email, password);
-
-
     userApis
       .login(email, password)
       .then((res) => {
@@ -54,20 +54,25 @@ const loginDB = (email, password) => {
 };
 
 //회원가입
-export const signupDB = (email, nickname, password, passwordcheck) => {
+export const signupDB = (email, nickname, password, passwordCheck) => {
   return function (dispatch, getState, { history }) {
-    console.log(email, nickname, password, passwordcheck);
+
+    const signup = {
+      email:email,
+      nickname:nickname,
+      password:password,
+      passwordCheck:passwordCheck
+    }
+
+    console.log("회원가입",signup);
     userApis
-      .signup(email, nickname, password, passwordcheck)
+      .signup(signup)
       .then((res) => {
-        //console.log(res,"회원가입");
-        window.alert("회원가입 되셨습니다.");
-        history.push("/login");
+        console.log(res,"회원가입");
       })
       .catch((error) => {
         window.alert("회원가입 오류입니다!");
-        //console.log("회원가입 실패:",error);
-
+        console.log("회원가입 실패:",error);
       });
   };
 };
@@ -77,12 +82,10 @@ export const signupDB = (email, nickname, password, passwordcheck) => {
 const emailCheck = (email) => {
   return function (dispatch, getState, { history }) {
     console.log(email);
-
     userApis
       .emailCheck(email)
       .then((res) => {
-        alert("사용 가능한 이메일입니다");
-        dispatch(validEmail(true));
+        //dispatch(idCheck(res.data));
       })
       .catch((code, message) => {
         console.error(code, message);
@@ -90,19 +93,20 @@ const emailCheck = (email) => {
       });
   };
 };
+
 //닉네임 중복체크
 const nicknameCheck = (nickname) => {
   return function (dispatch, getState, { history }) {
     console.log(nickname);
-
     userApis
       .nicknameCheck(nickname)
       .then((res) => {
-        alert("사용 가능한 닉네임입니다");
+        console.log(res.data);
+        dispatch(nickCheck(res.data));
       })
-      .catch((code, message) => {
-        console.error(code, message);
-        alert("사용 가능한 닉네임이 아닙니다");
+      .catch((err) => {
+        console.log("닉네임 중복확인 에러",err);
+        dispatch(nickCheck(err.response.data));
       });
   };
 };
@@ -153,18 +157,18 @@ const tempPasswordSend = (email) => {
 };
 
 //비밀번호 찾기
-const findPassword = (password) => {
+const findPassword = (email) => {
   return function (dispatch, getState, { history }) {
-    console.log(password);
+    console.log(email);
 
-    userApis
-      .pwdCheck(password)
-      .then((res) => {
-        alert("비밀번호가 전송되었습니다");
-      })
-      .catch((code, message) => {
-        console.error(code, message);
-      });
+    // userApis
+    //   .pwdCheck(password)
+    //   .then((res) => {
+    //     alert("비밀번호가 전송되었습니다");
+    //   })
+    //   .catch((code, message) => {
+    //     console.error(code, message);
+    //   });
   };
 };
 
@@ -232,13 +236,13 @@ export default handleActions(
         draft.user = null;
         draft.is_login = false;
       }),
-    [VALID_EMAIL]: (state, action) =>
+    [EMAIL_CHECK]: (state, action) =>
       produce(state, (draft) => {
-        draft.validemail = true;
+        draft.emailCk = true;
       }),
-    [VERIFICATION_CODE]: (state, action) =>
+    [NICK_CHECK]: (state, action) =>
       produce(state, (draft) => {
-        draft.verification_code = action.payload.verification_code;
+        draft.nickCk = action.payload.nickCheckres.result;
       }),
   },
   initialState

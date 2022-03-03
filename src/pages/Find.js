@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
+import {useHistory} from "react-router";
+import {ActionCreators as userAction} from "../redux/modules/user";
 import * as baseAction from '../redux/modules/base';
 import {Grid,Button} from "../elements/index";
 import drop from "../image/icons/ic_dropdown@2x.png";
 const Find = (props) => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const [active,setActive] = React.useState(false);    
     const [email,setEmail] = React.useState("");
     const [option,setOption] = React.useState("");
@@ -25,6 +27,11 @@ const Find = (props) => {
             setDomain(e.target.innerText);
         }        
     };
+
+    const findPwd = () => {
+        const mail = `${email}@${domain}`;
+        dispatch(userAction.findPassword(mail));
+    }
 
 
     React.useEffect(() => {
@@ -53,7 +60,7 @@ const Find = (props) => {
                     <p style={{fontSize:"14px"}}>@</p>
                     <Select>
                         <button className="label" onClick={()=>{selectClick()}}>{option?option:"선택하세요"}</button>
-                        <ul className="optionList" style={{display:active?"block":"none",}}>
+                        <ul className="optionList" id={active?"active":""}>
                             <li className="optionItem" onClick={(e)=>{optionClick(e)}}>naver.com</li>
                             <li className="optionItem" onClick={(e)=>{optionClick(e)}}>nate.com</li>
                             <li className="optionItem" onClick={(e)=>{optionClick(e)}}>daum.net</li>
@@ -71,9 +78,13 @@ const Find = (props) => {
                     disabled={option==="직접 입력"?"":"disabled"} value={option==="직접 입력"?domain:option}
                 ></EmailInput>
                 <Button margin="50px 0 0" _onClick={()=>{
-                   console.log("이메일 인증하기 누름");
-                   console.log(`${email}@${domain}`)
-                }}>이메일 인증하기</Button>
+                    findPwd()
+                    history.push({                                
+                        pathname: "/sendmail",
+                        state: {domain: domain},                                  
+                    })
+                   
+                }} domain={domain}>이메일 인증하기</Button>
             </Grid>
             
         </Grid>
@@ -126,6 +137,8 @@ const Select = styled.div`
         cursor: pointer;
     }
     .optionList {
+        transform: scaleY(0);
+        transform-origin: 0px 0px;
         position: absolute; 
         top: 40px;
         left: 0;
@@ -134,7 +147,8 @@ const Select = styled.div`
         background: #fff;
         color: #fff;
         overflow: hidden;
-        transition: .3s ease-in;
+        transition:.2s ease-in;
+        opacity: 0;
         padding: 10px;
         border: solid 1px #999;
         >li {
@@ -144,6 +158,10 @@ const Select = styled.div`
             margin-bottom: 2px;
             cursor: pointer;
         }
+     &#active {
+        transform: scaleY(1); 
+        opacity: 1;
+     }
     }
 
 `;
