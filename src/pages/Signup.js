@@ -41,7 +41,7 @@ const Signup = (props) => {
 
   const onChangeNick = (e) => {
     setnickname(e.target.value);
-    let userNickRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,8}$/;
+    let userNickRegex = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{2,8}$/;    
     let NickRegex = userNickRegex.test(e.target.value);
 
     setKeypressNick(false);

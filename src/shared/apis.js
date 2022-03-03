@@ -1,4 +1,5 @@
 import axios from "axios";
+import {getCookie} from "./cookie";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
 const apis = axios.create({
@@ -11,17 +12,17 @@ const imageApis = axios.create({
 });
 
 apis.interceptors.request.use(function (config) {
-  //const token = getCookie("token");
+  const token = getCookie("token");
   config.headers["Content-Type"] =
     "application/json;charset=UTF-8; charset=UTF-8";
-  //config.headers.common["authorization"] = `Bearer ${token}`;
+  config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
 
 imageApis.interceptors.request.use(function (config) {
-  //const token = getCookie("token");
+  const token = getCookie("token");
   config.headers["Content-Type"] = "multipart/form-data";
-  //config.headers.common["authorization"] = `Bearer ${token}`;
+  config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
 

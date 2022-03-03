@@ -31,13 +31,11 @@ const initialState = {
 //로그인
 const loginDB = (email, password) => {
   return function (dispatch, getState, { history }) {
-    console.log(email, password);
     userApis
       .login(email, password)
       .then((res) => {
         console.log("로그인",res);
-        setCookie("token", res.headers["authorization"], 1);
-        
+        setCookie("token", res.data.token);        
         userApis
         .useInfo()
         .then((res) => {

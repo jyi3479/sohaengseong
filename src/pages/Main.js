@@ -24,7 +24,7 @@ const Main = (props) => {
                 <Grid style={{overflow: "hidden"}}>
                     <Info>
                         <Grid padding="0" is_flex height="auto" margin="0 0 16px">
-                            <p>{} 님의 오늘의 습관</p>
+                            <p>{userInfo&&userInfo.nickname} 님의 오늘의 습관</p>
                             <p><b>1</b>개</p>
                         </Grid>
                        <Button font_size="14px" style={{fontWeight:"bold"}} 
