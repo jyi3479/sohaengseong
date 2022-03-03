@@ -13,7 +13,7 @@ const Header = (props) => {
         return(
             <Wrap id="Header" {...props} className="detailHeader">
                 <button onClick={()=>{
-                    history.push(-1);
+                    history.go(-1);
                 }}><FiArrowLeft/></button>
                 <p>{text}</p>
             </Wrap>
