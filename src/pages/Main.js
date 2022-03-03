@@ -9,7 +9,7 @@ import plus from "../image/icons/ic_more_l@2x.png";
 const Main = (props) => {    
     const dispatch = useDispatch();
     const ranking = useSelector(state => state.ranking.list);   
-
+    
     return(
         <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 0">
             <Grid >
@@ -119,6 +119,18 @@ const Planet = styled.div`
     border-radius: 50%;
     top:144px;
     left:133px;
+    background-image: url("https://cdn.notefolio.net/img/10/4c/104c1250c58a5d35d0725696bedb2ce6d4f273bfc3a4949f1405a1a5c7b3bc13_v1.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    animation: target_image 20s; 
+    animation-iteration-count: infinite;
+    transform-origin: 50% 50%;
+    @keyframes target_image {
+        0% { transform: rotate(0deg); }
+        50% { transform: rotate(180deg); }
+        100% { transform: rotate(360deg); }
+    }
 `;
 
 const Wrap = styled.div`

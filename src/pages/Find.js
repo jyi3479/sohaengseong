@@ -53,7 +53,7 @@ const Find = (props) => {
                     <p style={{fontSize:"14px"}}>@</p>
                     <Select>
                         <button className="label" onClick={()=>{selectClick()}}>{option?option:"선택하세요"}</button>
-                        <ul className="optionList" style={{display:active?"block":"none"}}>
+                        <ul className="optionList" style={{display:active?"block":"none",}}>
                             <li className="optionItem" onClick={(e)=>{optionClick(e)}}>naver.com</li>
                             <li className="optionItem" onClick={(e)=>{optionClick(e)}}>nate.com</li>
                             <li className="optionItem" onClick={(e)=>{optionClick(e)}}>daum.net</li>
