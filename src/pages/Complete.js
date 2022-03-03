@@ -2,13 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
+import {useLocation} from "react-router";
+import {ActionCreators as userAction} from "../redux/modules/user";
 import {Grid,Button} from "../elements/index";
 
 const Complete = (props) => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const mail = location.state.mail;   
+    console.log("회원가입완료",mail);
+
     const [active,setActive] = React.useState(false);
     const send = () => {
-        setActive(true);      
-    }
+        setActive(true);  
+        dispatch(userAction.emailCheckResend(mail));    
+    };
 
     
     return(

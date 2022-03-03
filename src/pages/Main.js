@@ -9,7 +9,9 @@ import plus from "../image/icons/ic_more_l@2x.png";
 const Main = (props) => {    
     const dispatch = useDispatch();
     const ranking = useSelector(state => state.ranking.list);   
-    
+    const userInfo = useSelector(state => state.user.user);   
+
+    //console.log(userInfo);
     return(
         <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 0">
             <Grid >
@@ -22,7 +24,7 @@ const Main = (props) => {
                 <Grid style={{overflow: "hidden"}}>
                     <Info>
                         <Grid padding="0" is_flex height="auto" margin="0 0 16px">
-                            <p>닉네임 님의 오늘의 습관</p>
+                            <p>{} 님의 오늘의 습관</p>
                             <p><b>1</b>개</p>
                         </Grid>
                        <Button font_size="14px" style={{fontWeight:"bold"}} 

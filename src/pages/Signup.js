@@ -41,7 +41,7 @@ const Signup = (props) => {
 
   const onChangeNick = (e) => {
     setnickname(e.target.value);
-    let userNickRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,6}$/;
+    let userNickRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,8}$/;
     let NickRegex = userNickRegex.test(e.target.value);
 
     setKeypressNick(false);
@@ -57,11 +57,10 @@ const Signup = (props) => {
 
   const onChangePwd = (e) => {
     setSamePwd(false);
-    const pwdRegex = /^(?=.*[a-z])(?=.*\d)[a-z\d]{6,12}$/;
+    const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/;    
     const pwdcurrent = e.target.value;
     let PwdRegex = pwdRegex.test(e.target.value);
     setpassword(pwdcurrent);
-    console.log(pwdcurrent)
 
 
     if (!PwdRegex) {
@@ -212,7 +211,7 @@ const Signup = (props) => {
               _onChange={onChangePwd}
             />
             <span className={  password.length === 0 ? "" : isPwd && password.length ? "green" : "red" }>
-              {password === null || password === "" ? "" : isPwd && password.length  ? "사용 가능한 비밀번호입니다" : "영문,숫자, 6-12자로 구성된 비밀번호를 입력해 주세요."}
+              {password === null || password === "" ? "" : isPwd && password.length  ? "사용 가능한 비밀번호입니다" : "영문,숫자,특수문자 8-20자로 구성된 비밀번호를 입력해 주세요."}
             </span>
           </InputWrap>
         </Grid>

@@ -30,7 +30,7 @@ const Find = (props) => {
 
     const findPwd = () => {
         const mail = `${email}@${domain}`;
-        dispatch(userAction.findPassword(mail));
+        dispatch(userAction.tempPasswordSend(mail));
     }
 
 

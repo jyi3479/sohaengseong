@@ -12,9 +12,9 @@ const EMAIL_CHECK = "EMAIL_CHECK";
 const NICK_CHECK = "NICK_CHECK";
 
 
-const logIn = createAction(LOGIN, (user) => ({ user }));
+const logIn = createAction(LOGIN, (is_login) => ({is_login}));
 const logOut = createAction(LOGOUT, (user) => ({ user }));
-const setUser = createAction(SET_USER, (user) => ({ user }));
+const setUser = createAction(SET_USER, (user,is_login) => ({ user,is_login }));
 const idCheck = createAction(EMAIL_CHECK, (emailCheckres) => ({ emailCheckres }));
 const nickCheck = createAction(NICK_CHECK, (nickCheckres) => ({
   nickCheckres,
@@ -35,17 +35,28 @@ const loginDB = (email, password) => {
     userApis
       .login(email, password)
       .then((res) => {
-        //console.log(res.headers, "로그인 토큰확인");
+        console.log("로그인",res);
         setCookie("token", res.headers["authorization"], 1);
+        
+        userApis
+        .useInfo()
+        .then((res) => {
+          dispatch(
+            setUser({
+              //유저정보를 다시 세팅
+              userId: res.data.PK,
+              email: res.data.email,
+              nickname: res.data.nickname,
+              profileUrl: res.data.profileImage,
+            })
+          );
+        })
+        .catch((error) => console.log("유저정보저장오류",error));
 
-        dispatch(
-          setUser({
-            email: res.data.email,
-            nickname: res.data.nickname,
-          })
-        );
+
+        history.push("/");
       })
-      /* }) */
+      
       .catch((code, message) => {
         console.log("로그인오류입니다!", code, message);
         window.alert("로그인에 실패했습니다");
@@ -130,9 +141,14 @@ const emailCheckToken = () => {
 //인증 메일 재전송
 const emailCheckResend = (email) => {
   return function (dispatch, getState, { history }) {
+    const mail = {
+      email:email
+    };
+    console.log(mail);
     userApis
-      .emailCheckResend(email)
+      .emailCheckResend(mail)
       .then((res) => {
+        console.log(res);
         alert("인증메일이 재전송되었습니다");
       })
       .catch((code, message) => {
@@ -144,40 +160,28 @@ const emailCheckResend = (email) => {
 //임시 비밀번호 발급
 const tempPasswordSend = (email) => {
   return function (dispatch, getState, { history }) {
+    const mail = {
+      email:email
+    };
     userApis
-      .emailCheckResend(email)
+      .tempPasswordSend(mail)
       .then((res) => {
+        console.log("비밀번호발급",res);
         alert("메일로 임시 비밀번호가 발급되었습니다");
       })
-      .catch((code, message) => {
-        console.log(code, message);
+      .catch((err) => {
+        console.log("비밀번호 재발급오류",err);
         alert("메일로 임시 비밀번호가 발급되지 않았습니다");
       });
   };
 };
 
-//비밀번호 찾기
-const findPassword = (email) => {
-  return function (dispatch, getState, { history }) {
-    console.log(email);
-
-    // userApis
-    //   .pwdCheck(password)
-    //   .then((res) => {
-    //     alert("비밀번호가 전송되었습니다");
-    //   })
-    //   .catch((code, message) => {
-    //     console.error(code, message);
-    //   });
-  };
-};
 
 //로그인유저확인
 const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
     userApis
       .useInfo()
-
       .then((res) => {
         dispatch(
           setUser({
@@ -189,7 +193,7 @@ const loginCheckDB = () => {
           })
         );
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log("유저정보저장오류",error));
   };
 };
 //카카오 로그인
@@ -256,7 +260,6 @@ const ActionCreators = {
   emailCheck,
   nicknameCheck,
   logOutAction,
-  findPassword,
   emailCheckToken,
   loginBykakao,
   emailCheckResend,
