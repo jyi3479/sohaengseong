@@ -1,4 +1,5 @@
 import axios from "axios";
+import {getCookie} from "./cookie";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
 const apis = axios.create({
@@ -11,26 +12,28 @@ const imageApis = axios.create({
 });
 
 apis.interceptors.request.use(function (config) {
-  //const token = getCookie("token");
+  const token = getCookie("token");
   config.headers["Content-Type"] =
     "application/json;charset=UTF-8; charset=UTF-8";
-  //config.headers.common["authorization"] = `Bearer ${token}`;
+  config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
 
 imageApis.interceptors.request.use(function (config) {
-  //const token = getCookie("token");
+  const token = getCookie("token");
   config.headers["Content-Type"] = "multipart/form-data";
-  //config.headers.common["authorization"] = `Bearer ${token}`;
+  config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
 
 export const userApis = {
   //로그인요청
   login: (email, password) => apis.post("/auth/signin", { email, password }),
+
   // 회원가입 요청
-  signup: (email, nickname, password, passwordCheck) =>
-    apis.post("/auth/signup", { email, nickname, password, passwordCheck }),
+  signup: (signup) =>
+    apis.post("/auth/signup", signup),
+
   //이메일 인증 (아이디 중복체크)
   emailCheck: (email) =>
     apis.post("/auth/email-check", {
@@ -41,9 +44,6 @@ export const userApis = {
   nicknameCheck: (nickname) =>
     apis.post("/auth/nickname-check", { nickname: nickname }),
 
-  //비밀번호 찾기
-  pwdCheck: (password) => apis.post("/auth/password", password),
-
   //로그인 유저 확인
   useInfo: () => apis.get("/auth/user-info"),
 
@@ -51,10 +51,10 @@ export const userApis = {
   emailCheckToken: () => apis.get("/auth/check-email-token"),
 
   //인증 메일 재전송
-  emailCheckResend: (email) => apis.get("/auth/resend-check-email"),
+  emailCheckResend: (email) => apis.post("/auth/resend-check-email",email),
 
   //임시 비밀번호 발급
-  tempPasswordSend: (email) => apis.post("/auth/send-temp-password"),
+  tempPasswordSend: (email) => apis.post("/auth/send-temp-password",email),
 
   // 소셜로그인(카카오)
   // loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),

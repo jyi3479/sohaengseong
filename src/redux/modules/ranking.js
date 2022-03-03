@@ -34,22 +34,6 @@ const initialState = {
             rank:"down"
         },
         {
-            userId:"aaa4@aaa.com",
-            nickname:"운동중독",
-            profileImage:"https://www.garyqi.com/wp-content/uploads/2017/01/default-avatar-500x500.jpg",
-            point:"564",
-            level:"2",
-            rank:"none"
-        },
-        {
-            userId:"aaa5@aaa.com",
-            nickname:"졸리다",
-            profileImage:"https://www.garyqi.com/wp-content/uploads/2017/01/default-avatar-500x500.jpg",
-            point:"564",
-            level:"1",
-            rank:"up"
-        },
-        {
             userId:"aaa6@aaa.com",
             nickname:"내닉네임",
             profileImage:"http://cdn.edujin.co.kr/news/photo/202102/35063_66368_1421.jpg",

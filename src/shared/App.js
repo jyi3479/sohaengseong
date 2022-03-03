@@ -3,7 +3,7 @@ import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 //page import
 import MobileFrame from "../components/MobileFrame";
 import { ActionCreators as userActions } from "../redux/modules/user";
@@ -22,13 +22,22 @@ import Search from "../pages/Search";
 import CategoryMain from "../pages/CategoryMain";
 import Complete from "../pages/Complete";
 import Find from "../pages/Find";
+import Sendmail from "../pages/Sendmail";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
+import {getCookie} from "./cookie";
 
 function App() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+  const isLogin = useSelector((state) => state.user.is_login);
+  const token = getCookie("token");
 
+  console.log(isLogin);
+  
   React.useEffect(() => {
-    if (document.cookie) dispatch(userActions.loginCheckDB);
+    if (token && !user) {
+      dispatch(userActions.loginCheckDB);
+    }
   }, []);
 
   return (
@@ -43,7 +52,8 @@ function App() {
               {/* 로그인 */}
               <Route path="/signup/complete" exact component={Complete} />
               {/* 회원가입완료 */}
-
+              <Route path="/sendmail" exact component={Sendmail} />
+              {/* 임시비밀번호 */}
               <Route path="/search" exact component={Search} />
               {/* 검색페이지 */}
               <>
