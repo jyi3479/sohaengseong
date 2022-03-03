@@ -4,7 +4,7 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from '../redux/modules/base';
 import {Grid,Button} from "../elements/index";
-
+import drop from "../image/icons/ic_dropdown@2x.png";
 const Find = (props) => {
     const dispatch = useDispatch();
     const [active,setActive] = React.useState(false);    
@@ -22,10 +22,9 @@ const Find = (props) => {
         setOption(e.target.innerText);
         setActive(false);
         if(option!=="직접 입력"){
-            console.log("직");
             setDomain(e.target.innerText);
         }        
-    };    
+    };
 
 
     React.useEffect(() => {
@@ -46,30 +45,31 @@ const Find = (props) => {
             </Content>
             <Grid padding="0" style={{overflow: "revert"}}>
                 <label style={{fontSize:"14px"}}>이메일</label>
-                <Grid padding="0" margin="9px 0 0" is_flex>
+                <Grid padding="0" margin="9px 0 5px" is_flex style={{overflow: "revert"}}>
                     <EmailInput  
                     onChange={(e) => {
                         setEmail(e.target.value);
                     }}></EmailInput>
                     <p style={{fontSize:"14px"}}>@</p>
-                    <EmailInput 
-                        onChange={(e) => {
-                            setDomain(e.target.value);
-                        }}
-                        disabled={option==="직접 입력"?"":"disabled"} value={option==="직접 입력"?domain:option}
-                    ></EmailInput>
+                    <Select>
+                        <button className="label" onClick={()=>{selectClick()}}>{option?option:"선택하세요"}</button>
+                        <ul className="optionList" style={{display:active?"block":"none"}}>
+                            <li className="optionItem" onClick={(e)=>{optionClick(e)}}>naver.com</li>
+                            <li className="optionItem" onClick={(e)=>{optionClick(e)}}>nate.com</li>
+                            <li className="optionItem" onClick={(e)=>{optionClick(e)}}>daum.net</li>
+                            <li className="optionItem" onClick={(e)=>{optionClick(e)}}>hanmail.net</li>
+                            <li className="optionItem" onClick={(e)=>{optionClick(e)}}>gmail.com</li>
+                            <li className="optionItem" onClick={(e)=>{optionClick(e)}}>직접 입력</li>
+                        </ul>
+                    </Select>
                 </Grid>
-                <Select>
-                    <button className="label" onClick={()=>{selectClick()}}>{option?option:"선택하세요"}</button>
-                    <ul className="optionList" style={{display:active?"block":"none"}}>
-                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>naver.com</li>
-                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>nate.com</li>
-                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>daum.net</li>
-                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>hanmail.net</li>
-                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>gmail.com</li>
-                        <li className="optionItem" onClick={(e)=>{optionClick(e)}}>직접 입력</li>
-                    </ul>
-                </Select>
+                <EmailInput 
+                    className="width"
+                    onChange={(e) => {
+                        setDomain(e.target.value);
+                    }}
+                    disabled={option==="직접 입력"?"":"disabled"} value={option==="직접 입력"?domain:option}
+                ></EmailInput>
                 <Button margin="50px 0 0" _onClick={()=>{
                    console.log("이메일 인증하기 누름");
                    console.log(`${email}@${domain}`)
@@ -98,19 +98,25 @@ const EmailInput = styled.input`
     border: solid 1px #999;
     outline: none;
     padding: 10px;
+    &.width{
+        width: 100%;
+    }
 `;
 
 const Select = styled.div`
     position: relative;
-    width: 100%;
+    width: calc(50% - 10px);
     height: 40px;
     border: solid 1px #999;
     outline: none;
-    margin-top:5px;
+    background-image:url(${drop});
+    background-size: 20px;
+    background-position: right 10px top 10px;
+    background-repeat: no-repeat;
     .label {
         display: flex;
         align-items: center;
-        width: inherit;
+        width: 100%;
         height: inherit;
         border: 0 none;
         outline: 0 none;

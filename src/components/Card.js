@@ -69,9 +69,11 @@ const ImageBox = styled.div`
 const TitleBox = styled.div`
   p:first-child {
     font-size:15px;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   p:last-child {
     font-size:12px;
@@ -89,6 +91,10 @@ const Tag = styled.p`
   border-radius: 5px;
   padding: 2px 4px;
   background-color: #ededed;
+  &:nth-child(n+3) {
+    display: none;
+  } 
+
 `;
 
 const Date = styled.p`
