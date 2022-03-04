@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { useDispatch, useSelector} from "react-redux";
+import {getCookie} from "./cookie";
 //page import
 import MobileFrame from "../components/MobileFrame";
 import { ActionCreators as userActions } from "../redux/modules/user";
@@ -24,7 +25,9 @@ import Complete from "../pages/Complete";
 import Find from "../pages/Find";
 import Sendmail from "../pages/Sendmail";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
-import {getCookie} from "./cookie";
+import ChatRoom from "../pages/ChatRoom";
+import ChatList from "../pages/ChatList";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -110,6 +113,10 @@ function App() {
                   {/* 챌린지 수정 페이지 */}
                   <Route path="/find" exact component={Find} />
                   {/* 비밀번호찾기 */}
+                  <Route path="/chatting" exact component={ChatList} />
+                  {/* 채팅리스트 */}
+                  <Route path="/chatting/0" exact component={ChatRoom} />
+                  {/* 채팅방 - 뒤에 번호 임시 */}
                 </Wrap>
               </>
             </Switch>
