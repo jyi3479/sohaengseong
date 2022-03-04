@@ -41,7 +41,7 @@ const loginDB = (email, password) => {
     userApis
       .login(email, password)
       .then((res) => {
-        console.log("로그인",res);
+        //console.log("로그인",res);
         setCookie("token", res.data.token);        
         userApis
         .useInfo()

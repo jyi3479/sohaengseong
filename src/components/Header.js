@@ -11,7 +11,19 @@ const Header = (props) => {
     const search = useSelector(state => state.base.header.search);
 
 
-    console.log(text,detail,search);
+    //console.log(text,detail,search);
+    // if(search){
+    //     return(
+    //         <Wrap id="Header" {...props} className="detailHeader">
+    //             <button onClick={()=>{
+    //                 history.go(-1);
+    //             }}><img src={arrow}/></button>
+    //             <div>
+
+    //             </div>
+    //         </Wrap>
+    //     );
+    // }
     if(detail){
         return(
             <Wrap id="Header" {...props} className="detailHeader">

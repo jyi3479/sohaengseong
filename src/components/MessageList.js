@@ -17,21 +17,6 @@ function MessageList() {
     }
   }, []);
 
-//   const handleReceiveMessage = useCallback(pongData => {
-//       const newMessage = makeMessage(pongData);
-//       setMessages(messages => [...messages, newMessage]);
-//       moveScrollToReceiveMessage();
-//     },
-//     [moveScrollToReceiveMessage]
-//   );
-
-//   useEffect(() => {
-//     socket.on(SOCKET_EVENT.RECEIVE_MESSAGE, handleReceiveMessage);
-
-//     return () => {
-//       socket.off(SOCKET_EVENT.RECEIVE_MESSAGE, handleReceiveMessage);
-//     };
-//   }, [socket, handleReceiveMessage]);
 
   return (
     <div className="chat-window card" ref={chatWindow}>

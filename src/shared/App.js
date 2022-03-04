@@ -56,15 +56,15 @@ function App() {
               <Route path="/signup/complete" exact component={Complete} />
               {/* 회원가입완료 */}
               <Route path="/sendmail" exact component={Sendmail} />
-              {/* 임시비밀번호 */}
-              <Route path="/search" exact component={Search} />
-              {/* 검색페이지 */}
+              {/* 임시비밀번호 */}              
               <>
                 <Wrap>
                   <Header />
                   <Footer />
                   <Route path="/" exact component={Main} />
                   {/* 메인 */}
+                  <Route path="/search" exact component={Search} />
+                  {/* 검색페이지 */}
                   <Route path="/signup" exact component={Signup} />
                   {/* 회원가입 */}
                   <Route

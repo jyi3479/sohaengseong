@@ -10,15 +10,23 @@ function MessageForm({ nickname }) {
 
     const resize = () => {
         const text = textArea.current;
+        const box = document.getElementById('box');
         text.style.height = 'auto';
         text.style.height = text.scrollHeight + 'px';
+
+        if (text.style.height >= 50) {
+            text.style.overflow =  "auto"
+            box.style.overflow =  "hidden"           
+        }else{
+            text.style.overflow =  "hidden"
+            box.style.overflow =  "scroll"
+        }
     }
 
     // textarea에서 텍스트를 입력하면 typingMessage state를 변경합니다.
     const handleChangeTypingMessage = useCallback(event => {
-    setTypingMessage(event.target.value);
+        setTypingMessage(event.target.value);
     }, []);
-
 
 
     // 버튼을 누르면 실행합니다.
@@ -36,16 +44,16 @@ function MessageForm({ nickname }) {
 
   return ( 
       <Wrap>         
-        <MessgeInput>
+        <MessgeInput id="box">
             <textarea
                 placeholder="메시지 보내기"
                 maxLength={400}
                 autoFocus
                 value={typingMessage}
                 onChange={handleChangeTypingMessage}
-                onKeyUp={resize}
+                rows="1"
                 ref={textArea}
-                rows="1" cols="100"
+                onKeyUp={resize}
             />
             <button
                 type="button"
@@ -63,24 +71,24 @@ const Wrap = styled.div`
     left: 20px;
     bottom: 20px;
 `;
-const MessgeInput = styled.div`
-    
+const MessgeInput = styled.div`    
     padding: 18px 48px 18px 16px;
     background-color: #fff;
     border-radius: 26px;
     max-height: 100px;
     word-wrap: break-word;
     word-break: break-word; 
+    overflow: hidden;
     > textarea {
         width: 100%;
-        min-height: 24px;
+        height: auto;
         outline: none;
         border:none;
-        resize: none;
+        resize: none;        
     }
     .send_btn {
         position: absolute;
-        top: 8px;
+        bottom: 8px;
         right: 8px;
         width: 40px;
         height: 40px;
