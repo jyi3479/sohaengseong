@@ -6,11 +6,11 @@ import axios from "axios";
 const initialState = {
   user: {
     userId: 0,
-    nickname: "챌린이",
+    nickname: "주영주영",
     profileImage:
       "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
     point: 110,
-    levelName: "레벨1",
+    levelName: "Level.2",
     levelIcon:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlwiGD-SGQ1o7a3LV6bv845DCONAKTsd7yw&usqp=CAU",
     experiencePoint: 150,

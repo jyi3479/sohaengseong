@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as memberActions } from "../redux/modules/member";
 import styled from "styled-components";
 import { Button, Grid, Input } from "../elements";
@@ -9,13 +9,18 @@ const PostCard = (props) => {
   const [content, setContent] = React.useState("");
   const addComment = () => {
     // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
-    const comment = {
-      content: content,
-      nickname: "닉네임",
-      profileImage: "",
-    };
-    dispatch(memberActions.addComment(props.postId, comment));
+
+    // dispatch(memberActions.addComment(props.postId, comment));
+    dispatch(memberActions.addCommentDB(props.postId, content));
   };
+  const deletePost = () => {
+    dispatch(memberActions.deletePostDB(props.postId));
+  };
+
+  const deleteComment = (commentId) => {
+    dispatch(memberActions.deleteCommentDB(props.postId, commentId));
+  };
+
   return (
     <>
       <Grid border="1px solid grey" margin="5px 0px" padding="5px">
@@ -27,7 +32,7 @@ const PostCard = (props) => {
           </Grid>
           <Grid is_flex width="auto">
             <p>수정</p>
-            <p>삭제</p>
+            <p onClick={deletePost}>삭제</p>
           </Grid>
         </Grid>
 
@@ -52,7 +57,7 @@ const PostCard = (props) => {
         </Grid>
 
         {/* PostCard의 댓글 조회 부분 */}
-        {props.comments.map((el, i) => {
+        {props.comments?.map((el, i) => {
           return (
             <Grid key={el.commentId} is_flex>
               <Grid is_flex width="auto">
@@ -63,6 +68,13 @@ const PostCard = (props) => {
               <Grid is_flex width="auto">
                 <p>{el.createdAt}</p>
               </Grid>
+              <p
+                onClick={() => {
+                  deleteComment(el.commentId);
+                }}
+              >
+                삭제
+              </p>
             </Grid>
           );
         })}

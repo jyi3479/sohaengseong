@@ -1,14 +1,20 @@
 import axios from "axios";
-import {getCookie} from "./cookie";
+import { getCookie } from "./cookie";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
 const apis = axios.create({
-  // baseURL: server_port, //서버 주소
-  baseURL: "http://13.125.107.22",
+  baseURL: server_port, //서버 주소
+  // baseURL: "http://13.125.107.22",
 });
-
+const token = getCookie("token");
 const imageApis = axios.create({
+  // baseURL: "http://13.125.107.22",
   baseURL: server_port,
+  headers: {
+    "Content-type": "multipart/form-data",
+    accept: "application/json",
+    authorization: `Bearer ${token}`,
+  },
 });
 
 apis.interceptors.request.use(function (config) {
@@ -21,7 +27,7 @@ apis.interceptors.request.use(function (config) {
 
 imageApis.interceptors.request.use(function (config) {
   const token = getCookie("token");
-  config.headers["Content-Type"] = "multipart/form-data";
+  // config.headers["Content-Type"] = "multipart/form-data";
   config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
@@ -31,8 +37,7 @@ export const userApis = {
   login: (email, password) => apis.post("/auth/signin", { email, password }),
 
   // 회원가입 요청
-  signup: (signup) =>
-    apis.post("/auth/signup", signup),
+  signup: (signup) => apis.post("/auth/signup", signup),
 
   //이메일 인증 (아이디 중복체크)
   emailCheck: (email) =>
@@ -51,10 +56,10 @@ export const userApis = {
   emailCheckToken: () => apis.get("/auth/check-email-token"),
 
   //인증 메일 재전송
-  emailCheckResend: (email) => apis.post("/auth/resend-check-email",email),
+  emailCheckResend: (email) => apis.post("/auth/resend-check-email", email),
 
   //임시 비밀번호 발급
-  tempPasswordSend: (email) => apis.post("/auth/send-temp-password",email),
+  tempPasswordSend: (email) => apis.post("/auth/send-temp-password", email),
 
   // 소셜로그인(카카오)
   // loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),
@@ -88,7 +93,8 @@ export const memberApis = {
   getPost: (challengeId) => apis.get(`/challenge/${challengeId}/posts`),
 
   //인증게시글 등록
-  addPost: (challengeId) => imageApis.post(`/challenge/${challengeId}/posts`),
+  addPost: (challengeId, post) =>
+    imageApis.post(`/challenge/${challengeId}/posts`, post),
 
   //인증게시글 수정
   editPost: (postId, post) => imageApis.put(`/posts/${postId}`, post),

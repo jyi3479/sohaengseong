@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
 import axios from "axios";
+import { memberApis } from "../../shared/apis";
 
 // 인증 게시글
 const GET_POST = "GET_POST";
@@ -9,7 +10,7 @@ const ADD_POST = "ADD_POST";
 const EDIT_POST = "EDIT_POST";
 const DELETE_POST = "DELETE_POST";
 
-const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
+const getPost = createAction(GET_POST, (postList) => ({ postList }));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 const editPost = createAction(EDIT_POST, (postId, post) => ({ postId, post }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
@@ -28,7 +29,7 @@ const deleteComment = createAction(DELETE_COMMENT, (postId, commentId) => ({
 }));
 
 const initialState = {
-  post_list: [
+  postList: [
     {
       postId: 0,
       nickname: "챌린이",
@@ -115,25 +116,127 @@ const initialState = {
   ],
 };
 
+const getPostDB = (challengeId) => {
+  return function (dispatch, getState, { history }) {
+    console.log(+challengeId);
+    memberApis
+      .getPost(+challengeId)
+      .then((res) => {
+        console.log("인증게시글 전체 조회 성공", res);
+        dispatch(getPost(res.data));
+      })
+      .catch((err) => {
+        console.log("인증게시글 전체 조회 오류", err);
+      });
+  };
+};
+
+const addPostDB = (challengeId, post) => {
+  return function (dispatch, getState, { history }) {
+    // console.log(+challengeId);
+    // memberApis
+    //   .addPost(+challengeId, post)
+    //   .then((res) => {
+    //     console.log("인증 게시글 작성", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log("인증 게시글 작성 오류", err);
+    //   });
+  };
+};
+
+const deletePostDB = (postId) => {
+  return function (dispatch, getState, { history }) {
+    console.log(+postId);
+    memberApis
+      .deletePost(+postId)
+      .then((res) => {
+        console.log("인증 게시글 삭제", res);
+        dispatch(deletePost(+postId));
+      })
+      .catch((err) => {
+        console.log("인증 게시글 삭제 오류", err);
+      });
+  };
+};
+
+const addCommentDB = (postId, content) => {
+  return function (dispatch, getState, { history }) {
+    const userInfo = getState().user.user;
+
+    memberApis
+      .addComment(postId, {
+        content: content,
+      })
+      .then((res) => {
+        console.log("댓글 작성", res);
+        const comment = {
+          nickname: userInfo.nickname,
+          profileImage: "",
+          commentId: res.data.commentId,
+          content: content,
+          createdAt: "",
+        };
+        dispatch(addComment(postId, comment));
+      })
+      .catch((err) => {
+        console.log("댓글 작성 오류", err);
+      });
+  };
+};
+
+const deleteCommentDB = (postId, commentId) => {
+  return function (dispatch, getState, { history }) {
+    memberApis
+      .deleteComment(commentId)
+      .then((res) => {
+        console.log("댓글 삭제", res);
+        dispatch(deleteComment(postId, commentId));
+      })
+      .catch((err) => {
+        console.log("댓글 삭제 오류", err);
+      });
+  };
+};
+
 export default handleActions(
   {
     //인증 게시글
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.post_list = action.payload.post_list;
+        draft.postList = action.payload.postList;
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.post_list.unshift(action.payload.post);
+        draft.postList.unshift(action.payload.post);
+      }),
+
+    [DELETE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        let idx = draft.postList.findIndex(
+          (p) => p.postId === action.payload.postId
+        );
+        draft.postList.splice(idx, 1);
       }),
 
     // 댓글
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.post_list.findIndex(
+        let idx = draft.postList.findIndex(
           (p) => p.postId === action.payload.postId
         );
-        draft.post_list[idx].comments.unshift(action.payload.comment);
+        draft.postList[idx].comments.unshift(action.payload.comment);
+      }),
+    [DELETE_COMMENT]: (state, action) =>
+      produce(state, (draft) => {
+        let postIdx = draft.postList.findIndex(
+          (p) => p.postId === action.payload.postId
+        );
+
+        let commentIdx = draft.postList[postIdx].comments.findIndex(
+          (p) => p.commentId === action.payload.commentId
+        );
+        draft.postList[postIdx].comments.splice(commentIdx, 1);
       }),
   },
   initialState
@@ -143,6 +246,11 @@ const actionCreators = {
   //액션 생성자 내보내기
   addComment,
   addPost,
+  addCommentDB,
+  addPostDB,
+  getPostDB,
+  deletePostDB,
+  deleteCommentDB,
 };
 
 export { actionCreators };
