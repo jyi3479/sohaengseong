@@ -451,7 +451,7 @@ const ChallengeWrite = (props) => {
           // excludeDateIntervals={[
           //   { start: subDays(startDate, 0), end: addDays(startDate, 14) },
           // ]}
-          onChange={(dates: any) => {
+          onChange={(dates) => {
             const [start, end] = dates;
             let range = (end - start) / (1000 * 60 * 60 * 24);
             if (end && range < 14) {

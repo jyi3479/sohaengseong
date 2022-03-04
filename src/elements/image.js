@@ -3,15 +3,15 @@ import styled from "styled-components";
 import { MdOutlineAddAPhoto } from 'react-icons/md';
 
 const Image = (props) => {
-    const {shape , src , size, profile, radius, align, inline_block,is_preview } = props;
+    const {shape , src , size, profile, radius, align, inline_block ,padding} = props;
     const styles = {
         src:src,
         size:size,
         profile:profile,
         radius:radius,
         inline_block:inline_block,
-        is_preview:is_preview,
         align:align,
+        padding:padding,
     };
     
     if(shape === "circle"){ //프로필 이미지
@@ -44,6 +44,7 @@ Image.defaultProps = {
     is_preview:false,
     align:false,
     children: null,
+    padding:"100%",
 }
 
 const AspectOutter = styled.div`
@@ -53,7 +54,7 @@ const AspectOutter = styled.div`
 
 const AspectInner = styled.div`
     position: relative;
-    padding-top: 100%; 
+    padding-top: ${(props) => (props.padding? props.padding : "100%")};; 
     overflow: hidden;
     background-image: url("${(props) => props.src}");
     background-size: cover;
