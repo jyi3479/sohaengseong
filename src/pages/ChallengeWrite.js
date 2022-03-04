@@ -314,6 +314,57 @@ const ChallengeWrite = (props) => {
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.editChallengeDB(params.challengeId, formData));
   };
+  // 인증 게시글 수정하기
+  const editChallenge = () => {
+    if (content === "") {
+      window.alert("내용을 입력해주세요!");
+      return;
+    }
+    // 서버에 보내기 위한 작업
+    // 폼데이터 생성
+    let formData = new FormData();
+    // 보낼 데이터 묶음 (이미지 제외)
+    const data = {
+      title: title,
+      content: content,
+      category: category,
+      maxMember: parseInt(maxMember),
+      startDate: startDate,
+      endDate: endDate,
+      isPrivate: checkedInputs === "private" ? true : false,
+      password: checkedInputs === "private" ? password : null,
+      tagName: hashArr,
+    };
+
+    // 폼데이터에 이미지와 데이터 묶어서 보내기
+    formData.append("challengeImage", image);
+    formData.append(
+      "challenge",
+      new Blob([JSON.stringify(data)], { type: "application/json" })
+    );
+
+    // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
+    dispatch(challengeAction.editChallengeDB(params.challengeId, formData));
+
+    // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
+    // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
+    // 페이지 이동이 있다면 reducer 작업 필요없을듯..
+    // 실험용
+    const challenge = {
+      title: title,
+      content: content,
+      category: category,
+      challengeImage: preview,
+      maxMember: parseInt(maxMember),
+      startDate: startDate,
+      endDate: endDate,
+      isPrivate: checkedInputs === "private" ? true : false,
+      password: checkedInputs === "private" ? password : null,
+      tagName: hashArr,
+    };
+    console.log(challenge);
+    dispatch(challengeAction.editChallenge(params.challengeId, challenge));
+  };
 
   return (
     <Grid margin="78px 0px 0px" padding="0px" bg="#eeeeee">
@@ -436,7 +487,7 @@ const ChallengeWrite = (props) => {
           // excludeDateIntervals={[
           //   { start: subDays(startDate, 0), end: addDays(startDate, 14) },
           // ]}
-          onChange={(dates: any) => {
+          onChange={(dates) => {
             const [start, end] = dates;
             let range = (end - start) / (1000 * 60 * 60 * 24);
             if (end && range < 14) {

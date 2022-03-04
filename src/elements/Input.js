@@ -17,9 +17,26 @@ const Input = ({
   width,
   height,
   double,
+  search,
   ...props
 }) => {
 
+  // if(search){
+  //   return (     
+  //     <div>       
+  //       <InputField
+  //           ref={ref}
+  //           type={type}
+  //           value={value}
+  //           placeholder={placeholder}
+  //           onChange={_onChange}
+  //           style={{ margin, padding, width, height }}
+  //           {...props}
+  //         />
+  //       <button></button>
+  //     </div>
+  //   );
+  // }
 
   if(double){
     return (

@@ -6,12 +6,13 @@ const SET_HEADER = "SET_HEADER";
 const SET_GNB = "SET_GNB";
 
 
-export const setHeader = createAction(SET_HEADER, (detail,text)=>({detail,text}));
+export const setHeader = createAction(SET_HEADER, (detail,search,text)=>({detail,search,text}));
 export const setGnb = createAction(SET_GNB, (state)=>({state}));
 
 const initialState = {
     header:{
         detail:false,
+        search:true,
         text:"",
     },
     gnb: true,
@@ -22,6 +23,7 @@ export default handleActions(
     [SET_HEADER]: (state, action) =>
       produce(state, (draft) => {
         draft.header.detail = action.payload.detail;
+        draft.header.search = action.payload.search;
         draft.header.text = action.payload.text;
 
     }),

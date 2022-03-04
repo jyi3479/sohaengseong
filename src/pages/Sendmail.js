@@ -8,7 +8,7 @@ import {Grid,Button} from "../elements/index";
 const Sendmail = (props) => {    
     const location = useLocation();
     const domain = location.state.domain; 
-    console.log("도메인",domain);
+   
     return(
         <Grid padding="0 39px" margin="100px 0 0" height="auto">
             <div style={{width:"180px", height:"180px", backgroundColor:"#ccc" , margin:"0 auto"}}></div>

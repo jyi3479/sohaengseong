@@ -25,6 +25,8 @@ import Find from "../pages/Find";
 import Sendmail from "../pages/Sendmail";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
 import { getCookie } from "./cookie";
+import ChatRoom from "../pages/ChatRoom";
+import ChatList from "../pages/ChatList";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,15 +55,15 @@ function App() {
               <Route path="/signup/complete" exact component={Complete} />
               {/* 회원가입완료 */}
               <Route path="/sendmail" exact component={Sendmail} />
-              {/* 임시비밀번호 */}
-              <Route path="/search" exact component={Search} />
-              {/* 검색페이지 */}
+              {/* 임시비밀번호 */}              
               <>
                 <Wrap>
                   <Header />
                   <Footer />
                   <Route path="/" exact component={Main} />
                   {/* 메인 */}
+                  <Route path="/search" exact component={Search} />
+                  {/* 검색페이지 */}
                   <Route path="/signup" exact component={Signup} />
                   {/* 회원가입 */}
                   <Route
@@ -110,6 +112,10 @@ function App() {
                   {/* 챌린지 수정 페이지 */}
                   <Route path="/find" exact component={Find} />
                   {/* 비밀번호찾기 */}
+                  <Route path="/chatting" exact component={ChatList} />
+                  {/* 채팅리스트 */}
+                  <Route path="/chatting/0" exact component={ChatRoom} />
+                  {/* 채팅방 - 뒤에 번호 임시 */}
                 </Wrap>
               </>
             </Switch>
