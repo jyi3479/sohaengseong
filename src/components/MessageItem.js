@@ -86,6 +86,7 @@ const Text = styled.p`
     border-radius: 0 5px 5px 5px;
     margin-right: 4px;
     word-break: break-all;
+    white-space: pre-wrap;
     font-size: 14px;    
     color: #000;
     &.is_me {
