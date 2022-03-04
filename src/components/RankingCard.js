@@ -5,11 +5,11 @@ import { Grid, Image } from "../elements/index";
 const RankingCard = (props) => {
     const {nickname, profileImage, point, level, rank, myRank, ranking} = props;
 
-    if(ranking === 6){
+    if(ranking === 4){
         return(
             <Grid padding="16px" margin="0 0 8px" style={{display:"flex"}} bg="#f5f5f5">
                 <RankWrap >
-                    <Rank>{myRank}</Rank>
+                    <Rank className="myrank">{myRank}</Rank>
                     <State>{rank!=="none"?rank==="up"?(
                         "▲" 
                     ):(
@@ -66,6 +66,11 @@ const Rank = styled.p`
     color: #fff;
     text-align: center;
     line-height: 22px;
+    &.myrank {
+        font-size: 12px;
+        background-color: transparent;
+        color: #000;
+    }
 `;
 const State = styled.p`
     margin: 0 10px ;

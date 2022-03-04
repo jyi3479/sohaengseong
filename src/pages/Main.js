@@ -5,11 +5,13 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import RankingCard from "../components/RankingCard";
-
+import plus from "../image/icons/ic_more_l@2x.png";
 const Main = (props) => {    
     const dispatch = useDispatch();
     const ranking = useSelector(state => state.ranking.list);   
+    const userInfo = useSelector(state => state.user.user);   
 
+    //console.log(userInfo);
     return(
         <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 0">
             <Grid >
@@ -19,10 +21,10 @@ const Main = (props) => {
                 <Planet></Planet>
             </Grid>
             <Wrap>
-                <Grid>
+                <Grid style={{overflow: "hidden"}}>
                     <Info>
                         <Grid padding="0" is_flex height="auto" margin="0 0 16px">
-                            <p>닉네임 님의 오늘의 습관</p>
+                            <p>{userInfo&&userInfo.nickname} 님의 오늘의 습관</p>
                             <p><b>1</b>개</p>
                         </Grid>
                        <Button font_size="14px" style={{fontWeight:"bold"}} 
@@ -53,8 +55,8 @@ const Main = (props) => {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href={`/category/all`}>
-                                        <div></div>
+                                    <a href={`/category`}>
+                                        <div><img src={plus} style={{width:"32px",paddingTop:"22px"}}/></div>
                                         <p>전체보기</p>
                                     </a>
                                 </li>
@@ -82,7 +84,7 @@ const Main = (props) => {
                         <div>
                             <Grid is_flex padding="0">
                                 <Title>오늘의 소행성</Title>
-                                <a href={`/category/all`} style={{fontSize:"12px"}}>더보기</a>
+                                <a href={`/category/all`} style={{fontSize:"12px", fontWeight:"bold"}}>더보기</a>
                             </Grid>                            
                             <SubTitle>따끈따끈한 습관 챌린지</SubTitle>                            
                             <Grid padding="0">
@@ -119,6 +121,18 @@ const Planet = styled.div`
     border-radius: 50%;
     top:144px;
     left:133px;
+    background-image: url("https://cdn.notefolio.net/img/10/4c/104c1250c58a5d35d0725696bedb2ce6d4f273bfc3a4949f1405a1a5c7b3bc13_v1.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    animation: target_image 20s; 
+    animation-iteration-count: infinite;
+    transform-origin: 50% 50%;
+    @keyframes target_image {
+        0% { transform: rotate(0deg); }
+        50% { transform: rotate(180deg); }
+        100% { transform: rotate(360deg); }
+    }
 `;
 
 const Wrap = styled.div`
