@@ -152,6 +152,9 @@ const ChallengeWrite = (props) => {
 
       /* enter 키 코드 :13 */
       if (e.keyCode === 13 && e.target.value.trim() !== "") {
+        if (hashArr.length > 10) {
+          window.alert("태그 작성 개수를 확인해주세요!");
+        }
         console.log("Enter Key 입력됨!", e.target.value);
         $HashWrapInner.innerHTML = e.target.value;
         $HashWrapOuter?.appendChild($HashWrapInner);
@@ -169,6 +172,9 @@ const ChallengeWrite = (props) => {
     (keyword) => {
       //   if (process.browser) {
       /* 요소 불러오기, 만들기*/
+      if (hashArr.length > 10) {
+        window.alert("태그 작성 개수를 확인해주세요!");
+      }
       const $HashWrapOuter = document.querySelector(".HashWrapOuter");
       const $HashWrapInner = document.createElement("span");
       $HashWrapInner.className = "HashWrapInner";
@@ -201,7 +207,9 @@ const ChallengeWrite = (props) => {
 
   const selectFile = (e) => {
     const reader = new FileReader();
+
     const file = fileInput.current.files[0];
+    console.log(file);
     // 파일 내용을 읽어온다.
     reader.readAsDataURL(file);
     // 읽기가 끝나면 발생하는 이벤트 핸들러.
@@ -238,6 +246,7 @@ const ChallengeWrite = (props) => {
     // 서버에 보내기 위한 작업
     // 폼데이터 생성
     let formData = new FormData();
+
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
       title: title,
@@ -251,34 +260,24 @@ const ChallengeWrite = (props) => {
       tagName: hashArr,
     };
 
-    // 폼데이터에 이미지와 데이터 묶어서 보내기
-    formData.append("challengeImage", image);
+    for (let i = 0; i < image.length; i++) {
+      formData.append("challengeImage", image[i]);
+    }
+
     formData.append(
       "challenge",
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
+    for (let value of formData.values()) {
+      console.log(value);
+    }
+
+    // 폼데이터에 이미지와 데이터 묶어서 보내기
+    console.log(image);
+
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.addChallengeDB(formData));
-
-    // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
-    // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
-    // 페이지 이동이 있다면 reducer 작업 필요없을듯..
-    // 실험용
-    const challenge = {
-      title: title,
-      content: content,
-      category: category,
-      challengeImage: preview,
-      maxMember: parseInt(maxMember),
-      startDate: startDate,
-      endDate: endDate,
-      isPrivate: checkedInputs === "private" ? true : false,
-      password: checkedInputs === "private" ? password : null,
-      tagName: hashArr,
-    };
-    console.log(challenge);
-    dispatch(challengeAction.addChallenge(challenge));
   };
   // 인증 게시글 수정하기
   const editChallenge = () => {
@@ -303,7 +302,10 @@ const ChallengeWrite = (props) => {
     };
 
     // 폼데이터에 이미지와 데이터 묶어서 보내기
-    formData.append("challengeImage", image);
+    for (let i = 0; i < image.length; i++) {
+      formData.append("challengeImage", image[i]);
+    }
+    // formData.append("challenge", data, { type: "application/json" });
     formData.append(
       "challenge",
       new Blob([JSON.stringify(data)], { type: "application/json" })
@@ -311,25 +313,6 @@ const ChallengeWrite = (props) => {
 
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.editChallengeDB(params.challengeId, formData));
-
-    // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
-    // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
-    // 페이지 이동이 있다면 reducer 작업 필요없을듯..
-    // 실험용
-    const challenge = {
-      title: title,
-      content: content,
-      category: category,
-      challengeImage: preview,
-      maxMember: parseInt(maxMember),
-      startDate: startDate,
-      endDate: endDate,
-      isPrivate: checkedInputs === "private" ? true : false,
-      password: checkedInputs === "private" ? password : null,
-      tagName: hashArr,
-    };
-    console.log(challenge);
-    dispatch(challengeAction.editChallenge(params.challengeId, challenge));
   };
 
   return (
@@ -375,7 +358,7 @@ const ChallengeWrite = (props) => {
         </div>
         <InputBox>
           <Input
-            label="습관에 관한 내용을 입력해주세요. *"
+            label="챌린지에 관한 내용을 입력해주세요. *"
             placeholder="설명, 인증 방법, 규칙 등을 자유롭게 적습니다."
             textarea
             maxLength="1000"
@@ -388,7 +371,8 @@ const ChallengeWrite = (props) => {
         {/* 태그 부분 */}
         <InputBox>
           <p style={{ fontSize: "14px", margin: "0px 0px 10px" }}>
-            태그를 작성해주세요.
+            태그를 작성해주세요.{" "}
+            <span style={{ color: "#797979" }}>(최대 10개)</span>
           </p>
           {/* 태그 입력 부분 */}
 
@@ -405,6 +389,7 @@ const ChallengeWrite = (props) => {
               value={hashtag}
               onChange={(e) => setHashtag(e.target.value)}
               onKeyUp={onKeyUp}
+              maxLength="6"
             />
           </HashWrap>
 
@@ -456,6 +441,7 @@ const ChallengeWrite = (props) => {
             let range = (end - start) / (1000 * 60 * 60 * 24);
             if (end && range < 14) {
               window.alert("2주 이상 선택해주세요!");
+              setStartDate("");
             } else {
               setStartDate(start);
               setEndDate(end);
@@ -652,11 +638,12 @@ const ChallengeWrite = (props) => {
                 <Input
                   // type="password"
                   label="비밀번호 설정"
-                  placeholder="비밀번호를 입력해주세요."
+                  placeholder="비밀번호를 입력해주세요.(숫자 4자리)"
                   value={password}
                   _onChange={(e) => setPassword(e.target.value)}
                   height="46px"
                   margin="0px 0px 20px"
+                  maxLength="4"
                 />
               ))}
           </InputBox>

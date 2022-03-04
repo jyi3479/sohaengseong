@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector } from "react-redux";
 import { Grid } from "../elements";
 import Card from "./Card";
+import { challengeApis } from "../shared/apis";
 
 const MyChallenge = (props) => {
   const my_list = useSelector((state) => state.mypage.list);
@@ -13,6 +14,18 @@ const MyChallenge = (props) => {
     (l) => l.status === "success" || l.status === "fail"
   ); // 지난 챌린지(success+fail)
   console.log(completed_list);
+
+  useEffect(() => {
+    challengeApis
+      .getChallenge()
+      .then((res) => {
+        console.log("챌린지 전체 조회", res);
+      })
+      .catch((err) => {
+        console.log("챌린지 전체 조회 오류", err);
+      });
+  });
+
   return (
     <>
       <Wrap>

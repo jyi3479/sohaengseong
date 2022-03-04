@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { Grid } from "../elements";
+import { challengeApis } from "../shared/apis";
 
 const MyLevel = (props) => {
   const my_level = useSelector((state) => state.mypage.user);
   console.log(my_level);
+
   return (
     <Wrap>
       <Icon size={130} src={my_level.levelIcon} />

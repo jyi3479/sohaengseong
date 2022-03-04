@@ -3,7 +3,7 @@ import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 //page import
 import MobileFrame from "../components/MobileFrame";
 import { ActionCreators as userActions } from "../redux/modules/user";
@@ -24,7 +24,7 @@ import Complete from "../pages/Complete";
 import Find from "../pages/Find";
 import Sendmail from "../pages/Sendmail";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
-import {getCookie} from "./cookie";
+import { getCookie } from "./cookie";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,10 +33,10 @@ function App() {
   const token = getCookie("token");
 
   console.log(isLogin);
-  
+
   React.useEffect(() => {
     if (token && !user) {
-      dispatch(userActions.loginCheckDB);
+      dispatch(userActions.loginCheckDB());
     }
   }, []);
 

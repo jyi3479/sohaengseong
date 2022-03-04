@@ -3,9 +3,13 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as memberActions } from "../redux/modules/member";
 import { Grid, Input, Button } from "../elements";
+import { useParams } from "react-router-dom";
+import { memberApis } from "../shared/apis";
 
 const PostWrite = (props) => {
   const dispatch = useDispatch();
+  const challengeId = useParams().challengeId;
+  const userInfo = useSelector((state) => state.user.user);
 
   //  인증 게시글 수정은 어디서 할건지에 따라 is_edit 변수 활용하기
   const [content, setContent] = React.useState("");
@@ -38,8 +42,12 @@ const PostWrite = (props) => {
       window.alert("내용을 입력해주세요!");
       return;
     }
-
-    formData.append("content", content);
+    const contentJson = { content: content };
+    // formData.append("content", content);
+    formData.append(
+      "post",
+      new Blob([JSON.stringify(contentJson)], { type: "application/json" })
+    );
     formData.append("postImage", image);
 
     // formData api랑 통신하는 부분으로 dispatch 하기
@@ -47,14 +55,30 @@ const PostWrite = (props) => {
     // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
     // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
     const post = {
-      nickname: "닉네임",
+      nickname: userInfo.nickname,
       profileImage: "",
       content: content,
       postImage: preview, // 임시로 지정해둠
       comments: [], // 첫 게시글에는 댓글이 없으니까 일단 이렇게 설정했습니다.
     };
-
-    dispatch(memberActions.addPost(post));
+    memberApis
+      .addPost(+challengeId, formData)
+      .then((res) => {
+        console.log("인증 게시글 작성", res);
+        dispatch(memberActions.addPost(post));
+      })
+      .catch((err) => {
+        console.log("인증 게시글 작성 오류", err);
+      });
+    // memberApis
+    //   .editPost(9, formData)
+    //   .then((res) => {
+    //     console.log("인증 게시글 수정", res);
+    //     // dispatch(memberActions.addPost(post));
+    //   })
+    //   .catch((err) => {
+    //     console.log("인증 게시글 수정 오류", err);
+    //   });
   };
 
   return (
