@@ -22,7 +22,7 @@ const Footer = (props) => {
                 <img src={create}></img>
                 <p>개설하기</p>
             </a>            
-            <a href="/">
+            <a href="/chatting">
                 <img src={chat}></img>
                 <p>채팅하기</p>
             </a>

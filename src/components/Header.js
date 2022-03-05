@@ -3,57 +3,54 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import arrow from "../image/icons/ic_arrow@2x.png";
-import searchIcon from '../image/icons/ic_search.png';
+import searchIconW from '../image/icons/ic_search.png';
+import searchIconB from '../image/icons/ic_search_b@2x.png';
 
 const Header = (props) => {
     const text = useSelector(state => state.base.header.text);
     const detail = useSelector(state => state.base.header.detail);
-    const search = useSelector(state => state.base.header.search);
+    const searchBtn = useSelector(state => state.base.header.search_btn);
+    const params = window.location.pathname;
 
+    console.log(params);
 
-    //console.log(text,detail,search);
-    // if(search){
-    //     return(
-    //         <Wrap id="Header" {...props} className="detailHeader">
-    //             <button onClick={()=>{
-    //                 history.go(-1);
-    //             }}><img src={arrow}/></button>
-    //             <div>
-
-    //             </div>
-    //         </Wrap>
-    //     );
-    // }
     if(detail){
         return(
             <Wrap id="Header" {...props} className="detailHeader">
                 <button onClick={()=>{
                     history.go(-1);
                 }}><img src={arrow}/></button>
-                <p>{text}</p>
-                <button className={"search_btn" + (search? "" : " hide")} onClick={()=>{
+                <div className="title">
+                    <p>{text}</p>
+                    {params.includes("/chatting/")?<span>23</span>:null}                 
+                </div>                
+                <button className={"search_btn" + (searchBtn? "" : " hide")} onClick={()=>{
                     history.push("/search");
-                }}><img src={arrow}/></button>
-                <div style={{width:"28px",height:"28px", display:search?"none":"block"}}></div>
+                }}><img src={searchIconB}/></button>
+                <div style={{width:"28px",height:"28px", display:searchBtn?"none":"block"}}></div>
             </Wrap>
         );
+    }else {
+        return(        
+            <Wrap id="Header" {...props}>
+                <h1><a href="/">소행성</a></h1>
+                <button onClick={()=>{
+                    history.push("/search");
+                }}><img src={searchIconW}></img></button>
+            </Wrap>
+        );        
     }
-    return(        
-        <Wrap id="Header" {...props}>
-            <h1><a href="/">소행성</a></h1>
-            <button onClick={()=>{
-                history.push("/search");
-            }}><img src={searchIcon}></img></button>
-        </Wrap>
-    );
+    
 };
 
 Header.defaultProps ={
-    detail:false,
+    detail:true,
+    search:false,
+    search_btn:false,
+    text:"",
 };
 
 const Wrap = styled.div`
-
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -65,14 +62,23 @@ const Wrap = styled.div`
     padding: 11px 20px;
     box-sizing: border-box;  
     z-index: 10;
-    >p {
-        font-size: 16px;
-        margin: 0px;
-        width: 243px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;//타이틀 길어지면 말줄임
+    .title {
+        display: flex;
+        >p {
+            font-size: 16px;
+            margin: 0px;
+            max-width: 230px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;//타이틀 길어지면 말줄임
+        }
+        span {
+            font-size: 12px;
+            color: #a3a3a3;
+            margin-left: 4px;
+        }
     }
+    
     >h1 {
         >a {
             color: white;
@@ -83,13 +89,15 @@ const Wrap = styled.div`
         margin: 0;
 
     }
-    >button {
+    button {
+        width: 28px;
+        height: 28px;
         background-color: transparent;
         border:none;
         padding: 0;
         cursor: pointer;
-        >img {
-            width: 28px;
+        img {
+            width: 100%;
         }
        
     }
@@ -106,10 +114,7 @@ const Wrap = styled.div`
             background-color: transparent;
             border:none;
             padding: 0;
-            font-size: 25px;          
-            >img{
-              width: 100%;
-            }     
+            font-size: 25px;
           &.search_btn {
             width: 28px;
             height: 28px;
@@ -123,6 +128,7 @@ const Wrap = styled.div`
         }
     }
 `;
+
 
 
 export default Header;

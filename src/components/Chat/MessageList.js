@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useContext, useRef } from "react";
 
-import MessageItem from "../components/MessageItem";
+import MessageItem from "./MessageItem";
 //import { SocketContext, SOCKET_EVENT, makeMessage } from "src/service/socket";
 
 function MessageList() {

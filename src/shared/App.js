@@ -34,8 +34,6 @@ function App() {
   const isLogin = useSelector((state) => state.user.is_login);
   const token = getCookie("token");
 
-  console.log(isLogin);
-
   React.useEffect(() => {
     if (token && !user) {
       dispatch(userActions.loginCheckDB());
@@ -55,7 +53,7 @@ function App() {
               <Route path="/signup/complete" exact component={Complete} />
               {/* 회원가입완료 */}
               <Route path="/sendmail" exact component={Sendmail} />
-              {/* 임시비밀번호 */}              
+              {/* 임시비밀번호 */}
               <>
                 <Wrap>
                   <Header />

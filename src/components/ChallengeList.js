@@ -1,12 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
+import {actionCreators as challengeAction} from "../redux/modules/challenge";
 import Card from "./Card";
+import {Grid} from "../elements/index";
 
 const ChallengeList = (props) => {
+    const dispatch = useDispatch();
     const challenge_list = useSelector(state => state.challenge.list);
+
+    console.log(challenge_list);
+
+    React.useEffect(()=>{
+        dispatch(challengeAction.getChallengeDB());
+    },[]);
+
     return(
-        <>
+        <Grid padding="0">
             {challenge_list.map((el,i)=>{
                 return(
                     <Card 
@@ -18,7 +28,7 @@ const ChallengeList = (props) => {
                     ></Card>
                 );
             })}
-        </>
+        </Grid>
     );
 };
 

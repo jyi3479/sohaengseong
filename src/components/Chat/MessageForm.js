@@ -1,6 +1,6 @@
 import { useState, useCallback, useContext, useRef } from "react";
 import styled from "styled-components";
-import send from "../image/icons/ic_message@2x.png";
+import send from "../../image/icons/ic_message@2x.png";
 
 function MessageForm({ nickname }) {
     const [typingMessage, setTypingMessage] = useState("");

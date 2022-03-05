@@ -1,10 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { Grid, Input, Button} from "../elements";
 import { useDispatch, useSelector } from "react-redux";
+import * as baseAction from '../redux/modules/base';
+import { Grid, Input, Button} from "../elements";
 
 const CategoryMain = (props) => {
+    const dispatch = useDispatch();
+
+    //헤더&푸터 state
+    React.useEffect(() => {
+        dispatch(baseAction.setHeader(false,"",false));        
+        return()=>{
+            dispatch(baseAction.setHeader(true,"",true));
+        }
+    }, []);
+    
     return(        
         <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 0" height="100vh">
             <Banner>

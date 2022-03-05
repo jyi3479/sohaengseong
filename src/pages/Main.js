@@ -4,12 +4,21 @@ import ChallengeList from "../components/ChallengeList";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import * as baseAction from '../redux/modules/base';
 import RankingCard from "../components/RankingCard";
 import plus from "../image/icons/ic_more_l@2x.png";
 const Main = (props) => {    
     const dispatch = useDispatch();
     const ranking = useSelector(state => state.ranking.list);   
-    const userInfo = useSelector(state => state.user.user);   
+    const userInfo = useSelector(state => state.user.user); 
+    
+    //헤더&푸터 state
+    React.useEffect(() => {
+        dispatch(baseAction.setHeader(false,"",false));        
+        return()=>{
+            dispatch(baseAction.setHeader(true,"",true));
+        }
+    }, []);
 
     //console.log(userInfo);
     return(

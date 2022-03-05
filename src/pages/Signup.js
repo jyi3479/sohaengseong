@@ -82,7 +82,7 @@ const Signup = (props) => {
     setSamePwd(false);
     const pwdcurrent2 = e.target.value;
     setpasswordCheck(pwdcurrent2);
-    console.log(pwdcurrent2);
+    //console.log(pwdcurrent2);
     if (pwdcurrent2 === password) {
       setSamePwd(true);
     } else {
@@ -126,7 +126,7 @@ const Signup = (props) => {
           setDomain(e.target.innerText);
       }        
   };  
-  //console.log("닉네임중복=",_nickCheck,"닉네임유효성=",isNick,"비밀번호확인=",samePwd,"비밀번호재입력=",passwordCheck);
+  console.log("닉네임중복=",_nickCheck,"닉네임유효성=",isNick,"비밀번호확인=",samePwd,"비밀번호재입력=",passwordCheck);
 
 
   //헤더&푸터 state

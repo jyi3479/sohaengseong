@@ -5,129 +5,159 @@ import { useSelector, useDispatch } from "react-redux";
 
 //이미지 슬라이더(Swiper) import 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore,{  Pagination } from 'swiper';
+import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 //사용자 import
-import {Grid, Image} from "../elements/index";
+import {Grid, Image, Button} from "../elements/index";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import * as baseAction from '../redux/modules/base';
 import lock from "../image/icons/ic_lock@2x.png";
+import empty from "../image/ic_empty_s@2x.png";
+import defaultImg from "../image/img_profile_defalt @2x.png";
+import crown from "../image/icons/ic_crown@2x.png";
+import plus from "../image/icons/ic_plus@2x.png";
 
 const ChallengeDetail = (props) => {
     const dispatch = useDispatch();
     const challengeId = props.match.params.challengeId;
     const target = useSelector(state => state.challenge.target);
-    const tagList = target.tagName;
-    const members = target.members;
-    const member_idx = members.findIndex((m) => m.userId === target.userId);
-    const admin = members[member_idx];  
+    const tagList = target&&target.tagName;
+    const members = target&&target.members;
+    const member_idx = members&&members.findIndex((m) => m.userId === parseInt(target.userId));
+    const admin = members&&members[member_idx];      
+    const imageList = target&&target.challengeImage;
+    const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}.${target.startDate.split(" ")[0].split("-")[1]}.${target.startDate.split(" ")[0].split("-")[2]}`;
+    const endDate = target&&`${target.endDate.split(" ")[0].split("-")[0]}.${target.endDate.split(" ")[0].split("-")[1]}.${target.endDate.split(" ")[0].split("-")[2]}`;
 
-    console.log(admin);
+    console.log(target);
 
-    const confirm = () => {
-        window.confirm("다른 사람들을 위해 신중하게 선택하세요! 확인을 클릭 시 챌린지에 입장합니다");
-        if(confirm){
-            console.log("확인누름");
-            //dispatch(challengeAction.joinChallengeDB(challengeId));
-            //history.push(``); //상세페이지 (멤버전용)으로 이동
+    const joinChallenge = () => {
+
+        if(target.isPrivate){ //비밀방 일 경우
+            console.log("비밀방임");
         }
+        //dispatch(challengeAction.joinChallengeDB(challengeId));
     };
     const prompt = () => {
         const pwd = window.prompt("비밀번호를 입력하세요");        
         console.log(pwd);
-        //dispatch(challengeAction.joinChallengeDB(challengeId));
+       
         //history.push(``); //상세페이지 (멤버전용)으로 이동        
-    } 
-
+    };
     
-    //특정 챌린지 1개 조회하기
-    // React.useEffect(()=>{
-    //     dispatch(challengeAction.getOneChallengeDB(challengeId));
-    // },[]);
-
-    //헤더&푸터 state
-    React.useEffect(() => {
-        dispatch(baseAction.setHeader(true,true,target.title));
+    React.useEffect(() => {      
+        //특정 챌린지 1개 조회하기
+        dispatch(challengeAction.getOneChallengeDB(challengeId));    
+        if(target){
+            dispatch(baseAction.setHeader(true,target.title,true));
+        }           
+        //헤더&푸터 state        
         return()=>{
             dispatch(baseAction.setHeader(false,""));
         }
-    }, []);
+    },[]);
 
     
     return(
-        <Grid padding="0" margin="48px 0 64px" bg="#eee">
-            <Grid padding="0">
-                <Swiper
-                    modules={[ Pagination]}
-                    spaceBetween={0}
-                    slidesPerView={1}
-                    pagination={{ clickable: true }}
-                    onSlideChange={() => console.log('slide change')}
-                    onSwiper={(swiper) => console.log(swiper)}
-                    >
-                    <SwiperSlide><Image shape="rectangle" padding="250px" src={target.challengeImage}></Image></SwiperSlide>
-                    <SwiperSlide><Image shape="rectangle" padding="250px" src={target.challengeImage}></Image></SwiperSlide>
-                    <SwiperSlide><Image shape="rectangle" padding="250px" src={target.challengeImage}></Image></SwiperSlide>
-                </Swiper>
-            </Grid>
-            <Grid bg="#fff" margin="0 0 10px" padding="20px">
-                <TitleBox>
-                    <h1>{target.title}</h1>
-                    <img src={lock} style={{display:target.isPrivate?"block":"none"}}></img>
-                </TitleBox>
-                <p style={{fontSize:"14px", color:"#666"}}>{target.category}</p>
-                <Grid padding="0" margin="12px 0">
-                    {tagList.map((el, i) => {
-                        return <Tag key={i}>{el}</Tag>;
-                    })}
-                </Grid>
+        <>  
+        {target&&
+            <Grid padding="0" margin="48px 0 64px" bg="#eee">
                 <Grid padding="0">
-                    <Info>챌린지 기간 <span>{target.startDate} ~ {target.endDate}</span></Info>
-                    <Info style={{marginTop:"4px"}}>모집 인원 <span>{target.currentMember}/{target.maxMember}명</span></Info>
-                </Grid>                
-            </Grid>
+                    {imageList.length > 0?
+                        <Swiper
+                            spaceBetween={0}
+                            slidesPerView={1}
+                            pagination={{
+                                type : 'bullets', //페이지네이션 타입 
+                                el: '.pagination', //페이지네이션 클래스
+                                
+                            }}
+                            modules={[Pagination]}
+                            className="mySwiper"
+                            onSlideChange={() => console.log('slide change')}
+                            onSwiper={(swiper) => console.log(swiper)}
+                            >
+                            {imageList.map((el,i)=>{
+                                return(
+                                    <SwiperSlide key={i}><Image shape="rectangle" padding="250px" src={el}></Image></SwiperSlide>
+                                );
+                            })}
+                        </Swiper>
+                        //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출 (디폴트 이미지 변경예정)
+                        : <Image shape="rectangle" padding="250px" src={empty}></Image>
+                    }
+                </Grid>
+                <Grid bg="#fff" margin="0 0 10px" padding="20px">
+                    <TitleBox>
+                        <h1>{target.title}</h1>
+                        <img src={lock} style={{display:target.isPrivate?"block":"none"}}></img>
+                    </TitleBox>
+                    <p style={{fontSize:"14px", color:"#666"}}>{target.category}</p>
+                    <Grid padding="0" margin="12px 0">
+                        {tagList.map((el, i) => {
+                            return <Tag key={i}>{el}</Tag>;
+                        })}
+                    </Grid>
+                    <Grid padding="0">
+                        <Info>챌린지 기간 <span>{startDate} ~ {endDate}</span></Info>
+                        <Info style={{marginTop:"4px"}}>모집 인원 <span>{target.currentMember?target.currentMember:"0"}/{target.maxMember}명</span></Info>
+                    </Grid>  
+                    <Button margin="30px 0 0" 
+                        _onClick={()=>{
+                            joinChallenge()
+                        }}
+                    >소행성 입주하기</Button>              
+                </Grid>
 
-            <Grid bg="#fff" padding="20px">
-                <Title>챌린지 설명</Title>
-                <ContentBox style={{marginBottom:"20px"}}>
-                    <div>
-                        <div style={{backgroundImage:`url(${admin.profileImage})`}}></div>
-                        <p>어드민닉네임</p>
-                    </div>
-                    <p>저녁 9~10시 1시간 동안 미드 프렌즈 보면서 같이 영어 쉐도잉 할 멤버분들 구합니다!! 시즌1~5까지 대본 준비 되어있으니 공부할 의지만 있으시면 됩니다! </p>
-                </ContentBox>
-                {/* 현재인원 - 디자인 확정 후 작업예정 */}
-                <Title>현재 인원</Title>
-                <ContentBox>
-                    
-                </ContentBox>
-            </Grid>            
-            
-            {/* <Grid padding="0">
-                {members.map((el, i) => {
-                    return (
-                        //만약에 방을 만든 userId와 멤버의 userId가 같은 경우(방장인 경우) className을 붙여준다.
-                        <Member key={el.userId} className={admin === el.userId? "admin" : ""} src={el.profileImage}>    
-                        </Member>
-                    );
-                })}
-            </Grid> */}
-            {/* <Grid padding="0">
-                {target.isPrivate? ( //비밀방이라면 비밀번호 입력창 show                
-                    <button type="button" onClick={
-                        prompt
-                    }>챌린지 참여하기</button>                    
-                ):(
-                    <button type="button" onClick={
-                        confirm
-                    }>챌린지 참여하기</button>
-                )}
-            </Grid> */}
-            
-        </Grid>
+                <Grid bg="#fff" padding="20px">
+                    <Title>소행성 설명</Title>
+                    <ContentBox style={{marginBottom:"20px"}}>
+                        <div className="admin_profile">
+                            <div  style={{backgroundImage:`url(${admin.profileImage !== null ?admin.profileImage : defaultImg})`}}></div>
+                            <p>{admin.nickname}</p>
+                        </div>
+                        <p>{target.content}</p>
+                    </ContentBox>
+                    {/* 현재인원 - 디자인 확정 후 작업예정 */}
+                    <Title>현재 입주민</Title>
+                    <ContentBox  style={{padding:"15px 67px"}}>                       
+                        {members&&members.map((el, i) => {
+                            return (
+                                //만약에 방을 만든 userId와 멤버의 userId가 같은 경우(방장인 경우) className을 붙여준다.
+                                <Member 
+                                    key={el.userId} 
+                                    className={admin.userId === el.userId? "admin" : ""} 
+                                    style={{backgroundImage:`url(${el.profileImage !== null ?el.profileImage : defaultImg})`}}
+                                    src={el.profileImage}>    
+                                </Member>
+                            );
+                        })}     
+                        <MoreMembers className="more_members"></MoreMembers>                   
+                    </ContentBox>
+                </Grid>            
+                
+                <Grid padding="0">
+                   
+                </Grid>
+                {/* <Grid padding="0">
+                    {target.isPrivate? ( //비밀방이라면 비밀번호 입력창 show                
+                        <button type="button" onClick={
+                            prompt
+                        }>챌린지 참여하기</button>                    
+                    ):(
+                        <button type="button" onClick={
+                            confirm
+                        }>챌린지 참여하기</button>
+                    )}
+                </Grid> */}
+                
+            </Grid> 
+        }
 
+
+        </>
     );
 };
 const TitleBox = styled.div`
@@ -142,6 +172,7 @@ const TitleBox = styled.div`
     }
     img {
         width: 20px;
+        height: 20px;
     }
 `;
 
@@ -175,11 +206,12 @@ const ContentBox = styled.div`
     padding: 15px;
     border-radius: 15px;
     background-color: #efefef;
-    >div{
+    .admin_profile{
         display: flex;
         align-items: center;
         margin-bottom:10px;
-        div{
+        div {
+            display: inline-block;
             width: 35px;
             height: 35px;
             margin: 0 10px 0 0;
@@ -190,10 +222,13 @@ const ContentBox = styled.div`
             position: relative;
             &::after {
                 content: '';
-                width:14px;
-                height: 14px;
+                width:17px;
+                height: 17px;
                 border-radius: 50%;
-                background-color: #5d5d5d;
+                background-image: url(${crown});
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
                 position: absolute;
                 bottom:0;
                 right: -3px;
@@ -206,21 +241,47 @@ const ContentBox = styled.div`
     }
 
 `;
-const Member = styled.div` 
+const Member = styled.div`  
     display: inline-block;
-    width:30px;
-    height:30px;
-    border-radius:50%;    
-    overflow: hidden;
-    &:nth-child(n+6) {//5번째 멤버 이후로는 미노출
+    width: 35px;
+    height: 35px;
+    border: solid 1px #999;
+    border-radius:50%;
+    background-size: cover;
+    background-position: center;
+    margin-right: 5px;
+    &:nth-child(n+4) {//3번째 멤버 이후로는 미노출
         display: none;
     }
     &.admin { //방장일 경우
-        border: 3px solid #000;
+        position: relative;
+        margin-right: 9px;
+        &::after {
+            content: '';
+            width:17px;
+            height: 17px;
+            border-radius: 50%;
+            background-image: url(${crown});
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            position: absolute;
+            bottom:0;
+            right: -3px;
+        }
     }
-    background-image: url("${(props) => props.src}");
+`;
+const MoreMembers = styled.button`
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    border: solid 1px #999;
+    border-radius:50%;
+    background-color: #ccc;
     background-size: cover;
-    background-position: center;
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-image: url(${plus});
 `;
 
 export default ChallengeDetail;

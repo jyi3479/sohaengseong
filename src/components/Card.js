@@ -7,11 +7,14 @@ import lock from "../image/icons/ic_lock@2x.png";
 const Card = (props) => {
   const tagList = props.tagName;
 
+  const startDate = `${props.startDate.split(" ")[0].split("-")[0]}.${props.startDate.split(" ")[0].split("-")[1]}.${props.startDate.split(" ")[0].split("-")[2]}`
+  const endDate = `${props.endDate.split(" ")[0].split("-")[0]}.${props.endDate.split(" ")[0].split("-")[1]}.${props.endDate.split(" ")[0].split("-")[2]}`
+
   return (    
     <Box onClick={props._onClick}>
       <ImageBox>
         <Image shape="rectangle"></Image>
-        <p><img src={peopleIcon}/>{props.currentMember}/{props.maxMember}명</p>
+        <p><img src={peopleIcon}/>{props.currentMember?props.currentMember:"0"}/{props.maxMember}명</p>
       </ImageBox>      
       <Grid padding="0"  style={{display:"inline-block", position:"relative", width:"calc(100% - 128px)",height: "116px"}}>
         <TitleBox padding="0">
@@ -23,7 +26,7 @@ const Card = (props) => {
             return <Tag key={i}>{el}</Tag>;
           })}      
           <Grid is_flex  padding="0" margin="4px 0 0">
-            <Date>{props.startDate} - {props.endDate}</Date>
+            <Date>{startDate} - {endDate}</Date>
             <img src={props.isPrivate?lock:null} style={{width:"20px"}}></img>
           </Grid>
         </div>
