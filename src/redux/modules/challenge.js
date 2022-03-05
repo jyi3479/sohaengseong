@@ -15,7 +15,7 @@ const DELETE_CHALLENGE = "DELETE_CHALLENGE";
 const getChallenge = createAction(GET_CHALLENGE, (challenge_list) => ({
   challenge_list,
 }));
-const targetChallenge = createAction(TARGET_CHALLENGE, (target) => ({
+export const targetChallenge = createAction(TARGET_CHALLENGE, (target) => ({
   target,
 }));
 const addChallenge = createAction(ADD_CHALLENGE, (challenge) => ({
@@ -162,6 +162,12 @@ const editChallengeDB = (challengeId, challenge) => {
   };
 };
 
+const deleteChallengeDB = (challengeId) => {
+  return function (dispatch, getState, { history }) {
+    
+  };
+}
+
 export default handleActions(
   {
     [GET_CHALLENGE]: (state, action) =>
@@ -210,6 +216,7 @@ const actionCreators = {
   addChallengeDB,
   editChallengeDB,
   editChallenge,
+  deleteChallengeDB
 };
 
 export { actionCreators };

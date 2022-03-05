@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
+import { challengeApis } from "../shared/apis";
+import { targetChallenge } from "../redux/modules/challenge";
 
 //이미지 슬라이더(Swiper) import 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -18,9 +20,11 @@ import empty from "../image/ic_empty_s@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
 import plus from "../image/icons/ic_plus@2x.png";
+import Modal from '../components/Modal';
 
 const ChallengeDetail = (props) => {
     const dispatch = useDispatch();
+    const userInfo = useSelector(state => state.user.user);
     const challengeId = props.match.params.challengeId;
     const target = useSelector(state => state.challenge.target);
     const tagList = target&&target.tagName;
@@ -31,29 +35,50 @@ const ChallengeDetail = (props) => {
     const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}.${target.startDate.split(" ")[0].split("-")[1]}.${target.startDate.split(" ")[0].split("-")[2]}`;
     const endDate = target&&`${target.endDate.split(" ")[0].split("-")[0]}.${target.endDate.split(" ")[0].split("-")[1]}.${target.endDate.split(" ")[0].split("-")[2]}`;
 
-    console.log(target);
+    //console.log(target, target.title);
 
     const joinChallenge = () => {
-
+        console.log("참가누름");
         if(target.isPrivate){ //비밀방 일 경우
             console.log("비밀방임");
         }
         //dispatch(challengeAction.joinChallengeDB(challengeId));
+
     };
     const prompt = () => {
         const pwd = window.prompt("비밀번호를 입력하세요");        
         console.log(pwd);
        
-        //history.push(``); //상세페이지 (멤버전용)으로 이동        
+        //history.push(``); //상세페이지 (멤버전용)으로 이동
+    };
+
+    const deleteChallenge = () => {
+        console.log("챌린지 삭제");
+        //dispatch(challengeAction.joinChallengeDB(challengeId));
+        history.replace("/");
+    };
+
+    //모달 팝업 -----------------------------------------
+    const [modalOpen, setModalOpen] = React.useState(false);
+
+    const openModal = () => {
+        setModalOpen(true);
+    };
+    const closeModal = () => {
+        setModalOpen(false);
     };
     
-    React.useEffect(() => {      
-        //특정 챌린지 1개 조회하기
-        dispatch(challengeAction.getOneChallengeDB(challengeId));    
-        if(target){
+    React.useEffect(() => {
+        challengeApis.getOneChallenge(challengeId)
+        .then((res)=>{
+            const target = res.data;
+            dispatch(targetChallenge(target));
+            //헤더&푸터 state        
             dispatch(baseAction.setHeader(true,target.title,true));
-        }           
-        //헤더&푸터 state        
+        }).catch((err)=>{
+            console.log("특정 챌린지 조회 오류",err);
+        });
+
         return()=>{
             dispatch(baseAction.setHeader(false,""));
         }
@@ -103,12 +128,34 @@ const ChallengeDetail = (props) => {
                     <Grid padding="0">
                         <Info>챌린지 기간 <span>{startDate} ~ {endDate}</span></Info>
                         <Info style={{marginTop:"4px"}}>모집 인원 <span>{target.currentMember?target.currentMember:"0"}/{target.maxMember}명</span></Info>
-                    </Grid>  
-                    <Button margin="30px 0 0" 
-                        _onClick={()=>{
-                            joinChallenge()
-                        }}
-                    >소행성 입주하기</Button>              
+                    </Grid>                    
+                    {target.status === "모집중"?admin.userId === userInfo.userId?(
+                        //내가 만든 챌린지 (시작 전)
+                        <Grid padding="0" is_flex>
+                            <Button width="calc(50% - 5px)" margin="30px 0 0" bg="#fff" style={{color:"#666",border:"1px solid #666"}}
+                                _onClick={()=>{
+                                    deleteChallenge()
+                                }}
+                            >삭제하기</Button>  
+                            <Button width="calc(50% - 5px)" margin="30px 0 0" 
+                                _onClick={()=>{
+                                    history.push(`/challengewrite/${challengeId}`);
+                                }}
+                            >수정하기</Button>  
+                        </Grid> 
+                    ):(
+                        //참여가능한 챌린지
+                        <Button margin="30px 0 0" 
+                            _onClick={()=>{
+                                //joinChallenge()
+                                openModal()
+                            }}
+                        >소행성 입주하기</Button>              
+                    ): (
+                        //내가 참여중인 챌린지 (방장인데 챌린지 시작했을 경우도 포함)
+                        <Button margin="30px 0 0" bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
+                        >이미 입주한 행성입니다.</Button>  
+                    )}                    
                 </Grid>
 
                 <Grid bg="#fff" padding="20px">
@@ -153,6 +200,9 @@ const ChallengeDetail = (props) => {
                     )}
                 </Grid> */}
                 
+                <Modal open={modalOpen} close={closeModal} header="Modal heading">
+                    팝업창입니다. 쉽게 만들 수 있어요. 같이 만들어봐요!
+                </Modal>
             </Grid> 
         }
 
@@ -278,7 +328,7 @@ const MoreMembers = styled.button`
     border: solid 1px #999;
     border-radius:50%;
     background-color: #ccc;
-    background-size: cover;
+    background-size: 20px;
     background-position: center; 
     background-repeat: no-repeat;
     background-image: url(${plus});

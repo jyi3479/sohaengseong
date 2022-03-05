@@ -9,8 +9,6 @@ const ChallengeList = (props) => {
     const dispatch = useDispatch();
     const challenge_list = useSelector(state => state.challenge.list);
 
-    console.log(challenge_list);
-
     React.useEffect(()=>{
         dispatch(challengeAction.getChallengeDB());
     },[]);
@@ -23,7 +21,7 @@ const ChallengeList = (props) => {
                         key={el.challengeId}
                         {...el}
                         _onClick={()=>{
-                            history.push(`/challenge/${el.challengeId}`);
+                            history.push(`/challenge/${el.challengeId}`);                            
                         }}
                     ></Card>
                 );

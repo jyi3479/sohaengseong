@@ -22,8 +22,8 @@ const Header = (props) => {
                 }}><img src={arrow}/></button>
                 <div className="title">
                     <p>{text}</p>
-                    {params.includes("/chatting/")?<span>23</span>:null}                 
-                </div>                
+                    {params.includes("/chatting/")?<span>23</span>:null}
+                </div>
                 <button className={"search_btn" + (searchBtn? "" : " hide")} onClick={()=>{
                     history.push("/search");
                 }}><img src={searchIconB}/></button>
