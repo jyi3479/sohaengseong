@@ -66,6 +66,7 @@ const PostWrite = (props) => {
       .then((res) => {
         console.log("인증 게시글 작성", res);
         dispatch(memberActions.addPost(post));
+        setPreview("");
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);

@@ -162,11 +162,13 @@ const editChallengeDB = (challengeId, challenge) => {
   };
 };
 
+
 const deleteChallengeDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
     
   };
-}
+};
+
 
 export default handleActions(
   {

@@ -27,6 +27,7 @@ import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
 import { getCookie } from "./cookie";
 import ChatRoom from "../pages/ChatRoom";
 import ChatList from "../pages/ChatList";
+import MyCompleted from "../pages/MyCompleted";
 
 function App() {
   const dispatch = useDispatch();
@@ -114,6 +115,11 @@ function App() {
                   {/* 채팅리스트 */}
                   <Route path="/chatting/0" exact component={ChatRoom} />
                   {/* 채팅방 - 뒤에 번호 임시 */}
+                  <Route
+                    path="/mypage/completed"
+                    exact
+                    component={MyCompleted}
+                  />
                 </Wrap>
               </>
             </Switch>
