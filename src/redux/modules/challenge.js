@@ -330,18 +330,6 @@ const editChallengeDB = (challengeId, challenge) => {
       });
   };
 };
-const editChallengeDB = (challengeId, challenge) => {
-  return function (dispatch, getState, { history }) {
-    // challengeApis
-    //   .editChallenge(challengeId, challenge)
-    //   .then((res) => {
-    //     console.log("챌린지 수정", res);
-    //   })
-    //   .catch((err) => {
-    //     console.log("챌린지 수정 오류", err);
-    //   });
-  };
-};
 
 export default handleActions(
   {

@@ -165,7 +165,7 @@ const addCommentDB = (postId, content) => {
     const userInfo = getState().user.user;
 
     memberApis
-      .addComment(postId, {
+      .addComment(+postId, {
         content: content,
       })
       .then((res) => {
@@ -188,7 +188,7 @@ const addCommentDB = (postId, content) => {
 const deleteCommentDB = (postId, commentId) => {
   return function (dispatch, getState, { history }) {
     memberApis
-      .deleteComment(commentId)
+      .deleteComment(+commentId)
       .then((res) => {
         console.log("댓글 삭제", res);
         dispatch(deleteComment(postId, commentId));

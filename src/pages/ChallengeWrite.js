@@ -247,14 +247,44 @@ const ChallengeWrite = (props) => {
     // 폼데이터 생성
     let formData = new FormData();
 
+    // 날짜 형식 맞춰주는 함수
+    function dateFormat(date) {
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      let hour = date.getHours();
+      let minute = date.getMinutes();
+      let second = date.getSeconds();
+
+      month = month >= 10 ? month : "0" + month;
+      day = day >= 10 ? day : "0" + day;
+      hour = hour >= 10 ? hour : "0" + hour;
+      minute = minute >= 10 ? minute : "0" + minute;
+      second = second >= 10 ? second : "0" + second;
+
+      return (
+        date.getFullYear() +
+        "." +
+        month +
+        "." +
+        day +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second
+      );
+    }
+    console.log(dateFormat(startDate));
+
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
       title: title,
       content: content,
       category: category,
       maxMember: parseInt(maxMember),
-      startDate: startDate,
-      endDate: endDate,
+      startDate: dateFormat(startDate),
+      endDate: dateFormat(endDate),
       isPrivate: checkedInputs === "private" ? true : false,
       password: checkedInputs === "private" ? password : null,
       tagName: hashArr,
@@ -313,57 +343,6 @@ const ChallengeWrite = (props) => {
 
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.editChallengeDB(params.challengeId, formData));
-  };
-  // 인증 게시글 수정하기
-  const editChallenge = () => {
-    if (content === "") {
-      window.alert("내용을 입력해주세요!");
-      return;
-    }
-    // 서버에 보내기 위한 작업
-    // 폼데이터 생성
-    let formData = new FormData();
-    // 보낼 데이터 묶음 (이미지 제외)
-    const data = {
-      title: title,
-      content: content,
-      category: category,
-      maxMember: parseInt(maxMember),
-      startDate: startDate,
-      endDate: endDate,
-      isPrivate: checkedInputs === "private" ? true : false,
-      password: checkedInputs === "private" ? password : null,
-      tagName: hashArr,
-    };
-
-    // 폼데이터에 이미지와 데이터 묶어서 보내기
-    formData.append("challengeImage", image);
-    formData.append(
-      "challenge",
-      new Blob([JSON.stringify(data)], { type: "application/json" })
-    );
-
-    // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
-    dispatch(challengeAction.editChallengeDB(params.challengeId, formData));
-
-    // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
-    // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
-    // 페이지 이동이 있다면 reducer 작업 필요없을듯..
-    // 실험용
-    const challenge = {
-      title: title,
-      content: content,
-      category: category,
-      challengeImage: preview,
-      maxMember: parseInt(maxMember),
-      startDate: startDate,
-      endDate: endDate,
-      isPrivate: checkedInputs === "private" ? true : false,
-      password: checkedInputs === "private" ? password : null,
-      tagName: hashArr,
-    };
-    console.log(challenge);
-    dispatch(challengeAction.editChallenge(params.challengeId, challenge));
   };
 
   return (
@@ -475,7 +454,7 @@ const ChallengeWrite = (props) => {
       <InputContainer>
         <DatePicker
           locale={ko} // 달력 한글화
-          dateFormat="yyyy-MM-dd" // 날짜형식
+          dateFormat="yyyy.MM.dd" // 날짜형식
           showPopperArrow={false} // popover 화살표 없애기
           fixedHeight // 고정된 height에서 남은 공간은 다음 달로 채워지기
           selected={startDate} // 날짜 state

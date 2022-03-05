@@ -59,7 +59,6 @@ const Wrap = styled.div`
 const MyContainer = styled.div`
   background-color: #ffffff;
   width: 335px;
-  height: 99px;
   border-radius: 10px;
   padding: 14px;
 `;
