@@ -590,7 +590,7 @@ const ChallengeWrite = (props) => {
             ref={fileInput}
             // disabled={is_uploading}
             // multiple // 다중 업로드 가능
-            accept="image/*, video/*" // 이미지에 해당하는 모든 파일 허용
+            accept="image/*" // 이미지에 해당하는 모든 파일 허용 (JPG,JPEG,GIF,PNG 제한?)
             style={{ display: "none" }}
           />
         </InputBox>

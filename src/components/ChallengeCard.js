@@ -6,7 +6,7 @@ import { Grid } from "../elements";
 
 const ChallengeCard = (props) => {
   return (
-    <Box>
+    <Box onClick={props._onClick}>
       <ImageBox status={props.status}>
         {(props.status === "성공" || props.status === "실패") && (
           <div
@@ -29,7 +29,7 @@ const ChallengeCard = (props) => {
       <Title>{props.title}</Title>
       <TagBox>
         {props.tagName?.map((el, i) => {
-          return <Tag>{el}</Tag>;
+          return <Tag key={i}>{el}</Tag>;
         })}
       </TagBox>
       <Grid display="flex" padding="0px">
@@ -47,23 +47,19 @@ const Box = styled.div`
   width: 159px;
   height: 244px;
   margin-right: 8px;
+  cursor: pointer;
 `;
 
 const ImageBox = styled.div`
   width: 159px;
   height: 152px;
   border-radius: 10px;
-  position: relative;
 
   background-image: url("https://t1.daumcdn.net/cfile/tistory/99C8CC365DBE46C613");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
+
   ${(props) =>
     props.status === "성공" || props.status === "실패"
       ? "opacity: 0.5;"
