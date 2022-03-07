@@ -2,27 +2,20 @@ import React from "react";
 import {Grid,Button} from "../elements/index";
 import ChallengeList from "../components/ChallengeList";
 import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import * as baseAction from '../redux/modules/base';
-import RankingCard from "../components/RankingCard";
 import plus from "../image/icons/ic_more_l@2x.png";
-const Main = (props) => {    
-    const dispatch = useDispatch();
-    const ranking = useSelector(state => state.ranking.list);   
-    const userInfo = useSelector(state => state.user.user); 
-    
-    //헤더&푸터 state
-    React.useEffect(() => {
-        dispatch(baseAction.setHeader(false,"",false));        
-        return()=>{
-            dispatch(baseAction.setHeader(true,"",true));
-        }
-    }, []);
+import MainHeader from "../components/MainHeader";
+import Footer from "../components/Footer";
+import RankingList from "../components/Ranking/RankingList";
 
-    //console.log(userInfo);
+const Main = (props) => {    
+
+    const userInfo = useSelector(state => state.user.user); 
     return(
-        <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 0">
+        <>
+        <MainHeader/>
+        <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 64px">
             <Grid >
                 <Banner>
                     <h2>작은 것부터 하나씩<br/>나를 변화시키는 소소한 습관 행성</h2>
@@ -73,22 +66,9 @@ const Main = (props) => {
                         </Grid>
                         <Ranking>
                             <Title>실시간 랭킹</Title>
-                            <SubTitle>다른 입주민들 보며 동기부여하기</SubTitle>
-                            <Grid padding="0">
-                                {ranking?ranking.map((el,i)=>{
-                                    return(
-                                        <RankingCard
-                                            key={el.userId}
-                                            {...el}
-                                            ranking={i+1}
-                                        />
-                                    );
-                                }):(
-                                    <>
-                                        <p>앗 랭킹이 업서용</p>
-                                    </>
-                                )}
-                            </Grid>
+                            <SubTitle>다른 입주민들 보며 동기부여하기</SubTitle>                            
+                            {/* 랭킹 */}
+                            <RankingList/>
                         </Ranking>
                         <div>
                             <Grid is_flex padding="0">
@@ -106,6 +86,8 @@ const Main = (props) => {
             </Wrap>
             
         </Grid>
+        <Footer/>
+        </>
     );
 };
 

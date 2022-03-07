@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import axios from "axios";
+import { searchApis } from "../../shared/apis";
 
 
 const GET_SEARCH = "GET_SEARCH";
@@ -11,46 +11,36 @@ const getRecommend = createAction(GET_RECOMMEND, (recommend_list) => ({recommend
 
 
 const initialState = {
-    list:[
-        {
-            challengeId:"0",
-            title:"제목이 길다면?",
-            content:"우리의 운동조건은 열심히 하는 것 단 하나 입니다",   
-            category:"일상",
-            challengeImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg",
-            maxMember:10,
-            currentMember:0,
-            startDate:"2022-02-28",
-            endDate:"2022-03-10",
-            isPrivate:false,
-            password:1234,
-            tagName:["해시태그1", "해시태그2", "해시태그3"],
-            status:"ing"
-        },
-        {
-            challengeId:"1",
-            title:"일상2",
-            content:"공부하자!공부!",   
-            category:"일상",
-            challengeImage:"http://www.readersnews.com/news/photo/201502/52827_9951_450.jpg",
-            maxMember:20,
-            currentMember:10,
-            startDate:"2022-02-28",
-            endDate:"2022-03-10",
-            isPrivate:false,
-            password:1234,
-            tagName:["해시태그1", "해시태그2", "해시태그3"],
-            status:"ing"
-        },
-    ],    
-    recommend:[
-        "추천 검색어1", 
-        "추천 검색어2",
-        "추천 검색어3",
-        "추천 검색어4",
-        "추천 검색어5",
-    ],
+    list:[],    
+    recommend:[],
 };
+
+const getSearchDB = (word) => {
+    return function (dispatch, getState, {history}) {
+        console.log("검색어", word);
+        searchApis.getSearch(word)
+        .then((res)=>{
+            console.log("검색어 불러오기",res);
+            dispatch(getSearch(res.data));
+        }).catch((err)=>{
+            console.log("검색어 에러",err);
+        });
+    };
+};
+
+const getRecommendDB = () => {
+    return function (dispatch, getState, {history}) {
+        searchApis.recommend()
+        .then((res)=>{
+            console.log("추천 검색어 불러오기",res);
+            dispatch(getRecommend(res.data));
+        }).catch((err)=>{
+            console.log("추천 검색어 에러",err);
+        })
+    };
+};
+
+
 
 export default handleActions ({
     [GET_SEARCH]: (state,action) => produce (state,(draft)=>{
@@ -63,7 +53,8 @@ export default handleActions ({
 
 
 const actionCreators = { //액션 생성자 내보내기
-    
+    getRecommendDB,
+    getSearchDB
 };
 
 export {actionCreators};

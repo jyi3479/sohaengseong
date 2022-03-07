@@ -6,7 +6,7 @@ import arrow from "../image/icons/ic_arrow@2x.png";
 import deleteIcon from '../image/icons/ic_search_delete@2x.png';
 import searchIconB from '../image/icons/ic_search_b@2x.png';
 
-const SearchHeader = ({_onChange,_onClick,value,ref}) => {
+const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,ref}) => {
 
     return(
         <Wrap id="Header" className="searchHeader">
@@ -15,7 +15,7 @@ const SearchHeader = ({_onChange,_onClick,value,ref}) => {
             }}><img src={arrow}/></button>
             <div>
                 <input type="text" onChange={_onChange} ref={ref} value={value}></input>
-                <button type="button" className="delete" onClick={_onClick}><img src={deleteIcon}></img></button>
+                <button type="button" className="delete" onClick={_deleteBtn}><img src={deleteIcon}></img></button>
                 <button type="button" className="search_btn" onClick={_onClick} ><img src={searchIconB}></img></button>
             </div>
         </Wrap>
@@ -36,13 +36,14 @@ const Wrap = styled.div`
     align-items: center;
     width: 100%;
     height: auto;
-    background-color: transparent;
+    background-color: #fff;
     position: fixed;
     top: 0;
     left: 0;
     padding: 15px 24px 15px 12px;
     box-sizing: border-box;  
     z-index: 10;    
+    border-bottom: 1px solid #ddd;
     >button {
         width: 28px;
         height: 28px;
@@ -64,6 +65,7 @@ const Wrap = styled.div`
             height: 100%;
             padding: 10px;
             border: solid 1px #ddd;
+            outline: none;
         }
         button {   
             width: 28px;

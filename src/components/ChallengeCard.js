@@ -5,9 +5,12 @@ import peopleIcon from "../image/icons/ic_people@2x.png";
 import { Grid } from "../elements";
 
 const ChallengeCard = (props) => {
+  const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;
+  const endDate = `${props.endDate.split(" ")[0].split("-")[0]}`;
+
   return (
-    <Box>
-      <ImageBox status={props.status}>
+    <Box onClick={props._onClick} className={props.className}>
+      <ImageBox status={props.status} style={{backgroundImage:`url(${props.challengeImage?props.challengeImage[0]:""})`}}>
         {(props.status === "성공" || props.status === "실패") && (
           <div
             style={{
@@ -25,16 +28,18 @@ const ChallengeCard = (props) => {
           {props.currentMember}/{props.maxMember}명
         </p>
       </ImageBox>
-
-      <Title>{props.title}</Title>
+      {props.className === "result_card" ? (
+        <p className="category" style={{margin:"8px 0 4px", fontSize:"12px",color:"#666"}}>{props.category}</p>
+      ) : null}      
+      <Title className="title">{props.title}</Title>
       <TagBox>
         {props.tagName?.map((el, i) => {
-          return <Tag>{el}</Tag>;
+          return <Tag className="tag" key={i}>{el}</Tag>;
         })}
       </TagBox>
       <Grid display="flex" padding="0px">
         <Date>
-          {props.startDate} - {props.endDate}
+          {startDate} - {endDate}
         </Date>
         {props.isPrivate && <img src={lock} style={{ width: "20px" }} />}
       </Grid>
@@ -47,6 +52,7 @@ const Box = styled.div`
   width: 159px;
   height: 244px;
   margin-right: 8px;
+  cursor: pointer;
 `;
 
 const ImageBox = styled.div`
@@ -54,8 +60,6 @@ const ImageBox = styled.div`
   height: 152px;
   border-radius: 10px;
   position: relative;
-
-  background-image: url("https://t1.daumcdn.net/cfile/tistory/99C8CC365DBE46C613");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -97,6 +101,10 @@ const Title = styled.p`
   text-align: left;
   color: #000;
   margin-top: 8px;
+  //밑에 말줄임 ------
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
 `;
 
 const TagBox = styled.div`

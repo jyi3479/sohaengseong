@@ -4,20 +4,16 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from '../redux/modules/base';
 import { Grid, Input, Button} from "../elements";
+import MainHeader from "../components/MainHeader";
+import Footer from "../components/Footer";
 
 const CategoryMain = (props) => {
     const dispatch = useDispatch();
 
-    //헤더&푸터 state
-    React.useEffect(() => {
-        dispatch(baseAction.setHeader(false,"",false));        
-        return()=>{
-            dispatch(baseAction.setHeader(true,"",true));
-        }
-    }, []);
-    
     return(        
-        <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 0" height="100vh">
+        <>
+        <MainHeader/>
+        <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 64px" height="100vh">
             <Banner>
                 <h2>찾으시는 습관 행성을<br/>선택하세요.</h2>
             </Banner>
@@ -34,7 +30,9 @@ const CategoryMain = (props) => {
                     <li onClick={()=>{history.push(`/category/8`)}}><div>친환경</div></li>
                 </CategoryPlanet>
             </Grid>
-        </Grid>
+        </Grid>     
+        <Footer/>   
+        </>
         
     );
 };

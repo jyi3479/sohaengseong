@@ -11,9 +11,9 @@ const ChatList = (props) => {
 
     //헤더&푸터 state
     React.useEffect(() => {
-        dispatch(baseAction.setHeader(true,"채팅",true));
+        dispatch(baseAction.setHeader("채팅"));
         return()=>{
-            dispatch(baseAction.setHeader(false,"",true));
+            dispatch(baseAction.setHeader(""));
         }
     }, []);
     

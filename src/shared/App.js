@@ -55,28 +55,28 @@ function App() {
               {/* 회원가입완료 */}
               <Route path="/sendmail" exact component={Sendmail} />
               {/* 임시비밀번호 */}
+              <Route path="/" exact component={Main} />
+              {/* 메인 */}
+              <Route path="/category" exact component={CategoryMain} />
+              {/* 카테고리메인*/}
+              <Route path="/search" exact component={Search} />
+              {/* 검색페이지 */}  
               <>
                 <Wrap>
                   <Header />
-                  <Footer />
-                  <Route path="/" exact component={Main} />
-                  {/* 메인 */}
-                  <Route path="/search" exact component={Search} />
-                  {/* 검색페이지 */}
+                  <Footer />                                  
                   <Route path="/signup" exact component={Signup} />
                   {/* 회원가입 */}
                   <Route
                     path="/auth/kakao/callback"
                     component={OAuth2RedirectHandler}
-                  ></Route>
+                  ></Route>{/* 카카오톡 로그인 */}     
                   <Route
                     path="/challenge/:challengeId"
                     exact
                     component={ChallengeDetail}
                   />
-                  {/* 챌린지 소개 */}
-                  <Route path="/category" exact component={CategoryMain} />
-                  {/* 카테고리메인*/}
+                  {/* 챌린지 소개 */}                  
                   <Route
                     path="/category/:categoryId"
                     exact

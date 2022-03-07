@@ -10,11 +10,9 @@ const ChatRoom = (props) => {
 
     //헤더&푸터 state
     React.useEffect(() => {
-        dispatch(baseAction.setHeader(true,"채팅방이름이름",true));
-        dispatch(baseAction.setGnb(false));
+        dispatch(baseAction.setHeader("채팅방이름이름",true));
         return()=>{
-            dispatch(baseAction.setHeader(false,"",true));
-            dispatch(baseAction.setGnb(true));
+            dispatch(baseAction.setHeader("",false));
         }
     }, []);
 

@@ -124,14 +124,13 @@ const getOneChallengeDB = (challengeId) => {
 
 const joinChallengeDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
-
-    console.log("챌린지참여", challengeId);
-    // challengeApis.joinChallenge(challengeId)
-    // .then((res)=>{
-    //     console.log("챌린지 참여하기",res);
-    // }).catch((err)=>{
-    //     console.log("챌린지 참여하기 오류",err);
-    // });
+    challengeApis.joinChallenge(challengeId)
+    .then((res)=>{
+        console.log("챌린지 참여하기",res);
+        history.push(`/member/${challengeId}`);
+    }).catch((err)=>{
+        console.log("챌린지 참여하기 오류",err);
+    });
   };
 };
 
@@ -165,7 +164,17 @@ const editChallengeDB = (challengeId, challenge) => {
 
 const deleteChallengeDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
-    
+    console.log("챌린지 삭제",challengeId);
+    challengeApis
+      .deleteChallenge(challengeId)
+      .then((res) => {
+        console.log("챌린지 삭제", res);
+        history.replace("/");
+      })
+      .catch((err) => {
+        window.alert("챌린지 삭제 오류입니다!");
+        console.log("챌린지 삭제 오류", err);
+      });
   };
 };
 
