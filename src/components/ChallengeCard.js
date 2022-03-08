@@ -63,11 +63,7 @@ const ImageBox = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
+
   ${(props) =>
     props.status === "성공" || props.status === "실패"
       ? "opacity: 0.5;"

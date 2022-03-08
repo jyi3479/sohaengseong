@@ -74,6 +74,7 @@ const loginDB = (email, password) => {
 };
 
 //회원가입
+
 export const signupDB = (email, nickname, password, passwordCheck) => {
   return function (dispatch, getState, { history }) {
     const signup = {
@@ -92,22 +93,6 @@ export const signupDB = (email, nickname, password, passwordCheck) => {
       .catch((error) => {
         window.alert("회원가입 오류입니다!");
         console.log("회원가입 실패:", error);
-      });
-  };
-};
-
-//이메일 인증 (아이디 중복체크)
-const emailCheck = (email) => {
-  return function (dispatch, getState, { history }) {
-    console.log(email);
-    userApis
-      .emailCheck(email)
-      .then((res) => {
-        //dispatch(idCheck(res.data));
-      })
-      .catch((code, message) => {
-        console.error(code, message);
-        alert("사용 가능한 이메일이 아닙니다");
       });
   };
 };
@@ -231,6 +216,7 @@ const logOutAction = () => {
   return function (dispatch, getState, { history }) {
     console.log("로그아웃 눌림");
     deleteCookie("token"); // 쿠키에서 토큰 삭제
+    localStorage.removeItem("userId");
     dispatch(logOut());
     history.replace("/");
   };

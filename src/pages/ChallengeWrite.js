@@ -82,7 +82,7 @@ const ChallengeWrite = (props) => {
   const [compareImage, setCompareImage] = React.useState(
     isEdit ? target.challengeImage : []
   );
-  const [image, setImage] = React.useState(isEdit ? target.challengeImage : []);
+  const [image, setImage] = React.useState([]);
   const [preview, setPreview] = React.useState(
     isEdit ? target.challengeImage : []
   );
@@ -232,8 +232,10 @@ const ChallengeWrite = (props) => {
 
     setImage([...imageArr]);
     setPreview([...previewArr]);
-
-    console.log("필터이미지=",imageArr, "프리뷰 필터 이미지=",previewArr, "바뀐 이미지배열=", image);
+    if (isEdit) {
+      const compareArr = compareImage.filter((el, idx) => idx !== index);
+      setCompareImage([...compareArr]);
+    }
   };
 
   // 인증 게시글 추가하기
@@ -329,7 +331,7 @@ const ChallengeWrite = (props) => {
 
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
-      image: image,
+      image: compareImage,
       title: title,
       content: content,
       category: category,

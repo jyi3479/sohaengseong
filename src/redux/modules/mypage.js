@@ -4,13 +4,17 @@ import { produce } from "immer";
 import axios from "axios";
 import { mypageApis } from "../../shared/apis";
 
+const GET_MYINFO = "GET_MYINFO";
+
+const getMyInfo = createAction(GET_MYINFO, (myInfo) => ({ myInfo }));
+
 const initialState = {
-  user: {
+  myInfo: {
     userId: 0,
     nickname: "주영주영",
-    profileImage:
+    profileUrl:
       "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-    point: 110,
+    rankingPoint: 110,
     levelName: "Level.2",
     levelIcon:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlwiGD-SGQ1o7a3LV6bv845DCONAKTsd7yw&usqp=CAU",
@@ -148,10 +152,34 @@ const editProfileDB = (profile) => {
   }
 }
 
-export default handleActions({}, initialState);
+
+const getMyInfoDB = (userId) => {
+  return function (dispatch, getState, { history }) {
+    mypageApis
+      .getMyInfo(userId)
+      .then((res) => {
+        console.log("마이페이지 유저 정보 조회 성공", res);
+        dispatch(getMyInfo(res.data));
+      })
+      .catch((err) => {
+        console.log("마이페이지 유저 정보 조회 실패", err);
+      });
+  };
+};
+
+export default handleActions(
+  {
+    [GET_MYINFO]: (state, action) =>
+      produce(state, (draft) => {
+        draft.myInfo = action.payload.myInfo;
+      }),
+  },
+  initialState
+);
 
 const actionCreators = {
   //액션 생성자 내보내기
+  getMyInfoDB,
   editProfileDB
 };
 

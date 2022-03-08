@@ -10,6 +10,7 @@ import Mypage from "./modules/mypage";
 import Member from "./modules/member";
 import Search from "./modules/search";
 import Base from "./modules/base";
+import Chat from "./modules/chat";
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   member: Member,
   search: Search,
   base: Base,
+  chat: Chat,
   router: connectRouter(history),
 });
 

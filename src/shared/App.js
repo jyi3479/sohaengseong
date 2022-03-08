@@ -16,7 +16,7 @@ import ChallengeDetail from "../pages/ChallengeDetail";
 import CategoryTab from "../pages/CategoryTab";
 import MyPage from "../pages/MyPage";
 import MemberDetail from "../pages/MemberDetail";
-import MemberPost from "../pages/MemberPost";
+import MemberPostList from "../pages/MemberPostList";
 import ChallengeWrite from "../pages/ChallengeWrite";
 import Search from "../pages/Search";
 import CategoryMain from "../pages/CategoryMain";
@@ -31,6 +31,9 @@ import MyCompleted from "../pages/MyCompleted";
 import TodayChallenge from "../pages/TodayChallenge";
 import MyEdit from "../pages/MyEdit";
 import MyProfile from "../pages/MyProfile";
+import MemberPostWrite from "../pages/MemberPostWrite";
+import PostDetail from "../components/Member/PostDetail";
+import MemberPostDetail from "../pages/MemberPostDetail";
 
 function App() {
   const dispatch = useDispatch();
@@ -95,9 +98,27 @@ function App() {
                   <Route
                     path="/post/:challengeId"
                     exact
-                    component={MemberPost}
+                    component={MemberPostList}
                   />
                   {/* 챌린지 멤버 전용 속 인증 페이지 */}
+                  <Route
+                    path="/post/:challengeId/write"
+                    exact
+                    component={MemberPostWrite}
+                  />
+                  {/* 인증 페이지 속 인증글 작성 페이지 */}
+                  <Route
+                    path="/post/:challengeId/write/:postId"
+                    exact
+                    component={MemberPostWrite}
+                  />
+                  {/* 인증 페이지 속 인증글 수정 페이지 */}
+                  <Route
+                    path="/post/:challengeId/detail/:postId"
+                    exact
+                    component={MemberPostDetail}
+                  />
+                  {/* 인증 페이지 속 인증글 상세 페이지*/}
                   <Route
                     path="/challengewrite"
                     exact
@@ -114,7 +135,7 @@ function App() {
                   {/* 비밀번호찾기 */}
                   <Route path="/chatting" exact component={ChatList} />
                   {/* 채팅리스트 */}
-                  <Route path="/chatting/0" exact component={ChatRoom} />
+                  <Route path="/chatting/:roomId" exact component={ChatRoom} />
                   {/* 채팅방 - 뒤에 번호 임시 */}
                   <Route
                     path="/mypage/completed"

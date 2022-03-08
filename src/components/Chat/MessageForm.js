@@ -31,6 +31,7 @@ function MessageForm({ nickname }) {
 
     // 버튼을 누르면 실행합니다.
     const handleSendMesssage = useCallback(() => {
+
     // 공백을 trim()으로 제거합니다.
     const noContent = typingMessage.trim() === "";
 

@@ -31,9 +31,9 @@ const Footer = (props) => {
                 <img src={my}></img>
                 <p>내 정보</p>
             </a>
-        </Wrap>
-    );
-
+        
+      </Wrap>
+  );
 };
 
 const Wrap = styled.div`

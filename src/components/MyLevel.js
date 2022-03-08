@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Image } from "../elements";
-import { challengeApis } from "../shared/apis";
-import { history } from "../redux/configureStore";
+import { challengeApis, mypageApis } from "../shared/apis";
+import { actionCreators as mypageAction } from "../redux/modules/mypage";
+
 const MyLevel = (props) => {
-  const my_level = useSelector((state) => state.mypage.user);
-  console.log(my_level);
+  const dispatch = useDispatch();
+  const my_level = useSelector((state) => state.mypage.myInfo);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    dispatch(mypageAction.getMyInfoDB(userId));
+  }, []);
 
   return (
     <Wrap>
@@ -14,7 +20,7 @@ const MyLevel = (props) => {
         <Grid is_flex padding="0px">
           <div style={{ display: "flex" }}>
             <div>
-              <Image shape="circle" size={40} />
+              <Image shape="circle" size={40} src={my_level.profileUrl} />
             </div>
             <Grid padding="0px 0px 0px 9px">
               <p
@@ -44,7 +50,11 @@ const MyLevel = (props) => {
         {/* <TooltipBox>
           <Tooltip>오늘 인증을 하면 레벨업!</Tooltip>
         </TooltipBox> */}
-        <Icon size={92} src={my_level.levelIcon} />
+        <Icon
+          size={92}
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlwiGD-SGQ1o7a3LV6bv845DCONAKTsd7yw&usqp=CAU"
+        />
+        {/* <Icon size={92} src={my_level.levelIcon} /> */}
       </MyPlanet>
     </Wrap>
   );
@@ -160,11 +170,11 @@ const Progress = (props) => {
       <ProgressBar>
         {/* <HighLight width={(count / bucket_list.length) * 100 + "%"}></HighLight> */}
         <HighLight
-          width={(my_level.point / my_level.experiencePoint) * 100 + "%"}
+          width={(my_level.rankingPoint / my_level.experiencePoint) * 100 + "%"}
         ></HighLight>
       </ProgressBar>
       <Point>
-        {my_level.point}/{my_level.experiencePoint}
+        {my_level.rankingPoint}/{my_level.experiencePoint}
       </Point>
     </>
   );
