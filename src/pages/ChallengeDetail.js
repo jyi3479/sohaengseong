@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { challengeApis } from "../shared/apis";
 import { targetChallenge } from "../redux/modules/challenge";
 import { apis } from "../shared/apis";
+import moment from "moment";
 
 //비밀방 비밀번호 커스텀
 import ReactCodeInput from "react-code-input";
@@ -41,10 +42,14 @@ const ChallengeDetail = (props) => {
     const member = members&&members.find((m) => m.userId === parseInt(userInfo));
     const admin = members&&members[member_idx];      
     const imageList = target&&target.challengeImage;
+
+    //날짜 포맷 변경 뒤 날짜 간격 계산하기
     const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}`;
     const endDate = target&&`${target.endDate.split(" ")[0].split("-")[0]}`;
+    const dateA = moment(startDate, 'YYYY.MM.DD');
+    const dateB = moment(endDate, 'YYYY.MM.DD');
+    const days = dateA.from(dateB).split(" ")[0]; //16 days ago 이런 식으로 나와서 자름
 
-    console.log(member);
     
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
@@ -184,7 +189,7 @@ const ChallengeDetail = (props) => {
                         <Grid padding="14px">
                             <Grid padding="0" center>
                                 <p>기간</p>
-                                <p>15일</p>
+                                <p>{days}일</p>
                             </Grid>
                         </Grid>
                         <div

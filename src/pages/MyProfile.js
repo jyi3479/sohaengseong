@@ -14,15 +14,16 @@ import Modal from '../components/Modal';
 
 const MyProfile = (props) => {
     const dispatch = useDispatch();
-    const userInfo = useSelector(state => state.user.user);  
-    const userId = localStorage.getItem("userId");
+    const userInfo = useSelector((state) => state.mypage.myInfo);
+    const userId = localStorage.getItem("userId");    
 
     //수정 목록
     const [password, setpassword] = React.useState("");
     const [passwordCheck, setpasswordCheck] = React.useState("");
     const [image, setImage] = React.useState(null);
-    const [preview, setPreview] = React.useState(userInfo&& userInfo.profileUrl !== null ? userInfo.profileUrl : defalt);
+    const [preview, setPreview] = React.useState(userInfo&&userInfo.profileUrl === null ? defalt : userInfo.profileUrl);
     const [compareImage, setCompareImage] = React.useState(userInfo?userInfo.challengeImage:null);
+
 
     //유효성 검사
     const [isPwd,setIsPwd] = React.useState(false);
@@ -103,12 +104,9 @@ const MyProfile = (props) => {
 
         formData.append("profileImage",image);
 
-        const data = {
-            profileImage: compareImage,
-            profile:{
-               password:password,
-               passwordCheck:passwordCheck
-            }
+        const data = {           
+            password:password,
+            passwordCheck:passwordCheck
         };
 
         formData.append(
@@ -119,6 +117,8 @@ const MyProfile = (props) => {
         mypageApis.editMyInfo(userId,formData)
         .then((res)=>{
           console.log("프로필 수정",res);
+          setModalType("comfirmModal2");
+            setModalOpen(true);
         }).catch((err)=>{
           console.log("프로필 수정에러",err);
         });
@@ -146,9 +146,7 @@ const MyProfile = (props) => {
             <Grid padding="0 40px" margin="48px 0 0">
                 <Grid margin="26px 0 0" padding="0">
                     <Grid margin="0 auto 32px"  width="109px" padding="0" style={{position: "relative"}}>
-                        <Image size="109" shape="circle"
-                            profile={preview}
-                        ></Image>
+                        <Image size="109" shape="circle" profile={preview}></Image>
                         <FileBox>
                             {/* 이미지 업로드 */}                
                             <label htmlFor="file_input" className="upload-box"></label>
@@ -223,7 +221,12 @@ const MyProfile = (props) => {
                     <p>프로필을 수정하시겠습니까?</p>
                 </Modal>
                 {/* 삭제하기 눌렀을 때 진행중인 챌린지에 뜨는 모달팝업 */}
-                <Modal open={modalType === "comfirmModal2"? modalOpen : ""} close={closeModal} btn_text="확인">
+                <Modal open={modalType === "comfirmModal2"? modalOpen : ""} close={closeModal} btn_text="확인" 
+                    _onClick={()=>{
+                        closeModal()
+                        history.push("/mypage")
+                    }}
+                >
                     <p>프로필 수정이 완료되었습니다.</p>
                 </Modal>     
             </Grid>

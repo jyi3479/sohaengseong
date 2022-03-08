@@ -1,142 +1,168 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { useSelector } from "react-redux";
-import { Grid } from "../elements";
-import Card from "./Card";
+import { useDispatch, useSelector } from "react-redux";
+import { Grid , Button} from "../elements";
 import ChallengeCard from "./ChallengeCard";
-import { challengeApis } from "../shared/apis";
+import {actionCreators as myActions} from "../redux/modules/mypage";
+
 
 const MyChallenge = (props) => {
+  const dispatch = useDispatch();
+  const userId = localStorage.getItem("userId"); 
+  const myInfo = useSelector((state) => state.mypage.myInfo);
   const my_list = useSelector((state) => state.mypage.list);
-  const before_list = my_list.filter((l) => l.status === "모집중"); //모집 중인 챌린지
-  const ing_list = my_list.filter((l) => l.status === "진행중"); // 진행 중인 챌린지(오늘의 챌린지)
-  const completed_list = my_list.filter(
+  const admin_list = my_list&&my_list.filter((l) => l.status === "모집중" && l.userId === +userId
+  ); //모집 중 & 내가 방장
+  const before_list = my_list&&my_list.filter((l) => l.status === "모집중" && l.userId !== +userId
+  ); //모집 중 & 내가 참여자
+  const ing_list = my_list&&my_list.filter((l) => l.status === "진행중"); // 진행 중인 챌린지(오늘의 챌린지)
+  const completed_list = my_list&&my_list.filter(
     (l) => l.status === "성공" || l.status === "실패"
   ); // 지난 챌린지(success+fail)
-  console.log(completed_list);
+
+  //탭 클릭하면 활성화  & 탭 내용 보여주기
+  const tabClick = (event,tabName) => {      
+      let i, x, tablinks;
+      x = document.getElementsByClassName("tab");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < x.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+  };
+
+
 
   useEffect(() => {
-    challengeApis
-      .getChallenge()
-      .then((res) => {
-        console.log("챌린지 전체 조회", res);
-      })
-      .catch((err) => {
-        console.log("챌린지 전체 조회 오류", err);
-      });
-  });
+    dispatch(myActions.getMyChallengeDB(userId));
+  },[]);
 
   return (
     <>
-      <Wrap>
-        <StatusContainer>
-          <Grid padding="14px">
-            <Grid center>
-              <p>진행중</p>
-              <p>{ing_list.length}</p>
-            </Grid>
-          </Grid>
-          <div
-            style={{
-              borderRight: "1px solid #c7c7c7",
-              height: "20px",
-              margin: "auto 0px",
-            }}
-          />
-          <Grid padding="14px">
-            <Grid center>
-              <p>완료</p>
-              <p>{completed_list.length}</p>
-            </Grid>
-          </Grid>
-        </StatusContainer>
-        <Grid padding="24px 0px 0px">
-          <Title>오늘의 챌린지</Title>
-          <SubTitle>현재 진행중인 습관 챌린지</SubTitle>
-          <ChallengeContainer>
-            {ing_list.map((el, i) => {
-              return (
-                <ChallengeCard
-                  key={el.challengeId}
-                  {...el}
-                  _onClick={() => {
-                    history.push(`/member/${el.challengeId}`); //멤버 전용 페이지로 이동
-                  }}
-                ></ChallengeCard>
-              );
-            })}
-          </ChallengeContainer>
-        </Grid>
-
-        <Grid padding="24px 0px 0px">
-          <Title>입주민 모집중</Title>
-          <SubTitle>내가 개설한 챌린지</SubTitle>
-          {before_list.map((el, i) => {
-            return (
-              <ChallengeCard
-                key={el.challengeId}
-                {...el}
-                _onClick={() => {
-                  history.push(`/challenge/${el.challengeId}`); //소개 페이지로 이동
-                }}
-              ></ChallengeCard>
-            );
-          })}
-        </Grid>
-
-        <Grid padding="24px 0px 0px">
-          <Grid is_flex padding="0px">
-            <Title>지나온 행성들</Title>
-            <p
-              style={{ fontSize: "12px", cursor: "pointer" }}
-              onClick={() => {
-                history.push("/mypage/completed");
+     {my_list && myInfo&&
+     <>     
+      <Grid padding="0" margin="0 0 66px">     
+          <StatusContainer>
+              <Grid padding="14px">
+                  <Grid padding="0" center>
+                    <p>진행예정</p>
+                    <p>{before_list.length}</p>
+                  </Grid>
+              </Grid>
+              <div
+              style={{
+                  borderRight: "1px solid #c7c7c7",
+                  height: "20px",
+                  margin: "auto 0px",
               }}
-            >
-              상세보기
-            </p>
-          </Grid>
-
-          <SubTitle>내가 진행했던 챌린지</SubTitle>
-          {completed_list.map((el, i) => {
-            // 지난 챌린지 중 성공일 경우
-            if (el.status === "success") {
-              return (
-                <ChallengeCard
-                  key={el.challengeId}
-                  {...el}
-                  _onClick={() => {
-                    history.push(`/challenge/${el.challengeId}`); //소개 페이지로 이동
-                  }}
-                  bg="orange"
-                ></ChallengeCard>
-              );
-            }
-            // 지난 챌린지 중 실패일 경우
-            return (
-              <ChallengeCard
-                key={el.challengeId}
-                {...el}
-                _onClick={() => {
-                  history.push(`/challenge/${el.challengeId}`); //소개 페이지로 이동
-                }}
-                bg="red"
-              ></ChallengeCard>
-            );
-          })}
-        </Grid>
-      </Wrap>
+              />
+              <Grid padding="14px">
+                <Grid center>
+                  <p>진행중</p>
+                  <p>{ing_list.length}</p>
+                </Grid>
+              </Grid>
+              <div
+              style={{
+                  borderRight: "1px solid #c7c7c7",
+                  height: "20px",
+                  margin: "auto 0px",
+              }}
+              />
+              <Grid padding="14px">
+                <Grid center>
+                  <p>개설</p>
+                  <p>{admin_list.length}</p>
+                </Grid>
+            </Grid>
+          </StatusContainer> 
+          <Tabs>
+            <li className="tablink active" onClick={(e)=>{tabClick(e,'before')}}>진행중</li>
+            <li className="tablink" onClick={(e)=>{tabClick(e,'before')}}>진행예정</li>
+            <li className="tablink" onClick={(e)=>{tabClick(e,'admin')}}>개설</li>
+          </Tabs>
+          <Wrap>
+            <ul>
+              <li id="ing" className="tab">
+                {ing_list.map((el, i) => {
+                  return (
+                    <ChallengeCard
+                      key={el.challengeId}
+                      {...el}
+                      _onClick={() => {
+                        history.push(`/member/${el.challengeId}`); //멤버 전용 페이지로 이동
+                      }}
+                    ></ChallengeCard>
+                  );
+                })}
+              </li>
+              <li id="before" className="tab" style={{display:"none"}}>
+                {before_list.map((el, i) => {
+                  return (
+                    <ChallengeCard
+                      key={el.challengeId}
+                      {...el}
+                      _onClick={() => {
+                        history.push(`/challenge/${el.challengeId}`); //소개 페이지로 이동
+                      }}
+                    ></ChallengeCard>
+                  );
+                })}
+              </li>
+              <li id="admin" className="tab" style={{display:"none"}}>
+                {admin_list.map((el, i) => {
+                  return (
+                    <ChallengeCard
+                      key={el.challengeId}
+                      {...el}
+                      _onClick={() => {
+                        history.push(`/challenge/${el.challengeId}`); //소개 페이지로 이동
+                      }}
+                    ></ChallengeCard>
+                  );
+                })}
+              </li>
+            </ul>
+          </Wrap>
+          <MyReport onClick={() => {
+                  history.push("/mypage/completed");
+                }}>
+              <h6>마이 리포트</h6>
+              <p>{myInfo.nickname} 님의 지난 기록들 확인하기</p>
+          </MyReport>
+      </Grid>
+      
+      </>
+      }
     </>
   );
 };
 
 const Wrap = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  flex-direction: column;
 `;
+
+const Tabs = styled.ul`
+  margin: 28px 0 20px;
+  li {
+    display: inline-block;
+    font-size:16px;
+    margin-right: 8px;
+    padding-bottom: 4px;
+    cursor: pointer;
+  }
+  li.active {
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+  }
+`;
+
 
 const StatusContainer = styled.div`
   display: flex;
@@ -152,6 +178,21 @@ const StatusContainer = styled.div`
     font-size: 16px;
     font-weight: bold;
     color: #000;
+  }
+`;
+
+const MyReport = styled.div`
+  position: relative;
+  margin: 39px 0 36px;
+  padding: 17px 20px;
+  background-color: #fcfcfc;
+  border-radius: 5px;
+  h6 {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  p {
+    font-size: 14px;
   }
 `;
 
@@ -175,5 +216,8 @@ const ChallengeContainer = styled.div`
   overflow-y: hidden;
   padding-bottom: 20px;
 `;
+
+
+
 
 export default MyChallenge;

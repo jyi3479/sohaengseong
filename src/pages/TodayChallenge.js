@@ -8,6 +8,7 @@ import ChallengeList from "../components/ChallengeList";
 
 const TodayChallenge = (props) => {
     const dispatch = useDispatch();
+    const list = useSelector(state => state.challenge.list);
 
     React.useEffect(()=>{
         dispatch(baseAction.setHeader("오늘의 소행성"));
@@ -21,7 +22,7 @@ const TodayChallenge = (props) => {
         <Grid margin="48px 0 0">
             <TopBox>
                 <p>진행중</p>
-                <p>3</p>
+                <p>{list.length}</p>
             </TopBox>
             <ChallengeList/>
         </Grid>        

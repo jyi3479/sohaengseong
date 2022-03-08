@@ -34,8 +34,7 @@ Image.defaultProps = {
   shape: "circle",
   src: "",
   size: 37,
-  profile:
-    "https://www.garyqi.com/wp-content/uploads/2017/01/default-avatar-500x500.jpg",
+  profile: "",
   radius: "0",
   inline_block: false,
   is_preview: false,
