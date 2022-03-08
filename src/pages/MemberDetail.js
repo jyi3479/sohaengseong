@@ -5,9 +5,9 @@ import { Grid } from "../elements";
 import { history } from "../redux/configureStore";
 
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
-import ChallengeInfo from "../components/MemberDetail/ChallengeInfo";
-import MemberReport from "../components/MemberDetail/MemberReport";
-import MemberPost from "../components/MemberDetail/TodayPost";
+import ChallengeInfo from "../components/Member/ChallengeInfo";
+import MemberReport from "../components/Member/MemberReport";
+import MemberPost from "../components/Member/TodayPost";
 
 const MemberDetail = (props) => {
   const challengeId = +useParams().challengeId;

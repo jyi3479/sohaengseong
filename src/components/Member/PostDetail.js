@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as memberActions } from "../redux/modules/member";
+import { actionCreators as memberActions } from "../../redux/modules/member";
 import styled from "styled-components";
-import { Button, Grid, Input, Image } from "../elements";
+import { Button, Grid, Input, Image } from "../../elements";
 
-const PostCard = (props) => {
+const PostDetail = (props) => {
   const dispatch = useDispatch();
   const [content, setContent] = React.useState("");
   const addComment = () => {
@@ -26,8 +26,8 @@ const PostCard = (props) => {
       {/* PostCard의 윗 부분 */}
       <Grid is_flex padding="0px" margin="20px 0px">
         <Grid is_flex width="auto" padding="0px">
-          <Image size={40} profile={props.profileImage} />
-          <p style={{ margin: "0px 10px" }}>{props.nickname}</p>
+          <ProfileImage size={40} src={props.profileImage} />
+          <p>{props.nickname}</p>
         </Grid>
         <Grid is_flex width="auto" padding="0px">
           <p>수정</p>
@@ -45,33 +45,43 @@ const PostCard = (props) => {
       <Grid margin="16px 0" padding="0px">
         <p>{props.content}</p>
       </Grid>
+      {/* PostCard의 댓글 입력 창 */}
+      <Grid is_flex>
+        <Grid>
+          <Input
+            value={content}
+            _onChange={(e) => {
+              setContent(e.target.value);
+            }}
+          />
+        </Grid>
+        <Button width="50px" _onClick={addComment}>
+          입력
+        </Button>
+      </Grid>
 
       {/* PostCard의 댓글 조회 부분 */}
-      <CommentBox>
-        <p>
-          댓글 <span>{props.comments.length}</span>개
-        </p>
-        {props.comments?.map((el, i) => {
-          return (
-            <Grid padding="0px" margin="8px 0px" key={el.commentId} is_flex>
-              <Grid is_flex padding="0px" width="auto">
-                <p>{el.nickname}</p>
-              </Grid>
-              <p>{el.content}</p>
-              <Grid is_flex padding="0px" width="auto">
-                <p>{el.createdAt}</p>
-              </Grid>
-              <p
-                onClick={() => {
-                  deleteComment(el.commentId);
-                }}
-              >
-                삭제
-              </p>
+      {props.comments?.map((el, i) => {
+        return (
+          <Grid key={el.commentId} is_flex>
+            <Grid is_flex width="auto">
+              <ProfileImage size={20} src={el.profileImage} />
+              <p>{el.nickname}</p>
             </Grid>
-          );
-        })}
-      </CommentBox>
+            <p>{el.content}</p>
+            <Grid is_flex width="auto">
+              <p>{el.createdAt}</p>
+            </Grid>
+            <p
+              onClick={() => {
+                deleteComment(el.commentId);
+              }}
+            >
+              삭제
+            </p>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };
@@ -89,10 +99,16 @@ const ProfileImage = styled.img`
   border: 1px solid red;
 `;
 
-const CommentBox = styled.div`
-  margin: 16px 0px;
-  padding: 10px 0px;
-  border-top: 1px solid #d9d9d9;
+const PostImage = styled.img`
+  --size: ${(props) => props.size}px;
+  width: var(--size);
+  height: var(--size);
+  min-width: var(--size);
+  min-height: var(--size);
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  background-position: center;
+  border: 1px solid red;
 `;
 
-export default PostCard;
+export default PostDetail;

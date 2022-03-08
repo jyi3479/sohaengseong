@@ -31,40 +31,40 @@ const ChallengeWrite = (props) => {
     dispatch(baseAction.setHeader(true, isEdit ? "수정하기" : "개설하기"));
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
-      dispatch(challengeAction.getOneChallengeDB(params.challengeId));
-      // 기존에 입력한 태그 보여주기
-      const $HashWrapOuter = document.querySelector(".HashWrapOuter");
-      const $HashWrapInner = document.createElement("span");
-      $HashWrapInner.className = "HashWrapInner";
-      // 삭제 버튼 만들기
-      const $HashDelete = document.createElement("a");
-      $HashDelete.className = "HashDelete";
+      dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
+      // // 기존에 입력한 태그 보여주기
+      // const $HashWrapOuter = document.querySelector(".HashWrapOuter");
+      // const $HashWrapInner = document.createElement("span");
+      // $HashWrapInner.className = "HashWrapInner";
+      // // 삭제 버튼 만들기
+      // const $HashDelete = document.createElement("a");
+      // $HashDelete.className = "HashDelete";
 
-      /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
-      $HashDelete.addEventListener("click", () => {
-        $HashWrapOuter?.removeChild($HashWrapInner);
+      // /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
+      // $HashDelete.addEventListener("click", () => {
+      //   $HashWrapOuter?.removeChild($HashWrapInner);
 
-        console.log($HashWrapInner.innerHTML);
-        setHashArr(hashArr.filter((hashtag) => hashtag));
-      });
+      //   console.log($HashWrapInner.innerHTML);
+      //   setHashArr(hashArr.filter((hashtag) => hashtag));
+      // });
 
-      // 입력했던 태그가 있을 경우
-      if (hashArr.length > 0) {
-        console.log(hashArr);
-        // hashArr.map((el, idx)=>{
-        //   $HashWrapInner.innerHTML = e.target.value;
-        //         $HashWrapOuter?.appendChild($HashWrapInner);
-        //         $HashDelete.innerHTML = "x";
-        //         $HashWrapInner?.appendChild($HashDelete);
-        //   return null;
-        // })
-        // $HashWrapInner.innerHTML = e.target.value;
-        // $HashWrapOuter?.appendChild($HashWrapInner);
-        // $HashDelete.innerHTML = "x";
-        // $HashWrapInner?.appendChild($HashDelete);
-        // setHashArr((hashArr) => [...hashArr, hashtag]);
-        // setHashtag("");
-      }
+      // // 입력했던 태그가 있을 경우
+      // if (hashArr.length > 0) {
+      //   console.log(hashArr);
+      //   // hashArr.map((el, idx)=>{
+      //   //   $HashWrapInner.innerHTML = e.target.value;
+      //   //         $HashWrapOuter?.appendChild($HashWrapInner);
+      //   //         $HashDelete.innerHTML = "x";
+      //   //         $HashWrapInner?.appendChild($HashDelete);
+      //   //   return null;
+      //   // })
+      //   // $HashWrapInner.innerHTML = e.target.value;
+      //   // $HashWrapOuter?.appendChild($HashWrapInner);
+      //   // $HashDelete.innerHTML = "x";
+      //   // $HashWrapInner?.appendChild($HashDelete);
+      //   // setHashArr((hashArr) => [...hashArr, hashtag]);
+      //   // setHashtag("");
+      // }
     }
     return () => {
       dispatch(baseAction.setHeader(false, ""));
@@ -79,7 +79,10 @@ const ChallengeWrite = (props) => {
   );
 
   //이미지 부분
-  const [image, setImage] = React.useState(isEdit ? target.challengeImage : []);
+  const [compareImage, setCompareImage] = React.useState(
+    isEdit ? target.challengeImage : []
+  );
+  const [image, setImage] = React.useState([]);
   const [preview, setPreview] = React.useState(
     isEdit ? target.challengeImage : []
   );
@@ -228,6 +231,10 @@ const ChallengeWrite = (props) => {
 
     setImage([...imageArr]);
     setPreview([...previewArr]);
+    if (isEdit) {
+      const compareArr = compareImage.filter((el, idx) => idx !== index);
+      setCompareImage([...compareArr]);
+    }
   };
 
   // 인증 게시글 추가하기
@@ -309,25 +316,24 @@ const ChallengeWrite = (props) => {
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.addChallengeDB(formData));
   };
+
   // 인증 게시글 수정하기
   const editChallenge = () => {
     if (content === "") {
       window.alert("내용을 입력해주세요!");
       return;
     }
+
     // 서버에 보내기 위한 작업
     // 폼데이터 생성
     let formData = new FormData();
+
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
+      image: compareImage,
       title: title,
       content: content,
       category: category,
-      maxMember: parseInt(maxMember),
-      startDate: startDate,
-      endDate: endDate,
-      isPrivate: checkedInputs === "private" ? true : false,
-      password: checkedInputs === "private" ? password : null,
       tagName: hashArr,
     };
 
@@ -342,7 +348,7 @@ const ChallengeWrite = (props) => {
     );
 
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
-    dispatch(challengeAction.editChallengeDB(params.challengeId, formData));
+    dispatch(challengeAction.editChallengeDB(+params.challengeId, formData));
   };
 
   return (

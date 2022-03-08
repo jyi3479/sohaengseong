@@ -9,31 +9,30 @@ import my from "../image/icons/ic_my@2x.png";
 const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);
 
-    if(!hide){
-        return null;
-    }
-    return(
-        <Wrap>
-            <a href="/">
-                <img src={home}></img>
-                <p>홈</p>
-            </a>        
-            <a href="/challengewrite">
-                <img src={create}></img>
-                <p>개설하기</p>
-            </a>            
-            <a href="/">
-                <img src={chat}></img>
-                <p>채팅하기</p>
-            </a>
-        
-            <a href="/mypage">
-                <img src={my}></img>
-                <p>내 정보</p>
-            </a>
-        </Wrap>
-    );
+  if (!hide) {
+    return null;
+  }
+  return (
+    <Wrap>
+      <a href="/">
+        <img src={home}></img>
+        <p>홈</p>
+      </a>
+      <a href="/challengewrite">
+        <img src={create}></img>
+        <p>개설하기</p>
+      </a>
+      <a href="/chatting">
+        <img src={chat}></img>
+        <p>채팅하기</p>
+      </a>
 
+      <a href="/mypage">
+        <img src={my}></img>
+        <p>내 정보</p>
+      </a>
+    </Wrap>
+  );
 };
 
 const Wrap = styled.div`

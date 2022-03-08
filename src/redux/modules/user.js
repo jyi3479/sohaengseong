@@ -41,13 +41,54 @@ const initialState = {
 };
 
 //로그인
+// const loginDB = (email, password) => {
+//   return function (dispatch, getState, { history }) {
+//     userApis
+//       .login(email, password)
+//       .then((res) => {
+//         //console.log("로그인",res);
+//         setCookie("token", res.data.token);
+
+//         userApis
+//           .useInfo()
+//           .then((res) => {
+//             dispatch(
+//               setUser({
+//                 //유저정보를 다시 세팅
+//                 userId: res.data.userId,
+//                 email: res.data.email,
+//                 nickname: res.data.nickname,
+//                 profileUrl: res.data.profileImage,
+//               })
+//             );
+//           })
+//           .catch((error) => console.log("유저정보저장오류", error));
+//         history.push("/");
+//       })
+
+//       .catch((code, message) => {
+//         console.log("로그인오류입니다!", code, message);
+//         dispatch(
+//           setWarning(
+//             true,
+//             "이메일 또는 비밀번호를 잘못 입력했습니다.\n 입력하신 내용을 다시 확인해주세요."
+//           )
+//         );
+//       });
+//   };
+// };
+
 const loginDB = (email, password) => {
   return function (dispatch, getState, { history }) {
     userApis
       .login(email, password)
       .then((res) => {
         //console.log("로그인",res);
-        setCookie("token", res.data.token);
+        console.log(res);
+        const token = res.data.token;
+
+        // 쿠키에 정보 저장
+        setCookie("token", token);
 
         userApis
           .useInfo()
@@ -79,13 +120,36 @@ const loginDB = (email, password) => {
 };
 
 //회원가입
+
+// export const signupDB = (email, nickname, password, passwordCheck) => {
+//   return function (dispatch, getState, { history }) {
+//     const signup = {
+//       email: email,
+//       nickname: nickname,
+//       password: password,
+//       passwordCheck: passwordCheck,
+//     };
+
+//     console.log("회원가입", signup);
+//     userApis
+//       .signup(signup)
+//       .then((res) => {
+//         console.log(res, "회원가입");
+//       })
+//       .catch((error) => {
+//         window.alert("회원가입 오류입니다!");
+//         console.log("회원가입 실패:", error);
+//       });
+//   };
+// };
 export const signupDB = (email, nickname, password, passwordCheck) => {
   return function (dispatch, getState, { history }) {
     const signup = {
+      // email: email,
       email: email,
-      nickname: nickname,
+      username: nickname,
       password: password,
-      passwordCheck: passwordCheck,
+      // passwordcheck: passwordCheck,
     };
 
     console.log("회원가입", signup);
@@ -236,6 +300,7 @@ const logOutAction = () => {
   return function (dispatch, getState, { history }) {
     console.log("로그아웃 눌림");
     deleteCookie("token"); // 쿠키에서 토큰 삭제
+    localStorage.removeItem("userId");
     dispatch(logOut());
     history.replace("/");
   };
