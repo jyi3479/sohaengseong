@@ -27,7 +27,7 @@ const setWarning = createAction(SET_WARNING, (detail, text) => ({
 
 const initialState = {
   user: null,
-  is_login: null,  
+  is_login: null,
   nickCk: null,
   setwarning: {
     detail: false,
@@ -222,8 +222,6 @@ const logOutAction = () => {
   };
 };
 
-
-
 export default handleActions(
   {
     [SET_USER]: (state, action) =>
@@ -235,7 +233,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.user = null;
         draft.is_login = false;
-      }),    
+      }),
     [NICK_CHECK]: (state, action) =>
       produce(state, (draft) => {
         draft.nickCk = action.payload.nickCheckres.result;
@@ -254,7 +252,6 @@ const ActionCreators = {
   signupDB,
   loginDB,
   loginCheckDB,
-  emailCheck,
   nicknameCheck,
   logOutAction,
   emailCheckToken,

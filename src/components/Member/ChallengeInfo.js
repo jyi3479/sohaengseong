@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { actionCreators as challengeAction } from "../../redux/modules/challenge";
 import { Grid } from "../../elements";
+import { history } from "../../redux/configureStore";
 
 const ChallengeInfo = (props) => {
   const dispatch = useDispatch();
@@ -18,48 +19,59 @@ const ChallengeInfo = (props) => {
     dispatch(challengeAction.getOneChallengeDB(challengeId));
   }, []);
   return (
-    <Grid padding="0px">
-      <Grid is_flex padding="0" margin="19px 0px">
-        <Title>{target.title}</Title>
-        <DetailBtn> 상세보기</DetailBtn>
-      </Grid>
-      <StatusContainer>
-        <Grid padding="14px">
-          <Grid padding="0" center>
-            <p>기간</p>
-            <p>15일</p>
+    <>
+      {target && (
+        <Grid padding="0px">
+          <Grid is_flex padding="0" margin="19px 0px">
+            <Title>{target.title}</Title>
+            <DetailBtn
+              onClick={() => {
+                history.push(`/member/detail/${challengeId}`);
+              }}
+            >
+              {" "}
+              상세보기
+            </DetailBtn>
           </Grid>
+          <StatusContainer>
+            <Grid padding="14px">
+              <Grid padding="0" center>
+                <p>기간</p>
+                <p>15일</p>
+              </Grid>
+            </Grid>
+            <div
+              style={{
+                borderRight: "1px solid #c7c7c7",
+                height: "20px",
+                margin: "auto 0px",
+              }}
+            />
+            <Grid padding="14px">
+              <Grid padding="0" center>
+                <p>멤버</p>
+                <p>
+                  {target.currentMember}/{target.maxMember}
+                </p>
+              </Grid>
+            </Grid>
+            <div
+              style={{
+                borderRight: "1px solid #c7c7c7",
+                height: "20px",
+                margin: "auto 0px",
+              }}
+            />
+            <Grid padding="14px">
+              <Grid padding="0" center>
+                <p>공개여부</p>
+                <p>{target.isPrivate ? "비공개" : "공개"}</p>
+              </Grid>
+            </Grid>
+          </StatusContainer>
         </Grid>
-        <div
-          style={{
-            borderRight: "1px solid #c7c7c7",
-            height: "20px",
-            margin: "auto 0px",
-          }}
-        />
-        <Grid padding="14px">
-          <Grid padding="0" center>
-            <p>멤버</p>
-            <p>
-              {target.currentMember}/{target.maxMember}
-            </p>
-          </Grid>
-        </Grid>
-        <div
-          style={{
-            borderRight: "1px solid #c7c7c7",
-            height: "20px",
-            margin: "auto 0px",
-          }}
-        />
-        <Grid padding="14px">
-          <Grid padding="0" center>
-            <p>공개여부</p>
-            <p>{target.isPrivate ? "비공개" : "공개"}</p>
-          </Grid>
-        </Grid>
-      </StatusContainer>
-    </Grid>
+      )}
+    </>
   );
 };
 

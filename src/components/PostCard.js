@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as memberActions } from "../redux/modules/member";
 import styled from "styled-components";
 import { Button, Grid, Input, Image } from "../elements";
+import { history } from "../redux/configureStore";
+import { useParams } from "react-router-dom";
 
 const PostCard = (props) => {
+  const challengeId = useParams().challengeId;
   const dispatch = useDispatch();
   const [content, setContent] = React.useState("");
   const addComment = () => {
@@ -30,7 +33,13 @@ const PostCard = (props) => {
           <p style={{ margin: "0px 10px" }}>{props.nickname}</p>
         </Grid>
         <Grid is_flex width="auto" padding="0px">
-          <p>수정</p>
+          <p
+            onClick={() => {
+              history.push(`/post/${challengeId}/write/${props.postId}`);
+            }}
+          >
+            수정
+          </p>
           <p onClick={deletePost}>삭제</p>
         </Grid>
       </Grid>
