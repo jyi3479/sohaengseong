@@ -285,12 +285,16 @@ const initialState = {
 
 const getOneChallengeDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
-    // challengeApis.getOneChallenge(challengeId)
-    // .then((res)=>{
-    //     console.log("특정 챌린지 조회",res);
-    // }).catch((err)=>{
-    //     console.log("특정 챌린지 조회 오류",err);
-    // });
+    challengeApis
+      .getOneChallenge(challengeId)
+      .then((res) => {
+        const target = res.data;
+        dispatch(targetChallenge(target));
+        console.log("특정 챌린지 조회", res.data);
+      })
+      .catch((err) => {
+        console.log("특정 챌린지 조회 오류", err);
+      });
   };
 };
 
@@ -328,18 +332,6 @@ const editChallengeDB = (challengeId, challenge) => {
       .catch((err) => {
         console.log("챌린지 수정 오류", err);
       });
-  };
-};
-const editChallengeDB = (challengeId, challenge) => {
-  return function (dispatch, getState, { history }) {
-    // challengeApis
-    //   .editChallenge(challengeId, challenge)
-    //   .then((res) => {
-    //     console.log("챌린지 수정", res);
-    //   })
-    //   .catch((err) => {
-    //     console.log("챌린지 수정 오류", err);
-    //   });
   };
 };
 

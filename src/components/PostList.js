@@ -16,22 +16,12 @@ const PostList = (props) => {
     dispatch(memberActions.getPostDB(challengeId));
   }, []);
   return (
-    <Wrap>
-      <Grid>
-        {post_list.map((el, i) => {
-          return <PostCard key={i} {...el}></PostCard>;
-        })}
-      </Grid>
-    </Wrap>
+    <Grid padding="0px" margin="0 0 10px" border="1px #dddddd">
+      {post_list.map((el, i) => {
+        return <PostCard key={i} {...el}></PostCard>;
+      })}
+    </Grid>
   );
 };
-
-const Wrap = styled.div`
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
 
 export default PostList;

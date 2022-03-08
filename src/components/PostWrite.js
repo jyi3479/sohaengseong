@@ -5,8 +5,11 @@ import { actionCreators as memberActions } from "../redux/modules/member";
 import { Grid, Input, Button } from "../elements";
 import { useParams } from "react-router-dom";
 import { memberApis } from "../shared/apis";
+import plus from "../image/icons/btn_number_plus_l@2x.png";
 
 const PostWrite = (props) => {
+  const postId = useParams().postId;
+  const isEdit = postId ? true : false;
   const dispatch = useDispatch();
   const challengeId = useParams().challengeId;
   const userInfo = useSelector((state) => state.user.user);
@@ -66,75 +69,69 @@ const PostWrite = (props) => {
       .then((res) => {
         console.log("인증 게시글 작성", res);
         dispatch(memberActions.addPost(post));
+        setPreview("");
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
       });
-    // memberApis
-    //   .editPost(9, formData)
-    //   .then((res) => {
-    //     console.log("인증 게시글 수정", res);
-    //     // dispatch(memberActions.addPost(post));
-    //   })
-    //   .catch((err) => {
-    //     console.log("인증 게시글 수정 오류", err);
-    //   });
   };
 
   return (
-    <Wrap>
-      <Grid border="1px solid grey" margin="5px 0px" padding="5px">
-        {/* PostWrite의 윗 부분 : 현재 로그인한 유저 정보 넣기*/}
-        <Grid is_flex>
-          <Grid is_flex width="auto">
-            <ProfileImage
-              size={40}
-              src="https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png"
+    <Grid margin="16px 0px">
+      <Grid is_flex>
+        {/* 이미지 업로드 부분 */}
+        <div>
+          <ImageLabel
+            className="input-file-button"
+            htmlFor="input-file"
+            style={{
+              width: "98px",
+              height: "98px",
+              margin: "0x 8px 0px 0px",
+              display: "inline-block",
+              position: "relative",
+              border: "solid 1px #808080",
+              verticalAlign: "top", // 최상단에 정렬 맞추기
+              textAlign: "center", //이미지 가운데
+            }}
+          >
+            <img
+              src={
+                preview
+                  ? preview
+                  : "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"
+              }
+              style={{
+                width: "98px",
+                height: "98px",
+              }}
             />
-            <p>닉네임</p>
-          </Grid>
-          <div>
-            {/* 이미지 업로드 부분 */}
-            <ImageLabel className="input-file-button" htmlFor="input-file">
-              사진 업로드
-            </ImageLabel>
-            <input
-              id="input-file"
-              type="file"
-              onChange={selectFile}
-              ref={fileInput}
-              // disabled={is_uploading}
-              style={{ display: "none" }}
-            />
-          </div>
-        </Grid>
-
+          </ImageLabel>
+          <input
+            id="input-file"
+            type="file"
+            onChange={selectFile}
+            ref={fileInput}
+            // disabled={is_uploading}
+            style={{ display: "none" }}
+          />
+        </div>
         {/* PostWrite의 작성 input */}
+
         <Input
           textarea
           value={content}
           _onChange={(e) => {
             setContent(e.target.value);
           }}
+          // placeholder={`${userInfo.nickname}님, 오늘의 인증을 남겨주세요`}
+          placeholder={`주영주영님, 오늘의 인증을 남겨주세요`}
+          border="none"
         ></Input>
-        <img
-          src={
-            preview
-              ? preview
-              : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO0AAADVCAMAAACMuod9AAAAXVBMVEXv7+9mZmbs7OxfX1/39/d+fn6np6fX19fz8/POzs55eXlbW1uDg4PS0tJkZGRhYWFqamrn5+eLi4tWVlbh4eGUlJSqqqqhoaH7+/u+vr5vb2/Jycm/v7+Ojo6wsLDYus8vAAADXElEQVR4nO3b6XLiOhCGYWshtG0siWVCljNz/5c5LQhhiWAyFacO8rzPv2Bw1eeW1LIJTQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADcYMXKCKfRs4gd4TzfbT7MxzFUkFY6F3v3devYt2MMku/lZ6GbjWCR+uH+02ptR6mJLMY5z/eSbpQRKJq2itqOM99Ie39Ie4u91lUnmPZq1kmmFZHmSuDppZXN0G6ubIgnltbKZuvi2vzYSGlATyytn3frZFIMaVMq7sTSNj+jCSlq3lVT+MS00srcGZNCSsa4eeH4xNI+uxQ1qta3f55+bZ9dfNGwOpLjP5B23ufK5rjrtnC86rTiP7y0iPu0oZtWB7LWv66WFyuvH2La5Q2vpVgVp/Wvyc2Wl28dOuN699L6afVbaVN86WcXoazY/349vi7FyuWFaCpOK63J3SZ254+areb1XrfJxTuhWtP6IUQTc9zZ6cv27W7A7p6V7+prT26IKk0rw9vau1t9S5tEtRvOZ3d/daaVoQ+HtMl11743kW0n9ddW2vAeVjeJujIXM/itc4s8pt9fqTGtNtWYjrUtxc3zVx7WenOwypU91LfCtNp6jpXdi7O8zThZh2VpZRvy3Har/PfbgerSWhlMNJfiru+edZ0HF0Me5+uf9n2pri6tb81lZQ9xT3usf3RBB7ne2afdYN5/vLa0MiQX0se0eWU+dCLJq3EurDbkoIl1MNva0tpcOh3GpcruqtsdMlldjU/fFsLK79eputLqpuLjnD1w3X52Wvu07c/f5xa+vrR+cLEwio/V3Rc3h81z9jjMjVlIPlRTWtGw17O+x9VNRZ7Zx+uSH7m6RS58NWlz67md1bz13e2Hqa25damSmtLqLd4f0+oEXe777KWQd1X1fKPp2+RuzNlDFcNLviShlDeumlUlaeeD3rxfaz5nY1ZbbGEQpD7F+GPRz+8/re/MQxfMrfX4mLYs5EsVQ6ygtr5zn5izn1FDWulKm8Wppn3qPjGIJ5NW5+1ISHtv/r20I0zcVEva3sWv/3uynmJdQdrm18Moto/bzf8d5RPEy5MfQeEL3/sjdpxfP4zzY4zvZhu7zE8Uv2pZ/uYPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADg7/0G6cMyGr/MjwcAAAAASUVORK5CYII="
-          }
-          style={{
-            width: "150px",
-            height: "150px",
-            borderRadius: "5px",
-            margin: "10px auto",
-          }}
-        />
-        <Button width="50px" _onClick={addPost}>
-          입력
-        </Button>
       </Grid>
-    </Wrap>
+
+      <Button _onClick={addPost}>{isEdit ? "인증하기" : "수정하기"}</Button>
+    </Grid>
   );
 };
 
@@ -160,9 +157,9 @@ const ProfileImage = styled.img`
 `;
 
 const ImageLabel = styled.label`
-  border: 1px solid #c0c0c0;
+  /* border: 1px solid #c0c0c0;
   border-radius: 5px;
-  font-weight: 900;
+  font-weight: 900; */
   cursor: pointer;
 `;
 

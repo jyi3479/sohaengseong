@@ -4,7 +4,6 @@ const server_port = process.env.REACT_APP_SERVER_PORT;
 
 const apis = axios.create({
   baseURL: server_port, //서버 주소
-  // baseURL: "http://13.125.107.22",
 });
 const token = getCookie("token");
 const imageApis = axios.create({
@@ -85,7 +84,7 @@ export const challengeApis = {
 
   //챌린지 수정하기
   editChallenge: (challengeId, challenge) =>
-    imageApis.put(`/challenge/${challengeId}`, challenge),
+    imageApis.patch(`/challenge/${challengeId}`, challenge),
 };
 
 export const memberApis = {
@@ -144,6 +143,17 @@ export const mypageApis = {
   checkPwd: (password) => apis.post("/users/password-check", password),
 };
 
-export const chatApis = {
-  //챌린지 멤버 채팅
+export const chatAPI = {
+  createRoom: function (data) {
+    return apis.post(`/api/chat/rooms`, data);
+  },
+  getChatList: function () {
+    return apis.get(`/api/chat/rooms`);
+  },
+  getChatMessages: function (roomId) {
+    return apis.get(`/api/chat/rooms/${roomId}/messages`);
+  },
+  selectCategory: function (category) {
+    return apis.get(`/api/chat/rooms/search/${category}`);
+  },
 };

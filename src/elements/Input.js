@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Button} from "../elements"
+import { Button } from "../elements";
 const Input = ({
   label,
   subLabel,
@@ -18,12 +18,12 @@ const Input = ({
   height,
   double,
   search,
+  border,
   ...props
 }) => {
-
   // if(search){
-  //   return (     
-  //     <div>       
+  //   return (
+  //     <div>
   //       <InputField
   //           ref={ref}
   //           type={type}
@@ -38,26 +38,36 @@ const Input = ({
   //   );
   // }
 
-  if(double){
+  if (double) {
     return (
-      <Double>      
+      <Double>
         <Label>
           <p>{label}</p>
-          <p>{subLabel}</p>          
+          <p>{subLabel}</p>
         </Label>
-        <div>       
+        <div>
           <InputField
-              ref={ref}
-              type={type}
-              value={value}
-              placeholder={placeholder}
-              onChange={_onChange}
-              style={{ margin, padding, width, height }}
-              {...props}
-            />
-            <Button 
-            _onClick={props.btnClick} width="40px" height="40px" bg="#ccc" radius="0" margin="0 0 0 10px" font_size="12px" style={{color:"#fff", lineHeight:"inherit"}} >확인</Button>
-          </div>
+            ref={ref}
+            type={type}
+            value={value}
+            placeholder={placeholder}
+            onChange={_onChange}
+            style={{ margin, padding, width, height }}
+            {...props}
+          />
+          <Button
+            _onClick={props.btnClick}
+            width="40px"
+            height="40px"
+            bg="#ccc"
+            radius="0"
+            margin="0 0 0 10px"
+            font_size="12px"
+            style={{ color: "#fff", lineHeight: "inherit" }}
+          >
+            확인
+          </Button>
+        </div>
       </Double>
     );
   }
@@ -98,7 +108,7 @@ const Input = ({
               _onSubmit(e);
             }
           }}
-          style={{ margin, padding, width, height }}
+          style={{ margin, padding, width, height, border }}
           {...props}
         ></TextAreaField>
       </Label>
@@ -134,7 +144,8 @@ Input.defaultProps = {
   padding: false,
   width: false,
   height: false,
-  double:false,
+  double: false,
+  border: false,
 };
 
 const InputField = styled.input`
@@ -151,9 +162,8 @@ const InputField = styled.input`
     border: 1px solid #000;
   }
   ::placeholder {
-    color:#999;
+    color: #999;
   }
-
 `;
 
 const Label = styled.div`
@@ -172,17 +182,16 @@ const Label = styled.div`
   }
 `;
 
-const Double = styled.div`
-
-`;
+const Double = styled.div``;
 
 const TextAreaField = styled.textarea`
   ${(props) => (props.width ? `width: ${props.width};` : `width: 100%;`)}
   ${(props) => (props.height ? `height: ${props.height};` : `height: 100%;`)}
   ${(props) => (props.padding ? `padding: ${props.padding};` : "")}
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")}
+  ${(props) =>
+    props.border ? `border: ${props.border};` : `border: 1px solid #999;`}
   box-sizing: border-box;
-  border: 1px solid #999;
   font-family: inherit; // font 상속
   &:focus {
     outline: none;
