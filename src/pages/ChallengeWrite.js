@@ -82,10 +82,11 @@ const ChallengeWrite = (props) => {
   const [compareImage, setCompareImage] = React.useState(
     isEdit ? target.challengeImage : []
   );
-  const [image, setImage] = React.useState([]);
+  const [image, setImage] = React.useState(isEdit ? target.challengeImage : []);
   const [preview, setPreview] = React.useState(
     isEdit ? target.challengeImage : []
   );
+
 
   //해시태그 부분
   const [hashtag, setHashtag] = React.useState(""); //onChange로 관리할 문자열
@@ -226,13 +227,13 @@ const ChallengeWrite = (props) => {
   };
 
   const deleteImage = (index) => {
-    const imageArr = preview.filter((el, idx) => idx !== index);
-    const previewArr = preview.filter((el, idx) => idx !== index);
-
-    console.log("기존 이미지=",image, "필터이미지=",imageArr, "프리뷰 필터 이미지=",previewArr);
+    const imageArr = image.filter((el, idx) => idx !== index);
+    const previewArr = preview.filter((el, idx) => idx !== index);  
 
     setImage([...imageArr]);
     setPreview([...previewArr]);
+
+    console.log("필터이미지=",imageArr, "프리뷰 필터 이미지=",previewArr, "바뀐 이미지배열=", image);
   };
 
   // 인증 게시글 추가하기
@@ -328,7 +329,7 @@ const ChallengeWrite = (props) => {
 
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
-      image: target.challengeImage,
+      image: image,
       title: title,
       content: content,
       category: category,
@@ -348,6 +349,8 @@ const ChallengeWrite = (props) => {
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.editChallengeDB(+params.challengeId, formData));
   };
+
+  console.log("최종이미지",image);
 
   return (
     <Grid margin="78px 0px 0px" padding="0px" bg="#eeeeee">

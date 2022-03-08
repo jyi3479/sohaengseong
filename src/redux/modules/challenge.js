@@ -3,6 +3,7 @@ import { produce } from "immer";
 
 import axios from "axios";
 import { challengeApis } from "../../shared/apis";
+import { mainApis } from "../../shared/apis";
 
 const GET_CHALLENGE = "GET_CHALLENGE";
 const TARGET_CHALLENGE = "TARGET_CHALLENGE";
@@ -36,62 +37,6 @@ const getCategoryList = createAction(
 
 const initialState = {
   list: [],
-  category: [
-    {
-      categoryId: 0,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "일상 루틴",
-    },
-    {
-      categoryId: 1,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "운동",
-    },
-    {
-      categoryId: 2,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "스터디",
-    },
-    {
-      categoryId: 3,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "식습관",
-    },
-    {
-      categoryId: 4,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "힐링",
-    },
-    {
-      categoryId: 5,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "취미",
-    },
-    {
-      categoryId: 6,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "셀프케어",
-    },
-    {
-      categoryId: 7,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "펫",
-    },
-    {
-      categoryId: 8,
-      categoryIcon:
-        "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-exercise-icon-for-your-project-png-image_1532821.jpg",
-      categoryLabel: "친환경",
-    },
-  ],
   target:null,
 };
 
@@ -150,14 +95,14 @@ const addChallengeDB = (challenge) => {
 
 const editChallengeDB = (challengeId, challenge) => {
   return function (dispatch, getState, { history }) {
-    challengeApis
-      .editChallenge(challengeId, challenge)
-      .then((res) => {
-        console.log("챌린지 수정", res);
-      })
-      .catch((err) => {
-        console.log("챌린지 수정 오류", err);
-      });
+    // challengeApis
+    //   .editChallenge(challengeId, challenge)
+    //   .then((res) => {
+    //     console.log("챌린지 수정", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log("챌린지 수정 오류", err);
+    //   });
   };
 };
 
@@ -176,6 +121,33 @@ const deleteChallengeDB = (challengeId) => {
         console.log("챌린지 삭제 오류", err);
       });
   };
+};
+
+
+const categoryChallengeDB = (categoryId) => {
+  return function (dispatch, getState, { history }) {
+    console.log("카테고리",categoryId);
+
+    challengeApis
+      .categoryChallenge(+categoryId)
+      .then((res) => {
+        console.log("카테고리 챌린지", res);
+      })
+      .catch((err) => {
+        console.log("카테고리 챌린지 오류", err);
+      });
+  };
+};
+
+
+const getCategoryDB = () => {
+    mainApis.category()
+    .then((res) => {
+      console.log("카테고리", res);
+    })
+    .catch((err) => {
+      console.log("카테고리", err);
+    });
 };
 
 
@@ -227,7 +199,9 @@ const actionCreators = {
   addChallengeDB,
   editChallengeDB,
   editChallenge,
-  deleteChallengeDB
+  deleteChallengeDB,
+  categoryChallengeDB,
+  getCategoryDB
 };
 
 export { actionCreators };

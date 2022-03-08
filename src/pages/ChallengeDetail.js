@@ -247,7 +247,7 @@ const ChallengeDetail = (props) => {
                     <p style={{fontSize:"14px"}}>타인에게 어쩌구 입주 규칙은 고정 어쩌구</p>
                 </Grid>
                 <Fixed>
-                    {target.status === "모집중" ? target.maxMember !== members.length ?  member !== undefined ?  admin.userId === userInfo ?(      
+                    {target.status !== "완료" ? target.maxMember !== members.length ?  member !== undefined ?  admin.userId === userInfo ?(      
                          //내가 만든 챌린지 (시작 전)
                          <Grid padding="0" is_flex>
                             <Button width="calc(50% - 5px)" bg="#fff" style={{color:"#666",border:"1px solid #666"}}

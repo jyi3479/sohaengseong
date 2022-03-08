@@ -59,6 +59,8 @@ function App() {
               {/* 메인 */}
               <Route path="/category" exact component={CategoryMain} />
               {/* 카테고리메인*/}
+              <Route path="/category/:categoryId" exact component={CategoryTab}/>
+              {/* 카테고리리스트 */}
               <Route path="/search" exact component={Search} />
               {/* 검색페이지 */}  
               <>
@@ -77,12 +79,6 @@ function App() {
                     component={ChallengeDetail}
                   />
                   {/* 챌린지 소개 */}                  
-                  <Route
-                    path="/category/:categoryId"
-                    exact
-                    component={CategoryTab}
-                  />
-                  {/* 카테고리리스트 */}
                   <Route path="/mypage" exact component={MyPage} />
                   {/* 마이페이지 */}
                   <Route

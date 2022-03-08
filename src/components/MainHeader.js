@@ -2,14 +2,24 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import searchIconW from '../image/icons/ic_search.png';
+import arrow from "../image/icons/ic_arrow_w.png";
 
-const MainHeader = (props) => {    
+const MainHeader = (props) => {
     return(        
-        <Wrap id="Header" {...props}>
-            <h1><a href="/">소행성</a></h1>
-            <button onClick={()=>{
-                history.push("/search");
-            }}><img src={searchIconW}></img></button>
+        <Wrap id="Header" className={props.className}>
+            {props.className === "category"? (
+                <button onClick={()=>{
+                    history.go(-1);
+                }}><img src={arrow}></img></button>
+            ) : (
+                <>
+                    <h1><a href="/">소행성</a></h1>
+                    <button onClick={()=>{
+                        history.push("/search");
+                    }}><img src={searchIconW}></img></button>
+                </>
+            )}  
+            
         </Wrap>
     );    
 };

@@ -1,37 +1,34 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
-import * as baseAction from '../redux/modules/base';
-import { Grid, Input, Button} from "../elements";
+import { useDispatch } from "react-redux";
+import { Grid } from "../elements";
 import MainHeader from "../components/MainHeader";
-import Footer from "../components/Footer";
 
 const CategoryMain = (props) => {
     const dispatch = useDispatch();
 
     return(        
         <>
-        <MainHeader/>
+        <MainHeader className="category"/>
         <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 64px" height="100vh">
             <Banner>
                 <h2>찾으시는 습관 행성을<br/>선택하세요.</h2>
             </Banner>
             <Grid padding="0 20px" height="100%">
                 <CategoryPlanet>
-                    <li onClick={()=>{history.push(`/category/0`)}}><div>일상 루틴</div></li>
-                    <li onClick={()=>{history.push(`/category/1`)}}><div>운동</div></li>
-                    <li onClick={()=>{history.push(`/category/2`)}}><div>스터디</div></li>
-                    <li onClick={()=>{history.push(`/category/3`)}}><div>식습관</div></li>
-                    <li onClick={()=>{history.push(`/category/4`)}}><div>힐링</div></li>
-                    <li onClick={()=>{history.push(`/category/5`)}}><div>취미</div></li>
-                    <li onClick={()=>{history.push(`/category/6`)}}><div>셀프케어</div></li>
-                    <li onClick={()=>{history.push(`/category/7`)}}><div>펫</div></li>
-                    <li onClick={()=>{history.push(`/category/8`)}}><div>친환경</div></li>
+                    <li onClick={()=>{history.push(`/category/1`)}}><div>일상 루틴</div></li>
+                    <li onClick={()=>{history.push(`/category/2`)}}><div>운동</div></li>
+                    <li onClick={()=>{history.push(`/category/3`)}}><div>스터디</div></li>
+                    <li onClick={()=>{history.push(`/category/4`)}}><div>식습관</div></li>
+                    <li onClick={()=>{history.push(`/category/5`)}}><div>힐링</div></li>
+                    <li onClick={()=>{history.push(`/category/6`)}}><div>취미</div></li>
+                    <li onClick={()=>{history.push(`/category/7`)}}><div>셀프케어</div></li>
+                    <li onClick={()=>{history.push(`/category/8`)}}><div>펫</div></li>
+                    <li onClick={()=>{history.push(`/category/9`)}}><div>친환경</div></li>
                 </CategoryPlanet>
             </Grid>
-        </Grid>     
-        <Footer/>   
+        </Grid>
         </>
         
     );
