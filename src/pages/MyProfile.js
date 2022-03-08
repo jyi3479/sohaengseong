@@ -9,6 +9,8 @@ import { actionCreators as myActions } from "../redux/modules/mypage";
 import  defalt from "../image/img_profile_defalt @2x.png";
 import setIcon from "../image/icons/ic_setting@2x.png";
 
+//모달팝업
+import Modal from '../components/Modal';
 
 const MyProfile = (props) => {
     const dispatch = useDispatch();
@@ -23,6 +25,20 @@ const MyProfile = (props) => {
     //유효성 검사
     const [isPwd,setIsPwd] = React.useState(false);
     const [samePwd,setSamePwd] = React.useState(false);
+
+    //모달팝업
+    const [modalType, setModalType] = React.useState("");
+    const [modalOpen, setModalOpen] = React.useState(false);
+
+
+    const comfirmModal = () => {
+        setModalType("comfirmModal2");
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
 
     //비밀번호 정규식
@@ -78,6 +94,9 @@ const MyProfile = (props) => {
             setImage(file);
         }
     };
+
+
+
 
     const editProfile = () => { 
         let formData = new FormData();
@@ -185,7 +204,18 @@ const MyProfile = (props) => {
                         _onClick={editProfile}
                     >작성</Button>
                 </Fixed>  
+                {/* 작성 버튼 클릭 시 뜨는 모달팝업 */}
+                <Modal open={modalType === "cofirmModal"? modalOpen : ""} close={closeModal} double_btn btn_text="수정" _onClick={()=>{
+                    editProfile()
+                }}>
+                    <p>프로필을 수정하시겠습니까?</p>
+                </Modal>
+                {/* 삭제하기 눌렀을 때 진행중인 챌린지에 뜨는 모달팝업 */}
+                <Modal open={modalType === "cofirmModal2"? modalOpen : ""} close={closeModal} btn_text="확인">
+                    <p>진행중인 챌린지는<br/>삭제하실 수 없습니다.</p>
+                </Modal>     
             </Grid>
+            
         }
     </>
     );
