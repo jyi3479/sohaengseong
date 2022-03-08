@@ -8,15 +8,14 @@ import MessageForm from "../components/Chat/MessageForm";
 const ChatRoom = (props) => {
   const dispatch = useDispatch();
 
-  //헤더&푸터 state
-  React.useEffect(() => {
-    dispatch(baseAction.setHeader(true, true, "채팅방이름이름"));
-    dispatch(baseAction.setGnb(false));
-    return () => {
-      dispatch(baseAction.setHeader(false, ""));
-      dispatch(baseAction.setGnb(true));
-    };
-  }, []);
+
+    //헤더&푸터 state
+    React.useEffect(() => {
+        dispatch(baseAction.setHeader("채팅방이름이름",true));
+        return()=>{
+            dispatch(baseAction.setHeader("",false));
+        }
+    }, []);
 
   return (
     <Grid

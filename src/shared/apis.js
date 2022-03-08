@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from "./cookie";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
-const apis = axios.create({
+export const apis = axios.create({
   baseURL: server_port, //서버 주소
 });
 const token = getCookie("token");
@@ -85,6 +85,10 @@ export const challengeApis = {
   //챌린지 수정하기
   editChallenge: (challengeId, challenge) =>
     imageApis.patch(`/challenge/${challengeId}`, challenge),
+
+  //챌린지 삭제하기
+  deleteChallenge:(challengeId) =>apis.delete(`/challenge/${challengeId}`),
+  
 };
 
 export const memberApis = {
@@ -117,8 +121,7 @@ export const searchApis = {
   recommend: () => apis.get("/challenge/recommend"),
 
   //검색 결과 조회
-  getSearch: (searchWord) =>
-    apis.get(`/challenge/search?keyword=${searchWord}`),
+  getSearch: (searchWord) => apis.get(`/challenge/search?keyword=${searchWord}`),
 };
 
 export const mainApis = {

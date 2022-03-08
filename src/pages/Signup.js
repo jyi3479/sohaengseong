@@ -80,7 +80,7 @@ const Signup = (props) => {
     setSamePwd(false);
     const pwdcurrent2 = e.target.value;
     setpasswordCheck(pwdcurrent2);
-    console.log(pwdcurrent2);
+    //console.log(pwdcurrent2);
     if (pwdcurrent2 === password) {
       setSamePwd(true);
     } else {

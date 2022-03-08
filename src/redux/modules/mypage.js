@@ -129,6 +129,30 @@ const initialState = {
   ],
 };
 
+
+const editProfileDB = (profile) => {
+  return function (dispatch, getState, {history}) {
+    console.log("프로필 수정",profile);
+
+    // const data = {
+    //   profileImage: profileImage,
+    //   profile:{
+    //      password:pwd,
+    //      passwordCheck:pwdCheck,
+    //    }
+    // };
+
+    // mypageApis.editMyInfo(data)
+    // .then((res)=>{
+    //   console.log(res);
+    // }).catch((err)=>{
+    //   console.log(err);
+    // })
+
+  }
+}
+
+
 const getMyInfoDB = (userId) => {
   return function (dispatch, getState, { history }) {
     mypageApis
@@ -156,6 +180,7 @@ export default handleActions(
 const actionCreators = {
   //액션 생성자 내보내기
   getMyInfoDB,
+  editProfileDB
 };
 
 export { actionCreators };

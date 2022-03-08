@@ -2,156 +2,388 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
+import { challengeApis } from "../shared/apis";
+import { targetChallenge } from "../redux/modules/challenge";
+import { apis } from "../shared/apis";
+
+//비밀방 비밀번호 커스텀
+import ReactCodeInput from "react-code-input";
 
 //이미지 슬라이더(Swiper) import 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore,{  Pagination } from 'swiper';
+import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+//모달팝업
+import Modal from '../components/Modal';
+
 //사용자 import
-import {Grid, Image} from "../elements/index";
+import {Grid, Image, Button} from "../elements/index";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import * as baseAction from '../redux/modules/base';
-import lock from "../image/icons/ic_lock@2x.png";
+import empty from "../image/ic_empty_s@2x.png";
+import defaultImg from "../image/img_profile_defalt @2x.png";
+import crown from "../image/icons/ic_crown@2x.png";
+import share from "../image/icons/ic_share@2x.png"
+
+
+
 
 const ChallengeDetail = (props) => {
     const dispatch = useDispatch();
+    const userInfo = parseInt(localStorage.getItem("userId"));
     const challengeId = props.match.params.challengeId;
     const target = useSelector(state => state.challenge.target);
-    const tagList = target.tagName;
-    const members = target.members;
-    const member_idx = members.findIndex((m) => m.userId === target.userId);
-    const admin = members[member_idx];  
+    const tagList = target&&target.tagName;
+    const members = target&&target.members;
+    const member_idx = members&&members.findIndex((m) => m.userId === parseInt(target.userId));
+    const member = members&&members.find((m) => m.userId === parseInt(userInfo));
+    const admin = members&&members[member_idx];      
+    const imageList = target&&target.challengeImage;
+    const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}`;
+    const endDate = target&&`${target.endDate.split(" ")[0].split("-")[0]}`;
 
-    console.log(admin);
+    console.log(member);
+    
+    const joinChallenge = () => {
+        dispatch(challengeAction.joinChallengeDB(challengeId));
+    };
 
-    const confirm = () => {
-        window.confirm("다른 사람들을 위해 신중하게 선택하세요! 확인을 클릭 시 챌린지에 입장합니다");
-        if(confirm){
-            console.log("확인누름");
-            //dispatch(challengeAction.joinChallengeDB(challengeId));
-            //history.push(``); //상세페이지 (멤버전용)으로 이동
+    const deleteChallenge = () => {
+        dispatch(challengeAction.deleteChallengeDB(challengeId));
+    };
+
+    //모달 팝업 -----------------------------------------
+    const [modalType, setModalType] = React.useState("");
+    const [modalOpen, setModalOpen] = React.useState(false);
+    const [checkPrivate, setCheckPrivate] = React.useState(false);//비밀방 비밀번호 맞는지 확인
+    const [isNum,setIsNum] = React.useState(false);//비밀방 비밀번호 숫자체크
+    const [join, setJoin] = React.useState(false); //입장하기 클릭여부
+    const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
+
+   
+    const deleteModal = () => {        
+        setModalType("deleteModal");
+        console.log("챌린지 삭제");
+        setModalOpen(true);
+    };
+    const joinModal = () => {
+        if(!target.isPrivate){
+            setModalType("joinModal");
+        }else {
+            setModalType("privateModal");
+        }       
+        console.log("챌린지 입장");
+        setModalOpen(true);
+    };
+
+
+    const closeModal = () => {
+        console.log("눌림");
+        setModalOpen(false);
+        setPrivatePwd("");
+    };
+
+    const privateCheck = (e) => {   
+        setIsNum(false);        
+        const pwdRegex = /^[0-9]+$/;   
+        const pwdcurrent = e; 
+        let PwdRegex = pwdRegex.test(e);
+
+        setPrivatePwd(e);
+
+        if (!PwdRegex) {
+            setIsNum(false);            
+        } else {
+            setIsNum(true);
         }
     };
-    const prompt = () => {
-        const pwd = window.prompt("비밀번호를 입력하세요");        
-        console.log(pwd);
-        //dispatch(challengeAction.joinChallengeDB(challengeId));
-        //history.push(``); //상세페이지 (멤버전용)으로 이동        
-    } 
+
+    const pwdCheck = () => {
+        const input = document.getElementsByClassName("ReactCodeInput");
+        setJoin(true);
+        apis.post(`/challenge/${challengeId}/private`, {password:privatePwd})
+        .then((res)=>{
+            console.log("비밀방 비밀번호 확인",res);
+            if(res.result === true){
+                setCheckPrivate(true);
+                dispatch(challengeAction.joinChallengeDB(challengeId));
+                history.push(`/member/${challengeId}`);
+            }else{
+                setCheckPrivate(false);                
+            }
+        }).catch((err)=>{
+            console.log("비밀번호 확인오류",err);
+        });
+    };
 
     
-    //특정 챌린지 1개 조회하기
-    // React.useEffect(()=>{
-    //     dispatch(challengeAction.getOneChallengeDB(challengeId));
-    // },[]);
-
-    //헤더&푸터 state
     React.useEffect(() => {
-        dispatch(baseAction.setHeader(true,true,target.title));
+        challengeApis.getOneChallenge(challengeId)
+        .then((res)=>{
+            console.log("한개", res);
+            const target = res.data;
+            dispatch(targetChallenge(target));
+            //헤더&푸터 state        
+            dispatch(baseAction.setHeader(target.title,true));
+        }).catch((err)=>{
+            console.log("특정 챌린지 조회 오류",err);
+        });
+        dispatch(baseAction.setGnb(false));
         return()=>{
             dispatch(baseAction.setHeader(false,""));
+            dispatch(baseAction.setGnb(true));
         }
-    }, []);
+    },[]);
+
+
 
     
     return(
-        <Grid padding="0" margin="48px 0 64px" bg="#eee">
-            <Grid padding="0">
-                <Swiper
-                    modules={[ Pagination]}
-                    spaceBetween={0}
-                    slidesPerView={1}
-                    pagination={{ clickable: true }}
-                    onSlideChange={() => console.log('slide change')}
-                    onSwiper={(swiper) => console.log(swiper)}
-                    >
-                    <SwiperSlide><Image shape="rectangle" padding="250px" src={target.challengeImage}></Image></SwiperSlide>
-                    <SwiperSlide><Image shape="rectangle" padding="250px" src={target.challengeImage}></Image></SwiperSlide>
-                    <SwiperSlide><Image shape="rectangle" padding="250px" src={target.challengeImage}></Image></SwiperSlide>
-                </Swiper>
-            </Grid>
-            <Grid bg="#fff" margin="0 0 10px" padding="20px">
-                <TitleBox>
-                    <h1>{target.title}</h1>
-                    <img src={lock} style={{display:target.isPrivate?"block":"none"}}></img>
-                </TitleBox>
-                <p style={{fontSize:"14px", color:"#666"}}>{target.category}</p>
-                <Grid padding="0" margin="12px 0">
-                    {tagList.map((el, i) => {
-                        return <Tag key={i}>{el}</Tag>;
-                    })}
+        <>  
+        {target&&
+            <Grid padding="0" margin="48px 0 0" bg="#eee">
+                <Grid padding="0" style={{position:"relative"}}>
+                    <ShareBtn></ShareBtn>
+                    {imageList.length > 0?
+                        <Swiper
+                            spaceBetween={0}
+                            slidesPerView={1}
+                            pagination={{
+                                type : 'fraction', //페이지네이션 타입 
+                                el: '.pagination', //페이지네이션 클래스
+                                
+                            }}
+                            modules={[Pagination]}
+                            className="mySwiper"
+                            onSlideChange={() => console.log('slide change')}
+                            onSwiper={(swiper) => console.log(swiper)}
+                            >
+                            {imageList.map((el,i)=>{
+                                return(
+                                    <SwiperSlide key={i}><Image shape="rectangle" padding="250px" src={el}></Image></SwiperSlide>
+                                );
+                            })}
+                        </Swiper>
+                        //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출 (디폴트 이미지 변경예정)
+                        : <Image shape="rectangle" padding="250px" src={empty}></Image>
+                    }
                 </Grid>
-                <Grid padding="0">
-                    <Info>챌린지 기간 <span>{target.startDate} ~ {target.endDate}</span></Info>
-                    <Info style={{marginTop:"4px"}}>모집 인원 <span>{target.currentMember}/{target.maxMember}명</span></Info>
+                <Grid bg="#fff" margin="0 0 10px" padding="20px">
+                    <TitleBox>
+                        <h1>{target.title}</h1>
+                    </TitleBox>
+                    <p style={{fontSize:"14px", color:"#666"}}>{target.category}</p>
+                    <Grid padding="0" margin="12px 0">
+                        {tagList.map((el, i) => {
+                            return <Tag key={i}>{el}</Tag>;
+                        })}
+                    </Grid>
+                    <StatusContainer>
+                        <Grid padding="14px">
+                            <Grid padding="0" center>
+                                <p>기간</p>
+                                <p>15일</p>
+                            </Grid>
+                        </Grid>
+                        <div
+                        style={{
+                            borderRight: "1px solid #c7c7c7",
+                            height: "20px",
+                            margin: "auto 0px",
+                        }}
+                        />
+                        <Grid padding="14px">
+                            <Grid padding="0" center>
+                                <p>멤버</p>
+                                <p>{target.members.length !== 0 ? target.members.length: "0"}<span style={{fontSize:"14px", fontWeight:"400"}}>/{target.maxMember}</span></p>
+                            </Grid>
+                        </Grid>
+                        <div
+                        style={{
+                            borderRight: "1px solid #c7c7c7",
+                            height: "20px",
+                            margin: "auto 0px",
+                        }}
+                        />
+                        <Grid padding="14px">
+                            <Grid padding="0" center>
+                                <p>공개여부</p>
+                                <p style={{fontSize:"15px"}}>{target.isPrivate ? "비공개" : "공개"}</p>
+                            </Grid>
+                        </Grid>
+                    </StatusContainer>                     
+                </Grid>
+
+                <Grid bg="#fff" padding="20px">
+                    <Title>소행성 설명</Title>
+                    <ContentBox style={{marginBottom:"20px"}}>
+                        <div className="admin_profile">
+                            <div  style={{backgroundImage:`url(${admin.profileImage === null || admin.profileImage === undefined ? defaultImg : admin.profileImage})`}}></div>
+                            <p>{admin.nickname}</p>
+                        </div>
+                        <p>{target.content}</p>
+                    </ContentBox>
+                    {/* 현재인원 - 디자인 확정 후 작업예정 */}
+                    <Title>현재 입주민</Title>
+                    <Grid padding="24px 0" style={{display: "flex", alignItems: "center"}}>
+                        {members&&members.map((el, i) => {
+                            return (
+                                //만약에 방을 만든 userId와 멤버의 userId가 같은 경우(방장인 경우) className을 붙여준다.
+                                <Member 
+                                    key={el.userId} 
+                                    className={admin.userId === el.userId? "admin" : ""} 
+                                    style={{backgroundImage:`url(${el.profileImage !== null ?el.profileImage : defaultImg})`}}
+                                    src={el.profileImage}>    
+                                </Member>
+                            );
+                        })}
+                        <p style={{fontSize:"14px",color:"#333"}}>외 {members.length > 4? members.length:0}명</p>
+                    </Grid>
                 </Grid>                
-            </Grid>
-
-            <Grid bg="#fff" padding="20px">
-                <Title>챌린지 설명</Title>
-                <ContentBox style={{marginBottom:"20px"}}>
+                <Grid padding="30px 20px" bg="#f8f7f7">
+                    <Title>입주 규칙</Title>
+                    <p style={{fontSize:"14px"}}>타인에게 어쩌구 입주 규칙은 고정 어쩌구</p>
+                </Grid>
+                <Fixed>
+                    {target.status !== "완료" ? target.maxMember !== members.length ?  member !== undefined ?  admin.userId === userInfo ?(      
+                         //내가 만든 챌린지 (시작 전)
+                         <Grid padding="0" is_flex>
+                            <Button width="calc(50% - 5px)" bg="#fff" style={{color:"#666",border:"1px solid #666"}}
+                                _onClick={()=>{
+                                    deleteModal()
+                                }}
+                            >삭제하기</Button>  
+                            <Button width="calc(50% - 5px)"
+                                _onClick={()=>{
+                                    history.push(`/challengewrite/${challengeId}`);
+                                }}
+                            >수정하기</Button>
+                        </Grid>
+                    ):(
+                        //내가 참여중인 챌린지 (방장인데 챌린지 시작했을 경우도 포함)
+                        <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
+                        >이미 입주한 행성입니다.</Button>
+                    ):(
+                        //참여가능한 챌린지
+                        <Button
+                            _onClick={()=>{
+                                //joinChallenge()
+                                joinModal()
+                            }}
+                        >소행성 입주하기</Button>
+                    ):(
+                        //참가자 꽉참
+                        <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
+                        >마감된 행성입니다.</Button>
+                    ):(
+                        //기간 끝남
+                        <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
+                        >기간이 만료되었습니다.</Button>
+                    )}
+                </Fixed>
+                {/* 삭제하기 버튼 클릭 시 뜨는 모달팝업 */}
+                <Modal open={modalType === "deleteModal"? modalOpen : ""} close={closeModal} double_btn btn_text="삭제" _onClick={()=>{
+                    deleteChallenge()
+                }}>
+                    <p>정말로 삭제하시겠습니까?</p>
+                </Modal>
+                {/* 삭제하기 눌렀을 때 진행중인 챌린지에 뜨는 모달팝업 */}
+                <Modal open={modalType === "deleteModal2"? modalOpen : ""} close={closeModal} btn_text="확인">
+                    <p>진행중인 챌린지는<br/>삭제하실 수 없습니다.</p>
+                </Modal>     
+                {/* 입장하기 버튼 클릭 시 뜨는 모달팝업 - 공개방 */}
+                <Modal open={modalType === "joinModal"? modalOpen : ""} close={closeModal} double_btn btn_text="입장" _onClick={()=>{
+                    joinChallenge()
+                }}>
                     <div>
-                        <div style={{backgroundImage:`url(${admin.profileImage})`}}></div>
-                        <p>어드민닉네임</p>
+                        <h6>입장하시겠습니까?</h6>
+                        <p>다른 입주민분들을 위해 <br/>
+                        신중하게 선택해 주시기 바랍니다.<br/></p>
+                    </div>                
+                </Modal>   
+                {/* 입장하기 버튼 클릭 시 뜨는 모달팝업 - 비밀방 */}
+                <Modal open={modalType === "privateModal"? modalOpen : ""} close={closeModal} header isPrivate>
+                    <div className="private_box">
+                        <h6>비밀번호를 입력해 주세요.</h6>
+                        <div>                       
+                            <ReactCodeInput className={join && checkPrivate === false? "ReactCodeInput disabled" : "ReactCodeInput"} type='password' fields={4} {...props} value={privatePwd} onChange={privateCheck}
+                                inputStyle={{
+                                    borderRadius: "10px",
+                                    border: "none",
+                                    boxShadow: "none",
+                                    marginRight: "15px",
+                                    paddingLeft: "11px",
+                                    width: "40px",
+                                    height: "45px",
+                                    fontSize: "50px",
+                                    boxSizing: "border-box",
+                                    color: "#666",
+                                    backgroundColor: "#ddd",
+                                    borderColor: "#fff"                              
+                                }}
+                            />
+                            <p style={{height:"18px",fontSize:"12px",color:"#999", marginTop:"8px"}}>
+                            {isNum === null && checkPrivate === null ? "" 
+                            : isNum === false && checkPrivate === false && join === false ? "숫자 4자리로 입력해주세요." //숫자 체크 안하고 비밀번호가 틀린경우 or 입장하기 안누른경우
+                            : isNum === true && checkPrivate === false  && join === false ? "" //숫자는 맞는데 입장하기를 안누른 경우
+                            : isNum === true && checkPrivate === false  && join === true ? "잘못된 비밀번호 입니다. 다시 시도해 주세요." //숫자는 맞는데 비밀번호가 틀린경우
+                            : isNum === true && checkPrivate === true  && join === true ? "":"" //전부 맞음 (어차피 입장이지만...)
+                            }
+                            </p>
+                        </div>
+                        <button type="button" onClick={pwdCheck}>입장하기</button>
                     </div>
-                    <p>저녁 9~10시 1시간 동안 미드 프렌즈 보면서 같이 영어 쉐도잉 할 멤버분들 구합니다!! 시즌1~5까지 대본 준비 되어있으니 공부할 의지만 있으시면 됩니다! </p>
-                </ContentBox>
-                {/* 현재인원 - 디자인 확정 후 작업예정 */}
-                <Title>현재 인원</Title>
-                <ContentBox>
-                    
-                </ContentBox>
-            </Grid>            
-            
-            {/* <Grid padding="0">
-                {members.map((el, i) => {
-                    return (
-                        //만약에 방을 만든 userId와 멤버의 userId가 같은 경우(방장인 경우) className을 붙여준다.
-                        <Member key={el.userId} className={admin === el.userId? "admin" : ""} src={el.profileImage}>    
-                        </Member>
-                    );
-                })}
-            </Grid> */}
-            {/* <Grid padding="0">
-                {target.isPrivate? ( //비밀방이라면 비밀번호 입력창 show                
-                    <button type="button" onClick={
-                        prompt
-                    }>챌린지 참여하기</button>                    
-                ):(
-                    <button type="button" onClick={
-                        confirm
-                    }>챌린지 참여하기</button>
-                )}
-            </Grid> */}
-            
-        </Grid>
+                </Modal>          
 
+            </Grid> 
+        }
+
+
+        </>
     );
 };
+const ShareBtn = styled.button` //공유버튼
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    right: 20px;
+    top: 20px;
+    background-color: transparent;
+    border: none;
+    background-image: url(${share});
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    z-index: 2;
+`;
+
 const TitleBox = styled.div`
-    display: flex;
-    justify-content: space-between;
     margin-bottom:5px;
     h1 {
         font-size:20px;
         line-height:25px;
-        width: 232px;
         font-weight: 500;
-    }
-    img {
-        width: 20px;
     }
 `;
 
-const Info = styled.p`
-    color: #666;
-    font-size:12px;
-    >span {
-        color: #000;
-        font-weight: 500;
-    }
+const StatusContainer = styled.div`
+  display: flex;
+  width: 335px;
+  height: 69px;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  p:first-child {
+    font-size: 12px;
+    color: #808080;
+  }
+  p:last-child {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+  }
+
 `;
 const Tag = styled.p`
   display: inline-block;
@@ -174,12 +406,13 @@ const Title = styled.h2`
 const ContentBox = styled.div`
     padding: 15px;
     border-radius: 15px;
-    background-color: #efefef;
-    >div{
+    border: solid 1px #efefef;
+    .admin_profile{
         display: flex;
         align-items: center;
         margin-bottom:10px;
-        div{
+        div {
+            display: inline-block;
             width: 35px;
             height: 35px;
             margin: 0 10px 0 0;
@@ -190,10 +423,13 @@ const ContentBox = styled.div`
             position: relative;
             &::after {
                 content: '';
-                width:14px;
-                height: 14px;
+                width:17px;
+                height: 17px;
                 border-radius: 50%;
-                background-color: #5d5d5d;
+                background-image: url(${crown});
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
                 position: absolute;
                 bottom:0;
                 right: -3px;
@@ -206,21 +442,48 @@ const ContentBox = styled.div`
     }
 
 `;
-const Member = styled.div` 
+const Member = styled.div`  
     display: inline-block;
-    width:30px;
-    height:30px;
-    border-radius:50%;    
-    overflow: hidden;
-    &:nth-child(n+6) {//5번째 멤버 이후로는 미노출
+    width: 35px;
+    height: 35px;
+    border: solid 1px #999;
+    border-radius:50%;
+    background-size: cover;
+    background-position: center;
+    margin-right: 5px;
+    &:nth-child(n+4) {//3번째 멤버 이후로는 미노출
         display: none;
     }
     &.admin { //방장일 경우
-        border: 3px solid #000;
+        position: relative;
+        margin-right: 9px;
+        &::after {
+            content: '';
+            width:17px;
+            height: 17px;
+            border-radius: 50%;
+            background-image: url(${crown});
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            position: absolute;
+            bottom:0;
+            right: -3px;
+        }
     }
-    background-image: url("${(props) => props.src}");
-    background-size: cover;
-    background-position: center;
 `;
+const Fixed = styled.div`
+    width: 100%;
+    position: fixed;
+    background-color: #fff;
+    bottom:0;
+    left:0;
+    padding:12px 20px;
+    box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
+    button {
+        border-radius: 5px;
+    }
+`;
+
 
 export default ChallengeDetail;

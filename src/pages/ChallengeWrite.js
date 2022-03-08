@@ -28,7 +28,7 @@ const ChallengeWrite = (props) => {
 
   // Header 적용 (수정/작성 분기)
   React.useEffect(() => {
-    dispatch(baseAction.setHeader(true, isEdit ? "수정하기" : "개설하기"));
+    dispatch(baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기", true));
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
       dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
@@ -86,6 +86,7 @@ const ChallengeWrite = (props) => {
   const [preview, setPreview] = React.useState(
     isEdit ? target.challengeImage : []
   );
+
 
   //해시태그 부분
   const [hashtag, setHashtag] = React.useState(""); //onChange로 관리할 문자열
@@ -149,7 +150,7 @@ const ChallengeWrite = (props) => {
       $HashDelete.addEventListener("click", () => {
         $HashWrapOuter?.removeChild($HashWrapInner);
 
-        console.log($HashWrapInner.innerHTML);
+        //console.log($HashWrapInner.innerHTML);
         setHashArr(hashArr.filter((hashtag) => hashtag));
       });
 
@@ -158,7 +159,7 @@ const ChallengeWrite = (props) => {
         if (hashArr.length > 10) {
           window.alert("태그 작성 개수를 확인해주세요!");
         }
-        console.log("Enter Key 입력됨!", e.target.value);
+        //console.log("Enter Key 입력됨!", e.target.value);
         $HashWrapInner.innerHTML = e.target.value;
         $HashWrapOuter?.appendChild($HashWrapInner);
         $HashDelete.innerHTML = "x";
@@ -227,7 +228,7 @@ const ChallengeWrite = (props) => {
 
   const deleteImage = (index) => {
     const imageArr = image.filter((el, idx) => idx !== index);
-    const previewArr = preview.filter((el, idx) => idx !== index);
+    const previewArr = preview.filter((el, idx) => idx !== index);  
 
     setImage([...imageArr]);
     setPreview([...previewArr]);
@@ -350,6 +351,8 @@ const ChallengeWrite = (props) => {
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.editChallengeDB(+params.challengeId, formData));
   };
+
+  console.log("최종이미지",image);
 
   return (
     <Grid margin="78px 0px 0px" padding="0px" bg="#eeeeee">
