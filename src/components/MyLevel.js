@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Image } from "../elements";
 import { challengeApis, mypageApis } from "../shared/apis";
 import { actionCreators as mypageAction } from "../redux/modules/mypage";
+import { history } from "../redux/configureStore";
 
 const MyLevel = (props) => {
   const dispatch = useDispatch();

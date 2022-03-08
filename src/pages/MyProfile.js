@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { history } from "../redux/configureStore";
 import * as baseAction from '../redux/modules/base';
 import { ActionCreators as userActions } from "../redux/modules/user";
-import { actionCreators as myActions } from "../redux/modules/mypage";
+import { mypageApis } from "../shared/apis";
 import  defalt from "../image/img_profile_defalt @2x.png";
 import setIcon from "../image/icons/ic_setting@2x.png";
 
@@ -15,12 +15,14 @@ import Modal from '../components/Modal';
 const MyProfile = (props) => {
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.user.user);  
+    const userId = localStorage.getItem("userId");
 
     //수정 목록
     const [password, setpassword] = React.useState("");
     const [passwordCheck, setpasswordCheck] = React.useState("");
     const [image, setImage] = React.useState(null);
     const [preview, setPreview] = React.useState(userInfo&& userInfo.profileUrl !== null ? userInfo.profileUrl : defalt);
+    const [compareImage, setCompareImage] = React.useState(userInfo?userInfo.challengeImage:null);
 
     //유효성 검사
     const [isPwd,setIsPwd] = React.useState(false);
@@ -32,7 +34,8 @@ const MyProfile = (props) => {
 
 
     const comfirmModal = () => {
-        setModalType("comfirmModal2");
+        console.log("열림");
+        setModalType("comfirmModal");
         setModalOpen(true);
     };
 
@@ -95,23 +98,31 @@ const MyProfile = (props) => {
         }
     };
 
-
-
-
-    const editProfile = () => { 
+    const editProfile = () => {
         let formData = new FormData();
 
         formData.append("profileImage",image);
 
-        const profile = {
-            profileImage:formData,
+        const data = {
+            profileImage: compareImage,
             profile:{
                password:password,
                passwordCheck:passwordCheck
-            }    
+            }
         };
-       
-        dispatch(myActions.editProfileDB(profile));
+
+        formData.append(
+            "profile",
+            new Blob([JSON.stringify(data)], { type: "application/json" })
+        );
+
+        mypageApis.editMyInfo(userId,formData)
+        .then((res)=>{
+          console.log("프로필 수정",res);
+        }).catch((err)=>{
+          console.log("프로필 수정에러",err);
+        });
+    
     };
 
     
@@ -200,19 +211,20 @@ const MyProfile = (props) => {
                 </Grid>
                 <Fixed>
                     <Button 
-                        _disabled={password === "" || passwordCheck === "" || preview === null ? "disabled": ""}
-                        _onClick={editProfile}
+                        _onClick={comfirmModal}
+                        disabled={password === "" && preview === "" ? "disabeld" : ""}
                     >작성</Button>
                 </Fixed>  
                 {/* 작성 버튼 클릭 시 뜨는 모달팝업 */}
-                <Modal open={modalType === "cofirmModal"? modalOpen : ""} close={closeModal} double_btn btn_text="수정" _onClick={()=>{
+                <Modal open={modalType === "comfirmModal"? modalOpen : ""} close={closeModal} double_btn btn_text="수정" _onClick={()=>{
                     editProfile()
+                    closeModal()
                 }}>
                     <p>프로필을 수정하시겠습니까?</p>
                 </Modal>
                 {/* 삭제하기 눌렀을 때 진행중인 챌린지에 뜨는 모달팝업 */}
-                <Modal open={modalType === "cofirmModal2"? modalOpen : ""} close={closeModal} btn_text="확인">
-                    <p>진행중인 챌린지는<br/>삭제하실 수 없습니다.</p>
+                <Modal open={modalType === "comfirmModal2"? modalOpen : ""} close={closeModal} btn_text="확인">
+                    <p>프로필 수정이 완료되었습니다.</p>
                 </Modal>     
             </Grid>
             
