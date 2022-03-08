@@ -24,17 +24,28 @@ const Main = (props) => {
             </Grid>
             <Wrap>
                 <Grid style={{overflow: "hidden"}}>
-                    <Info>
-                        <Grid padding="0" is_flex height="auto" margin="0 0 16px">
-                            <p>{userInfo&&userInfo.nickname} 님의 오늘의 습관</p>
-                            <p><b>1</b>개</p>
-                        </Grid>
-                       <Button font_size="14px" style={{fontWeight:"bold"}} 
-                       _onClick={()=>{
-                           history.push("/mypage");
-                       }}>인증하기</Button>
-                    </Info>
-
+                    {userInfo?(
+                        <Info>
+                            <Grid padding="0" is_flex height="auto" margin="0 0 16px">
+                                <p>{userInfo&&userInfo.nickname} 님의 오늘의 습관</p>
+                                <p><b>1</b>개</p>
+                            </Grid>
+                        <Button font_size="14px" style={{fontWeight:"bold"}} 
+                        _onClick={()=>{
+                            history.push("/mypage");
+                        }}>인증하기</Button>
+                        </Info>
+                    ):(
+                        <Info>
+                            <Grid padding="0" height="auto" margin="0 0 16px" style={{textAlign:"center"}}>
+                                <p>로그인 하시고 나의 인증정보를 확인하세요.</p>
+                            </Grid>
+                        <Button font_size="14px" style={{fontWeight:"bold"}} 
+                        _onClick={()=>{
+                            history.push("/login");
+                        }}>로그인</Button>
+                        </Info>
+                    )}
                     <Grid padding="0" margin="90px 0 28px" >  
                         <Grid padding="0">
                             <CategoryWrap>
@@ -73,7 +84,7 @@ const Main = (props) => {
                         <div>
                             <Grid is_flex padding="0">
                                 <Title>오늘의 소행성</Title>
-                                <a href={`/category/all`} style={{fontSize:"12px", fontWeight:"bold"}}>더보기</a>
+                                <a href="/today" style={{fontSize:"12px", fontWeight:"bold"}}>더보기</a>
                             </Grid>                            
                             <SubTitle>따끈따끈한 습관 챌린지</SubTitle>                            
                             <Grid padding="0">

@@ -8,7 +8,6 @@ import { setCookie, deleteCookie } from "../../shared/cookie";
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
 const SET_USER = "SET_USER";
-const EMAIL_CHECK = "EMAIL_CHECK";
 const NICK_CHECK = "NICK_CHECK";
 const SET_WARNING = "SET_WARNING";
 
@@ -17,9 +16,6 @@ const logOut = createAction(LOGOUT, (user) => ({ user }));
 const setUser = createAction(SET_USER, (user, is_login) => ({
   user,
   is_login,
-}));
-const idCheck = createAction(EMAIL_CHECK, (emailCheckres) => ({
-  emailCheckres,
 }));
 const nickCheck = createAction(NICK_CHECK, (nickCheckres) => ({
   nickCheckres,
@@ -31,8 +27,7 @@ const setWarning = createAction(SET_WARNING, (detail, text) => ({
 
 const initialState = {
   user: null,
-  is_login: null,
-  emailCk: null,
+  is_login: null,  
   nickCk: null,
   setwarning: {
     detail: false,
@@ -241,6 +236,8 @@ const logOutAction = () => {
   };
 };
 
+
+
 export default handleActions(
   {
     [SET_USER]: (state, action) =>
@@ -252,11 +249,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.user = null;
         draft.is_login = false;
-      }),
-    [EMAIL_CHECK]: (state, action) =>
-      produce(state, (draft) => {
-        draft.emailCk = true;
-      }),
+      }),    
     [NICK_CHECK]: (state, action) =>
       produce(state, (draft) => {
         draft.nickCk = action.payload.nickCheckres.result;

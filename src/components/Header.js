@@ -8,23 +8,7 @@ import searchIconB from '../image/icons/ic_search_b@2x.png';
 const Header = (props) => {
     const text = useSelector(state => state.base.header.text);
     const search = useSelector(state => state.base.header.search_btn);
-
     const params = window.location.pathname;
-
-    console.log(text,search);
-
-    const search_on = () => {
-        if(params.includes("/post/")){
-            return true;
-        }else if(!params.includes("/member")) {
-            return true;
-        }else if (!params.includes("/chatting")){
-            return true;
-        }else if (!params.includes("/challenge/")){
-            return true;
-        }
-    }
-    
 
     return(
         <Wrap id="Header" {...props} className={"detailHeader " + (params.includes("/post/")? "left" : "")}>

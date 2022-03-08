@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { Button, Grid, Image } from "../elements";
 import { challengeApis } from "../shared/apis";
-
+import { history } from "../redux/configureStore";
 const MyLevel = (props) => {
   const my_level = useSelector((state) => state.mypage.user);
   console.log(my_level);
@@ -32,7 +32,9 @@ const MyLevel = (props) => {
             </Grid>
           </div>
 
-          <ProfileBtn onClick={() => console.log("프로필 수정 페이지로 이동")}>
+          <ProfileBtn onClick={() => {
+            history.push("/mypage/profile");
+          }}>
             편집
           </ProfileBtn>
         </Grid>

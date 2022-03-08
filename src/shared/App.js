@@ -28,6 +28,9 @@ import { getCookie } from "./cookie";
 import ChatRoom from "../pages/ChatRoom";
 import ChatList from "../pages/ChatList";
 import MyCompleted from "../pages/MyCompleted";
+import TodayChallenge from "../pages/TodayChallenge";
+import MyEdit from "../pages/MyEdit";
+import MyProfile from "../pages/MyProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +72,8 @@ function App() {
                   <Footer />                                  
                   <Route path="/signup" exact component={Signup} />
                   {/* 회원가입 */}
+                  <Route path="/today" exact component={TodayChallenge} />
+                  {/* 메인 > 오늘의 소행성 */}
                   <Route
                     path="/auth/kakao/callback"
                     component={OAuth2RedirectHandler}
@@ -116,6 +121,19 @@ function App() {
                     exact
                     component={MyCompleted}
                   />
+                  {/* 마이페이지 - 성공실패 */}
+                  <Route
+                    path="/mypage/profile"
+                    exact
+                    component={MyEdit}
+                  />
+                  {/* 마이페이지 - 프로필수정 비번확인 */}
+                  <Route
+                    path="/mypage/profile/edit"
+                    exact
+                    component={MyProfile}
+                  />
+                  {/* 마이페이지 - 프로필수정 */}
                 </Wrap>
               </>
             </Switch>
