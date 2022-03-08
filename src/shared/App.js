@@ -40,11 +40,11 @@ function App() {
 
   console.log(isLogin);
 
-  // React.useEffect(() => {
-  //   if (token && !user) {
-  //     dispatch(userActions.loginCheckDB());
-  //   }
-  // }, []);
+  React.useEffect(() => {
+    if (token && !user) {
+      dispatch(userActions.loginCheckDB());
+    }
+  }, []);
 
   return (
     <>

@@ -3,8 +3,7 @@ import { getCookie } from "./cookie";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
 const apis = axios.create({
-  // baseURL: server_port, //서버 주소
-  baseURL: "http://15.164.245.252:8080",
+  baseURL: server_port, //서버 주소
 });
 const token = getCookie("token");
 const imageApis = axios.create({
@@ -21,17 +20,9 @@ apis.interceptors.request.use(function (config) {
   const token = getCookie("token");
   config.headers["Content-Type"] =
     "application/json;charset=UTF-8; charset=UTF-8";
-  config.headers.common["token"] = `${token}`;
+  config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
-
-// apis.interceptors.request.use(function (config) {
-//   const token = getCookie("token");
-//   config.headers["Content-Type"] =
-//     "application/json;charset=UTF-8; charset=UTF-8";
-//   config.headers.common["authorization"] = `Bearer ${token}`;
-//   return config;
-// });
 
 imageApis.interceptors.request.use(function (config) {
   const token = getCookie("token");
@@ -42,42 +33,36 @@ imageApis.interceptors.request.use(function (config) {
 
 export const userApis = {
   //로그인요청
-  login: (email, password) => apis.post("/api/user/login", { email, password }),
+  login: (email, password) => apis.post("/auth/signin", { email, password }),
 
   // 회원가입 요청
-  signup: (signup) => apis.post("/api/user/signup", signup),
+  signup: (signup) => apis.post("/auth/signup", signup),
 
-  // //로그인요청
-  // login: (email, password) => apis.post("/auth/signin", { email, password }),
+  //이메일 인증 (아이디 중복체크)
+  emailCheck: (email) =>
+    apis.post("/auth/email-check", {
+      email: email,
+    }),
 
-  // // 회원가입 요청
-  // signup: (signup) => apis.post("/auth/signup", signup),
+  //닉네임 중복체크
+  nicknameCheck: (nickname) =>
+    apis.post("/auth/nickname-check", { nickname: nickname }),
 
-  // //이메일 인증 (아이디 중복체크)
-  // emailCheck: (email) =>
-  //   apis.post("/auth/email-check", {
-  //     email: email,
-  //   }),
+  //로그인 유저 확인
+  useInfo: () => apis.get("/auth/user-info"),
 
-  // //닉네임 중복체크
-  // nicknameCheck: (nickname) =>
-  //   apis.post("/auth/nickname-check", { nickname: nickname }),
+  //인증 메일 확인
+  emailCheckToken: () => apis.get("/auth/check-email-token"),
 
-  // //로그인 유저 확인
-  // useInfo: () => apis.get("/auth/user-info"),
+  //인증 메일 재전송
+  emailCheckResend: (email) => apis.post("/auth/resend-check-email", email),
 
-  // //인증 메일 확인
-  // emailCheckToken: () => apis.get("/auth/check-email-token"),
+  //임시 비밀번호 발급
+  tempPasswordSend: (email) => apis.post("/auth/send-temp-password", email),
 
-  // //인증 메일 재전송
-  // emailCheckResend: (email) => apis.post("/auth/resend-check-email", email),
-
-  // //임시 비밀번호 발급
-  // tempPasswordSend: (email) => apis.post("/auth/send-temp-password", email),
-
-  // // 소셜로그인(카카오)
-  // // loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),
+  // 소셜로그인(카카오)
   // loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),
+  loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),
 };
 
 export const challengeApis = {

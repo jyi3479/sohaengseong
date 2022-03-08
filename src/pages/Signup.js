@@ -95,22 +95,18 @@ const Signup = (props) => {
   };
 
   const signup = () => {
-    // if (
-    //   isPwd === true &&
-    //   samePwd === true &&
-    //   _nickCheck === "true"
-    // ) {
-    const mail = `${email}@${domain}`;
-    console.log(mail, nickname, password, passwordCheck);
+    if (isPwd === true && samePwd === true && _nickCheck === "true") {
+      const mail = `${email}@${domain}`;
+      console.log(mail, nickname, password, passwordCheck);
 
-    dispatch(userActions.signupDB(mail, nickname, password, passwordCheck));
-    history.push({
-      pathname: "/signup/complete",
-      state: { mail: mail },
-    });
-    // } else {
-    //   window.alert("모든 조건이 맞는지 확인해주세요.");
-    // }
+      dispatch(userActions.signupDB(mail, nickname, password, passwordCheck));
+      history.push({
+        pathname: "/signup/complete",
+        state: { mail: mail },
+      });
+    } else {
+      window.alert("모든 조건이 맞는지 확인해주세요.");
+    }
   };
 
   // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
