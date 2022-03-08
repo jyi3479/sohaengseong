@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
 import axios from "axios";
+import { mypageApis } from "../../shared/apis";
 
 const initialState = {
   user: {
@@ -124,10 +125,34 @@ const initialState = {
   ],
 };
 
+
+const editProfileDB = (profile) => {
+  return function (dispatch, getState, {history}) {
+    console.log("프로필 수정",profile);
+
+    // const data = {
+    //   profileImage: profileImage,
+    //   profile:{
+    //      password:pwd,
+    //      passwordCheck:pwdCheck,
+    //    }
+    // };
+
+    // mypageApis.editMyInfo(data)
+    // .then((res)=>{
+    //   console.log(res);
+    // }).catch((err)=>{
+    //   console.log(err);
+    // })
+
+  }
+}
+
 export default handleActions({}, initialState);
 
 const actionCreators = {
   //액션 생성자 내보내기
+  editProfileDB
 };
 
 export { actionCreators };
