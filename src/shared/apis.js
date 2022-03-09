@@ -87,8 +87,7 @@ export const challengeApis = {
     imageApis.patch(`/challenge/${challengeId}`, challenge),
 
   //챌린지 삭제하기
-  deleteChallenge:(challengeId) =>apis.delete(`/challenge/${challengeId}`),
-  
+  deleteChallenge: (challengeId) => apis.delete(`/challenge/${challengeId}`),
 };
 
 export const memberApis = {
@@ -100,7 +99,7 @@ export const memberApis = {
     imageApis.post(`/challenge/${challengeId}/posts`, post),
 
   //인증게시글 수정
-  editPost: (postId, post) => imageApis.put(`/posts/${postId}`, post),
+  editPost: (postId, post) => imageApis.patch(`/posts/${postId}`, post),
 
   //인증게시글 삭제
   deletePost: (postId) => apis.delete(`/posts/${postId}`),
@@ -121,7 +120,8 @@ export const searchApis = {
   recommend: () => apis.get("/challenge/recommend"),
 
   //검색 결과 조회
-  getSearch: (searchWord) => apis.get(`/challenge/search?keyword=${searchWord}`),
+  getSearch: (searchWord) =>
+    apis.get(`/challenge/search?keyword=${searchWord}`),
 };
 
 export const mainApis = {

@@ -215,6 +215,7 @@ const MemberDetail = (props) => {
                         ></Member>
                       );
                     })}
+                  <button>멤버 추가로 보기</button>
                 </Grid>
               </Content>
             </ContentBox>
@@ -227,73 +228,36 @@ const MemberDetail = (props) => {
               <Content>{target.isPrivate ? "비밀" : "공개"}</Content>
             </ContentBox>
             <Fixed>
-              {target.status !== "완료" ? (
-                target.maxMember !== members.length ? (
-                  member !== undefined ? (
-                    admin.userId === userInfo ? (
-                      //내가 만든 챌린지 (시작 전)
-                      <Grid padding="0" is_flex>
-                        <Button
-                          width="calc(50% - 5px)"
-                          bg="#fff"
-                          style={{ color: "#666", border: "1px solid #666" }}
-                          _onClick={() => {
-                            deleteModal();
-                          }}
-                        >
-                          삭제하기
-                        </Button>
-                        <Button
-                          width="calc(50% - 5px)"
-                          _onClick={() => {
-                            history.push(`/challengewrite/${challengeId}`);
-                          }}
-                        >
-                          수정하기
-                        </Button>
-                      </Grid>
-                    ) : (
-                      //내가 참여중인 챌린지 (방장인데 챌린지 시작했을 경우도 포함)
-                      <Button
-                        bg="#bbb"
-                        color="#fff"
-                        style={{ cursor: "auto" }}
-                        _disabled
-                      >
-                        행성 나가기
-                      </Button>
-                    )
-                  ) : (
-                    //참여가능한 챌린지
-                    <Button
-                      _onClick={() => {
-                        //joinChallenge()
-                        joinModal();
-                      }}
-                    >
-                      소행성 입주하기
-                    </Button>
-                  )
-                ) : (
-                  //참가자 꽉참
+              {admin.userId === userInfo ? ( //내가 만든 챌린지
+                <Grid padding="0" is_flex>
                   <Button
-                    bg="#bbb"
-                    color="#fff"
-                    style={{ cursor: "auto" }}
-                    _disabled
+                    width="calc(50% - 5px)"
+                    bg="#fff"
+                    style={{ color: "#666", border: "1px solid #666" }}
+                    _onClick={() => {
+                      deleteModal();
+                    }}
                   >
-                    마감된 행성입니다.
+                    삭제하기
                   </Button>
-                )
+                  <Button
+                    width="calc(50% - 5px)"
+                    _onClick={() => {
+                      history.push(`/challengewrite/${challengeId}`);
+                    }}
+                  >
+                    수정하기
+                  </Button>
+                </Grid>
               ) : (
-                //기간 끝남
+                //내가 참여중인 챌린지 (방장인데 챌린지 시작했을 경우도 포함)
                 <Button
                   bg="#bbb"
                   color="#fff"
                   style={{ cursor: "auto" }}
-                  _disabled
+                  _onClick={() => {}}
                 >
-                  기간이 만료되었습니다.
+                  행성 나가기
                 </Button>
               )}
             </Fixed>
