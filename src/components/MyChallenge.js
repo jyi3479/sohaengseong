@@ -6,6 +6,7 @@ import { Grid , Button} from "../elements";
 import ChallengeCard from "./ChallengeCard";
 import {actionCreators as myActions} from "../redux/modules/mypage";
 
+import arrow from "../image/icons/small_arrow.png";
 
 const MyChallenge = (props) => {
   const dispatch = useDispatch();
@@ -144,8 +145,7 @@ const MyChallenge = (props) => {
 };
 
 const Wrap = styled.div`
-  display: flex;
-  align-items: center;
+  
 `;
 
 const Tabs = styled.ul`
@@ -186,6 +186,10 @@ const MyReport = styled.div`
   margin: 39px 0 36px;
   padding: 17px 20px;
   background-color: #fcfcfc;
+  background-image: url(${arrow});
+  background-repeat: no-repeat;
+  background-size: 19px;
+  background-position: right 12px center;
   border-radius: 5px;
   cursor: pointer;
   h6 {

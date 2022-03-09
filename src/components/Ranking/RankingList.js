@@ -23,9 +23,8 @@ const RankingList = () => {
                     return(
                         <RankingCard
                             className="rankCard"
-                            key={el.userId}
+                            key={i}
                             {...el}
-                            ranking={i+1}
                         />                    
                     );
                 }):(
@@ -37,7 +36,7 @@ const RankingList = () => {
             {myRank&&
                 <Grid padding="16px" margin="0 0 8px" style={{display:"flex"}} bg="#f5f5f5">
                     <RankWrap >
-                        <Rank className="myrank">20</Rank>
+                        <Rank className="myrank">{myRank.ranking}</Rank>
                         <State>{myRank.rank!=="유지"?myRank.rank==="상승"?(
                             "▲" 
                         ):(

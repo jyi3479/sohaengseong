@@ -27,17 +27,15 @@ const ChallengeCard = (props) => {
           <img src={peopleIcon} />
           {props.currentMember}/{props.maxMember}명
         </p>
-      </ImageBox>
-      {props.className === "result_card" ? (
-        <p className="category" style={{margin:"8px 0 4px", fontSize:"12px",color:"#666"}}>{props.category}</p>
-      ) : null}      
+      </ImageBox>      
+      <p className="category" style={{margin:"8px 0 4px", fontSize:"12px",color:"#666"}}>{props.category}</p>          
       <Title className="title">{props.title}</Title>
       <TagBox>
         {props.tagName?.map((el, i) => {
           return <Tag className="tag" key={i}>{el}</Tag>;
         })}
       </TagBox>
-      <Grid display="flex" padding="0px">
+      <Grid display="flex" padding="0px" style={{justifyContent: "space-between"}}>
         <Date>
           {startDate} - {endDate}
         </Date>
@@ -49,14 +47,17 @@ const ChallengeCard = (props) => {
 
 const Box = styled.div`
   display: inline-block;
-  width: 159px;
-  height: 244px;
-  margin-right: 8px;
+  width: calc(50% - 4px);
+  height: auto;
+  margin: 0 8px 24px 0;
   cursor: pointer;
+  :nth-child(2n) {
+    margin-right: 0;
+  }
 `;
 
 const ImageBox = styled.div`
-  width: 159px;
+  width: 100%;
   height: 152px;
   border-radius: 10px;
   position: relative;
@@ -104,7 +105,8 @@ const Title = styled.p`
 `;
 
 const TagBox = styled.div`
-  /* margin: 8px 0; */
+  height: 46px;
+  overflow: hidden;
 `;
 
 const Tag = styled.p`

@@ -1,17 +1,20 @@
 import React from "react";
+import styled from "styled-components";
+import { history } from "../redux/configureStore";
+import { useSelector, useDispatch } from "react-redux";
+
 import {Grid,Button} from "../elements/index";
 import ChallengeList from "../components/ChallengeList";
-import { history } from "../redux/configureStore";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
 import plus from "../image/icons/ic_more_l@2x.png";
 import MainHeader from "../components/MainHeader";
 import Footer from "../components/Footer";
 import RankingList from "../components/Ranking/RankingList";
 
-const Main = (props) => {    
-
+const Main = (props) => {
     const userInfo = useSelector(state => state.user.user); 
+
+
+
     return(
         <>
         <MainHeader/>

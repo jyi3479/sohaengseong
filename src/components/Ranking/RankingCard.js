@@ -8,7 +8,6 @@ const RankingCard = (props) => {
     const ranking = useSelector(state => state.ranking.list);
     const userId = localStorage.getItem("userId");
     const myRank = ranking.find((m) => m.userId === +userId);
-    console.log("랭킹",props);
 
 
     return(   
