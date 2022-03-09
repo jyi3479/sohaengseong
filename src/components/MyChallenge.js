@@ -82,7 +82,7 @@ const MyChallenge = (props) => {
             </Grid>
           </StatusContainer> 
           <Tabs>
-            <li className="tablink active" onClick={(e)=>{tabClick(e,'before')}}>진행중</li>
+            <li className="tablink active" onClick={(e)=>{tabClick(e,'ing')}}>진행중</li>
             <li className="tablink" onClick={(e)=>{tabClick(e,'before')}}>진행예정</li>
             <li className="tablink" onClick={(e)=>{tabClick(e,'admin')}}>개설</li>
           </Tabs>
@@ -187,6 +187,7 @@ const MyReport = styled.div`
   padding: 17px 20px;
   background-color: #fcfcfc;
   border-radius: 5px;
+  cursor: pointer;
   h6 {
     font-size: 16px;
     margin-bottom: 4px;
@@ -195,28 +196,6 @@ const MyReport = styled.div`
     font-size: 14px;
   }
 `;
-
-const Title = styled.h3`
-  font-size: 18px;
-`;
-
-const SubTitle = styled.p`
-  opacity: 0.5;
-  font-size: 13px;
-  font-weight: bold;
-  line-height: 1.69;
-  font-size: 13px;
-  color: #5f5f5f;
-  margin-bottom: 12px;
-`;
-
-const ChallengeContainer = styled.div`
-  white-space: nowrap;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  padding-bottom: 20px;
-`;
-
 
 
 

@@ -10,50 +10,59 @@ const RankingList = () => {
     const dispatch = useDispatch();
     const ranking = useSelector(state => state.ranking.list);  
     const userId = localStorage.getItem("userId");
-    const myRank = ranking.find((m) => m.userId === userId);
+    const myRank = ranking.find((m) => m.userId === +userId);
 
     React.useEffect(()=>{
         dispatch(actionCreators.getRankingDB());
     },[]);  
 
-    console.log(ranking);
-
     return(
         <Grid padding="0">
-            {ranking?ranking.map((el,i)=>{
-                return(
-                    <RankingCard
-                        key={el.userId}
-                        {...el}
-                        ranking={i+1}
-                    />                    
-                );
-            }):(
-                <>
-                    <p>앗 랭킹이 업서용</p>
-                </>
-            )}
-            {/* <Grid padding="16px" margin="0 0 8px" style={{display:"flex"}} bg="#f5f5f5">
-                <RankWrap >
-                    <Rank className="myrank">{myRank}</Rank>
-                    <State>{myRank.rank!=="none"?myRank.rank==="up"?(
-                        "▲" 
-                    ):(
-                        "▼"
-                    ):(
-                        "-"
-                    )}</State>
-                    <Image profile={myRank.profileImage !== null? myRank.profileImage : defaultImg}/>
-                    <Info>                        
-                        <p>{myRank.nickname} <span>Me</span></p>
-                        <p>Level {myRank.level}</p>                        
-                    </Info>
-                </RankWrap>        
-                <Point>{myRank.rankingPoint}</Point>
-            </Grid> */}
+            <Box>            
+                {ranking&&ranking?ranking.map((el,i)=>{
+                    return(
+                        <RankingCard
+                            className="rankCard"
+                            key={el.userId}
+                            {...el}
+                            ranking={i+1}
+                        />                    
+                    );
+                }):(
+                    <>
+                        <p>앗 랭킹이 업서용</p>
+                    </>
+                )}
+            </Box>
+            {myRank&&
+                <Grid padding="16px" margin="0 0 8px" style={{display:"flex"}} bg="#f5f5f5">
+                    <RankWrap >
+                        <Rank className="myrank">20</Rank>
+                        <State>{myRank.rank!=="유지"?myRank.rank==="상승"?(
+                            "▲" 
+                        ):(
+                            "▼"
+                        ):(
+                            "-"
+                        )}</State>
+                        <Image profile={myRank.profileImage !== null? myRank.profileImage : defaultImg}/>
+                        <Info>                        
+                            <p>{myRank.nickname} <span>Me</span></p>
+                            <p>{myRank.level}</p>
+                        </Info>
+                    </RankWrap>        
+                    <Point>{myRank.rankingPoint}</Point>
+                </Grid>
+            }            
         </Grid>
     );
 };
+
+const Box = styled.div`
+    .rankCard:nth-child(n+4) {
+        display: none !important;
+    }
+`;
 
 const RankWrap = styled.div`
     width: calc(100% - 30px);

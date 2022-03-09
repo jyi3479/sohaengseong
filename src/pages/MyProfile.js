@@ -22,7 +22,7 @@ const MyProfile = (props) => {
     const [passwordCheck, setpasswordCheck] = React.useState("");
     const [image, setImage] = React.useState(null);
     const [preview, setPreview] = React.useState(userInfo&&userInfo.profileUrl === null ? defalt : userInfo.profileUrl);
-    const [compareImage, setCompareImage] = React.useState(userInfo?userInfo.challengeImage:null);
+    
 
 
     //유효성 검사

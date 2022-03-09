@@ -24,7 +24,7 @@ const Search = (props) => {
     };
 
     React.useEffect(() => {
-        dispatch(searchActions.getRecommendDB());        
+        dispatch(searchActions.getRecommendDB());
         dispatch(searchActions.getSearchDB(word));
     }, [word]);
     
