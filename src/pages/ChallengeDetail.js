@@ -256,27 +256,13 @@ const ChallengeDetail = (props) => {
                     <p style={{fontSize:"14px"}}>타인에게 어쩌구 입주 규칙은 고정 어쩌구</p>
                 </Grid>
                 <Fixed>
-                    {target.status === "완료" || remaining_day > join_day? ( //상태값이 완료거나 남은 기간의 20%가 지난 경우
+                    {target.status === "완료" && remaining_day > join_day? ( //상태값이 완료거나 남은 기간의 20%가 지난 경우
                         //기간 끝남
                         <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
                         >기간이 만료되었습니다.</Button>
                     ): (                        
                         <>
-                        {target.maxMember !== members.length ?  member !== undefined ?  (admin.userId === userInfo&&!after) ?(      
-                            //내가 만든 챌린지 (시작 전)
-                            <Grid padding="0" is_flex>
-                               <Button width="calc(50% - 5px)" bg="#fff" style={{color:"#666",border:"1px solid #666"}}
-                                   _onClick={()=>{
-                                       deleteModal()
-                                   }}
-                               >삭제하기</Button>  
-                               <Button width="calc(50% - 5px)"
-                                   _onClick={()=>{
-                                       history.push(`/challengewrite/${challengeId}`);
-                                   }}
-                               >수정하기</Button>
-                           </Grid>
-                       ):(
+                        {target.maxMember !== members.length ?  member !== undefined ?(                       
                            //내가 참여중인 챌린지
                            <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
                            >이미 입주한 행성입니다.</Button>
@@ -284,7 +270,6 @@ const ChallengeDetail = (props) => {
                            //참여가능한 챌린지
                            <Button
                                _onClick={()=>{
-                                   //joinChallenge()
                                    joinModal()
                                }}
                            >소행성 입주하기</Button>

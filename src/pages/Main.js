@@ -88,7 +88,7 @@ const Main = (props) => {
                             </Grid>                            
                             <SubTitle>따끈따끈한 습관 챌린지</SubTitle>                            
                             <Grid padding="0">
-                                <ChallengeList/>
+                                <ChallengeList className="main"/>
                             </Grid>
                             
                         </div>

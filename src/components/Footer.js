@@ -8,31 +8,32 @@ import my from "../image/icons/ic_my@2x.png";
 
 const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);
+  const params = window.location.pathname;
 
-    if(!hide){
-        return null;
-    }
-    return(
-        <Wrap>
-            <a href="/">
-                <img src={home}></img>
-                <p>홈</p>
-            </a>        
-            <a href="/challengewrite">
-                <img src={create}></img>
-                <p>개설하기</p>
-            </a>            
-            <a href="/chatting">
-                <img src={chat}></img>
-                <p>채팅하기</p>
-            </a>
-        
-            <a href="/mypage">
-                <img src={my}></img>
-                <p>내 정보</p>
-            </a>
-        
-      </Wrap>
+  if(!hide){
+      return null;
+  }
+  return(
+      <Wrap>
+          <a href="/" className={params === "/" ? "active": ""}>
+              <img src={home}></img>
+              <p>홈</p>
+          </a>        
+          <a href="/challengewrite" className={params === "/challengewrite" ? "active": ""}>
+              <img src={create}></img>
+              <p>개설하기</p>
+          </a>            
+          <a href="/chatting" className={params.includes("/chatting") ? "active": ""}>
+              <img src={chat}></img>
+              <p>채팅하기</p>
+          </a>
+      
+          <a href="/mypage" className={params.includes("/mypage") ? "active": ""}>
+              <img src={my}></img>
+              <p>내 정보</p>
+          </a>
+      
+    </Wrap>
   );
 };
 
@@ -53,6 +54,7 @@ const Wrap = styled.div`
     display: inline-block;
     text-decoration: none;
     text-align: center;
+    opacity: 0.3;
     img {
       width: 28px;
     }
@@ -62,6 +64,10 @@ const Wrap = styled.div`
       line-height: 0;
       margin: 0;
     }
+  }
+
+  a.active {
+    opacity: 1;
   }
 `;
 
