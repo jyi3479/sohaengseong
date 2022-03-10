@@ -99,9 +99,7 @@ const Wrap = styled.div`
         }
        
     }
-    &.left {
-        justify-content: flex-start;
-    }  
+    
     &.detailHeader {
         display: flex;
         text-align: center;
@@ -109,6 +107,12 @@ const Wrap = styled.div`
         border-bottom: solid 1px #e2e2e2;  
         justify-content: space-between;   
         align-items: center; 
+        &.left {
+            justify-content: flex-start;
+            .title {
+                margin-left: 24px;
+            }
+        }  
         >button {
             width: 32px;
             height: 32px;

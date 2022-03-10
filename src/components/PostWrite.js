@@ -78,7 +78,8 @@ const PostWrite = (props) => {
       .addPost(challengeId, formData)
       .then((res) => {
         console.log("인증 게시글 작성", res);
-        history.push(`/post/${challengeId}`);
+        setModalType("okModal");    
+        setModalOpen(true);        
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
@@ -115,6 +116,7 @@ const PostWrite = (props) => {
       .then((res) => {
         console.log("인증 게시글 작성", res);
         // dispatch(memberAction.editPost(post));
+
         history.push(`/post/${challengeId}`);
       })
       .catch((err) => {
@@ -208,7 +210,7 @@ const PostWrite = (props) => {
       <NoticeBox>
         <p>유의사항</p>
         <p>
-          타인을 불쾨하게 하는 사진을 업로드 시 방장의 권한에 따라 재인증을
+          타인을 불쾌하게 하는 사진을 업로드 시 방장의 권한에 따라 재인증을
           해야할 수도 있습니다.
         </p>
       </NoticeBox>
@@ -233,10 +235,24 @@ const PostWrite = (props) => {
             editPost();
           } else {
             addPost();
+
           }
         }}
       >
         <p>{isEdit ? "수정하시겠습니까?" : "인증하시겠습니까?"}</p>
+      </Modal>
+      <Modal
+        open={modalType === "okModal" ? modalOpen : ""}
+        close={closeModal}
+        header
+        isPrivate
+      >
+        <Grid>
+          <div style={{width:"110px",height:"110px",backgroundColor:"#eee", margin:"20px auto 13px"}} ></div>
+          <h1 style={{marginBottom:"9px"}}>인증 완료</h1>
+          <p style={{marginBottom:"35px"}}>인증을 완료했습니다.<br/>오늘도 즐거운 하루되세요!</p>
+          <Button _onClick={()=>{history.replace(`/post/${challengeId}`);}}>확인</Button>
+        </Grid>        
       </Modal>
     </Grid>
   );

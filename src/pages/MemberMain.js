@@ -17,7 +17,7 @@ const MemberMain = (props) => {
   // 인증사진 나열 부분
 
   React.useEffect(() => {
-    dispatch(baseAction.setHeader("", false));
+    dispatch(baseAction.setHeader("", true));
     dispatch(baseAction.setGnb(false));
     return () => {
       dispatch(baseAction.setHeader(""));

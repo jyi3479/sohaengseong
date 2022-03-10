@@ -91,6 +91,9 @@ export const GlobalStyle = createGlobalStyle`
         color: #eee;
         font-size: 12px;
         line-height: 1.8;
+        * {
+            color: #fff;
+        }
     }
 
 

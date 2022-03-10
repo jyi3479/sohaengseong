@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid, Image } from "../../elements/index";
+import { history } from "../../redux/configureStore";
+import { Button } from "../../elements/index";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux/modules/ranking";
 import defaultImg from "../../image/img_profile_defalt @2x.png";
@@ -10,7 +11,6 @@ const RankingList = () => {
     const dispatch = useDispatch();
     const ranking = useSelector(state => state.ranking.list);  
     const userId = localStorage.getItem("userId");
-    const myRank = ranking.findIndex((m) => m.userId === +userId);
 
 
     React.useEffect(()=>{
@@ -19,7 +19,7 @@ const RankingList = () => {
 
     return(
         <Wrap>                 
-            {ranking&&ranking?ranking.map((el,i)=>{
+            {ranking&&ranking &&userId?ranking.map((el,i)=>{
                 return(                    
                     <RankingCard
                         key={i}
@@ -29,7 +29,10 @@ const RankingList = () => {
                 );
             }):(
                 <>
-                    <p>앗 랭킹이 업서용</p>
+                    <div style={{textAlign:"center", padding:"10px"}}>                    
+                        <p className="" >로그인하고 실시간 랭킹 정보를 확인해보세요!</p>
+                        <Button width="80px" height="35px" margin="10px 0 0" border_btn _onClick={()=>{history.push("/login")}}>로그인</Button>
+                    </div>
                 </>
             )}            
         </Wrap>

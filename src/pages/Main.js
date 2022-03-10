@@ -34,7 +34,7 @@ const Main = (props) => {
                             <h2>안녕하세요. <b>{userInfo&&userInfo.nickname}</b> 님</h2>
                             <Grid padding="0" is_flex height="auto" margin="0 0 22px">
                                 <p className="sub_color">인증 가능한 행성</p>
-                                <p className="poppins"><b className="point_color" style={{opacity:"0.8"}}>1</b>개</p>
+                                <p className="poppins"><b className="point_color" style={{opacity:"0.8"}}>{userInfo.count}</b>개</p>
                             </Grid>
                         <Button
                         _onClick={()=>{
