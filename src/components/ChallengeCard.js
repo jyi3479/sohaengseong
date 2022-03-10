@@ -50,6 +50,7 @@ const Box = styled.div`
   width: calc(50% - 4px);
   height: auto;
   margin: 0 8px 24px 0;
+  background-color: #fff;
   cursor: pointer;
   :nth-child(2n) {
     margin-right: 0;

@@ -3,7 +3,7 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); //roboto => 디폴트 폰트
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap'); //poppins => 포인트 폰트
-    
+
     *, *::before, *::after {
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
@@ -41,7 +41,7 @@ export const GlobalStyle = createGlobalStyle`
         line-height: 16px;
         letter-spacing: -0.36px;
     }
-    p.date { //기간
+    p.small { //기간 & 작은 폰트
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.36px;
@@ -52,16 +52,17 @@ export const GlobalStyle = createGlobalStyle`
         font-size: 16px;
         font-weight: 500;
         letter-spacing: 0;
-        .bold { //랭킹 등수
+        &.bold { //랭킹 등수
             font-weight: bold;
             font-size: 12px;
         }
     }
 
+
     //color -----------------------------------------
 
     .point_color {
-        color: #7C8288;
+        color: #4149d3;
     }
 
     .sub_color {
@@ -96,3 +97,4 @@ export const GlobalStyle = createGlobalStyle`
 
 
 `;
+
