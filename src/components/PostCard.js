@@ -3,15 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as memberActions } from "../redux/modules/member";
 import styled from "styled-components";
 import { Button, Grid, Input, Image } from "../elements";
+import PostModal from "./Member/PostModal";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
 import comment from "../image/icons/ic_chat@2x.png";
 import deleteIcon from "../image/icons/ic_delete@2x.png";
+import close from "../image/icons/icon_close_btn@2x.png";
+import edit from "../image/icons/ic_edit@2x.png";
+import more from "../image/icons/ic_more@2x.png";
 import moment from "moment";
 import "moment/locale/ko";
-moment.locale("ko");
 
 const PostCard = (props) => {
+  moment.locale("ko"); // 모멘트 한글로 바꾸기
   const challengeId = useParams().challengeId;
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.user);
@@ -30,10 +34,21 @@ const PostCard = (props) => {
   };
   const deletePost = () => {
     dispatch(memberActions.deletePostDB(props.postId));
+    history.replace(`/post/${challengeId}`);
   };
 
   const deleteComment = (commentId) => {
     dispatch(memberActions.deleteCommentDB(props.postId, commentId));
+  };
+
+  // 모달 팝업 -------------------------------------------------
+  const [modalState, setModalState] = React.useState(false);
+  const openModal = () => {
+    setModalState(true);
+  };
+
+  const closeModal = () => {
+    setModalState(false);
   };
 
   return (
@@ -45,16 +60,9 @@ const PostCard = (props) => {
           <p style={{ margin: "0px 10px" }}>{props.nickname}</p>
         </Grid>
         {is_me && (
-          <Grid is_flex width="auto" padding="0px">
-            <p
-              onClick={() => {
-                history.push(`/post/${challengeId}/write/${props.postId}`);
-              }}
-            >
-              수정
-            </p>
-            <p onClick={deletePost}>삭제</p>
-          </Grid>
+          <MoreBtn onClick={openModal}>
+            <img src={more}></img>
+          </MoreBtn>
         )}
       </Grid>
       {/* 인증 게시글 내용물 클릭하면 상세 페이지로 이동 */}
@@ -113,16 +121,16 @@ const PostCard = (props) => {
           )}
           {comments.map((el, i) => {
             return (
-              <Grid padding="0px" margin="8px 0px" key={el.commentId} is_flex>
+              <Grid padding="0px" margin="12px 0px" key={el.commentId} is_flex>
                 <ContentBox>
                   {isDetail && <Image size={36} profile={el.profileImage} />}
-                  <Writer>{el.nickname}</Writer>
+                  <p className="writer">{el.nickname}</p>
 
-                  <Comment>{el.content}</Comment>
+                  <p className="comment">{el.content}</p>
 
-                  <Date>
+                  <p className="date">
                     {moment(el.createdAt, "YYYY.MM.DD kk:mm:ss").fromNow("")}
-                  </Date>
+                  </p>
                 </ContentBox>
                 {isDetail && userInfo.nickname === el.nickname && (
                   <Delete
@@ -137,27 +145,45 @@ const PostCard = (props) => {
           })}
         </CommentContainer>
       </Grid>
+      <PostModal state={modalState} _handleModal={closeModal}>
+        <>
+          <Grid width="auto" padding="0px">
+            <ModalBox
+              onClick={() => {
+                history.push(`/post/${challengeId}/write/${props.postId}`);
+              }}
+            >
+              <img src={edit} />
+              <p>수정하기</p>
+            </ModalBox>
+            <ModalBox onClick={deletePost}>
+              <img src={deleteIcon} />
+              <p>삭제하기</p>
+            </ModalBox>
+            <ModalBox onClick={closeModal}>
+              <img src={close} />
+              <p>취소</p>
+            </ModalBox>
+          </Grid>
+        </>
+      </PostModal>
     </Grid>
   );
 };
-
-const ProfileImage = styled.img`
-  --size: ${(props) => props.size}px;
-  width: var(--size);
-  height: var(--size);
-  min-width: var(--size);
-  min-height: var(--size);
-  background-image: url(${(props) => props.src});
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%;
-  border: 1px solid red;
-`;
 
 const CommentContainer = styled.div`
   margin: 16px 0px;
   padding: 10px 0px;
   border-top: 1px solid #d9d9d9;
+`;
+
+const MoreBtn = styled.div`
+  cursor: pointer;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const CommentBox = styled.div`
@@ -214,25 +240,23 @@ const ContentBox = styled.div`
   p {
     margin: 7px 5px 5px;
   }
-`;
-
-const Writer = styled.p`
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1.43;
-  color: #000;
-`;
-
-const Comment = styled.p`
-  font-size: 14px;
-  line-height: 1.43;
-  color: #333;
-`;
-
-const Date = styled.p`
-  font-size: 12px;
-  line-height: 1.5;
-  color: #9b9b9b;
+  .writer {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.43;
+    color: #000;
+  }
+  .comment {
+    font-size: 14px;
+    line-height: 1.43;
+    color: #333;
+  }
+  .date {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #9b9b9b;
+    margin-top: 9px;
+  }
 `;
 
 const Delete = styled.img`
@@ -240,6 +264,30 @@ const Delete = styled.img`
   height: 20px;
   margin: 0px 5px;
   cursor: pointer;
+`;
+
+const ModalBox = styled.div`
+  width: 375px;
+  padding: 0px 21px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: flex-start;
+  cursor: pointer;
+
+  img {
+    width: 24px;
+    height: 24px;
+    margin-right: 7px;
+  }
+  p {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.48px;
+    text-align: left;
+    color: #000;
+    margin: 3px;
+  }
 `;
 
 export default PostCard;

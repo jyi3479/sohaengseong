@@ -173,7 +173,7 @@ const addCommentDB = (postId, content) => {
         console.log("댓글 작성", res);
         const comment = {
           nickname: userInfo.nickname,
-          profileImage: "",
+          profileImage: userInfo.profileUrl,
           commentId: res.data.commentId,
           content: content,
           createdAt: moment().startOf("seconds"),
@@ -197,6 +197,18 @@ const deleteCommentDB = (postId, commentId) => {
       .catch((err) => {
         console.log("댓글 삭제 오류", err);
       });
+  };
+};
+
+const exitChallengeDB = (challengeId) => {
+  return function (dispatch, getState, { history }) {
+    memberApis
+      .exitChallenge(challengeId)
+      .then((res) => {
+        console.log("챌린지 나가기", res);
+        history.replace("/");
+      })
+      .catch((err) => console.log("챌린지 나가기 오류", err));
   };
 };
 
@@ -252,6 +264,7 @@ const actionCreators = {
   getPostDB,
   deletePostDB,
   deleteCommentDB,
+  exitChallengeDB,
 };
 
 export { actionCreators };

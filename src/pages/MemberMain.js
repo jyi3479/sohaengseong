@@ -9,7 +9,7 @@ import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import ChallengeInfo from "../components/Member/ChallengeInfo";
 import MemberReport from "../components/Member/MemberReport";
-import MemberPost from "../components/Member/TodayPost";
+import TodayPost from "../components/Member/TodayPost";
 
 const MemberMain = (props) => {
   const dispatch = useDispatch();
@@ -29,8 +29,8 @@ const MemberMain = (props) => {
     <Grid margin="48px 0 0">
       <ChallengeInfo challengeId={challengeId} />
       <MemberReport />
-      <div>입주민 랭킹</div>
-      <MemberPost challengeId={challengeId} />
+      {/* <div>입주민 랭킹</div> */}
+      <TodayPost challengeId={challengeId} />
       <Fixed>
         <Grid padding="0" is_flex>
           <Button

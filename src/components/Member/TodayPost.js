@@ -17,7 +17,7 @@ const MemberPost = (props) => {
   return (
     <Grid padding="0px" margin="39px 0 0">
       <Grid is_flex padding="0" margin="19px 0px">
-        <Title>오늘의 인증</Title>
+        <Title>실시간 인증</Title>
         <p
           onClick={() => {
             history.push(`/post/${props.challengeId}`); // 멤버 전용 챌린지 인증페이지로 이동
@@ -30,7 +30,24 @@ const MemberPost = (props) => {
       <Grid padding="0px" margin="13px 0 0">
         <Container>
           {postImageList.map((el, i) => {
-            return <ImageBox key={el.postId} src={el.postImage} />;
+            return (
+              <>
+                <ImageBox
+                  key={el.postId}
+                  src={el.postImage}
+                  onClick={() => {
+                    history.push(
+                      `/post/${props.challengeId}/detail/${el.postId}`
+                    );
+                  }}
+                >
+                  <Info>
+                    <p className="content">{el.content}</p>{" "}
+                    <p className="nickname">{el.nickname}</p>
+                  </Info>
+                </ImageBox>
+              </>
+            );
           })}
         </Container>
       </Grid>
@@ -57,8 +74,35 @@ const ImageBox = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  position: relative;
 
   cursor: pointer;
+
+  ::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* 빈 값으로 넣어야 가상의 요소 생성; */
+    content: "";
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+`;
+
+const Info = styled.div`
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  left: 15px;
+  color: #fff;
+
+  p {
+    font-size: 14px;
+    text-align: left;
+  }
 `;
 
 const Title = styled.h3`

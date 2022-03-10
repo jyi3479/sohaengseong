@@ -5,9 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { challengeApis } from "../shared/apis";
 import { targetChallenge } from "../redux/modules/challenge";
 import { apis } from "../shared/apis";
-
-//비밀방 비밀번호 커스텀
-import ReactCodeInput from "react-code-input";
+import moment from "moment";
 
 //이미지 슬라이더(Swiper) import
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -21,11 +19,14 @@ import Modal from "../components/Modal";
 //사용자 import
 import { Grid, Image, Button } from "../elements/index";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
+import { actionCreators as memberAction } from "../redux/modules/member";
 import * as baseAction from "../redux/modules/base";
 import empty from "../image/ic_empty_s@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
 import share from "../image/icons/ic_share@2x.png";
+import plus from "../image/icons/ic_plus@2x.png";
+import MemberModal from "../components/Member/MemberModal";
 
 const MemberDetail = (props) => {
   const dispatch = useDispatch();
@@ -45,76 +46,43 @@ const MemberDetail = (props) => {
 
   console.log(member);
 
-  const joinChallenge = () => {
-    dispatch(challengeAction.joinChallengeDB(challengeId));
+  const exitChallenge = () => {
+    dispatch(memberAction.exitChallengeDB(challengeId));
+    console.log("챌린지 나가기");
   };
 
   const deleteChallenge = () => {
     dispatch(challengeAction.deleteChallengeDB(challengeId));
   };
 
-  //모달 팝업 -----------------------------------------
+  //버튼 모달 팝업 -----------------------------------------
   const [modalType, setModalType] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
-  const [checkPrivate, setCheckPrivate] = React.useState(false); //비밀방 비밀번호 맞는지 확인
-  const [isNum, setIsNum] = React.useState(false); //비밀방 비밀번호 숫자체크
-  const [join, setJoin] = React.useState(false); //입장하기 클릭여부
-  const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
 
   const deleteModal = () => {
     setModalType("deleteModal");
     console.log("챌린지 삭제");
     setModalOpen(true);
   };
-  const joinModal = () => {
-    if (!target.isPrivate) {
-      setModalType("joinModal");
-    } else {
-      setModalType("privateModal");
-    }
-    console.log("챌린지 입장");
+  const exitModal = () => {
+    setModalType("exitModal");
+    console.log("챌린지 나가기");
     setModalOpen(true);
   };
 
   const closeModal = () => {
     console.log("눌림");
     setModalOpen(false);
-    setPrivatePwd("");
   };
 
-  const privateCheck = (e) => {
-    setIsNum(false);
-    const pwdRegex = /^[0-9]+$/;
-    const pwdcurrent = e;
-    let PwdRegex = pwdRegex.test(e);
-
-    setPrivatePwd(e);
-
-    if (!PwdRegex) {
-      setIsNum(false);
-    } else {
-      setIsNum(true);
-    }
+  // 멤버 모달 팝업 -------------------------------------------------
+  const [memberModalState, setMemberModalState] = React.useState(false);
+  const openMemberModal = () => {
+    setMemberModalState(true);
   };
 
-  const pwdCheck = () => {
-    const input = document.getElementsByClassName("ReactCodeInput");
-    setJoin(true);
-    apis
-      .post(`/challenge/${challengeId}/private`, { password: privatePwd })
-      .then((res) => {
-        console.log("비밀방 비밀번호 확인", res);
-        if (res.result === true) {
-          setCheckPrivate(true);
-          dispatch(challengeAction.joinChallengeDB(challengeId));
-          history.push(`/member/${challengeId}`);
-        } else {
-          setCheckPrivate(false);
-        }
-      })
-      .catch((err) => {
-        console.log("비밀번호 확인오류", err);
-      });
+  const closeMemberModal = () => {
+    setMemberModalState(false);
   };
 
   React.useEffect(() => {
@@ -125,7 +93,7 @@ const MemberDetail = (props) => {
         const target = res.data;
         dispatch(targetChallenge(target));
         //헤더&푸터 state
-        dispatch(baseAction.setHeader("행성 정보", true));
+        dispatch(baseAction.setHeader("행성 정보", false));
       })
       .catch((err) => {
         console.log("특정 챌린지 조회 오류", err);
@@ -187,7 +155,9 @@ const MemberDetail = (props) => {
             </ContentBox>
             <ContentBox>
               <Title>개설일</Title>
-              <Content>{target.startDate.split(" ")[0]}</Content>
+              <Content>
+                {target.startDate.split(" ")[0].split(".").join("/")}
+              </Content>
             </ContentBox>
             <ContentBox>
               <Title>멤버수</Title>
@@ -215,7 +185,7 @@ const MemberDetail = (props) => {
                         ></Member>
                       );
                     })}
-                  <button>멤버 추가로 보기</button>
+                  <MemberBtn onClick={openMemberModal}></MemberBtn>
                 </Grid>
               </Content>
             </ContentBox>
@@ -229,33 +199,42 @@ const MemberDetail = (props) => {
             </ContentBox>
             <Fixed>
               {admin.userId === userInfo ? ( //내가 만든 챌린지
-                <Grid padding="0" is_flex>
-                  <Button
-                    width="calc(50% - 5px)"
-                    bg="#fff"
-                    style={{ color: "#666", border: "1px solid #666" }}
-                    _onClick={() => {
-                      deleteModal();
-                    }}
-                  >
-                    삭제하기
-                  </Button>
-                  <Button
-                    width="calc(50% - 5px)"
-                    _onClick={() => {
-                      history.push(`/challengewrite/${challengeId}`);
-                    }}
-                  >
-                    수정하기
-                  </Button>
-                </Grid>
+                moment(target.startDate, "YYYY.MM.DD kk:mm:ss").diff(
+                  moment(),
+                  "seconds"
+                ) > 0 ? ( // 챌린지 시작 하루 전까지 수정/삭제 가능
+                  <Grid padding="0" is_flex>
+                    <Button
+                      width="calc(50% - 5px)"
+                      bg="#fff"
+                      style={{ color: "#666", border: "1px solid #666" }}
+                      _onClick={() => {
+                        deleteModal();
+                      }}
+                    >
+                      삭제하기
+                    </Button>
+                    <Button
+                      width="calc(50% - 5px)"
+                      _onClick={() => {
+                        history.push(`/challengewrite/${challengeId}`);
+                      }}
+                    >
+                      수정하기
+                    </Button>
+                  </Grid>
+                ) : (
+                  ""
+                )
               ) : (
-                //내가 참여중인 챌린지 (방장인데 챌린지 시작했을 경우도 포함)
+                //방장 아닌 멤버인 경우
                 <Button
-                  bg="#bbb"
-                  color="#fff"
-                  style={{ cursor: "auto" }}
-                  _onClick={() => {}}
+                  bg="#ffffff"
+                  color="#020202"
+                  border="1px solid grey"
+                  _onClick={() => {
+                    exitModal();
+                  }}
                 >
                   행성 나가기
                 </Button>
@@ -289,43 +268,50 @@ const MemberDetail = (props) => {
           </Modal>
           {/* 입장하기 버튼 클릭 시 뜨는 모달팝업 - 공개방 */}
           <Modal
-            open={modalType === "joinModal" ? modalOpen : ""}
+            open={modalType === "exitModal" ? modalOpen : ""}
             close={closeModal}
             double_btn
-            btn_text="입장"
+            btn_text="나가기"
             _onClick={() => {
-              joinChallenge();
+              exitChallenge();
             }}
           >
             <div>
-              <h6>입장하시겠습니까?</h6>
+              <h6>정말로 나가시겠습니까?</h6>
               <p>
-                다른 입주민분들을 위해 <br />
-                신중하게 선택해 주시기 바랍니다.
+                중도 하차할 경우 패널티(경험치%손실)가 <br />
+                적용됩니다.
                 <br />
               </p>
             </div>
           </Modal>
         </Grid>
       )}
+      <MemberModal state={memberModalState} _handleModal={closeMemberModal}>
+        {members &&
+          members.map((el, i) => {
+            return (
+              //만약에 방을 만든 userId와 멤버의 userId가 같은 경우(방장인 경우) className을 붙여준다.
+              <MemberBox>
+                <Member
+                  key={el.userId}
+                  className={admin.userId === el.userId ? "admin" : ""}
+                  style={{
+                    backgroundImage: `url(${
+                      el.profileImage !== null ? el.profileImage : defaultImg
+                    })`,
+                  }}
+                  src={el.profileImage}
+                  total
+                ></Member>
+                <p>{el.nickname}</p>
+              </MemberBox>
+            );
+          })}
+      </MemberModal>
     </>
   );
 };
-const ShareBtn = styled.button`
-  //공유버튼
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  right: 20px;
-  top: 20px;
-  background-color: transparent;
-  border: none;
-  background-image: url(${share});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  z-index: 2;
-`;
 
 const TitleBox = styled.div`
   margin-bottom: 5px;
@@ -378,9 +364,10 @@ const Member = styled.div`
   background-size: cover;
   background-position: center;
   margin-right: 5px;
+
   &:nth-child(n + 4) {
     //3번째 멤버 이후로는 미노출
-    display: none;
+    ${(props) => !props.total && `display: none;`};
   }
   &.admin {
     //방장일 경우
@@ -401,6 +388,33 @@ const Member = styled.div`
     }
   }
 `;
+const MemberBtn = styled.button`
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  border: solid 1px #999;
+  border-radius: 50%;
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(${plus});
+  margin-right: 5px;
+`;
+
+const MemberBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-content: flex-start;
+  margin: 0 15px 20px 0px;
+  p {
+    margin: 5px 0px 0px 15px;
+    font-size: 14px;
+    line-height: 1.43;
+    text-align: left;
+    color: #000;
+  }
+`;
+
 const Fixed = styled.div`
   width: 100%;
   position: fixed;

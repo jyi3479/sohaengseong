@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { history } from "../redux/configureStore";
 import { actionCreators as memberAction } from "../redux/modules/member";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { Grid, Input, Button } from "../elements";
+import Modal from "./Modal";
 import { useParams } from "react-router-dom";
 import { memberApis } from "../shared/apis";
 import plus from "../image/icons/btn_number_plus_l@2x.png";
@@ -76,12 +78,12 @@ const PostWrite = (props) => {
       .addPost(challengeId, formData)
       .then((res) => {
         console.log("인증 게시글 작성", res);
-        // dispatch(memberAction.addPost(post));
-        setPreview("");
+        history.push(`/post/${challengeId}`);
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
       });
+    setPreview("");
   };
   // 인증 게시글 수정하기
   const editPost = () => {
@@ -113,11 +115,12 @@ const PostWrite = (props) => {
       .then((res) => {
         console.log("인증 게시글 작성", res);
         // dispatch(memberAction.editPost(post));
-        setPreview("");
+        history.push(`/post/${challengeId}`);
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
       });
+    setPreview("");
   };
 
   React.useEffect(() => {
@@ -133,9 +136,24 @@ const PostWrite = (props) => {
       dispatch(baseAction.setGnb(true));
     };
   }, []);
+
+  // 모달 팝업 ---------------------------------
+  const [modalType, setModalType] = React.useState("");
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const openModal = () => {
+    setModalType("openModal");
+    console.log("챌린지 개설");
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    console.log("눌림");
+    setModalOpen(false);
+  };
+
   return (
     <Grid margin="16px 0px" padding="0px" height="700px" bg="#f5f5f5">
-      <Grid is_flex bg="#ffffff" style={{ alignItems: "flex-start" }}>
+      <Grid display="flex" bg="#ffffff" style={{ alignItems: "flex-start" }}>
         {/* 이미지 업로드 부분 */}
         <div>
           <ImageLabel
@@ -183,6 +201,8 @@ const PostWrite = (props) => {
           }}
           placeholder={`${userInfo.nickname}님, 오늘의 인증을 남겨주세요`}
           border="none"
+          width="220px"
+          margin="0 0 0 16px"
         ></Input>
       </Grid>
       <NoticeBox>
@@ -198,17 +218,26 @@ const PostWrite = (props) => {
           width="calc(100% - 5px)"
           bg="#fff"
           style={{ color: "#666", border: "1px solid #666" }}
-          _onClick={() => {
-            if (isEdit) {
-              editPost();
-            } else {
-              addPost();
-            }
-          }}
+          _onClick={openModal}
         >
           {isEdit ? "수정하기" : "인증하기"}
         </Button>
       </Fixed>
+      <Modal
+        open={modalType === "openModal" ? modalOpen : ""}
+        close={closeModal}
+        double_btn
+        btn_text={isEdit ? "수정" : "인증"}
+        _onClick={() => {
+          if (isEdit) {
+            editPost();
+          } else {
+            addPost();
+          }
+        }}
+      >
+        <p>{isEdit ? "수정하시겠습니까?" : "인증하시겠습니까?"}</p>
+      </Modal>
     </Grid>
   );
 };
