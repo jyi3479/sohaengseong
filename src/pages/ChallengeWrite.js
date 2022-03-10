@@ -212,7 +212,6 @@ const ChallengeWrite = (props) => {
     },
     [hashtag, hashArr]
   );
-  console.log(hashArr);
   // 이미지 업로드 부분
   const fileInput = React.useRef();
 
@@ -220,7 +219,6 @@ const ChallengeWrite = (props) => {
     const reader = new FileReader();
 
     const file = fileInput.current.files[0];
-    console.log(file);
     // 파일 내용을 읽어온다.
     reader.readAsDataURL(file);
     // 읽기가 끝나면 발생하는 이벤트 핸들러.
@@ -290,7 +288,6 @@ const ChallengeWrite = (props) => {
         second
       );
     }
-    console.log(dateFormat(startDate));
 
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {

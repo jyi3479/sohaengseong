@@ -48,7 +48,6 @@ const getChallengeDB = () => {
       .then((res) => {
         const challenge_list = res.data;
         dispatch(getChallenge(challenge_list));
-        //console.log("전체 챌린지 조회",res);
       })
       .catch((err) => {
         console.log("전체 챌린지 조회 오류", err);
@@ -80,7 +79,9 @@ const joinChallengeDB = (challengeId) => {
         history.push(`/member/${challengeId}`);
       })
       .catch((err) => {
-        console.log("챌린지 참여하기 오류", err);
+        console.log("챌린지 참여하기 오류", err.response);
+        window.alert(err.response.data.message);
+        history.replace("/");
       });
   };
 };
@@ -92,7 +93,7 @@ const addChallengeDB = (challenge) => {
       .addChallenge(challenge)
       .then((res) => {
         console.log("챌린지 등록", res);
-        history.push("/today");
+        history.replace("/today");
       })
       .catch((err) => {
         console.log("챌린지 등록 오류", err);
@@ -106,7 +107,7 @@ const editChallengeDB = (challengeId, challenge) => {
       .editChallenge(challengeId, challenge)
       .then((res) => {
         console.log("챌린지 수정", res);
-        history.push(`/member/detail/${challengeId}`);
+        history.replace(`/member/detail/${challengeId}`);
       })
       .catch((err) => {
         console.log("챌린지 수정 오류", err);

@@ -51,12 +51,13 @@ const ChallengeDetail = (props) => {
     const today = moment().format('YYYY.MM.DD'); //오늘 날짜
     const dateA = moment(startDate, 'YYYY.MM.DD');
     const dateB = moment(endDate, 'YYYY.MM.DD');
-    const days = dateA.from(dateB).split(" ")[0]; //16 days ago 이런 식으로 나와서 자름
+    const days = dateA.from(dateB).split(" ")[0] === 'a' ? "30" : parseInt(dateA.from(dateB).split(" ")[0])+1; //16 days ago 이런 식으로 나와서 자름
     const after = moment(today).isAfter(dateA); //오늘 날짜 이후라면 true 아니면 false
-    const join_day = dateB.from(today).split(" ")[0] === 'in' ? +dateB.from(today).split(" ")[1] : null;
+    const join_day = dateB.from(today).split(" ")[0] === 'in' ? +dateB.from(today).split(" ")[1]+1 : null;
+    //const join_day = dateB.from(today).split(" ");
     const remaining_day = Math.ceil(days*0.8) ; //기간의 80%
 
-    console.log("들어갈 수 있는 기간",remaining_day,"들어갈 때 남은 기간",join_day, days);
+    console.log("들어갈 수 있는 기간",remaining_day,"들어갈 때 남은 기간",join_day, );
 
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
@@ -84,8 +85,7 @@ const ChallengeDetail = (props) => {
             setModalType("joinModal");
         }else {
             setModalType("privateModal");
-        }       
-        console.log("챌린지 입장");
+        }
         setModalOpen(true);
     };
 
@@ -115,14 +115,13 @@ const ChallengeDetail = (props) => {
 
         apis.post(`/challenge/${challengeId}/private`, {password:privatePwd})
         .then((res)=>{
-            console.log("비밀방 비밀번호 확인",res);
+            console.log("비번 맞?",res);
             if(res.data.result === 'true'){
-                setCheckPrivate(true);
-                dispatch(challengeAction.joinChallengeDB(challengeId));
-                history.push(`/member/${challengeId}`);
+                setCheckPrivate(true);                
             }else{
                 setCheckPrivate(false);                
             }
+            dispatch(challengeAction.joinChallengeDB(challengeId));
         }).catch((err)=>{
             console.log("비밀번호 확인오류",err);
         });
@@ -253,7 +252,7 @@ const ChallengeDetail = (props) => {
                     <p style={{fontSize:"14px"}}>타인에게 어쩌구 입주 규칙은 고정 어쩌구</p>
                 </Grid>
                 <Fixed>
-                    {target.status === "완료" || remaining_day < join_day? ( //상태값이 완료거나 남은 기간의 20%가 지난 경우
+                    {target.status === "완료" || remaining_day > join_day? ( //상태값이 완료거나 남은 기간의 20%가 지난 경우
                         //기간 끝남
                         <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
                         >기간이 만료되었습니다.</Button>
