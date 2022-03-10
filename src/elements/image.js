@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { MdOutlineAddAPhoto } from "react-icons/md";
+import profileBorder from "../image/profile_border.png";
 
 const Image = (props) => {
-  const { shape, src, size, profile, radius, align, inline_block, padding } =
-    props;
+  const { shape, src, size, profile, radius, align, inline_block, padding , ranking} = props;
   const styles = {
     src: src,
     size: size,
@@ -13,11 +12,17 @@ const Image = (props) => {
     inline_block: inline_block,
     align: align,
     padding: padding,
+    ranking:ranking,
   };
+
+  if(shape === "border" ){
+    //랭킹 프로필 이미지
+    return <CircleWrap {...styles}><div></div></CircleWrap>
+  }
 
   if (shape === "circle") {
     //프로필 이미지
-    return <ImageCircle {...styles}></ImageCircle>;
+    return <ImageCircle {...styles}></ImageCircle>
   }
   if (shape === "rectangle") {
     //게시글 이미지
@@ -40,6 +45,7 @@ Image.defaultProps = {
   is_preview: false,
   align: false,
   children: null,
+  ranking:false,
   padding: "100%",
 };
 
@@ -70,5 +76,29 @@ const ImageCircle = styled.div`
   background-position: center;
   vertical-align: ${(props) => props.align};
 `;
+
+const CircleWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+   --size: ${(props) => props.size}px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 9px;
+  background-image: url(${profileBorder});
+  background-position: center;
+  background-size: contain;
+  > div{
+    display: block;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    background-image: url("${(props) => props.profile}");
+    background-size: cover;
+    background-position: center;
+    border-radius: 9px;
+  }
+`;
+
 
 export default Image;

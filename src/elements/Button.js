@@ -23,7 +23,7 @@ const Button = ({
     font_size,
     height,
     radius,
-    border_btn,
+    border_btn
   };
 
   return (
@@ -41,10 +41,10 @@ Button.defaultProps = {
   padding: false,
   _disabled: false,
   is_circle: false,
-  border_btn: false,
+  border_btn:false,
   radius: "22px",
   bg: "#4149d3",
-  _onClick: () => {},
+  _onClick: () => {},  
 };
 
 const Btn = styled.button`
@@ -52,35 +52,28 @@ const Btn = styled.button`
   ${(props) => (props.padding ? `padding: ${props.padding};` : "12px")};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  background-color: ${(props) => props.bg};
+  background-color: ${props => props.bg};
   border: 1px solid #4149d3;
-  border-radius: ${(props) => (props.radius ? props.radius : "22px")};
-  ${(props) =>
-    props.font_size ? `font-size: ${props.font_size};` : `font-size: 14px;`};
+  border-radius: ${(props) => (props.radius ? props.radius : "22px")};  
+  ${(props) => props.font_size ? `font-size: ${props.font_size};` : `font-size: 14px;`};
   line-height: 20px;
   color: white;
   font-weight: bold;
   cursor: pointer;
-  &:disabled {
-    //disabled 스타일
+  &:disabled { //disabled 스타일
     background-color: #a2aab3;
     border-color: #a2aab3;
     color: #7c8288;
     cursor: auto;
-    ${(props) =>
-      props.border_btn
-        ? `
+    ${(props) => (props.border_btn?`
       background-color: #fff;
-    `
-        : ""};
+    `:"")};
   }
-  ${(props) =>
-    props.border_btn
-      ? `
+  ${(props) => (props.border_btn? `
     color: #4149d3;
     background-color: #fff;
-  `
-      : ""};
+  ` : "")};
+
 `;
 
 export default Button;
