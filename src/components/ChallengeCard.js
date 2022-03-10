@@ -35,7 +35,7 @@ const ChallengeCard = (props) => {
           return <Tag className="tag" key={i}>{el}</Tag>;
         })}
       </TagBox>
-      <Grid display="flex" padding="0px" style={{justifyContent: "space-between"}}>
+      <Grid display="flex" padding="0px" style={{alignItems: "flex-end"}}>
         <Date>
           {startDate} - {endDate}
         </Date>

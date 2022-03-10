@@ -4,6 +4,10 @@ import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+
+//css
+import { GlobalStyle } from "../styles/globalStyle";
+
 //page import
 import MobileFrame from "../components/MobileFrame";
 import { ActionCreators as userActions } from "../redux/modules/user";
@@ -38,17 +42,17 @@ import MemberPostDetail from "../pages/MemberPostDetail";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const isLogin = useSelector((state) => state.user.is_login);
   const token = getCookie("token");
 
   React.useEffect(() => {
-    if (token && !user) {
+    if (token && user === null)  {
       dispatch(userActions.loginCheckDB());
     }
   }, []);
 
   return (
-    <>
+    <>      
+      <GlobalStyle/>{/* 전역 스타일컴포넌트 */}
       <Wrapper>
         <ConnectedRouter history={history}>
           <BackgroundOpacity />

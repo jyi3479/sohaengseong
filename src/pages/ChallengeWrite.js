@@ -27,7 +27,7 @@ const ChallengeWrite = (props) => {
   // 챌린지 시작 하루 전까지 수정 가능함 (오늘 날짜랑 시작일 비교하기)
 
   // Header 적용 (수정/작성 분기)
-  React.useEffect(() => {
+  React.useEffect(() => {    
     dispatch(baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기", true));
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)

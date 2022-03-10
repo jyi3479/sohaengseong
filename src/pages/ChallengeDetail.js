@@ -15,7 +15,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import 'swiper/css/bundle';
 import 'swiper/css/pagination';
-import '../styles/css/style.css';
 
 //모달팝업
 import Modal from '../components/Modal';

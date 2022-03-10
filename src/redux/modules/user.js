@@ -25,17 +25,17 @@ const setWarning = createAction(SET_WARNING, (detail, text) => ({
   detail,
   text,
 }));
-const sendMail = createAction(SEND_MAIL, (sendMail)=>({sendMail}));
+const sendMail = createAction(SEND_MAIL, (sendMail) => ({ sendMail }));
 
 const initialState = {
   user: null,
-  is_login: null,  
+  is_login: null,
   nickCk: null,
   setwarning: {
     detail: false,
     text: "",
   },
-  sendMail:null,
+  sendMail: null,
 };
 
 //로그인
@@ -56,7 +56,7 @@ const loginDB = (email, password) => {
                 userId: res.data.userId,
                 email: res.data.email,
                 nickname: res.data.nickname,
-                profileUrl: res.data.profileImage,
+                profileUrl: res.data.profileUrl,
               })
             );
           })
@@ -181,7 +181,7 @@ const loginCheckDB = () => {
             userId: res.data.userId,
             email: res.data.email,
             nickname: res.data.nickname,
-            profileUrl: res.data.profileImage,
+            profileUrl: res.data.profileUrl,
           })
         );
       })
@@ -221,8 +221,6 @@ const logOutAction = () => {
   };
 };
 
-
-
 export default handleActions(
   {
     [SET_USER]: (state, action) =>
@@ -234,7 +232,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.user = null;
         draft.is_login = false;
-      }),    
+      }),
     [NICK_CHECK]: (state, action) =>
       produce(state, (draft) => {
         draft.nickCk = action.payload.nickCheckres.result;
