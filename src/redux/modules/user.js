@@ -254,7 +254,7 @@ const ActionCreators = {
   signupDB,
   loginDB,
   loginCheckDB,
-  emailCheck,
+  //emailCheck,
   nicknameCheck,
   logOutAction,
   emailCheckToken,
