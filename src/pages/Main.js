@@ -113,7 +113,7 @@ const Main = (props) => {
 };
 
 const Container = styled.div`   
-    padding: 48px 0 64px;
+    padding: 48px 0 56px;
     background-image: url(${bgImg});
     background-size: contain;
 `;
