@@ -130,7 +130,7 @@ const categoryChallengeDB = (categoryId) => {
     console.log("카테고리",categoryId);
 
     challengeApis
-      .categoryChallenge(+categoryId)
+      .categoryChallenge(categoryId)
       .then((res) => {
         console.log("카테고리 챌린지", res);
         dispatch(getCategoryList(categoryId,res.data));

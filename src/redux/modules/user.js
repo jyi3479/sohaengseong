@@ -25,7 +25,7 @@ const setWarning = createAction(SET_WARNING, (detail, text) => ({
   detail,
   text,
 }));
-const sendMail = createAction(SEND_MAIL, (sendMail)=>({sendMail}));
+const sendMail = createAction(SEND_MAIL, (sendMail) => ({ sendMail }));
 
 const initialState = {
   user: null,
@@ -35,7 +35,7 @@ const initialState = {
     detail: false,
     text: "",
   },
-  sendMail:null,
+  sendMail: null,
 };
 
 //로그인
@@ -56,7 +56,7 @@ const loginDB = (email, password) => {
                 userId: res.data.userId,
                 email: res.data.email,
                 nickname: res.data.nickname,
-                profileUrl: res.data.profileImage,
+                profileUrl: res.data.profileUrl,
               })
             );
           })
@@ -181,7 +181,7 @@ const loginCheckDB = () => {
             userId: res.data.userId,
             email: res.data.email,
             nickname: res.data.nickname,
-            profileUrl: res.data.profileImage,
+            profileUrl: res.data.profileUrl,
           })
         );
       })

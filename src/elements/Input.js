@@ -21,23 +21,7 @@ const Input = ({
   border,
   ...props
 }) => {
-  // if(search){
-  //   return (
-  //     <div>
-  //       <InputField
-  //           ref={ref}
-  //           type={type}
-  //           value={value}
-  //           placeholder={placeholder}
-  //           onChange={_onChange}
-  //           style={{ margin, padding, width, height }}
-  //           {...props}
-  //         />
-  //       <button></button>
-  //     </div>
-  //   );
-  // }
-
+  
   if (double) {
     return (
       <Double>
@@ -156,7 +140,6 @@ const InputField = styled.input`
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   box-sizing: border-box;
   border: 1px solid #999;
-  font-family: inherit; // font 상속
   &:focus {
     outline: none;
     border: 1px solid #000;

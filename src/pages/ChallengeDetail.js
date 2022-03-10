@@ -15,7 +15,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import 'swiper/css/bundle';
 import 'swiper/css/pagination';
-import '../styles/css/style.css';
 
 //모달팝업
 import Modal from '../components/Modal';
@@ -33,6 +32,8 @@ import share from "../image/icons/ic_share@2x.png"
 
 
 const ChallengeDetail = (props) => {
+    moment.locale("en"); //모멘트 영어로 바꾸기
+
     const dispatch = useDispatch();
     const userInfo = parseInt(localStorage.getItem("userId"));
     const challengeId = props.match.params.challengeId;
@@ -55,7 +56,7 @@ const ChallengeDetail = (props) => {
     const join_day = dateB.from(today).split(" ")[0] === 'in' ? +dateB.from(today).split(" ")[1] : null;
     const remaining_day = Math.ceil(days*0.8) ; //기간의 80%
 
-    console.log("들어갈 수 있는 기간",remaining_day,"들어갈 때 남은 기간",join_day);
+    console.log("들어갈 수 있는 기간",remaining_day,"들어갈 때 남은 기간",join_day, days);
 
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
@@ -72,9 +73,6 @@ const ChallengeDetail = (props) => {
     const [isNum,setIsNum] = React.useState(false);//비밀방 비밀번호 숫자체크
     const [join, setJoin] = React.useState(false); //입장하기 클릭여부
     const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
-
-
-    console.log("비번맞나",checkPrivate,"숫자맞나",isNum,"입장하기 눌렀나",join);
    
     const deleteModal = () => {        
         setModalType("deleteModal");
@@ -90,7 +88,6 @@ const ChallengeDetail = (props) => {
         console.log("챌린지 입장");
         setModalOpen(true);
     };
-
 
     const closeModal = () => {
         console.log("눌림");
@@ -256,7 +253,7 @@ const ChallengeDetail = (props) => {
                     <p style={{fontSize:"14px"}}>타인에게 어쩌구 입주 규칙은 고정 어쩌구</p>
                 </Grid>
                 <Fixed>
-                    {target.status === "완료" && remaining_day > join_day? ( //상태값이 완료거나 남은 기간의 20%가 지난 경우
+                    {target.status === "완료" || remaining_day < join_day? ( //상태값이 완료거나 남은 기간의 20%가 지난 경우
                         //기간 끝남
                         <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
                         >기간이 만료되었습니다.</Button>
