@@ -4,6 +4,7 @@ import { history } from "../redux/configureStore";
 import {actionCreators as challengeAction} from "../redux/modules/challenge";
 import ChallengeCard from "./ChallengeCard";
 import {Grid} from "../elements/index";
+import styled from "styled-components";
 
 const ChallengeList = (props) => {
     const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const ChallengeList = (props) => {
     },[]);
 
     return(
-        <Grid padding="0">
+        <Box className={props.className}>
             {challenge_list.map((el,i)=>{
                 return(
                     <ChallengeCard 
@@ -26,9 +27,18 @@ const ChallengeList = (props) => {
                     ></ChallengeCard>
                 );
             })}
-        </Grid>
+        </Box>
     );
 };
+
+const Box = styled.div`
+    &.main {
+        .card:nth-child(n+11) {
+            display: none !important;
+        }
+    }    
+`;
+
 
 
 export default ChallengeList;

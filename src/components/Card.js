@@ -13,7 +13,7 @@ const Card = (props) => {
   const endDate = `${props.endDate.split(" ")[0].split("-")[0]}`;
   
   return (    
-    <Box onClick={props._onClick}>
+    <Box onClick={props._onClick} className="card">
       <ImageBox>
         <Image shape="rectangle" src={props.challengeImage[0]?props.challengeImage[0]:defaultImg}></Image>
         <p><img src={peopleIcon}/>{props.currentMember?props.currentMember:"0"}/{props.maxMember}명</p>

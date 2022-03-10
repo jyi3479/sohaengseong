@@ -8,7 +8,12 @@ import { Grid } from "../elements";
 const MemberPostList = (props) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(baseAction.setHeader(true, "마이행성"));
+    dispatch(baseAction.setHeader("실시간 인증", false));
+    dispatch(baseAction.setGnb(false));
+    return () => {
+      dispatch(baseAction.setHeader(""));
+      dispatch(baseAction.setGnb(true));
+    };
   }, []);
 
   return (

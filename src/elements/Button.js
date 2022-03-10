@@ -39,7 +39,7 @@ Button.defaultProps = {
   padding: false,
   _disabled: false,
   is_circle: false,
-  radius:"7px",
+  radius: "7px",
   _onClick: () => {},
   bg: "#666",
 };
@@ -51,10 +51,11 @@ const Btn = styled.button`
   height: ${(props) => props.height};
   background-color: ${(props) => (props.disabled ? "#acacac" : props.bg)};
   border: none;
-  border-radius: ${(props) => (props.radius?  props.radius : "7px")};
+  border-radius: ${(props) => (props.radius ? props.radius : "7px")};
   font-family: inherit; // font 상속
   color: white;
-  ${(props) => (props.font_size ? `font-size: ${props.font_size};` : `font-size: 16px;`)};
+  ${(props) =>
+    props.font_size ? `font-size: ${props.font_size};` : `font-size: 16px;`};
   cursor: pointer;
   box-sizing: border-box;
   line-height: 19px;
