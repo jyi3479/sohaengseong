@@ -97,11 +97,11 @@ const Info = styled.div`
   right: 15px;
   bottom: 15px;
   left: 15px;
-  color: #fff;
 
   p {
     font-size: 14px;
     text-align: left;
+    color: #ffffff;
   }
 `;
 
