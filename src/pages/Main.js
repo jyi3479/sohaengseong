@@ -43,7 +43,7 @@ const Main = (props) => {
                         </Info>
                     ):(
                         <Info>
-                            <Grid padding="0" height="auto" margin="0 0 22px" style={{textAlign:"center"}}>
+                            <Grid padding="0" height="auto" margin="20px 0 35px" style={{textAlign:"center"}}>
                                 <p>로그인 하시고 나의 인증정보를 확인하세요.</p>
                             </Grid>
                         <Button

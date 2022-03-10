@@ -23,7 +23,7 @@ const Card = (props) => {
           </div>
         ):null}
         <Image shape="rectangle" src={props.challengeImage[0]?props.challengeImage[0]:defaultImg}></Image>
-        <p><img src={peopleIcon}/>{props.currentMember?props.currentMember:"0"}/{props.maxMember}명</p>
+        <p className="small "><img src={peopleIcon}/>{props.currentMember?props.currentMember:"0"}/{props.maxMember}명</p>
       </ImageBox>
       <Grid padding="0"  style={{display:"inline-block", position:"relative", width:"calc(100% - 110px)",height: "98px"}}>
         <TitleBox>
@@ -64,17 +64,17 @@ const ImageBox = styled.div`
   border-radius: 12px;
   overflow: hidden;
   > p {
-    display: inline-block;    
-    font-size: 12px;
+    display: inline-block;   
     color: #fff;
-    background-color: #b7b7b7;
-    padding: 0 4px;
-    border-radius: 3px;
+    background-color: rgba(3,1,2,0.5);
+    padding: 3px 4px;
+    border-radius: 4px;
     position: absolute;
-    right: 8px;
-    bottom: 8px;
+    right: 6px;
+    bottom: 6px;
     >img {
-      width: 12px;
+      width: 16px;
+      vertical-align: sub;
     }
   }
   div.status {  

@@ -15,13 +15,8 @@ const CategoryTab = (props) => {
     const params = props.match.params.categoryId;
     const [word,setWord] = React.useState("");
     const [tab,setTab] = React.useState(parseInt(params));
-    const categoryList = useSelector(state => state.challenge.category_list)
-    ;
-    console.log(categoryList)
-
-
-    console.log("카테고리", params,tab);
-
+    const categoryList = useSelector(state => state.challenge.category_list);
+ 
     React.useEffect(()=>{
         dispatch(challengeAction.categoryChallengeDB(tab));
         //dispatch(challengeAction.getCategoryDB());
@@ -29,6 +24,8 @@ const CategoryTab = (props) => {
 
     return (
       <>
+        {categoryList[tab] &&
+        <>
         <SearchHeader
           value={word}
           _onChange={(e) => {
@@ -144,7 +141,7 @@ const CategoryTab = (props) => {
             </Tab>
           </TabWrap>
           <p style={{ fontSize: "18px",marginTop:'20px',marginLeft: "20px", marginBottom: "24px" }}>
-            총 <b>63</b>건
+            총 <b>{categoryList[tab].length}</b>건
           </p>
           <Grid is_flex padding="20px">
             {tab !== "all" ? (
@@ -168,6 +165,8 @@ const CategoryTab = (props) => {
             )}
           </Grid>
         </Grid>
+        </>
+        }
       </>
     );
 };

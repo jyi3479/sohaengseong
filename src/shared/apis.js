@@ -70,8 +70,7 @@ export const challengeApis = {
   getChallenge: () => apis.get("/challenge"),
 
   //카테고리와 일치하는 챌린지 조회
-  categoryChallenge: (categoryId) =>
-    apis.get(`/challenge/category/${categoryId}`),
+  categoryChallenge: (categoryId) => apis.get(`/challenge/category/${categoryId}`),
 
   //특정 챌린지 조회
   getOneChallenge: (challengeId) => apis.get(`/challenge/${challengeId}`),
