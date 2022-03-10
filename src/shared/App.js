@@ -42,8 +42,9 @@ function App() {
   const isLogin = useSelector((state) => state.user.is_login);
   const token = getCookie("token");
 
+  console.log(user);
   React.useEffect(() => {
-    if (token && !user) {
+    if (token && user === null) {
       dispatch(userActions.loginCheckDB());
     }
   }, []);

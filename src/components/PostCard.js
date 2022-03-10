@@ -6,21 +6,27 @@ import { Button, Grid, Input, Image } from "../elements";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
 import comment from "../image/icons/ic_chat@2x.png";
+import deleteIcon from "../image/icons/ic_delete@2x.png";
+import moment from "moment";
+import "moment/locale/ko";
+moment.locale("ko");
 
 const PostCard = (props) => {
   const challengeId = useParams().challengeId;
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.user);
   const is_me = userInfo.nickname === props.nickname;
-  const isDetail = useParams().postId;
-  console.log(isDetail);
-  const recentComments = props.comments.filter((l, idx) => idx < 2);
+  const isDetail = useParams().postId ? true : false;
+  const comments = props.comments.filter((l, idx) =>
+    isDetail ? true : idx < 2
+  );
   const [content, setContent] = React.useState("");
   const addComment = () => {
     // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
 
     // dispatch(memberActions.addComment(props.postId, comment));
     dispatch(memberActions.addCommentDB(props.postId, content));
+    setContent("");
   };
   const deletePost = () => {
     dispatch(memberActions.deletePostDB(props.postId));
@@ -55,7 +61,9 @@ const PostCard = (props) => {
       <Grid
         padding="0px"
         _onClick={() => {
-          history.push(`/post/${challengeId}/detail/${props.postId}`);
+          if (!isDetail) {
+            history.push(`/post/${challengeId}/detail/${props.postId}`);
+          }
         }}
       >
         {/* PostCard의 내용 부분 */}
@@ -66,7 +74,7 @@ const PostCard = (props) => {
           ""
         )}
         <Grid margin="16px 0" padding="0px">
-          <p>{props.content}</p>
+          <p style={{ fontSize: "14px" }}>{props.content}</p>
         </Grid>
 
         {/* PostCard의 댓글 조회 부분 */}
@@ -77,24 +85,52 @@ const PostCard = (props) => {
               댓글 <span>{props.comments.length}</span>개
             </p>
           </CommentBox>
-          {recentComments?.map((el, i) => {
+          {/* PostCard의 댓글 입력 창 */}
+          {isDetail && (
+            <CommentWriteBox>
+              <div>
+                <Image
+                  size={36}
+                  profile={
+                    userInfo
+                      ? userInfo.profileUrl
+                      : "https://www.garyqi.com/wp-content/uploads/2017/01/default-avatar-500x500.jpg"
+                  }
+                />
+              </div>
+
+              <InputBox>
+                <input
+                  value={content}
+                  onChange={(e) => {
+                    setContent(e.target.value);
+                  }}
+                  placeholder="댓글달기"
+                />
+                <button onClick={addComment}>등록</button>
+              </InputBox>
+            </CommentWriteBox>
+          )}
+          {comments.map((el, i) => {
             return (
               <Grid padding="0px" margin="8px 0px" key={el.commentId} is_flex>
-                <Grid is_flex padding="0px" width="auto">
+                <ContentBox>
+                  {isDetail && <Image size={36} profile={el.profileImage} />}
                   <Writer>{el.nickname}</Writer>
-                </Grid>
-                <Comment>{el.content}</Comment>
-                <Grid is_flex padding="0px" width="auto">
-                  <Date>{el.createdAt}</Date>
-                </Grid>
-                {userInfo.nickname === el.nickname && (
+
+                  <Comment>{el.content}</Comment>
+
+                  <Date>
+                    {moment(el.createdAt, "YYYY.MM.DD kk:mm:ss").fromNow("")}
+                  </Date>
+                </ContentBox>
+                {isDetail && userInfo.nickname === el.nickname && (
                   <Delete
+                    src={deleteIcon}
                     onClick={() => {
                       deleteComment(el.commentId);
                     }}
-                  >
-                    삭제
-                  </Delete>
+                  />
                 )}
               </Grid>
             );
@@ -146,6 +182,40 @@ const CommentBox = styled.div`
   }
 `;
 
+const CommentWriteBox = styled.div`
+  display: flex;
+  margin-top: 12px;
+`;
+const InputBox = styled.div`
+  width: 100%;
+  height: 36px;
+  display: flex;
+  border-radius: 15px;
+  background-color: #eaeaea;
+  margin-left: 6px;
+  input {
+    border: none;
+    width: 80%;
+    border-radius: 15px;
+    padding: 8px 16px;
+    font-family: inherit;
+    background-color: #eaeaea;
+  }
+  button {
+    border: none;
+    background: none;
+    font-family: inherit;
+    width: 20%;
+  }
+`;
+
+const ContentBox = styled.div`
+  display: flex;
+  p {
+    margin: 7px 5px 5px;
+  }
+`;
+
 const Writer = styled.p`
   font-size: 14px;
   font-weight: bold;
@@ -165,11 +235,10 @@ const Date = styled.p`
   color: #9b9b9b;
 `;
 
-const Delete = styled.p`
-  font-size: 12px;
-  line-height: 1.5;
-  text-align: right;
-  color: #9b9b9b;
+const Delete = styled.img`
+  width: 20px;
+  height: 20px;
+  margin: 0px 5px;
   cursor: pointer;
 `;
 
