@@ -6,12 +6,11 @@ const Button = ({
   width,
   height,
   bg,
-  color,
-  border,
   margin,
   padding,
   font_size,
   radius,
+  border_btn,
   _disabled,
   _onClick,
   ...props
@@ -24,8 +23,7 @@ const Button = ({
     font_size,
     height,
     radius,
-    color,
-    border,
+    border_btn,
   };
 
   return (
@@ -38,33 +36,51 @@ const Button = ({
 Button.defaultProps = {
   children: null,
   width: "100%",
-  height: "40px",
+  height: "42px",
   margin: false,
   padding: false,
   _disabled: false,
   is_circle: false,
-  radius: "7px",
+  border_btn: false,
+  radius: "22px",
+  bg: "#4149d3",
   _onClick: () => {},
-  bg: "#666",
-  color: "white",
-  border: "none",
 };
 
 const Btn = styled.button`
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
-  ${(props) => (props.padding ? `padding: ${props.padding};` : "")};
+  ${(props) => (props.padding ? `padding: ${props.padding};` : "12px")};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  background-color: ${(props) => (props.disabled ? "#acacac" : props.bg)};
-  border: ${(props) => (props.disabled ? "none" : props.border)};
-  border-radius: ${(props) => (props.radius ? props.radius : "7px")};
-  font-family: inherit; // font 상속
-  color: ${(props) => (props.disabled ? "white" : props.color)};
+  background-color: ${(props) => props.bg};
+  border: 1px solid #4149d3;
+  border-radius: ${(props) => (props.radius ? props.radius : "22px")};
   ${(props) =>
-    props.font_size ? `font-size: ${props.font_size};` : `font-size: 16px;`};
+    props.font_size ? `font-size: ${props.font_size};` : `font-size: 14px;`};
+  line-height: 20px;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-  box-sizing: border-box;
-  line-height: 19px;
+  &:disabled {
+    //disabled 스타일
+    background-color: #a2aab3;
+    border-color: #a2aab3;
+    color: #7c8288;
+    cursor: auto;
+    ${(props) =>
+      props.border_btn
+        ? `
+      background-color: #fff;
+    `
+        : ""};
+  }
+  ${(props) =>
+    props.border_btn
+      ? `
+    color: #4149d3;
+    background-color: #fff;
+  `
+      : ""};
 `;
 
 export default Button;
