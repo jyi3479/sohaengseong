@@ -11,16 +11,11 @@ import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as searchAction } from "../redux/modules/search";
 import { Grid, Input, Button } from "../elements";
+import Modal from "../components/Modal";
 import plus from "../image/icons/btn_number_plus_l@2x.png";
 
 const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
-
-  // 추천 태그 리스트 가져오기
-  const recommendList = useSelector((state) => state.search.recommend).filter(
-    (el, idx) => idx < 5
-  );
-  console.log(recommendList);
 
   //수정 / 작성 유무 판별
   const params = useParams();
@@ -28,6 +23,12 @@ const ChallengeWrite = (props) => {
   console.log(target);
   const isEdit = params.challengeId ? true : false;
   // 챌린지 시작 하루 전까지 수정 가능함 (오늘 날짜랑 시작일 비교하기)
+
+  // 추천 태그 리스트 가져오기
+  const recommendList = useSelector((state) => state.search.recommend).filter(
+    (el, idx) => idx < 5
+  );
+  console.log(recommendList);
 
   // Header 적용 (수정/작성 분기)
   React.useEffect(() => {
@@ -359,6 +360,19 @@ const ChallengeWrite = (props) => {
   };
 
   console.log("최종이미지", image);
+
+  // 모달 팝업 ---------------------------------
+  const [modalType, setModalType] = React.useState("");
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const openModal = () => {
+    setModalType("openModal");
+    console.log("챌린지 개설");
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    console.log("눌림");
+    setModalOpen(false);
+  };
 
   return (
     <Grid margin="78px 0px 0px" padding="0px" bg="#eeeeee">
@@ -696,11 +710,26 @@ const ChallengeWrite = (props) => {
       </InputContainer>
       <ButtonContainer>
         {isEdit ? (
-          <Button _onClick={editChallenge}>수정하기</Button>
+          <Button _onClick={openModal}>수정하기</Button>
         ) : (
-          <Button _onClick={addChallenge}>등록하기</Button>
+          <Button _onClick={openModal}>개설하기</Button>
         )}
       </ButtonContainer>
+      <Modal
+        open={modalType === "openModal" ? modalOpen : ""}
+        close={closeModal}
+        double_btn
+        btn_text={isEdit ? "수정" : "만들기"}
+        _onClick={() => {
+          if (isEdit) {
+            editChallenge();
+          } else {
+            addChallenge();
+          }
+        }}
+      >
+        <p>{isEdit ? "수정하시겠습니까?" : "행성을 만드시겠습니까?"}</p>
+      </Modal>
     </Grid>
   );
 };
