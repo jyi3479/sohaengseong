@@ -1,9 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); //roboto => 디폴트 폰트
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap'); //poppins => 포인트 폰트
-
+    
     *, *::before, *::after {
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
