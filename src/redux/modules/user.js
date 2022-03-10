@@ -10,6 +10,7 @@ const LOGOUT = "LOGOUT";
 const SET_USER = "SET_USER";
 const NICK_CHECK = "NICK_CHECK";
 const SET_WARNING = "SET_WARNING";
+const SEND_MAIL = "SIGN_UP";
 
 const logIn = createAction(LOGIN, (is_login) => ({ is_login }));
 const logOut = createAction(LOGOUT, (user) => ({ user }));
@@ -24,6 +25,7 @@ const setWarning = createAction(SET_WARNING, (detail, text) => ({
   detail,
   text,
 }));
+const sendMail = createAction(SEND_MAIL, (sendMail)=>({sendMail}));
 
 const initialState = {
   user: null,
@@ -33,6 +35,7 @@ const initialState = {
     detail: false,
     text: "",
   },
+  sendMail:null,
 };
 
 //로그인
@@ -74,7 +77,6 @@ const loginDB = (email, password) => {
 };
 
 //회원가입
-
 export const signupDB = (email, nickname, password, passwordCheck) => {
   return function (dispatch, getState, { history }) {
     const signup = {
@@ -83,12 +85,10 @@ export const signupDB = (email, nickname, password, passwordCheck) => {
       password: password,
       passwordCheck: passwordCheck,
     };
-
-    console.log("회원가입", signup);
     userApis
       .signup(signup)
       .then((res) => {
-        console.log(res, "회원가입");
+        console.log(res.data, "회원가입");
       })
       .catch((error) => {
         window.alert("회원가입 오류입니다!");
@@ -158,11 +158,10 @@ const tempPasswordSend = (email) => {
       .tempPasswordSend(mail)
       .then((res) => {
         console.log("비밀번호발급", res);
-        alert("메일로 임시 비밀번호가 발급되었습니다");
+        dispatch(sendMail(res.data.result));
       })
       .catch((err) => {
         console.log("비밀번호 재발급오류", err);
-        alert("메일로 임시 비밀번호가 발급되지 않았습니다");
       });
   };
 };
@@ -245,6 +244,10 @@ export default handleActions(
         draft.setwarning.detail = action.payload.detail;
         draft.setwarning.text = action.payload.text;
       }),
+    [SEND_MAIL]: (state, action) =>
+      produce(state, (draft) => {
+        draft.sendMail = action.payload.sendMail;
+      }),
   },
   initialState
 );
@@ -254,7 +257,6 @@ const ActionCreators = {
   signupDB,
   loginDB,
   loginCheckDB,
-  emailCheck,
   nicknameCheck,
   logOutAction,
   emailCheckToken,

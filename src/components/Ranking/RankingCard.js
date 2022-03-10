@@ -5,19 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import defaultImg from "../../image/img_profile_defalt @2x.png";
 
 const RankingCard = (props) => {
-    const ranking_list = useSelector(state => state.ranking.list);  
+    const ranking = useSelector(state => state.ranking.list);
     const userId = localStorage.getItem("userId");
-    const myRank = ranking_list.find((m) => m.userId === parseInt(userId));
+    const myRank = ranking.find((m) => m.userId === +userId);
 
-    console.log(props, ranking_list, myRank);    
 
     return(   
         <>   
-            <Grid padding="16px" margin="0 0 8px" style={{display:"flex"}}>
-                <RankWrap >
+            <Grid padding="16px" margin="0 0 8px" style={{display:"flex"}} className={props.className}>
+                <RankWrap>
                     <div style={{display:"flex", alignItems: "center"}}>
                         <Rank>{props.ranking}</Rank>
-                        <State>{props.rank!=="none"?props.rank==="up"?(
+                        <State>{props.rank!=="유지"?props.rank==="상승"?(
                             "▲" 
                         ):(
                             "▼"
@@ -28,11 +27,11 @@ const RankingCard = (props) => {
                     </div>
                     <Info>
                         <p>{props.nickname}</p>
-                        <p>Level {props.level}</p>
+                        <p>{props.level}</p>
                     </Info>
                 </RankWrap>        
                 <Point>{props.rankingPoint}</Point>
-            </Grid>            
+            </Grid>
         </>
     );
 };

@@ -140,7 +140,7 @@ export const mypageApis = {
   getMyInfo: (userId) => apis.get(`/mypage/users/${userId}`),
 
   //프로필 수정
-  editMyInfo: (userId, info) => imageApis.put(`/users/${userId}`, info),
+  editMyInfo: (userId, info) => imageApis.patch(`/users/${userId}`, info),
 
   //프로필 수정 전 비밀번호 확인
   checkPwd: (password) => apis.post("/users/password-check", password),

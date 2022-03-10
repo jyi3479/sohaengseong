@@ -11,19 +11,30 @@ const Header = (props) => {
     const params = window.location.pathname;
 
     return(
-        <Wrap id="Header" {...props} className={"detailHeader " + (params.includes("/post/")? "left" : "")}>
-            <button onClick={()=>{
-                history.go(-1);
-            }}><img src={arrow}/></button>
-            <div className="title" style={{marginLeft:params.includes("/post/")? "27px":null}}>
-                <p>{text}</p>
-                {params.includes("/chatting/")?<span>23</span>:null}
-            </div>    
-                <button className="search_btn" style={{display: search?"block":"none"}}
-                onClick={()=>{
-                    history.push("/search");
-                }}><img src={searchIconB}/></button>
-                <div style={{width:"28px",height:"28px", display:search?"none":"block"}}></div>
+        <Wrap id="Header" {...props} className={"detailHeader " + (params.includes("/post/")? "left" : "")} style={{justifyContent:params === "/mypage"?"center":""}}>
+                {params === "/mypage" ? (
+                    <>                        
+                        <div className="title">
+                            <p>{text}</p>                            
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <button 
+                            onClick={()=>{
+                                history.go(-1);
+                            }}><img src={arrow}/></button>
+                        <div className="title">
+                            <p>{text}</p>
+                            {params.includes("/chatting/")?<span>23</span>:null}
+                        </div>    
+                        <button className="search_btn" style={{display: search?"block":"none"}}
+                            onClick={()=>{
+                                history.push("/search");
+                        }}><img src={searchIconB}/></button>
+                        <div style={{width:"28px",height:"28px", display:search?"none":"block"}}></div>
+                    </>
+                )}
         </Wrap>
     );
     

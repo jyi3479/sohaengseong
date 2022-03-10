@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { challengeApis } from "../shared/apis";
 import { targetChallenge } from "../redux/modules/challenge";
 import { apis } from "../shared/apis";
+import moment from "moment";
 
 //비밀방 비밀번호 커스텀
 import ReactCodeInput from "react-code-input";
@@ -12,8 +13,9 @@ import ReactCodeInput from "react-code-input";
 //이미지 슬라이더(Swiper) import 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
-import 'swiper/css';
+import 'swiper/css/bundle';
 import 'swiper/css/pagination';
+import '../styles/css/style.css';
 
 //모달팝업
 import Modal from '../components/Modal';
@@ -41,11 +43,20 @@ const ChallengeDetail = (props) => {
     const member = members&&members.find((m) => m.userId === parseInt(userInfo));
     const admin = members&&members[member_idx];      
     const imageList = target&&target.challengeImage;
+
+    //날짜 포맷 변경 뒤 날짜 간격 계산하기
     const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}`;
     const endDate = target&&`${target.endDate.split(" ")[0].split("-")[0]}`;
+    const today = moment().format('YYYY.MM.DD'); //오늘 날짜
+    const dateA = moment(startDate, 'YYYY.MM.DD');
+    const dateB = moment(endDate, 'YYYY.MM.DD');
+    const days = dateA.from(dateB).split(" ")[0]; //16 days ago 이런 식으로 나와서 자름
+    const after = moment(today).isAfter(dateA); //오늘 날짜 이후라면 true 아니면 false
+    const join_day = dateB.from(today).split(" ")[0] === 'in' ? +dateB.from(today).split(" ")[1] : null;
+    const remaining_day = Math.ceil(days*0.8) ; //기간의 80%
 
-    console.log(member);
-    
+    console.log("들어갈 수 있는 기간",remaining_day,"들어갈 때 남은 기간",join_day);
+
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
     };
@@ -62,6 +73,8 @@ const ChallengeDetail = (props) => {
     const [join, setJoin] = React.useState(false); //입장하기 클릭여부
     const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
 
+
+    console.log("비번맞나",checkPrivate,"숫자맞나",isNum,"입장하기 눌렀나",join);
    
     const deleteModal = () => {        
         setModalType("deleteModal");
@@ -101,12 +114,12 @@ const ChallengeDetail = (props) => {
     };
 
     const pwdCheck = () => {
-        const input = document.getElementsByClassName("ReactCodeInput");
         setJoin(true);
+
         apis.post(`/challenge/${challengeId}/private`, {password:privatePwd})
         .then((res)=>{
             console.log("비밀방 비밀번호 확인",res);
-            if(res.result === true){
+            if(res.data.result === 'true'){
                 setCheckPrivate(true);
                 dispatch(challengeAction.joinChallengeDB(challengeId));
                 history.push(`/member/${challengeId}`);
@@ -151,14 +164,10 @@ const ChallengeDetail = (props) => {
                             spaceBetween={0}
                             slidesPerView={1}
                             pagination={{
-                                type : 'fraction', //페이지네이션 타입 
-                                el: '.pagination', //페이지네이션 클래스
-                                
+                                type : 'fraction', //페이지네이션 타입                 
                             }}
                             modules={[Pagination]}
                             className="mySwiper"
-                            onSlideChange={() => console.log('slide change')}
-                            onSwiper={(swiper) => console.log(swiper)}
                             >
                             {imageList.map((el,i)=>{
                                 return(
@@ -184,7 +193,7 @@ const ChallengeDetail = (props) => {
                         <Grid padding="14px">
                             <Grid padding="0" center>
                                 <p>기간</p>
-                                <p>15일</p>
+                                <p>{days}일</p>
                             </Grid>
                         </Grid>
                         <div
@@ -247,50 +256,46 @@ const ChallengeDetail = (props) => {
                     <p style={{fontSize:"14px"}}>타인에게 어쩌구 입주 규칙은 고정 어쩌구</p>
                 </Grid>
                 <Fixed>
-                    {target.status !== "완료" ? target.maxMember !== members.length ?  member !== undefined ?  admin.userId === userInfo ?(      
-                         //내가 만든 챌린지 (시작 전)
-                         <Grid padding="0" is_flex>
-                            <Button width="calc(50% - 5px)" bg="#fff" style={{color:"#666",border:"1px solid #666"}}
-                                _onClick={()=>{
-                                    deleteModal()
-                                }}
-                            >삭제하기</Button>  
-                            <Button width="calc(50% - 5px)"
-                                _onClick={()=>{
-                                    history.push(`/challengewrite/${challengeId}`);
-                                }}
-                            >수정하기</Button>
-                        </Grid>
-                    ):(
-                        //내가 참여중인 챌린지 (방장인데 챌린지 시작했을 경우도 포함)
-                        <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
-                        >이미 입주한 행성입니다.</Button>
-                    ):(
-                        //참여가능한 챌린지
-                        <Button
-                            _onClick={()=>{
-                                //joinChallenge()
-                                joinModal()
-                            }}
-                        >소행성 입주하기</Button>
-                    ):(
-                        //참가자 꽉참
-                        <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
-                        >마감된 행성입니다.</Button>
-                    ):(
+                    {target.status === "완료" && remaining_day > join_day? ( //상태값이 완료거나 남은 기간의 20%가 지난 경우
                         //기간 끝남
                         <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
                         >기간이 만료되었습니다.</Button>
+                    ): (                        
+                        <>
+                        {target.maxMember !== members.length ?  member !== undefined ?(                       
+                           //내가 참여중인 챌린지
+                           <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
+                           >이미 입주한 행성입니다.</Button>
+                       ):(
+                           //참여가능한 챌린지
+                           <Button
+                               _onClick={()=>{
+                                   joinModal()
+                               }}
+                           >소행성 입주하기</Button>
+                       ):(
+                           //참가자 꽉참
+                           <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
+                           >마감된 행성입니다.</Button>
+                       )}
+                       </>
                     )}
+                    
                 </Fixed>
                 {/* 삭제하기 버튼 클릭 시 뜨는 모달팝업 */}
                 <Modal open={modalType === "deleteModal"? modalOpen : ""} close={closeModal} double_btn btn_text="삭제" _onClick={()=>{
-                    deleteChallenge()
+                    if(after || today === dateA){
+                        setModalType("deleteModal2");
+                    }else {
+                        deleteChallenge()
+                    }
                 }}>
                     <p>정말로 삭제하시겠습니까?</p>
                 </Modal>
                 {/* 삭제하기 눌렀을 때 진행중인 챌린지에 뜨는 모달팝업 */}
-                <Modal open={modalType === "deleteModal2"? modalOpen : ""} close={closeModal} btn_text="확인">
+                <Modal open={modalType === "deleteModal2"? modalOpen : ""} close={closeModal} btn_text="확인" _onClick={()=>{
+                    closeModal()
+                }}>
                     <p>진행중인 챌린지는<br/>삭제하실 수 없습니다.</p>
                 </Modal>     
                 {/* 입장하기 버튼 클릭 시 뜨는 모달팝업 - 공개방 */}
@@ -308,7 +313,7 @@ const ChallengeDetail = (props) => {
                     <div className="private_box">
                         <h6>비밀번호를 입력해 주세요.</h6>
                         <div>                       
-                            <ReactCodeInput className={join && checkPrivate === false? "ReactCodeInput disabled" : "ReactCodeInput"} type='password' fields={4} {...props} value={privatePwd} onChange={privateCheck}
+                            <ReactCodeInput className={join && !checkPrivate ? "ReactCodeInput disabled" : "ReactCodeInput"} type='password' fields={4} {...props} value={privatePwd} onChange={privateCheck}
                                 inputStyle={{
                                     borderRadius: "10px",
                                     border: "none",
@@ -335,8 +340,7 @@ const ChallengeDetail = (props) => {
                         </div>
                         <button type="button" onClick={pwdCheck}>입장하기</button>
                     </div>
-                </Modal>          
-
+                </Modal>
             </Grid> 
         }
 
@@ -451,7 +455,7 @@ const Member = styled.div`
     background-size: cover;
     background-position: center;
     margin-right: 5px;
-    &:nth-child(n+4) {//3번째 멤버 이후로는 미노출
+    &:nth-child(n+5) {//4번째 멤버 이후로는 미노출
         display: none;
     }
     &.admin { //방장일 경우

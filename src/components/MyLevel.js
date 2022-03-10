@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Image } from "../elements";
 import { challengeApis, mypageApis } from "../shared/apis";
 import { actionCreators as mypageAction } from "../redux/modules/mypage";
+import { history } from "../redux/configureStore";
 
 const MyLevel = (props) => {
   const dispatch = useDispatch();
@@ -15,12 +16,14 @@ const MyLevel = (props) => {
   }, []);
 
   return (
+    <>
+    {my_level&&   
     <Wrap>
       <MyContainer>
         <Grid is_flex padding="0px">
           <div style={{ display: "flex" }}>
             <div>
-              <Image shape="circle" size={40} src={my_level.profileUrl} />
+              <Image shape="circle" size={40} profile={my_level.profileUrl} />
             </div>
             <Grid padding="0px 0px 0px 9px">
               <p
@@ -57,6 +60,8 @@ const MyLevel = (props) => {
         {/* <Icon size={92} src={my_level.levelIcon} /> */}
       </MyPlanet>
     </Wrap>
+     }      
+     </>
   );
 };
 
