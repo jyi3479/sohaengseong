@@ -38,6 +38,7 @@ const getCategoryList = createAction(
 const initialState = {
   list: [],
   target:null,
+  category_list :[]
 };
 
 const getChallengeDB = () => {
@@ -132,6 +133,7 @@ const categoryChallengeDB = (categoryId) => {
       .categoryChallenge(+categoryId)
       .then((res) => {
         console.log("카테고리 챌린지", res);
+        dispatch(getCategoryList(categoryId,res.data));
       })
       .catch((err) => {
         console.log("카테고리 챌린지 오류", err);

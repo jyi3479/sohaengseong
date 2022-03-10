@@ -3,6 +3,7 @@ import { produce } from "immer";
 
 import axios from "axios";
 import { memberApis } from "../../shared/apis";
+import moment from "moment";
 
 // 인증 게시글
 const GET_POST = "GET_POST";
@@ -175,7 +176,7 @@ const addCommentDB = (postId, content) => {
           profileImage: "",
           commentId: res.data.commentId,
           content: content,
-          createdAt: "",
+          createdAt: moment().startOf("seconds"),
         };
         dispatch(addComment(postId, comment));
       })

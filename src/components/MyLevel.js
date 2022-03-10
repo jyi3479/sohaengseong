@@ -41,9 +41,11 @@ const MyLevel = (props) => {
             </Grid>
           </div>
 
-          <ProfileBtn onClick={() => {
-            history.push("/mypage/profile");
-          }}>
+          <ProfileBtn
+            onClick={() => {
+              history.push("/mypage/profile");
+            }}
+          >
             편집
           </ProfileBtn>
         </Grid>

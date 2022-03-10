@@ -19,7 +19,7 @@ import Main from "../pages/Main";
 import ChallengeDetail from "../pages/ChallengeDetail";
 import CategoryTab from "../pages/CategoryTab";
 import MyPage from "../pages/MyPage";
-import MemberDetail from "../pages/MemberDetail";
+import MemberMain from "../pages/MemberMain";
 import MemberPostList from "../pages/MemberPostList";
 import ChallengeWrite from "../pages/ChallengeWrite";
 import Search from "../pages/Search";
@@ -38,6 +38,7 @@ import MyProfile from "../pages/MyProfile";
 import MemberPostWrite from "../pages/MemberPostWrite";
 import PostDetail from "../components/Member/PostDetail";
 import MemberPostDetail from "../pages/MemberPostDetail";
+import MemberDetail from "../pages/MemberDetail";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ function App() {
   const token = getCookie("token");
 
   React.useEffect(() => {
-    if (token && user === null)  {
+    if (token && user === null) {
       dispatch(userActions.loginCheckDB());
     }
   }, []);
@@ -69,14 +70,18 @@ function App() {
               {/* 메인 */}
               <Route path="/category" exact component={CategoryMain} />
               {/* 카테고리메인*/}
-              <Route path="/category/:categoryId" exact component={CategoryTab}/>
+              <Route
+                path="/category/:categoryId"
+                exact
+                component={CategoryTab}
+              />
               {/* 카테고리리스트 */}
               <Route path="/search" exact component={Search} />
-              {/* 검색페이지 */}  
+              {/* 검색페이지 */}
               <>
                 <Wrap>
                   <Header />
-                  <Footer />                                  
+                  <Footer />
                   <Route path="/signup" exact component={Signup} />
                   {/* 회원가입 */}
                   <Route path="/today" exact component={TodayChallenge} />
@@ -84,21 +89,28 @@ function App() {
                   <Route
                     path="/auth/kakao/callback"
                     component={OAuth2RedirectHandler}
-                  ></Route>{/* 카카오톡 로그인 */}     
+                  ></Route>
+                  {/* 카카오톡 로그인 */}
                   <Route
                     path="/challenge/:challengeId"
                     exact
                     component={ChallengeDetail}
                   />
-                  {/* 챌린지 소개 */}                  
+                  {/* 챌린지 소개 */}
                   <Route path="/mypage" exact component={MyPage} />
                   {/* 마이페이지 */}
                   <Route
                     path="/member/:challengeId"
                     exact
-                    component={MemberDetail}
+                    component={MemberMain}
                   />
                   {/* 챌린지 멤버 전용 */}
+                  <Route
+                    path="/member/detail/:challengeId"
+                    exact
+                    component={MemberDetail}
+                  />
+                  {/* 챌린지 멤버 전용 상세*/}
                   <Route
                     path="/post/:challengeId"
                     exact
@@ -147,11 +159,7 @@ function App() {
                     component={MyCompleted}
                   />
                   {/* 마이페이지 - 성공실패 */}
-                  <Route
-                    path="/mypage/profile"
-                    exact
-                    component={MyEdit}
-                  />
+                  <Route path="/mypage/profile" exact component={MyEdit} />
                   {/* 마이페이지 - 프로필수정 비번확인 */}
                   <Route
                     path="/mypage/profile/edit"

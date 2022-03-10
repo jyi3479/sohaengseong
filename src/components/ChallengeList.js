@@ -9,7 +9,7 @@ import styled from "styled-components";
 const ChallengeList = (props) => {
     const dispatch = useDispatch();
     const challenge_list = useSelector(state => state.challenge.list);
-
+    
     React.useEffect(()=>{
         dispatch(challengeAction.getChallengeDB());
     },[]);
