@@ -13,6 +13,7 @@ import { actionCreators as searchAction } from "../redux/modules/search";
 import { Grid, Input, Button } from "../elements";
 import Modal from "../components/Modal";
 import plus from "../image/icons/btn_number_plus_l@2x.png";
+import defaultImg from "../image/ic_empty_s@2x.png";
 
 const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
@@ -288,7 +289,6 @@ const ChallengeWrite = (props) => {
         second
       );
     }
-
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
       title: title,
@@ -300,10 +300,11 @@ const ChallengeWrite = (props) => {
       isPrivate: checkedInputs === "private" ? true : false,
       password: checkedInputs === "private" ? password : null,
       tagName: hashArr,
+      
     };
 
-    for (let i = 0; i < image.length; i++) {
-      formData.append("challengeImage", image[i]);
+    for (let i = 0; i < image.length; i++) {      
+      formData.append("challengeImage", image[i]);      
     }
 
     formData.append(
@@ -356,7 +357,6 @@ const ChallengeWrite = (props) => {
     dispatch(challengeAction.editChallengeDB(+params.challengeId, formData));
   };
 
-  console.log("최종이미지", image);
 
   // 모달 팝업 ---------------------------------
   const [modalType, setModalType] = React.useState("");
@@ -725,7 +725,7 @@ const ChallengeWrite = (props) => {
           }
         }}
       >
-        <p>{isEdit ? "수정하시겠습니까?" : "행성을 만드시겠습니까?"}</p>
+        <p>{isEdit ? "행성을 수리하시겠습니까?" : "행성을 만드시겠습니까?"}</p>
       </Modal>
     </Grid>
   );
