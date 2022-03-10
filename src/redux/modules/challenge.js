@@ -37,46 +37,51 @@ const getCategoryList = createAction(
 
 const initialState = {
   list: [],
-  target:null,
-  category_list :[]
+  target: null,
+  category_list: [],
 };
 
 const getChallengeDB = () => {
-  return function (dispatch, getState, {history}){
-    challengeApis.getChallenge()
-    .then((res)=>{
-      const challenge_list = res.data;
-      dispatch(getChallenge(challenge_list));
-      //console.log("전체 챌린지 조회",res);
-    }).catch((err)=>{
-      console.log("전체 챌린지 조회 오류",err);
-    })
+  return function (dispatch, getState, { history }) {
+    challengeApis
+      .getChallenge()
+      .then((res) => {
+        const challenge_list = res.data;
+        dispatch(getChallenge(challenge_list));
+        //console.log("전체 챌린지 조회",res);
+      })
+      .catch((err) => {
+        console.log("전체 챌린지 조회 오류", err);
+      });
   };
-}
-
+};
 
 const getOneChallengeDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
-    challengeApis.getOneChallenge(challengeId)
-    .then((res)=>{
+    challengeApis
+      .getOneChallenge(challengeId)
+      .then((res) => {
         const target = res.data;
         dispatch(targetChallenge(target));
-        console.log("특정 챌린지 조회",res.data);
-    }).catch((err)=>{
-        console.log("특정 챌린지 조회 오류",err);
-    });
+        console.log("특정 챌린지 조회", res.data);
+      })
+      .catch((err) => {
+        console.log("특정 챌린지 조회 오류", err);
+      });
   };
 };
 
 const joinChallengeDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
-    challengeApis.joinChallenge(challengeId)
-    .then((res)=>{
-        console.log("챌린지 참여하기",res);
+    challengeApis
+      .joinChallenge(challengeId)
+      .then((res) => {
+        console.log("챌린지 참여하기", res);
         history.push(`/member/${challengeId}`);
-    }).catch((err)=>{
-        console.log("챌린지 참여하기 오류",err);
-    });
+      })
+      .catch((err) => {
+        console.log("챌린지 참여하기 오류", err);
+      });
   };
 };
 
@@ -87,6 +92,7 @@ const addChallengeDB = (challenge) => {
       .addChallenge(challenge)
       .then((res) => {
         console.log("챌린지 등록", res);
+        history.push("/today");
       })
       .catch((err) => {
         console.log("챌린지 등록 오류", err);
@@ -96,21 +102,21 @@ const addChallengeDB = (challenge) => {
 
 const editChallengeDB = (challengeId, challenge) => {
   return function (dispatch, getState, { history }) {
-    // challengeApis
-    //   .editChallenge(challengeId, challenge)
-    //   .then((res) => {
-    //     console.log("챌린지 수정", res);
-    //   })
-    //   .catch((err) => {
-    //     console.log("챌린지 수정 오류", err);
-    //   });
+    challengeApis
+      .editChallenge(challengeId, challenge)
+      .then((res) => {
+        console.log("챌린지 수정", res);
+        history.push(`/member/detail/${challengeId}`);
+      })
+      .catch((err) => {
+        console.log("챌린지 수정 오류", err);
+      });
   };
 };
 
-
 const deleteChallengeDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
-    console.log("챌린지 삭제",challengeId);
+    console.log("챌린지 삭제", challengeId);
     challengeApis
       .deleteChallenge(challengeId)
       .then((res) => {
@@ -124,16 +130,15 @@ const deleteChallengeDB = (challengeId) => {
   };
 };
 
-
 const categoryChallengeDB = (categoryId) => {
   return function (dispatch, getState, { history }) {
-    console.log("카테고리",categoryId);
+    console.log("카테고리", categoryId);
 
     challengeApis
       .categoryChallenge(+categoryId)
       .then((res) => {
         console.log("카테고리 챌린지", res);
-        dispatch(getCategoryList(categoryId,res.data));
+        dispatch(getCategoryList(categoryId, res.data));
       })
       .catch((err) => {
         console.log("카테고리 챌린지 오류", err);
@@ -141,9 +146,9 @@ const categoryChallengeDB = (categoryId) => {
   };
 };
 
-
 const getCategoryDB = () => {
-    mainApis.category()
+  mainApis
+    .category()
     .then((res) => {
       console.log("카테고리", res);
     })
@@ -151,7 +156,6 @@ const getCategoryDB = () => {
       console.log("카테고리", err);
     });
 };
-
 
 export default handleActions(
   {
@@ -203,7 +207,7 @@ const actionCreators = {
   editChallenge,
   deleteChallengeDB,
   categoryChallengeDB,
-  getCategoryDB
+  getCategoryDB,
 };
 
 export { actionCreators };

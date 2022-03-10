@@ -6,6 +6,8 @@ const Button = ({
   width,
   height,
   bg,
+  color,
+  border,
   margin,
   padding,
   font_size,
@@ -22,6 +24,8 @@ const Button = ({
     font_size,
     height,
     radius,
+    color,
+    border,
   };
 
   return (
@@ -42,6 +46,8 @@ Button.defaultProps = {
   radius: "7px",
   _onClick: () => {},
   bg: "#666",
+  color: "white",
+  border: "none",
 };
 
 const Btn = styled.button`
@@ -50,10 +56,10 @@ const Btn = styled.button`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   background-color: ${(props) => (props.disabled ? "#acacac" : props.bg)};
-  border: none;
+  border: ${(props) => (props.disabled ? "none" : props.border)};
   border-radius: ${(props) => (props.radius ? props.radius : "7px")};
   font-family: inherit; // font 상속
-  color: white;
+  color: ${(props) => (props.disabled ? "white" : props.color)};
   ${(props) =>
     props.font_size ? `font-size: ${props.font_size};` : `font-size: 16px;`};
   cursor: pointer;

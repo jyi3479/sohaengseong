@@ -36,7 +36,7 @@ const PostList = (props) => {
           <Button
             width="calc(70% - 5px)"
             _onClick={() => {
-              history.push(`/post/${challengeId}`);
+              history.push(`/post/${challengeId}/write`);
             }}
           >
             인증하기
