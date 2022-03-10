@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
+import _ from "lodash"; // lodash
 import { Grid , Button } from "../elements";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as searchActions} from "../redux/modules/search";
 import SearchHeader from "../components/SearchHeader";
 import notFount from "../image/ic_search_nomark@2x.png"; 
 import ChallengeCard from "../components/ChallengeCard";
+
 
 const Search = (props) => {
     const dispatch = useDispatch();
@@ -23,16 +25,32 @@ const Search = (props) => {
         dispatch(searchActions.getSearchDB(e.target.innerText));
     };
 
+    //axios 요청을 줄이기위한 debounce
+    const debounce = _.debounce((word) =>{
+        console.log(word);
+        if(word !== ""){
+            dispatch(searchActions.getSearchDB(word));     
+        }
+           
+    }, 500);
+    const keyPress = React.useCallback(debounce, []);
+
+
+    const wordChange = (e) => {
+        keyPress(e.target.value);
+        setWord(e.target.value);
+    };
+
     React.useEffect(() => {
         dispatch(searchActions.getRecommendDB());
         dispatch(searchActions.getSearchDB(word));
-    }, [word]);
+    },[]);
+
+    
     
     return(    
         <>
-            <SearchHeader value={word} _onChange={(e)=>{
-                setWord(e.target.value);
-            }}
+            <SearchHeader value={word} _onChange={wordChange}
                 _deleteBtn={()=>{
                     setWord("");
                 }}

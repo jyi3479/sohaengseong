@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
 import arrow from "../image/icons/ic_arrow@2x.png";
 import deleteIcon from '../image/icons/ic_search_delete@2x.png';
 import searchIconB from '../image/icons/ic_search_b@2x.png';
