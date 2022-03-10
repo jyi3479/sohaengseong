@@ -2,14 +2,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import {actionCreators as challengeAction} from "../redux/modules/challenge";
-import Card from "./Card";
+import ChallengeCard from "./ChallengeCard";
 import {Grid} from "../elements/index";
 import styled from "styled-components";
 
 const ChallengeList = (props) => {
     const dispatch = useDispatch();
     const challenge_list = useSelector(state => state.challenge.list);
-
+    
     React.useEffect(()=>{
         dispatch(challengeAction.getChallengeDB());
     },[]);
@@ -18,13 +18,13 @@ const ChallengeList = (props) => {
         <Box className={props.className}>
             {challenge_list.map((el,i)=>{
                 return(
-                    <Card 
+                    <ChallengeCard 
                         key={el.challengeId}
                         {...el}
                         _onClick={()=>{
                             history.push(`/challenge/${el.challengeId}`);                            
                         }}
-                    ></Card>
+                    ></ChallengeCard>
                 );
             })}
         </Box>
