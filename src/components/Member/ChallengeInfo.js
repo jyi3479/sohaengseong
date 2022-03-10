@@ -11,13 +11,17 @@ const ChallengeInfo = (props) => {
   // router 경로 설정한 challengeId 가져오기 (string 이어서 +연산자로 숫자 변환)
   // 특정 챌린지 조회할 때 사용하면 됨
   const challengeId = props.challengeId;
+
+  console.log(challengeId);
   // 특정 챌린지 state 가져오기
   const target = useSelector((state) => state.challenge.target);
-  console.log(target);
+  console.log("인포",target);
+
   // 특정 챌린지 조회 + member 데이터 조회 필요함. : useEffect
   useEffect(() => {
     dispatch(challengeAction.getOneChallengeDB(challengeId));
   }, []);
+
   return (
     <>
       {target && (

@@ -9,43 +9,48 @@ import {Grid,Button} from "../elements/index";
 const Complete = (props) => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const mail = location.state.mail;   
-    console.log("회원가입완료",mail);
+    //const mail = location.state.mail;   
+    //console.log("회원가입완료",mail);
 
     const [active,setActive] = React.useState(false);
     const send = () => {
         setActive(true);  
-        dispatch(userAction.emailCheckResend(mail));    
+        //dispatch(userAction.emailCheckResend(mail));    
     };
 
     
     return(
-        <Grid padding="0 64px" margin="100px 0 0" height="auto">
+        <Grid padding="0 20px" margin="100px 0 0" height="auto">
             <div style={{width:"180px", height:"180px", backgroundColor:"#ccc" , margin:"0 auto"}}></div>
             <Content>
-                <h1>이메일 인증을 해주세요.</h1>
-                <p>가입하신 이메일로 확인 메일을 보냈어요.<br/>이메일 인증을 하셔야 로그인이 가능합니다.</p>
+                <h1>소행성 가입을 환영합니다!</h1>
+                <p>메일을 전송하였습니다.<br/>아래의 메일에서 전송된 링크를<br/>클릭하면 회원가입이 완료됩니다.</p>
             </Content>
+            <div style={{backgroundColor:"#f9f9f9", borderRadius:"10px", padding:"11px", marginBottom:"24px", textAlign:"center"}}>
+                <p style={{fontSize:"14px"}}>abc@gmail.com</p>
+            </div>
             <Grid padding="0" margin="0 0 56px" style={{textAlign:"center"}}>
-                <p style={{fontSize:"14px", color:"#666"}}>인증 메일이 오지 않으셨나요?</p>
-                <Button margin="10px 0 5px" radius="20px" bg={active?"#fff":"#666"} font_size="16px" style={{color:active?"#666":"#fff",border:"solid 1px #707070"}}
+                <p style={{fontSize:"14px", color:"#666"}}>메일을 받지 못하셨나요?</p>
+                <Button width="250px" margin="10px 0 5px" radius="20px" bg={active?"#fff":"#666"} font_size="16px" style={{color:active?"#666":"#fff",border:"solid 1px #707070"}}
                 _onClick={()=>{
                     send()
                 }}>이메일 재발송</Button>
                 <p style={{display:active?"block":"none",fontSize:"10px", color:"#999"}}>인증 시간 01 : 00 : 00</p>
             </Grid>
-            <Link href="/login">로그인 하러 가기</Link>
+            <Fixed>
+                <Button _onClick={()=>{history.push("/login")}}>로그인 하기</Button>
+            </Fixed>
         </Grid>
     );
 };
 
 const Content = styled.div`
     text-align: center;
-    margin:40px 0 50px;
+    margin:40px 0 8px;
     h1 {
-        font-size: 22px;
-        margin-bottom: 9px;
-        font-weight: 500;
+        font-size: 18px;
+        margin-bottom: 10px;
+        font-weight: 400;
     }
     p {
         font-size: 14px;
@@ -54,12 +59,19 @@ const Content = styled.div`
     }
 `;
 
-
-const Link = styled.a`
-    display: block;
-    text-decoration: underline;
-    font-size: 14px;
-    text-align: center;
+const Fixed = styled.div`
+    width: 100%;
+    position: fixed;
+    background-color: #fff;
+    bottom:0;
+    left:0;
+    padding:12px 20px;
+    box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
+    button {
+        border-radius: 5px;
+        font-weight: 400;
+    }
 `;
+
 
 export default Complete;

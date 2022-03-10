@@ -24,7 +24,7 @@ const Search = (props) => {
     };
 
     React.useEffect(() => {
-        dispatch(searchActions.getRecommendDB());        
+        dispatch(searchActions.getRecommendDB());
         dispatch(searchActions.getSearchDB(word));
     }, [word]);
     
@@ -96,6 +96,7 @@ const ResultWrap = styled.div`
     padding:20px;
     background-color: #f9f9f9;
     .result_card{
+        width: calc(50% - 8px);
         height: auto;
         margin-right: 16px;
         margin-bottom:20px;

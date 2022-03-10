@@ -2,16 +2,25 @@ import React from "react";
 import { history } from "../redux/configureStore";
 import { Grid } from "../elements";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch,  useSelector } from "react-redux";
 import Card from "../components/Card";
+import { actionCreators as baseAction } from "../redux/modules/base";
+
 
 const MyCompleted = (props) => {
+  const dispatch = useDispatch();
   const my_list = useSelector((state) => state.mypage.list);
   const completed_list = my_list.filter(
     (l) => l.status === "성공" || l.status === "실패"
   ); // 지난 챌린지(success+fail)
   const success_list = my_list.filter((l) => l.status === "성공");
   const fail_list = my_list.filter((l) => l.status === "실패");
+
+  React.useEffect(() => {
+    dispatch(baseAction.setHeader("지나온 행성들"));
+  }, []);
+
+
   return (
     <Grid margin="48px 0">
       {" "}
