@@ -11,13 +11,20 @@ const Card = (props) => {
 
   const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;
   const endDate = `${props.endDate.split(" ")[0].split("-")[0]}`;
+
+  console.log("d",props);
   
   return (    
     <Box onClick={props._onClick} className="card">
       <ImageBox>
+        {props.status === "성공" || props.status === "실패" ?(
+          <div className="status">
+            {props.status === "성공"? "성공": "실패"}
+          </div>
+        ):null}
         <Image shape="rectangle" src={props.challengeImage[0]?props.challengeImage[0]:defaultImg}></Image>
         <p><img src={peopleIcon}/>{props.currentMember?props.currentMember:"0"}/{props.maxMember}명</p>
-      </ImageBox>      
+      </ImageBox>
       <Grid padding="0"  style={{display:"inline-block", position:"relative", width:"calc(100% - 128px)",height: "116px"}}>
         <TitleBox padding="0">
           <p>{props.title}</p>
@@ -68,6 +75,16 @@ const ImageBox = styled.div`
     >img {
       width: 12px;
     }
+  }
+  div.status {  
+    position: absolute;
+    left:0;
+    color:#fff;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0,0,0,0.5);
+    z-index: 1;
   }
 `;
 

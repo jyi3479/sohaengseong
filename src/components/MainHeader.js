@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import searchIconW from '../image/icons/ic_search.png';
+import searchIconW from '../image/icon/ic_ search@2x.png';
 import arrow from "../image/icons/ic_arrow_w.png";
+import logo from "../image/logo.png";
 
 const MainHeader = (props) => {
     return(        
@@ -13,7 +14,7 @@ const MainHeader = (props) => {
                 }}><img src={arrow}></img></button>
             ) : (
                 <>
-                    <h1><a href="/">소행성</a></h1>
+                    <h1><a href="/"></a></h1>
                     <button onClick={()=>{
                         history.push("/search");
                     }}><img src={searchIconW}></img></button>
@@ -56,9 +57,14 @@ const Wrap = styled.div`
     
     >h1 {
         >a {
+            display: block;
+            width: 69px;
+            height: 32px;
             color: white;
             outline: none;
             text-decoration: none;
+            background-image: url(${logo});
+            background-size: cover;
         }
         font-size: 18px;
         margin: 0;

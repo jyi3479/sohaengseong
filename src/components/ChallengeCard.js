@@ -11,18 +11,18 @@ const ChallengeCard = (props) => {
   return (
     <Box onClick={props._onClick} className={props.className}>
       <ImageBox status={props.status} style={{backgroundImage:`url(${props.challengeImage?props.challengeImage[0]:""})`}}>
-        {(props.status === "성공" || props.status === "실패") && (
+        {props.dailyAuth && props.dailyAuth === "true" ?(
           <div
             style={{
               color: "white",
               fontWeight: "700",
-              height: "24px",
+              height: "100%",
+              backgroundColor:"rgba(0,0,0,0.5)"
             }}
           >
-            {props.status}
+            {props.dailyAuth !== "false"? "내가해냄": ""}
           </div>
-        )}
-
+        ):null}
         <p>
           <img src={peopleIcon} />
           {props.currentMember}/{props.maxMember}명
@@ -64,14 +64,8 @@ const ImageBox = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-
-  ${(props) =>
-    props.status === "성공" || props.status === "실패"
-      ? "opacity: 0.5;"
-      : "opacity: 0.9;"};
-
+  overflow: hidden;  
   text-align: center;
-  position: relative;
 
   p {
     display: inline-block;

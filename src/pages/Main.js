@@ -6,34 +6,34 @@ import { useSelector, useDispatch } from "react-redux";
 import {Grid,Button} from "../elements/index";
 import ChallengeList from "../components/ChallengeList";
 import plus from "../image/icons/ic_more_l@2x.png";
+import bgImg from "../image/img_bg@2x.png"; 
 import MainHeader from "../components/MainHeader";
 import Footer from "../components/Footer";
 import RankingList from "../components/Ranking/RankingList";
 
 const Main = (props) => {
-    const userInfo = useSelector(state => state.user.user); 
-
-
+    const userInfo = useSelector(state => state.user.user);
 
     return(
         <>
         <MainHeader/>
-        <Grid style={{background:"linear-gradient(to bottom, #999, #585858)"}} padding="48px 0 64px">
-            <Grid >
+        <Container className="bg_color">
+            <Grid padding="0 24px">
                 <Banner>
-                    <h2>작은 것부터 하나씩<br/>나를 변화시키는 소소한 습관 행성</h2>
+                    <h1>소소하지만 확실한 행복<br/>행동 습관 형성 챌린지</h1>
+                    <p>나를 변화시키는 습관</p>
                 </Banner>
-                <Planet></Planet>
             </Grid>
-            <Wrap>
+            <Wrap >
                 <Grid style={{overflow: "hidden"}}>
                     {userInfo?(
                         <Info>
+                            <h2>안녕하세요. {userInfo&&userInfo.nickname} 님</h2>
                             <Grid padding="0" is_flex height="auto" margin="0 0 16px">
-                                <p>{userInfo&&userInfo.nickname} 님의 오늘의 습관</p>
+                                <p>인증 가능한 행성</p>
                                 <p><b>1</b>개</p>
                             </Grid>
-                        <Button font_size="14px" style={{fontWeight:"bold"}} 
+                        <Button
                         _onClick={()=>{
                             history.push("/mypage");
                         }}>인증하기</Button>
@@ -97,51 +97,33 @@ const Main = (props) => {
                         </div>
                     </Grid>
                 </Grid>
-            </Wrap>
-            
-        </Grid>
+            </Wrap>            
+        </Container>
         <Footer/>
         </>
     );
 };
 
+const Container = styled.div`   
+    padding: 48px 0 64px;
+    background-image: url(${bgImg});
+    background-size: contain;
+`;
+
+
 const Banner = styled.div`
     width: 100%;
     height: 235px;    
     padding: 14px 0;
-    >h2 {
-        margin: 0;
-        font-size: 20px;
-        letter-spacing: -0.6px;
+    * {
         color: #fff;
-        font-weight: 300;
-    }
-`;
-
-const Planet = styled.div`
-    position: absolute;
-    background-color: #eee;
-    width: 289px;
-    height: 289px;
-    border-radius: 50%;
-    top:144px;
-    left:133px;
-    background-image: url("https://cdn.notefolio.net/img/10/4c/104c1250c58a5d35d0725696bedb2ce6d4f273bfc3a4949f1405a1a5c7b3bc13_v1.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    animation: target_image 20s; 
-    animation-iteration-count: infinite;
-    transform-origin: 50% 50%;
-    @keyframes target_image {
-        0% { transform: rotate(0deg); }
-        50% { transform: rotate(180deg); }
-        100% { transform: rotate(360deg); }
+    }    
+    h1{
+        margin-bottom: 6px;
     }
 `;
 
 const Wrap = styled.div`
-    background-color: white;
     border-radius: 38px 38px 0 0;
     position: relative;
     box-sizing: border-box;
