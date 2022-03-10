@@ -9,6 +9,7 @@ import { ko } from "date-fns/esm/locale";
 
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
+import { actionCreators as searchAction } from "../redux/modules/search";
 import { Grid, Input, Button } from "../elements";
 import plus from "../image/icons/btn_number_plus_l@2x.png";
 
@@ -16,7 +17,9 @@ const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
 
   // 추천 태그 리스트 가져오기
-  const recommendList = useSelector((state) => state.search.recommend);
+  const recommendList = useSelector((state) => state.search.recommend).filter(
+    (el, idx) => idx < 5
+  );
   console.log(recommendList);
 
   //수정 / 작성 유무 판별
@@ -28,7 +31,11 @@ const ChallengeWrite = (props) => {
 
   // Header 적용 (수정/작성 분기)
   React.useEffect(() => {
-    dispatch(baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기", true));
+    dispatch(
+      baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기", true)
+    );
+    //추천 키워드 불러오기
+    dispatch(searchAction.getRecommendDB());
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
       dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
@@ -86,7 +93,6 @@ const ChallengeWrite = (props) => {
   const [preview, setPreview] = React.useState(
     isEdit ? target.challengeImage : []
   );
-
 
   //해시태그 부분
   const [hashtag, setHashtag] = React.useState(""); //onChange로 관리할 문자열
@@ -228,7 +234,7 @@ const ChallengeWrite = (props) => {
 
   const deleteImage = (index) => {
     const imageArr = image.filter((el, idx) => idx !== index);
-    const previewArr = preview.filter((el, idx) => idx !== index);  
+    const previewArr = preview.filter((el, idx) => idx !== index);
 
     setImage([...imageArr]);
     setPreview([...previewArr]);
@@ -352,7 +358,7 @@ const ChallengeWrite = (props) => {
     dispatch(challengeAction.editChallengeDB(+params.challengeId, formData));
   };
 
-  console.log("최종이미지",image);
+  console.log("최종이미지", image);
 
   return (
     <Grid margin="78px 0px 0px" padding="0px" bg="#eeeeee">

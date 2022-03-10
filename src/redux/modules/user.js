@@ -29,7 +29,7 @@ const sendMail = createAction(SEND_MAIL, (sendMail)=>({sendMail}));
 
 const initialState = {
   user: null,
-  is_login: null,  
+  is_login: null,
   nickCk: null,
   setwarning: {
     detail: false,
@@ -221,8 +221,6 @@ const logOutAction = () => {
   };
 };
 
-
-
 export default handleActions(
   {
     [SET_USER]: (state, action) =>
@@ -234,7 +232,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.user = null;
         draft.is_login = false;
-      }),    
+      }),
     [NICK_CHECK]: (state, action) =>
       produce(state, (draft) => {
         draft.nickCk = action.payload.nickCheckres.result;
