@@ -18,7 +18,8 @@ const PostWrite = (props) => {
   const userInfo = useSelector((state) => state.user.user);
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
-  console.log(targetPost);
+
+  
 
   //  인증 게시글 수정은 어디서 할건지에 따라 is_edit 변수 활용하기
   const [content, setContent] = React.useState(

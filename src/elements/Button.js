@@ -11,6 +11,7 @@ const Button = ({
   font_size,
   radius,
   border_btn,
+  small_btn,
   _disabled,
   _onClick,
   ...props
@@ -25,6 +26,14 @@ const Button = ({
     radius,
     border_btn
   };
+
+  if(small_btn){
+    return (
+      <SmallBtn {...styles} disabled={_disabled} onClick={_onClick} {...props}>
+        {children}
+      </SmallBtn>
+    );    
+  }
 
   return (
     <Btn {...styles} disabled={_disabled} onClick={_onClick} {...props}>
@@ -42,6 +51,7 @@ Button.defaultProps = {
   _disabled: false,
   is_circle: false,
   border_btn:false,
+  small_btn:false,
   radius: "22px",
   bg: "#4149d3",
   _onClick: () => {},  
@@ -74,6 +84,17 @@ const Btn = styled.button`
     background-color: #fff;
   ` : "")};
 
+`;
+
+const SmallBtn = styled.button`
+  min-width: 60px;
+  height: 28px;
+  border:1px solid #a2aab3;
+  font-size: 12px;
+  padding: 5px 0;
+  border-radius: 22px;
+  background-color: #fff;
+  ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
 `;
 
 export default Button;

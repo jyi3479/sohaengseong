@@ -17,7 +17,7 @@ const MyCompleted = (props) => {
   const fail_list = my_list.filter((l) => l.status === "실패");
 
   React.useEffect(() => {
-    dispatch(baseAction.setHeader("지나온 행성들"));
+    dispatch(baseAction.setHeader("마이 리포트"));
   }, []);
 
 
@@ -25,25 +25,18 @@ const MyCompleted = (props) => {
     <Grid margin="48px 0">
       {" "}
       <StatusContainer>
-        <Grid padding="14px">
+        <div>
           <Grid center>
-            <p>성공</p>
-            <p>{success_list.length}</p>
+            <p className="caption caption_color mb4">성공</p>
+            <p className="poppins">{success_list.length}</p>
           </Grid>
-        </Grid>
-        <div
-          style={{
-            borderRight: "1px solid #c7c7c7",
-            height: "20px",
-            margin: "auto 0px",
-          }}
-        />
-        <Grid padding="14px">
+        </div>
+        <div>
           <Grid center>
-            <p>실패</p>
-            <p>{fail_list.length}</p>
+            <p className="caption caption_color mb4">실패</p>
+            <p className="poppins">{fail_list.length}</p>
           </Grid>
-        </Grid>
+        </div>
       </StatusContainer>
       {completed_list.map((el, i) => {
         return (
@@ -61,20 +54,18 @@ const MyCompleted = (props) => {
 };
 
 const StatusContainer = styled.div`
-  margin: 16px 0;
   display: flex;
-  width: 335px;
-  height: 69px;
+  width: 100%;
+  padding: 20px 0;
   border-radius: 8px;
-  background-color: #f7f7f7;
-  p:first-child {
-    font-size: 12px;
-    color: #808080;
-  }
-  p:last-child {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000;
+  background-color: #fff;
+  margin: 20px 0;
+  >div {
+    width: 50%;
+    border-right: 1px solid #eff0f2;
+    &:last-child {
+      border:none;
+    }
   }
 `;
 

@@ -47,40 +47,26 @@ const MyChallenge = (props) => {
     <>
       {my_list && myInfo && (
         <>
-          <Grid padding="0" margin="0 0 66px">
+          <Grid padding="0">
             <StatusContainer>
-              <Grid padding="14px">
-                <Grid padding="0" center>
-                  <p>진행예정</p>
-                  <p>{before_list.length}</p>
-                </Grid>
-              </Grid>
-              <div
-                style={{
-                  borderRight: "1px solid #c7c7c7",
-                  height: "20px",
-                  margin: "auto 0px",
-                }}
-              />
-              <Grid padding="14px">
+              <div>
                 <Grid center>
-                  <p>진행중</p>
-                  <p>{ing_list.length}</p>
+                  <p className="caption caption_color mb4">진행예정</p>
+                  <p className="poppins">{before_list.length}</p>
                 </Grid>
-              </Grid>
-              <div
-                style={{
-                  borderRight: "1px solid #c7c7c7",
-                  height: "20px",
-                  margin: "auto 0px",
-                }}
-              />
-              <Grid padding="14px">
+              </div>
+              <div>
                 <Grid center>
-                  <p>개설</p>
-                  <p>{admin_list.length}</p>
+                  <p className="caption caption_color mb4">진행중</p>
+                  <p className="poppins">{ing_list.length}</p>
                 </Grid>
-              </Grid>
+              </div>
+              <div>
+                <Grid center>
+                  <p className="caption caption_color mb4">개설</p>
+                  <p className="poppins">{admin_list.length}</p>
+                </Grid>
+              </div>
             </StatusContainer>
             <Tabs>
               <li
@@ -169,40 +155,40 @@ const MyChallenge = (props) => {
 const Wrap = styled.div``;
 
 const Tabs = styled.ul`
-  margin: 28px 0 20px;
+  margin: 32px 0 16px;
   li {
     display: inline-block;
-    font-size: 16px;
-    margin-right: 8px;
+    font-size: 18px;
+    margin-right: 16px;
     padding-bottom: 4px;
+    color: rgba(3, 1, 2, 0.5);
     cursor: pointer;
   }
   li.active {
     font-weight: bold;
+    color: rgba(3, 1, 2, 1);
     border-bottom: 2px solid #000;
   }
 `;
 
 const StatusContainer = styled.div`
   display: flex;
-  width: 335px;
-  height: 69px;
+  width: 100%;
+  padding: 20px 0;
   border-radius: 8px;
-  background-color: #f7f7f7;
-  p:first-child {
-    font-size: 12px;
-    color: #808080;
-  }
-  p:last-child {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000;
+  background-color: #fff;
+  >div {
+    width: 33%;
+    border-right: 1px solid #eff0f2;
+    &:last-child {
+      border:none;
+    }
   }
 `;
 
 const MyReport = styled.div`
   position: relative;
-  margin: 39px 0 36px;
+  margin: 26px 0 40px;
   padding: 17px 20px;
   background-color: #fcfcfc;
   background-image: url(${arrow});

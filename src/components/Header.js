@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
-import arrow from "../image/icons/ic_arrow@2x.png";
+import arrow from "../image/icon/ic_arrow@2x.png";
 import searchIconB from '../image/icons/ic_search_b@2x.png';
 
 const Header = (props) => {
@@ -15,7 +15,7 @@ const Header = (props) => {
                 {params === "/mypage" ? (
                     <>                        
                         <div className="title">
-                            <p>{text}</p>                            
+                            <h2>{text}</h2>                            
                         </div>
                     </>
                 ) : (
@@ -25,7 +25,7 @@ const Header = (props) => {
                                 history.go(-1);
                             }}><img src={arrow}/></button>
                         <div className="title">
-                            <p>{text}</p>
+                            <h2>{text}</h2>
                             {params.includes("/chatting/")?<span>23</span>:null}
                         </div>    
                         <button className="search_btn" style={{display: search?"block":"none"}}
@@ -52,7 +52,6 @@ const Wrap = styled.div`
     width: 100%;
     height: 48px;
     background-color: #fff;
-    border-bottom: solid 1px #dddddd;
     position: fixed;
     top: 0;
     left: 0;
@@ -61,9 +60,7 @@ const Wrap = styled.div`
     z-index: 10;
     .title {
         display: flex;
-        >p {
-            font-size: 16px;
-            margin: 0px;
+        >h2 {
             max-width: 230px;
             text-align: center;
             white-space: nowrap;
@@ -104,7 +101,6 @@ const Wrap = styled.div`
         display: flex;
         text-align: center;
         background-color: white;
-        border-bottom: solid 1px #e2e2e2;  
         justify-content: space-between;   
         align-items: center; 
         &.left {

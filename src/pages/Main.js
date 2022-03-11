@@ -43,13 +43,13 @@ const Main = (props) => {
                         </Info>
                     ):(
                         <Info>
-                            <Grid padding="0" height="auto" margin="20px 0 35px" style={{textAlign:"center"}}>
-                                <p>로그인 하시고 나의 인증정보를 확인하세요.</p>
-                            </Grid>
-                        <Button
-                        _onClick={()=>{
-                            history.push("/login");
-                        }}>로그인</Button>
+                            <Grid padding="0" height="auto" margin="22px 0 35px" style={{textAlign:"center"}}>
+                                <p className="sub_color">로그인 하시고 나의 인증정보를 확인하세요.</p>
+                                <Button small_btn margin="20px 0 0"
+                                _onClick={()=>{
+                                    history.push("/login");
+                                }}>로그인</Button>
+                            </Grid>                            
                         </Info>
                     )}
                     <Grid padding="0" margin="150px 0 28px" >  

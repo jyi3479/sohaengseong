@@ -11,6 +11,25 @@ export const GlobalStyle = createGlobalStyle`
         background-repeat: no-repeat;
     }
 
+    //align -----------------------------------------------------
+    .t_center {text-align:center};
+    .t_left {text-align:left};
+    .t_right {text-align:right};
+
+    //말줄임
+    .ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;     
+    };
+    
+    .ellipsis2 { //2줄말줄임
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    };
     //font ---------------------------------------------------------
 
     h1 { //Hero title
@@ -78,6 +97,12 @@ export const GlobalStyle = createGlobalStyle`
     .line_color {
         border-color:#eff0f2
     }
+
+
+    //margin & padding ---------------------------------
+
+    .mb4 { margin-bottom: 4px };
+    .mt4 { margin-top: 4px };
 
     //swiper -------------------------------------------
     .swiper-pagination {
