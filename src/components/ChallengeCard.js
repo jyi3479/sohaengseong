@@ -28,17 +28,23 @@ const ChallengeCard = (props) => {
           {props.currentMember}/{props.maxMember}명
         </p>
       </ImageBox>      
-      <h3 className="ellipsis2" style={{height:"40px"}}>{props.title}</h3>
-      <p className="caption caption_color" style={{margin:"2px 0 8px"}}>{props.category}</p>
-      <div>
-        {props.tagName?.map((el, i) => {
-          return <Tag key={i} tag={el}></Tag>;
-        })}  
-      </div>
-      <Grid is_flex  padding="0" margin="6px 0 0">
-        <p className="small caption_color">{startDate} - {endDate}</p>
-        <img src={props.isPrivate?lock:null} style={{width:"16px"}}></img>
-      </Grid>
+      <ContentBox>
+        <div style={{height:"58px"}}>
+          <h3 className="ellipsis2">{props.title}</h3>
+          <p className="caption caption_color" style={{margin:"2px 0 6px"}}>{props.category}</p>
+        </div>        
+        <div className="contents">          
+          <div>
+            {props.tagName?.map((el, i) => {
+              return <Tag key={i} tag={el}></Tag>;
+            })}  
+          </div>
+          <div className="date">
+            <p className="small caption_color" style={{marginRight:"6px"}}>{startDate} - {endDate}</p>
+            <img src={props.isPrivate?lock:null} style={{width:"16px", verticalAlign: "sub"}}></img>
+          </div>
+        </div>
+      </ContentBox>      
     </Box>
   );
 };
@@ -48,6 +54,7 @@ const Box = styled.div`
   width: calc(50% - 6px);
   height: auto;
   margin: 0 12px 16px 0;
+  vertical-align: top;
   cursor: pointer;
   :nth-child(2n) {
     margin-right: 0;
@@ -75,6 +82,22 @@ const ImageBox = styled.div`
     img {
       width: 16px;
       vertical-align: sub;
+    }
+  }
+`;
+
+const ContentBox = styled.div`  
+  height: 105px;
+  position: relative;
+  .contents {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    .date {
+      * {
+        display: inline-block;
+      }
     }
   }
 `;

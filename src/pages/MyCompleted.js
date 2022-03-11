@@ -66,7 +66,7 @@ const StatusContainer = styled.div`
     &:last-child {
       border:none;
     }
-  }
+  } 
 `;
 
 export default MyCompleted;

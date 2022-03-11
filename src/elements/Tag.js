@@ -9,10 +9,11 @@ const Tag = (props) => {
 
 const Item = styled.p`
   display: inline-block;
+  height: 23px;
   margin: 0;
   margin-right: 5px;
   border-radius: 10px;
-  padding: 3px 6px 2px;
+  padding: 4px 6px;
   background-color: rgba(65,73,211,0.1);
   &:nth-child(n+3) {
     display: none;
