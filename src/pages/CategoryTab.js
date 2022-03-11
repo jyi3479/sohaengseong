@@ -16,7 +16,7 @@ const CategoryTab = (props) => {
     const [word,setWord] = React.useState("");
     const [tab,setTab] = React.useState(parseInt(params));
     const categoryList = useSelector(state => state.challenge.category_list);
- 
+
     React.useEffect(()=>{
         dispatch(challengeAction.categoryChallengeDB(tab));
         //dispatch(challengeAction.getCategoryDB());
@@ -24,7 +24,7 @@ const CategoryTab = (props) => {
 
     return (
       <>
-        {categoryList[tab] &&
+        {categoryList[tab] && 
         <>
         <SearchHeader
           value={word}

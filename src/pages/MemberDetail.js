@@ -276,14 +276,7 @@ const MemberDetail = (props) => {
               exitChallenge();
             }}
           >
-            <div>
-              <h6>정말로 나가시겠습니까?</h6>
-              <p>
-                중도 하차할 경우 패널티(경험치%손실)가 <br />
-                적용됩니다.
-                <br />
-              </p>
-            </div>
+            <p>정말로 나가시겠습니까?<br />중도 하차할 경우 패널티(경험치%손실)가 <br />적용됩니다.</p>
           </Modal>
         </Grid>
       )}
@@ -367,7 +360,7 @@ const Member = styled.div`
 
   &:nth-child(n + 4) {
     //3번째 멤버 이후로는 미노출
-    ${(props) => !props.total && `display: none;`};
+    ${(props) => !props.total && `display: none;`}
   }
   &.admin {
     //방장일 경우

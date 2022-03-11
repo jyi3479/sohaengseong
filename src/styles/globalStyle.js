@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
         letter-spacing: -0.42px;
         color: #030102; /* Typo Color */
         background-repeat: no-repeat;
+        outline: none;
     }
 
     //align -----------------------------------------------------

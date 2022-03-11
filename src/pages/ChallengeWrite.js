@@ -21,7 +21,6 @@ const ChallengeWrite = (props) => {
   //수정 / 작성 유무 판별
   const params = useParams();
   const target = useSelector((state) => state.challenge.target);
-  console.log(target);
   const isEdit = params.challengeId ? true : false;
   // 챌린지 시작 하루 전까지 수정 가능함 (오늘 날짜랑 시작일 비교하기)
 
@@ -29,7 +28,6 @@ const ChallengeWrite = (props) => {
   const recommendList = useSelector((state) => state.search.recommend).filter(
     (el, idx) => idx < 5
   );
-  console.log(recommendList);
 
   // Header 적용 (수정/작성 분기)
   React.useEffect(() => {
@@ -224,7 +222,7 @@ const ChallengeWrite = (props) => {
     reader.readAsDataURL(file);
     // 읽기가 끝나면 발생하는 이벤트 핸들러.
     reader.onloadend = () => {
-      console.log(reader.result); // 파일 컨텐츠(내용물)
+      //console.log(reader.result); // 파일 컨텐츠(내용물)
       setPreview([...preview, reader.result]);
     };
     if (file) {
@@ -302,10 +300,11 @@ const ChallengeWrite = (props) => {
       tagName: hashArr,
       
     };
-
-    for (let i = 0; i < image.length; i++) {      
-      formData.append("challengeImage", image[i]);      
-    }
+    
+      for (let i = 0; i < image.length; i++) {      
+        formData.append("challengeImage", image[i]);
+      }
+      
 
     formData.append(
       "challenge",
@@ -317,7 +316,7 @@ const ChallengeWrite = (props) => {
     }
 
     // 폼데이터에 이미지와 데이터 묶어서 보내기
-    console.log(image);
+    console.log("이미지확인",image);
 
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.addChallengeDB(formData));

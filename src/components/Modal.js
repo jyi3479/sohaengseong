@@ -26,22 +26,25 @@ const Modal = (props) => {
     }
     return(
         <>
-        {/* 모달이 열릴때 openModal 클래스가 생성된다., 딤처리 된 배경 눌러도 close */}
-        <div className={open ? 'openModal modal' : 'modal'}> 
+        {/* 모달이 열릴때 openModal 클래스가 생성된다. dim(뒷배경) 클릭 시에도 모달 닫힘*/}
+        <div className={open ? 'openModal modal' : 'modal'}>
             {open ? (
-                <section>
-                <header className={header ? 'showHeader' : ''}> 
-                    <button className="close" onClick={close}>
-                        <img src={closeIcon}></img>
-                    </button>
-                </header>
-                <main className={isPrivate? "is_private" : ""}>{props.children}</main>
-                <footer className={double_btn? 'double_btn': ''} style={{display:isPrivate?"none":"block"}}>
-                    {/* double_btn일 때만 취소버튼 노출 */}
-                    {double_btn&&<button className="" onClick={close}>취소</button>}                    
-                    <button className="" onClick={_onClick}>{btn_text}</button>
-                </footer>
-                </section>
+                <>
+                    <div className="dim" onClick={close}></div>
+                    <section>
+                        <header className={header ? 'showHeader' : ''}> 
+                            <button className="close" onClick={close}>
+                                <img src={closeIcon}></img>
+                            </button>
+                        </header>
+                        <main className={isPrivate? "is_private" : ""}>{props.children}</main>
+                        <footer className={double_btn? 'double_btn': ''} style={{display:isPrivate?"none":"block"}}>
+                            {/* double_btn일 때만 취소버튼 노출 */}
+                            {double_btn&&<button className="sub_color" onClick={close}>취소</button>}                    
+                            <button className="point_color" onClick={_onClick}>{btn_text}</button>
+                        </footer>
+                    </section>
+                </>
             ) : null}
         </div>
         </>
