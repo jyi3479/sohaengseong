@@ -53,11 +53,11 @@ const ChallengeDetail = (props) => {
     const dateB = moment(endDate, 'YYYY.MM.DD');
     const days = dateA.from(dateB).split(" ")[0] === 'a' ? "30" : parseInt(dateA.from(dateB).split(" ")[0])+1; //16 days ago 이런 식으로 나와서 자름
     const after = moment(today).isAfter(dateA); //오늘 날짜 이후라면 true 아니면 false
-    const join_day = dateB.from(today).split(" ")[0] === 'in' ? +dateB.from(today).split(" ")[1]+1 : null;
+    const join_day = dateB.from(today).split(" ")[0] === 'in' ? dateB.from(today).split(" ")[1] : null;
     //const join_day = dateB.from(today).split(" ");
-    const remaining_day = Math.ceil(days*0.8) ; //기간의 80%
+    const remaining_day = Math.ceil(days*0.8); //입장 가능한 기간
 
-    console.log("들어갈 수 있는 기간",remaining_day,"들어갈 때 남은 기간",join_day, );
+    console.log("입장 가능한 기간",remaining_day,"들어갈 때 남은 기간",join_day);
 
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
@@ -252,7 +252,7 @@ const ChallengeDetail = (props) => {
                     <p style={{fontSize:"14px"}}>타인에게 어쩌구 입주 규칙은 고정 어쩌구</p>
                 </Grid>
                 <Fixed>
-                    {target.status === "완료" || remaining_day > join_day? ( //상태값이 완료거나 남은 기간의 20%가 지난 경우
+                    {target.status === "완료" || remaining_day > join_day ? ( //상태값이 완료거나 입장 가능한 기간이 지난 경우
                         //기간 끝남
                         <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
                         >기간이 만료되었습니다.</Button>

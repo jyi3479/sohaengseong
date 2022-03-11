@@ -19,7 +19,7 @@ const PostWrite = (props) => {
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
 
-  
+
 
   //  인증 게시글 수정은 어디서 할건지에 따라 is_edit 변수 활용하기
   const [content, setContent] = React.useState(
@@ -155,35 +155,16 @@ const PostWrite = (props) => {
   };
 
   return (
-    <Grid margin="16px 0px" padding="0px" height="700px" bg="#f5f5f5">
-      <Grid display="flex" bg="#ffffff" style={{ alignItems: "flex-start" }}>
+    <Grid padding="0px" height="700px" bg="#f5f5f5">
+      <Grid display="flex" bg="#ffffff" padding="16px 20px" style={{ alignItems: "flex-start" }}>
         {/* 이미지 업로드 부분 */}
         <div>
           <ImageLabel
             className="input-file-button"
             htmlFor="input-file"
-            style={{
-              width: "98px",
-              height: "98px",
-              margin: "0x 8px 0px 0px",
-              display: "inline-block",
-              position: "relative",
-              border: "solid 1px #808080",
-              verticalAlign: "top", // 최상단에 정렬 맞추기
-              textAlign: "center", //이미지 가운데
-            }}
+            style={{backgroundImage: `url(${preview?preview:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"})`
+          }}
           >
-            <img
-              src={
-                preview
-                  ? preview
-                  : "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"
-              }
-              style={{
-                width: "98px",
-                height: "98px",
-              }}
-            />
           </ImageLabel>
           <input
             id="input-file"
@@ -260,10 +241,18 @@ const PostWrite = (props) => {
 };
 
 const ImageLabel = styled.label`
-  /* border: 1px solid #c0c0c0;
-  border-radius: 5px;
-  font-weight: 900; */
+  width: 98px;
+  height: 98px;
+  margin: 0x 8px 0px 0px;
+  display: inline-block;
+  position: relative;
+  border: solid 1px #808080;
+  vertical-align: top; // 최상단에 정렬 맞추기
+  text-align: center; //이미지 가운데
+  overflow: hidden; //이미지 넘치면 자르기
   cursor: pointer;
+  background-position: center;
+  background-size: cover;
 `;
 
 const NoticeBox = styled.div`

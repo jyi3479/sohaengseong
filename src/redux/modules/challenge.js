@@ -79,7 +79,7 @@ const joinChallengeDB = (challengeId) => {
         history.push(`/member/${challengeId}`);
       })
       .catch((err) => {
-        console.log("챌린지 참여하기 오류", err.response);
+        console.log("챌린지 참여하기 오류", err);
         window.alert(err.response.data.message);
         history.replace("/");
       });

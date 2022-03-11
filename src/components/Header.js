@@ -22,7 +22,7 @@ const Header = (props) => {
                     <>
                         <button 
                             onClick={()=>{
-                                history.go(-1);
+                                history.goBack();
                             }}><img src={arrow}/></button>
                         <div className="title">
                             <h2>{text}</h2>
