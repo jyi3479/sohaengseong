@@ -59,7 +59,7 @@ export const GlobalStyle = createGlobalStyle`
         line-height: 16px;
         letter-spacing: -0.36px;
     }
-    p.small { //기간 & 작은 폰트
+    .small { //기간 & 작은 폰트
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.36px;

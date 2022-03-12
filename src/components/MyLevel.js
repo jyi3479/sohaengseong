@@ -183,6 +183,7 @@ const ProgressBar = styled.div`
 `;
 
 const HighLight = styled.div`
+  max-width: 100%;
   background: #95c8d7;
   transition: 1s;
   width: ${(props) => props.width};

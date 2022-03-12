@@ -32,10 +32,13 @@ const ChallengeWrite = (props) => {
   // Header 적용 (수정/작성 분기)
   React.useEffect(() => {
     dispatch(
-      baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기", true)
+      baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기")
     );
+    dispatch(baseAction.setGnb(false));
+
     //추천 키워드 불러오기
     dispatch(searchAction.getRecommendDB());
+
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
       dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
@@ -73,8 +76,10 @@ const ChallengeWrite = (props) => {
       //   // setHashtag("");
       // }
     }
+
     return () => {
-      dispatch(baseAction.setHeader(false, ""));
+      dispatch(baseAction.setHeader(""));
+      dispatch(baseAction.setGnb(true));
     };
   }, []);
 
@@ -371,7 +376,7 @@ const ChallengeWrite = (props) => {
   };
 
   return (
-    <Grid margin="78px 0px 0px" padding="0px" bg="#eeeeee">
+    <Grid margin="48px 0px 64px" padding="0" bg="#f4f6fa">
       <InputContainer>
         <label
           htmlFor="select"
@@ -450,15 +455,9 @@ const ChallengeWrite = (props) => {
 
           {/* 추천키워드 부분 */}
           <Grid margin="14px 0px" padding="0px">
-            <span
-              style={{
-                fontSize: "13px",
-                color: "#383838",
-                marginRight: "10px",
-              }}
-            >
-              추천키워드
-            </span>
+            <span className="sub_color small" style={{
+                marginRight: "13px",
+              }}>추천 키워드</span>
             {recommendList.map((el, idx) => {
               return (
                 <HashButton
@@ -676,34 +675,41 @@ const ChallengeWrite = (props) => {
               </Grid>
             </Grid>
           )}
-          <InputBox>
+          <InputBox className="private_box">
             {checkedInputs === "private" &&
               (isEdit ? (
-                <Input
-                  // type="password"
-                  label="비밀번호 설정 (변경 불가)"
-                  placeholder="비밀번호를 입력해주세요."
-                  value={password}
-                  _onChange={(e) => setPassword(e.target.value)}
-                  height="46px"
-                  margin="0px 0px 20px"
-                  disabled
-                />
+                <div className="private_input">
+                  <Input
+                    // type="password"
+                    label="비밀번호 설정 (변경 불가)"
+                    placeholder="비밀번호를 입력해주세요."
+                    value={password}
+                    _onChange={(e) => setPassword(e.target.value)}
+                    height="46px"
+                    margin="20px 0px 0"
+                    disabled
+                  />
+                </div>
               ) : (
-                <Input
-                  // type="password"
-                  label="비밀번호 설정"
-                  placeholder="비밀번호를 입력해주세요.(숫자 4자리)"
-                  value={password}
-                  _onChange={(e) => setPassword(e.target.value)}
-                  height="46px"
-                  margin="0px 0px 20px"
-                  maxLength="4"
-                />
+                <div className="private_input">
+                  <Input
+                    // type="password"
+                    label="비밀번호 설정"
+                    placeholder="비밀번호를 입력해주세요.(숫자 4자리)"
+                    value={password}
+                    _onChange={(e) => setPassword(e.target.value)}
+                    height="46px"
+                    margin="20px 0px 0"
+                    maxLength="4"
+                  />
+                </div>
               ))}
           </InputBox>
         </InputBox>
       </InputContainer>
+      <Grid padding="24px 20px 32px">
+        유의사항 적을 곳
+      </Grid>
       <ButtonContainer>
         {isEdit ? (
           <Button _onClick={openModal}>수정하기</Button>
@@ -732,13 +738,20 @@ const ChallengeWrite = (props) => {
 
 const InputContainer = styled.div`
   background-color: #ffffff;
-  padding: 0px 20px 20px;
-  margin: 0px 0px 22px 0px;
+  padding: 24px 20px 28px;
+  &:first-child {
+    margin-bottom: 12px;
+  }
 `;
 
 const ButtonContainer = styled.div`
-  background-color: #ffffff;
-  padding: 20px;
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  bottom:0;
+  left:0;
+  padding:11px 20px;
+  box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
 const Select = styled.select`
@@ -764,7 +777,13 @@ const Select = styled.select`
 `;
 
 const InputBox = styled.div`
-  margin-top: 20px;
+  margin-top: 28px;
+  &.private_box {
+    margin-top:0;
+    .private_input {
+      margin-top:20px;
+    }
+  }
 `;
 
 const CountBox = styled.p`
@@ -844,18 +863,19 @@ const HashWrap = styled.div`
 
 // 추천키워드 버튼
 const HashButton = styled.button`
-  background: #ededed;
-  color: #7b7b7b;
-  height: 22px;
-  ${(props) => (props.disabled ? `opacity: 0.5;` : `opacity: 0.9;`)};
-
-  border-radius: 5px;
+  background: rgba(23,171,214,0.1);
+  color: #17abd6;
+  height: 19px;
+  ${(props) => (props.disabled ? `
+      background: rgba(162,170,179,0.1);
+      color:#a2aab3;
+    ` 
+    : "" 
+  )};
+  border-radius: 10px;
   border: none;
-  margin: 5px 5px 0px 6px;
-  padding: 2px 4px;
-  align-items: center;
-  font-weight: normal;
-  font-family: inherit;
+  margin: 0 6px 6px 0;
+  padding: 1px 6px;
   font-size: 12px;
   text-align: center;
 `;

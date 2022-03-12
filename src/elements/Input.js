@@ -4,6 +4,7 @@ import { Button } from "../elements";
 const Input = ({
   label,
   subLabel,
+  checkbox,
   type,
   placeholder,
   value,
@@ -21,6 +22,10 @@ const Input = ({
   border,
   ...props
 }) => {
+
+  if(checkbox){
+
+  }
   
   if (double) {
     return (
