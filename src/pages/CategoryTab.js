@@ -9,23 +9,32 @@ import SearchHeader from "../components/SearchHeader";
 
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as searchActions} from "../redux/modules/search";
+import { StaticRouter } from "react-router-dom";
+import { Category } from "@material-ui/icons";
 
 const CategoryTab = (props) => {
     const dispatch = useDispatch();
     const params = props.match.params.categoryId;
     const [word,setWord] = React.useState("");
-    const [tab,setTab] = React.useState(parseInt(params));
-    const categoryList = useSelector(state => state.challenge.category_list);
+    const categoryList = useSelector((state) => state.challenge.category_list);
+    const allList = useSelector((state) => state.challenge.list);
+    const location = window.location.pathname;
+    const tabId = location.split("/")[2];
+
+    console.log("카테고리", params,location,tabId);
+     
 
     React.useEffect(()=>{
-        dispatch(challengeAction.categoryChallengeDB(tab));
-        //dispatch(challengeAction.getCategoryDB());
-    },[tab]);
-
+      if (tabId !== 'all'){
+        dispatch(challengeAction.categoryChallengeDB(tabId));
+      }else {
+        dispatch(challengeAction.getChallengeDB());
+      }
+    },[tabId]);
+   
+      
     return (
       <>
-        {categoryList[tab] && 
-        <>
         <SearchHeader
           value={word}
           _onChange={(e) => {
@@ -42,18 +51,17 @@ const CategoryTab = (props) => {
           <TabWrap className="tab_wrap">
             <Tab
               type="button"
-              className={tab === "all" ? "active" : ""}
+              className={tabId === "all" ? "active" : ""}
               onClick={() => {
-                setTab("all");
+                history.push(`/category/all`);
               }}
             >
               전체
             </Tab>
             <Tab
               type="button"
-              className={tab === 1 ? "active" : ""}
+              className={tabId === '1' ? "active" : ""}
               onClick={() => {
-                setTab(1);
                 history.push(`/category/1`);
               }}
             >
@@ -61,9 +69,8 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tab === 2 ? "active" : ""}
+              className={tabId === '2' ? "active" : ""}
               onClick={() => {
-                setTab(2);
                 history.push(`/category/2`);
               }}
             >
@@ -71,9 +78,8 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tab === 3 ? "active" : ""}
+              className={tabId === '3' ? "active" : ""}
               onClick={() => {
-                setTab(3);
                 history.push(`/category/3`);
               }}
             >
@@ -81,9 +87,8 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tab === 4 ? "active" : ""}
+              className={tabId === '4' ? "active" : ""}
               onClick={() => {
-                setTab(4);
                 history.push(`/category/4`);
               }}
             >
@@ -91,9 +96,8 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tab === 5 ? "active" : ""}
+              className={tabId === '5' ? "active" : ""}
               onClick={() => {
-                setTab(5);
                 history.push(`/category/5`);
               }}
             >
@@ -101,9 +105,8 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tab === 6 ? "active" : ""}
+              className={tabId === '6' ? "active" : ""}
               onClick={() => {
-                setTab(6);
                 history.push(`/category/6`);
               }}
             >
@@ -111,9 +114,8 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tab === 7 ? "active" : ""}
+              className={tabId === '7' ? "active" : ""}
               onClick={() => {
-                setTab(7);
                 history.push(`/category/7`);
               }}
             >
@@ -121,9 +123,8 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tab === 8 ? "active" : ""}
+              className={tabId === '8' ? "active" : ""}
               onClick={() => {
-                setTab(8);
                 history.push(`/category/8`);
               }}
             >
@@ -131,22 +132,28 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tab === 9 ? "active" : ""}
+              className={tabId === '9' ? "active" : ""}
               onClick={() => {
-                setTab(9);
                 history.push(`/category/9`);
               }}
             >
               친환경
             </Tab>
-          </TabWrap>
-          <p style={{ fontSize: "18px",marginTop:'20px',marginLeft: "20px", marginBottom: "24px" }}>
-            총 <b>{categoryList[tab].length}</b>건
-          </p>
+          </TabWrap>           
+            <p
+              style={{
+                fontSize: "18px",
+                marginTop: "20px",
+                marginLeft: "20px",
+                marginBottom: "24px",
+              }}
+            >
+              총<b>{tabId !== 'all'?categoryList[tabId]?categoryList[tabId].length:0:allList.length}</b>건
+            </p>         
           <Grid is_flex padding="20px">
-            {tab !== "all" ? (
-              categoryList[tab] ? (
-                categoryList[tab].map((el, i) => {
+            {tabId !== "all" ? (
+              categoryList[tabId] ? (
+                categoryList[tabId].map((el, i) => {
                   return (
                     <ChallengeCard
                       key={el.challengeId}
@@ -161,24 +168,33 @@ const CategoryTab = (props) => {
                 <h1>앗 게시글이 없어요 !</h1>
               )
             ) : (
-              <ChallengeList />
+              <>
+                {allList.map((el,i)=>{
+                  return (
+                    <ChallengeCard
+                      key={el.challengeId}
+                      {...el}
+                      _onClick={() => {
+                        history.push(`/challenge/${el.challengeId}`);
+                      }}
+                    ></ChallengeCard>
+                  );
+                })}
+              </>
             )}
           </Grid>
         </Grid>
-        </>
-        }
       </>
     );
 };
 
 const TabWrap = styled.div`
-  padding: 0 20px 2px;
+  padding: 0 20px;
   white-space: nowrap;
   //overflow-x: scroll;
   //border-bottom: 10px solid #eee;
   display: flex;
   overflow: auto;
-  height: 45px;
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -186,21 +202,22 @@ const TabWrap = styled.div`
     background: rgba(255, 255, 255, 0.4);
   }
   &::-webkit-scrollbar-thumb {
-    background: #7aaee7;
+    background: #030102;
     border-radius: 6px;
   }
 `;
 const Tab = styled.button`
-    margin-right: 20px;
-    font-size: 16px;
-    color: #ccc;
+    margin-right: 16px;
+    font-size: 18px;
+    color: #030102;
     border:none;
     background-color: transparent;
-    padding: 10px 0;
+    padding: 6px 0;
+    opacity: 0.5;
     &.active {
-        color: #000;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid #030102;
         font-weight: bold;
+        opacity: 1;
     }
 `;
 
