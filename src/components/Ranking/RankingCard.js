@@ -27,7 +27,7 @@ const RankingCard = (props) => {
                         ):(
                             <img src={same}/>
                         )}</State>
-                        <Image shape="border" size="42" profile={props.profileImage !== null? props.profileImage : defaultImg}/>
+                        <Image shape="border" size="42" level={props.level} profile={props.profileImage !== null? props.profileImage : defaultImg}/>
                     </div>
                     <Info>
                         <p>{props.nickname} <span className="sub_point_color small t_center" style={{display:props.className.includes("is_me")?"inline-block":"none"}}>Me</span></p>

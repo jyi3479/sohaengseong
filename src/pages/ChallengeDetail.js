@@ -228,7 +228,7 @@ const ChallengeDetail = (props) => {
                                 <Member key={el.userId} className={admin.userId === el.userId? "admin" : ""}>                                    
                                     <Image shape="border" 
                                         size="40"
-                                        
+                                        level={el.levelName}
                                         profile={el.profileImage !== null? el.profileImage : defaultImg}
                                     >
                                     </Image>
