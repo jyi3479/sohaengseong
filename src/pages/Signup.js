@@ -9,7 +9,7 @@ import { userApis } from "../shared/apis";
 import { useHistory } from "react-router";
 import drop from "../image/icons/ic_dropdown@2x.png";
 import deleteIcon from "../image/icon/ic_txt_delete@2x.png";
-import Modal from "../components/Modal";
+import PopModal from "../components/PopModal";
 
 const Signup = (props) => {
   const history = useHistory();
@@ -18,7 +18,7 @@ const Signup = (props) => {
   //드롭다운(selectBox)
   const [active, setActive] = React.useState(false);
   const [option, setOption] = React.useState("");
-  
+
   //회원가입 목록
   const [keypressID, setKeypressID] = React.useState();
   const [keypressNick, setKeypressNick] = React.useState();
@@ -139,9 +139,6 @@ const Signup = (props) => {
           console.log("회원가입 실패:", error);
           setModalOpen(false);
         });
-
-      //dispatch(userActions.signupDB(mail, nickname, password, passwordCheck));
-
 
     } else {
       window.alert("모든 조건이 맞는지 확인해주세요.");
@@ -313,8 +310,8 @@ const Signup = (props) => {
             }
           >
             {isNick === null || (isNick === "" && _nickCheck === null)? ""
-              : isNick === false && _nickCheck === null ? "2글자 이상의 닉네임을 입력하세요."
-              : isNick === false && _nickCheck === "true"? "2글자 이상의 닉네임을 입력하세요."
+              : isNick === false && _nickCheck === null ? "2-8자의 닉네임을 입력하세요."
+              : isNick === false && _nickCheck === "true"? "2-8자의 닉네임을 입력하세요."
               : (isNick === true && _nickCheck === null) || keypressNick === false
 ? "중복확인을 해주세요"
               : isNick === true && _nickCheck === undefined
@@ -404,27 +401,11 @@ const Signup = (props) => {
 
 
     {/* 회원가입 완료 팝업 */}
-    <Modal full_modal header open={modalOpen} close={closeModal}>
-        <div style={{width:"180px", height:"180px", backgroundColor:"#ccc" , margin:"0 auto"}}></div>
-        <Content>
-            <h1>소행성 가입을 환영합니다!</h1>
-            <p>메일을 전송하였습니다.<br/>아래의 메일에서 전송된 링크를<br/>클릭하면 회원가입이 완료됩니다.</p>
-        </Content>
-        <div style={{backgroundColor:"#f9f9f9", borderRadius:"10px", padding:"11px", marginBottom:"24px", textAlign:"center"}}>
-            <p style={{fontSize:"14px"}}>{email}@{domain}</p>
-        </div>
-        <Grid padding="0" margin="0 0 56px" style={{textAlign:"center"}}>
-            <p style={{fontSize:"14px", color:"#666"}}>메일을 받지 못하셨나요?</p>
-            <Button width="250px" margin="10px 0 5px" radius="20px" bg={active?"#fff":"#666"} font_size="16px" style={{color:active?"#666":"#fff",border:"solid 1px #707070"}}
-            _onClick={()=>{
-                send()
-            }}>이메일 재발송</Button>
-            <p style={{display:active?"block":"none",fontSize:"10px", color:"#999"}}>인증 시간 01 : 00 : 00</p>
-        </Grid>
-        <Fixed>
-            <Button _onClick={()=>{history.push("/login")}}>로그인 하기</Button>
-        </Fixed>
-    </Modal>
+    {/* 이메일 전송 팝업 */}
+    <PopModal open={modalOpen} close={closeModal} h2="소행성 가입을 환영합니다!" p={`메일을 전송하였습니다.
+아래의 메일에서 전송된 링크를
+클릭하면 회원가입이 완료됩니다.`} mail={`${email}@${domain}`} btn_click={send}>
+    </PopModal>
     </>
   );
 };

@@ -46,6 +46,7 @@ const Input = ({
           />
           <Button
             className="button"
+            border_btn
             _onClick={props.btnClick}            
             _disabled={props.btn_disabled}
           >

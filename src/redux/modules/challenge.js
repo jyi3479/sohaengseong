@@ -5,6 +5,8 @@ import axios from "axios";
 import { challengeApis } from "../../shared/apis";
 import { mainApis } from "../../shared/apis";
 
+import { actionCreators as chatAction } from "./chat";
+
 const GET_CHALLENGE = "GET_CHALLENGE";
 const TARGET_CHALLENGE = "TARGET_CHALLENGE";
 const GET_CATEGORY = "GET_CATEGORY";
@@ -92,8 +94,11 @@ const addChallengeDB = (challenge) => {
     challengeApis
       .addChallenge(challenge)
       .then((res) => {
+        dispatch(
+          chatAction.createRoomDB({ challengeId: res.data.challengeId })
+        );
         console.log("챌린지 등록", res);
-        history.replace("/today");
+        // history.replace("/today");
       })
       .catch((err) => {
         console.log("챌린지 등록 오류", err);

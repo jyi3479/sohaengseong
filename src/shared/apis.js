@@ -4,11 +4,13 @@ const server_port = process.env.REACT_APP_SERVER_PORT;
 
 export const apis = axios.create({
   baseURL: server_port, //서버 주소
+  // baseURL: "http://15.164.245.252:8080", //소켓용 서버
 });
 const token = getCookie("token");
 const imageApis = axios.create({
-  // baseURL: "http://13.125.107.22",
   baseURL: server_port,
+  // baseURL: "http://15.164.245.252:8080", //소켓용 서버
+
   headers: {
     "Content-type": "multipart/form-data",
     accept: "application/json",
@@ -70,7 +72,8 @@ export const challengeApis = {
   getChallenge: () => apis.get("/challenge"),
 
   //카테고리와 일치하는 챌린지 조회
-  categoryChallenge: (categoryId) => apis.get(`/challenge/category/${categoryId}`),
+  categoryChallenge: (categoryId) =>
+    apis.get(`/challenge/category/${categoryId}`),
 
   //특정 챌린지 조회
   getOneChallenge: (challengeId) => apis.get(`/challenge/${challengeId}`),
@@ -146,16 +149,22 @@ export const mypageApis = {
 };
 
 export const chatAPI = {
+  //채팅방 생성
   createRoom: function (data) {
-    return apis.post(`/api/chat/rooms`, data);
+    return apis.post(`/chat/rooms`, data);
   },
+  //채팅방 삭제
+  deleteRoom: function (roomId) {
+    return apis.delete(`/chat/rooms/${roomId}`);
+  },
+  //멤버 중도 하차
+
+  //채팅방 조회
   getChatList: function () {
-    return apis.get(`/api/chat/rooms`);
+    return apis.get(`/chat/rooms`);
   },
+  //이전 메세지 조회
   getChatMessages: function (roomId) {
-    return apis.get(`/api/chat/rooms/${roomId}/messages`);
-  },
-  selectCategory: function (category) {
-    return apis.get(`/api/chat/rooms/search/${category}`);
+    return apis.get(`/chat/rooms/${roomId}/messages`);
   },
 };

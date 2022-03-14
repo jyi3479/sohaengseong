@@ -83,6 +83,10 @@ export const GlobalStyle = createGlobalStyle`
         color: #4149d3;
     }
 
+    .sub_point_color {
+        color: #17abd6;
+    }
+
     .sub_color {
         color: #7C8288;
     }
@@ -99,11 +103,22 @@ export const GlobalStyle = createGlobalStyle`
         border-color:#eff0f2
     }
 
+    .success_color {
+        color:#5a76ea;
+    }
+
+    .fail_color {
+        color:#f57391;
+    }
+
+
+
 
     //margin & padding ---------------------------------
 
     .mb4 { margin-bottom: 4px };
     .mt4 { margin-top: 4px };
+    .mt12 {margin-top: 12px }
 
     //swiper -------------------------------------------
     .swiper-pagination {
