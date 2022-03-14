@@ -33,7 +33,7 @@ const ChallengeList = (props) => {
 
 const Box = styled.div`
     &.main {
-        .card:nth-child(n+11) {
+        .card:nth-child(n+6) {
             display: none !important;
         }
     }    

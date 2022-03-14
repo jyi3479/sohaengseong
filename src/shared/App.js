@@ -24,9 +24,7 @@ import MemberPostList from "../pages/MemberPostList";
 import ChallengeWrite from "../pages/ChallengeWrite";
 import Search from "../pages/Search";
 import CategoryMain from "../pages/CategoryMain";
-import Complete from "../pages/Complete";
 import Find from "../pages/Find";
-import Sendmail from "../pages/Sendmail";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
 import { getCookie } from "./cookie";
 import ChatRoom from "../pages/ChatRoom";
@@ -62,10 +60,6 @@ function App() {
             <Switch>
               <Route path="/login" exact component={Login} />
               {/* 로그인 */}
-              <Route path="/signup/complete" exact component={Complete} />
-              {/* 회원가입완료 */}
-              <Route path="/sendmail" exact component={Sendmail} />
-              {/* 임시비밀번호 */}
               <Route path="/" exact component={Main} />
               {/* 메인 */}
               <Route path="/category" exact component={CategoryMain} />

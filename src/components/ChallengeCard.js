@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import lock from "../image/icons/ic_lock@2x.png";
-import peopleIcon from "../image/icons/ic_people@2x.png";
-import { Grid } from "../elements";
+import lock from "../image/icon/ic_lock@2x.png";
+import peopleIcon from "../image/icon/ic_people@2x.png";
+import { Grid , Tag } from "../elements";
 
 const ChallengeCard = (props) => {
   const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;
@@ -23,34 +23,38 @@ const ChallengeCard = (props) => {
             {props.dailyAuth !== "false"? "내가해냄": ""}
           </div>
         ):null}
-        <p>
+        <p className="small">
           <img src={peopleIcon} />
           {props.currentMember}/{props.maxMember}명
         </p>
       </ImageBox>      
-      <p className="category" style={{margin:"8px 0 4px", fontSize:"12px",color:"#666"}}>{props.category}</p>          
-      <Title className="title">{props.title}</Title>
-      <TagBox>
-        {props.tagName?.map((el, i) => {
-          return <Tag className="tag" key={i}>{el}</Tag>;
-        })}
-      </TagBox>
-      <Grid display="flex" padding="0px" style={{alignItems: "flex-end"}}>
-        <Date>
-          {startDate} - {endDate}
-        </Date>
-        {props.isPrivate && <img src={lock} style={{ width: "20px" }} />}
-      </Grid>
+      <ContentBox>
+        <div style={{height:"58px"}}>
+          <h3 className="ellipsis2">{props.title}</h3>
+          <p className="caption caption_color" style={{margin:"2px 0 6px"}}>{props.category}</p>
+        </div>        
+        <div className="contents">          
+          <div>
+            {props.tagName?.map((el, i) => {
+              return <Tag key={i} tag={el}></Tag>;
+            })}  
+          </div>
+          <div className="date">
+            <p className="small caption_color" style={{marginRight:"6px"}}>{startDate} - {endDate}</p>
+            <img src={props.isPrivate?lock:null} style={{width:"16px", verticalAlign: "sub"}}></img>
+          </div>
+        </div>
+      </ContentBox>      
     </Box>
   );
 };
 
 const Box = styled.div`
   display: inline-block;
-  width: calc(50% - 4px);
+  width: calc(50% - 6px);
   height: auto;
-  margin: 0 8px 24px 0;
-  background-color: #fff;
+  margin: 0 12px 16px 0;
+  vertical-align: top;
   cursor: pointer;
   :nth-child(2n) {
     margin-right: 0;
@@ -59,71 +63,43 @@ const Box = styled.div`
 
 const ImageBox = styled.div`
   width: 100%;
-  height: 152px;
-  border-radius: 10px;
+  height: 162px;
+  border-radius: 12px;
   position: relative;
   background-size: cover;
-  background-repeat: no-repeat;
   background-position: center;
-  overflow: hidden;  
-  text-align: center;
-
+  overflow: hidden;
+  margin-bottom: 12px;
+  background-color: #fff;
   p {
-    display: inline-block;
-    font-size: 14px;
-    letter-spacing: -0.45px;
     color: #fff;
-    background-color: #6c6c6c;
-    padding: 1px 6px 2px;
-    border-radius: 3px;
+    background-color: rgba(3,1,2,0.5);
+    padding: 4px;
+    border-radius: 4px;
     position: absolute;
-    right: 8px;
-    bottom: 8px;
+    right: 10px;
+    bottom: 10px;
     img {
-      width: 15px;
+      width: 16px;
+      vertical-align: sub;
     }
   }
 `;
 
-const Title = styled.p`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.57;
-  letter-spacing: -0.42px;
-  text-align: left;
-  color: #000;
-  margin-top: 8px;
-  //밑에 말줄임 ------
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; 
-`;
-
-const TagBox = styled.div`
-  height: 46px;
-  overflow: hidden;
-`;
-
-const Tag = styled.p`
-  display: inline-block;
-  /* width: 30px;
-  height: 22px; */
-  margin: 8px 5px 10px 0px;
-  padding: 2px 4px;
-  opacity: 0.5;
-  border-radius: 5px;
-  background-color: #ededed;
-  font-size: 12px;
-  line-height: 1.83;
-  letter-spacing: -0.36px;
-`;
-
-const Date = styled.p`
-  font-size: 10px;
-  line-height: 1.8;
-  letter-spacing: -0.3px;
-  text-align: left;
-  color: #575757;
+const ContentBox = styled.div`  
+  height: 105px;
+  position: relative;
+  .contents {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    .date {
+      * {
+        display: inline-block;
+      }
+    }
+  }
 `;
 
 export default ChallengeCard;

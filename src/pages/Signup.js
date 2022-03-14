@@ -8,7 +8,8 @@ import { userApis } from "../shared/apis";
 //import { history } from "../redux/configureStore";
 import { useHistory } from "react-router";
 import drop from "../image/icons/ic_dropdown@2x.png";
-import Modal from "../components/Modal";
+import deleteIcon from "../image/icon/ic_txt_delete@2x.png";
+import PopModal from "../components/PopModal";
 
 const Signup = (props) => {
   const history = useHistory();
@@ -47,6 +48,10 @@ const Signup = (props) => {
   const send = () => {
     const mail = `${email}@${domain}`;
     dispatch(userActions.emailCheckResend(mail));
+  };
+
+  const deleteValue = () => {
+    setDomain("");
   };
 
   //닉네임 정규식
@@ -112,6 +117,8 @@ const Signup = (props) => {
     if (isPwd === true && samePwd === true && _nickCheck === "true") {
       const mail = `${email}@${domain}`;
 
+      console.log(mail);
+
       const signup = {
         email: mail,
         nickname: nickname,
@@ -133,9 +140,6 @@ const Signup = (props) => {
           setModalOpen(false);
         });
 
-      //dispatch(userActions.signupDB(mail, nickname, password, passwordCheck));
-
-
     } else {
       window.alert("모든 조건이 맞는지 확인해주세요.");
     }
@@ -147,12 +151,14 @@ const Signup = (props) => {
   };
   const optionClick = (e) => {
     setOption(e.target.innerText);
-    setActive(false);
-    if (option !== "직접 입력") {
+    setActive(false);    
+    if (option === "직접 입력") {
+      setDomain("");
+    }else {
       setDomain(e.target.innerText);
     }
   };
-  //console.log("닉네임중복=",_nickCheck,"닉네임유효성=",isNick,"비밀번호확인=",samePwd,"비밀번호재입력=",passwordCheck);
+
 
   //헤더&푸터 state
   React.useEffect(() => {
@@ -167,11 +173,10 @@ const Signup = (props) => {
   return (
     <>
     <Grid padding="0 40px" margin="100px 0 0" style={{ overflow: "revert" }}>
-      <Grid padding="0" margin="0 0 32px" style={{ overflow: "revert" }}>
-        <label style={{ fontSize: "14px" }}>이메일</label>
+      <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
+        <label style={{ fontSize: "12px" }}>아이디(이메일)</label>
         <Grid
           padding="0"
-          margin="9px 0 5px"
           is_flex
           style={{ overflow: "revert" }}
         >
@@ -179,9 +184,11 @@ const Signup = (props) => {
             onChange={(e) => {
               setEmail(e.target.value);
             }}
+            style={{opacity: option ? "1" : "0.5" }}
           ></EmailInput>
           <p style={{ fontSize: "14px" }}>@</p>
-          <Select>
+          <Select className={option?active? "active ok" : "ok" : ""}>
+            <img src={drop}></img>
             <button
               className="label"
               onClick={() => {
@@ -242,31 +249,53 @@ const Signup = (props) => {
             </ul>
           </Select>
         </Grid>
-        <EmailInput
-          className="width"
-          onChange={(e) => {
-            setDomain(e.target.value);
-          }}
-          disabled={option === "직접 입력" ? "" : "disabled"}
-          value={option === "직접 입력" ? domain : option}
-        ></EmailInput>
+        <SelfInput style={{display: option === "직접 입력" ? "block" : "none"}}>
+          <EmailInput
+            className="width"
+            onChange={(e) => {
+              setDomain(e.target.value);
+            }}
+            disabled={option === "직접 입력" ? "" : "disabled"}
+            value={option !== "직접 입력" ? option : domain}
+            
+          ></EmailInput>
+          <button onClick={deleteValue}></button>
+        </SelfInput>
+        
       </Grid>
 
-      <Grid padding="0" margin="0 0 32px" style={{ overflow: "revert" }}>
+      <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
         <InputWrap>
           <Input
             double
             label="닉네임"
             value={nickname}
             is_submit
-            placeholder="닉네임을 입력해 주세요."
+            placeholder="닉네임을 입력하세요."
             btnClick={nicknameCheck}
+            btn_disabled={
+              (isNick === true && _nickCheck === null) || keypressNick === false ? ""
+              : isNick === true && _nickCheck === undefined
+              ? ""
+              : "disabled"
+            }
             _onChange={onChangeNick}
-            style={{ width: "calc(100% - 50px)" }}
+            className={
+              isNick === "" && _nickCheck === null
+                ? ""
+                : isNick === false && _nickCheck === null
+                ? ""
+                : isNick === false && _nickCheck === "true"
+                ? ""
+                : (isNick === true && _nickCheck === null) ||
+                  keypressNick === false
+                ? "red"
+                : isNick === true && _nickCheck === undefined ? "red" : "green"
+            }
           />
           <span
             className={
-              isNick === null && _nickCheck === null
+              isNick === "" && _nickCheck === null
                 ? ""
                 : isNick === false && _nickCheck === null
                 ? ""
@@ -281,26 +310,33 @@ const Signup = (props) => {
             }
           >
             {isNick === null || (isNick === "" && _nickCheck === null)? ""
-              : isNick === false && _nickCheck === null ? "2글자 이상의 닉네임을 입력하세요."
-              : isNick === false && _nickCheck === "true"? "2글자 이상의 닉네임을 입력하세요."
+              : isNick === false && _nickCheck === null ? "2-8자의 닉네임을 입력하세요."
+              : isNick === false && _nickCheck === "true"? "2-8자의 닉네임을 입력하세요."
               : (isNick === true && _nickCheck === null) || keypressNick === false
 ? "중복확인을 해주세요"
               : isNick === true && _nickCheck === undefined
-              ? "중복된 닉네임입니다."
+              ? "이미 존재하는 닉네임입니다."
               : "사용 가능한 닉네임입니다"}
           </span>
         </InputWrap>
       </Grid>
 
-      <Grid padding="0" margin="0 0 32px" style={{ overflow: "revert" }}>
+      <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
         <InputWrap>
           <Input
             type="password"
             label="비밀번호"
             value={password}
             is_submit
-            placeholder="비밀번호를 입력해 주세요."
+            placeholder="비밀번호를 입력하세요."
             _onChange={onChangePwd}
+            className={
+              password.length === 0
+                ? ""
+                : isPwd && password.length
+                ? "green"
+                : "red"
+            }
           />
           <span
             className={
@@ -320,15 +356,22 @@ const Signup = (props) => {
         </InputWrap>
       </Grid>
 
-      <Grid padding="0" margin="0 0 40px" style={{ overflow: "revert" }}>
+      <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
         <InputWrap>
           <Input
             type="password"
             label="비밀번호 확인"
             value={passwordCheck}
             is_submit
-            placeholder="비밀번호를 재입력해 주세요."
+            placeholder="비밀번호를 입력하세요."
             _onChange={checkPwd}
+            className={
+              passwordCheck.length === 0
+                ? ""
+                : samePwd && passwordCheck.length
+                ? "green"
+                : "red"
+            }
           />
           <span
             className={
@@ -343,41 +386,26 @@ const Signup = (props) => {
               ? ""
               : samePwd && passwordCheck.length
               ? "비밀번호가 일치합니다."
-              : "일치하지 않는 비밀번호 입니다."}
+              : "비밀번호가 일치하지 않습니다."}
           </span>
         </InputWrap>
       </Grid>
       <Fixed>
         <Button _onClick={()=>{
-          signup()          
+          signup()
         }} disabled={isPwd === true && samePwd === true && _nickCheck === "true"? "" : "disabled"}
+        style={{fontSize:"16px", fontWeight:"normal"}}
         >가입하기</Button>
       </Fixed>
     </Grid>
 
 
     {/* 회원가입 완료 팝업 */}
-    <Modal full_modal header open={modalOpen} close={closeModal}>
-        <div style={{width:"180px", height:"180px", backgroundColor:"#ccc" , margin:"0 auto"}}></div>
-        <Content>
-            <h1>소행성 가입을 환영합니다!</h1>
-            <p>메일을 전송하였습니다.<br/>아래의 메일에서 전송된 링크를<br/>클릭하면 회원가입이 완료됩니다.</p>
-        </Content>
-        <div style={{backgroundColor:"#f9f9f9", borderRadius:"10px", padding:"11px", marginBottom:"24px", textAlign:"center"}}>
-            <p style={{fontSize:"14px"}}>{email}@{domain}</p>
-        </div>
-        <Grid padding="0" margin="0 0 56px" style={{textAlign:"center"}}>
-            <p style={{fontSize:"14px", color:"#666"}}>메일을 받지 못하셨나요?</p>
-            <Button width="250px" margin="10px 0 5px" radius="20px" bg={active?"#fff":"#666"} font_size="16px" style={{color:active?"#666":"#fff",border:"solid 1px #707070"}}
-            _onClick={()=>{
-                send()
-            }}>이메일 재발송</Button>
-            <p style={{display:active?"block":"none",fontSize:"10px", color:"#999"}}>인증 시간 01 : 00 : 00</p>
-        </Grid>
-        <Fixed>
-            <Button _onClick={()=>{history.push("/login")}}>로그인 하기</Button>
-        </Fixed>
-    </Modal>
+    {/* 이메일 전송 팝업 */}
+    <PopModal open={modalOpen} close={closeModal} h2="소행성 가입을 환영합니다!" p={`메일을 전송하였습니다.
+아래의 메일에서 전송된 링크를
+클릭하면 회원가입이 완료됩니다.`} mail={`${email}@${domain}`} btn_click={send}>
+    </PopModal>
     </>
   );
 };
@@ -387,38 +415,74 @@ const InputWrap = styled.div`
   > span {
     position: absolute;
     left: 0;
-    bottom: -17px;
-    font-size: 10px;
+    bottom: -20px;
+    font-size: 12px;
   }
   > span.green {
-    color: #00a106;
+    color: #5a76ea;
   }
   > span.red {
-    color: #fd5414;
+    color: #f57391;
   }
 `;
 
 const EmailInput = styled.input`
   width: calc(50% - 10px);
-  height: 40px;
-  border: solid 1px #999;
+  height: 28px;
   outline: none;
-  padding: 10px;
+  padding: 8px 0;
+  box-sizing: border-box;
+  line-height: 1.29;
+  border:none;
+  border-bottom: 1px solid #7c8288;
+  background-color: transparent;
+  opacity: 0.5;
   &.width {
     width: 100%;
+    margin-top: 12px;
+  }
+  &:focus {
+    outline: none;
+    opacity: 1;
+    border-bottom: 1px solid #4149d3;
+  }
+  ::placeholder {
+    font-size: 14px;
+    color: #7c8288;
+    line-height: 1.29;
   }
 `;
 
 const Select = styled.div`
   position: relative;
   width: calc(50% - 10px);
-  height: 40px;
-  border: solid 1px #999;
+  height: 28px;
+  border:none;
+  border-bottom: 1px solid rgba(124, 130, 136, 0.5);
   outline: none;
-  background-image: url(${drop});
-  background-size: 20px;
-  background-position: right 10px top 10px;
-  background-repeat: no-repeat;
+  
+  img {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    width: 16px;
+  }
+  &.active {
+    outline: none;
+    border-bottom: 1px solid #4149d3;    
+    .label{
+      color:rgba(124, 130, 136, 1);
+    }
+    img {
+      transform: rotate(180deg);
+    }
+  }
+  &.ok {
+    border-bottom: 1px solid #7c8288;
+    .label{
+      color: #030102;
+    }
+  }
   .label {
     display: flex;
     align-items: center;
@@ -429,35 +493,55 @@ const Select = styled.div`
     padding-left: 10px;
     background: transparent;
     font-size: 14px;
+    color:rgba(124, 130, 136, 0.5);
     cursor: pointer;
   }
   .optionList {
     transform: scaleY(0);
     transform-origin: 0px 0px;
     position: absolute;
-    top: 40px;
+    top: 30px;
     left: 0;
     width: 100%;
-    height: 157px;
+    height: 204px;
     background: #fff;
-    color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.04);
+    border-radius: 4px;
     overflow: hidden;
     transition: 0.2s ease-in;
     opacity: 0;
-    padding: 10px;
-    border: solid 1px #999;
+    padding: 6px 0;
     z-index: 2;
     > li {
       font-size: 12px;
-      color: #000;
-      line-height: 1.5;
-      margin-bottom: 2px;
+      padding: 9px 10px;
+      color: #030102;
+      line-height: 14px;
       cursor: pointer;
+      :hover {
+        background-color: rgba(162,170,179,0.2);
+      }
     }
     &#active {
       transform: scaleY(1);
       opacity: 1;
     }
+  }
+`;
+
+const SelfInput = styled.div`
+  position: relative;
+  margin-bottom: 42px;
+  >button {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-image: url(${deleteIcon});
+    background-size: contain;
+    right: 0;
+    top: 10px;
+    border: none;
+    background-color: transparent;
   }
 `;
 
@@ -483,10 +567,7 @@ const Fixed = styled.div`
     bottom:0;
     left:0;
     padding:12px 20px;
-    box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
-    button {
-        border-radius: 5px;
-    }
+    box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
 

@@ -19,8 +19,8 @@ const RankingCard = (props) => {
             <Box className={props.className}>                
                 <RankWrap>
                     <div style={{display:"flex", alignItems: "center"}}>
-                        <Rank className={props.className.includes("is_me")? "poppins bold is_me" : "poppins bold"} >{props.ranking}1</Rank>
-                        <State>{props.rank!=="유지"?props.rank==="상승"?(
+                        <Rank className={props.className.includes("is_me")? "poppins bold is_me" : "poppins bold"} >{props.rank}</Rank>
+                        <State>{props.status!=="유지"?props.status==="상승"?(
                            <img src={up}/>
                         ):(
                             <img src={down}/>         

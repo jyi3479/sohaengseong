@@ -18,7 +18,8 @@ const PostWrite = (props) => {
   const userInfo = useSelector((state) => state.user.user);
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
-  console.log(targetPost);
+
+
 
   //  인증 게시글 수정은 어디서 할건지에 따라 is_edit 변수 활용하기
   const [content, setContent] = React.useState(
@@ -78,7 +79,8 @@ const PostWrite = (props) => {
       .addPost(challengeId, formData)
       .then((res) => {
         console.log("인증 게시글 작성", res);
-        history.push(`/post/${challengeId}`);
+        setModalType("okModal");    
+        setModalOpen(true);        
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
@@ -115,6 +117,7 @@ const PostWrite = (props) => {
       .then((res) => {
         console.log("인증 게시글 작성", res);
         // dispatch(memberAction.editPost(post));
+
         history.push(`/post/${challengeId}`);
       })
       .catch((err) => {
@@ -152,35 +155,16 @@ const PostWrite = (props) => {
   };
 
   return (
-    <Grid margin="16px 0px" padding="0px" height="700px" bg="#f5f5f5">
-      <Grid display="flex" bg="#ffffff" style={{ alignItems: "flex-start" }}>
+    <Grid padding="0px" height="700px" bg="#f5f5f5">
+      <Grid display="flex" bg="#ffffff" padding="16px 20px" style={{ alignItems: "flex-start" }}>
         {/* 이미지 업로드 부분 */}
         <div>
           <ImageLabel
             className="input-file-button"
             htmlFor="input-file"
-            style={{
-              width: "98px",
-              height: "98px",
-              margin: "0x 8px 0px 0px",
-              display: "inline-block",
-              position: "relative",
-              border: "solid 1px #808080",
-              verticalAlign: "top", // 최상단에 정렬 맞추기
-              textAlign: "center", //이미지 가운데
-            }}
+            style={{backgroundImage: `url(${preview?preview:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"})`
+          }}
           >
-            <img
-              src={
-                preview
-                  ? preview
-                  : "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"
-              }
-              style={{
-                width: "98px",
-                height: "98px",
-              }}
-            />
           </ImageLabel>
           <input
             id="input-file"
@@ -208,7 +192,7 @@ const PostWrite = (props) => {
       <NoticeBox>
         <p>유의사항</p>
         <p>
-          타인을 불쾨하게 하는 사진을 업로드 시 방장의 권한에 따라 재인증을
+          타인을 불쾌하게 하는 사진을 업로드 시 방장의 권한에 따라 재인증을
           해야할 수도 있습니다.
         </p>
       </NoticeBox>
@@ -233,20 +217,42 @@ const PostWrite = (props) => {
             editPost();
           } else {
             addPost();
+
           }
         }}
       >
         <p>{isEdit ? "수정하시겠습니까?" : "인증하시겠습니까?"}</p>
+      </Modal>
+      <Modal
+        open={modalType === "okModal" ? modalOpen : ""}
+        close={closeModal}
+        header
+        isPrivate
+      >
+        <Grid>
+          <div style={{width:"110px",height:"110px",backgroundColor:"#eee", margin:"20px auto 13px"}} ></div>
+          <h1 style={{marginBottom:"9px"}}>인증 완료</h1>
+          <p style={{marginBottom:"35px"}}>인증을 완료했습니다.<br/>오늘도 즐거운 하루되세요!</p>
+          <Button _onClick={()=>{history.replace(`/post/${challengeId}`);}}>확인</Button>
+        </Grid>        
       </Modal>
     </Grid>
   );
 };
 
 const ImageLabel = styled.label`
-  /* border: 1px solid #c0c0c0;
-  border-radius: 5px;
-  font-weight: 900; */
+  width: 98px;
+  height: 98px;
+  margin: 0x 8px 0px 0px;
+  display: inline-block;
+  position: relative;
+  border: solid 1px #808080;
+  vertical-align: top; // 최상단에 정렬 맞추기
+  text-align: center; //이미지 가운데
+  overflow: hidden; //이미지 넘치면 자르기
   cursor: pointer;
+  background-position: center;
+  background-size: cover;
 `;
 
 const NoticeBox = styled.div`

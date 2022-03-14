@@ -34,22 +34,22 @@ const Main = (props) => {
                             <h2>안녕하세요. <b>{userInfo&&userInfo.nickname}</b> 님</h2>
                             <Grid padding="0" is_flex height="auto" margin="0 0 22px">
                                 <p className="sub_color">인증 가능한 행성</p>
-                                <p className="poppins"><b className="point_color" style={{opacity:"0.8"}}>1</b>개</p>
+                                <p className="poppins"><b className="point_color" style={{opacity:"0.8"}}>{userInfo.count}</b>개</p>
                             </Grid>
-                        <Button
+                        <Button bg="#17abd6"
                         _onClick={()=>{
                             history.push("/mypage");
                         }}>인증하기</Button>
                         </Info>
                     ):(
                         <Info>
-                            <Grid padding="0" height="auto" margin="20px 0 35px" style={{textAlign:"center"}}>
-                                <p>로그인 하시고 나의 인증정보를 확인하세요.</p>
-                            </Grid>
-                        <Button
-                        _onClick={()=>{
-                            history.push("/login");
-                        }}>로그인</Button>
+                            <Grid padding="0" height="auto" margin="22px 0 35px" style={{textAlign:"center"}}>
+                                <p className="sub_color">로그인 하시고 나의 인증정보를 확인하세요.</p>
+                                <Button small_btn margin="20px 0 0"
+                                _onClick={()=>{
+                                    history.push("/login");
+                                }}>로그인</Button>
+                            </Grid>                            
                         </Info>
                     )}
                     <Grid padding="0" margin="150px 0 28px" >  
@@ -113,7 +113,7 @@ const Main = (props) => {
 };
 
 const Container = styled.div`   
-    padding: 48px 0 64px;
+    padding: 48px 0 56px;
     background-image: url(${bgImg});
     background-size: contain;
 `;

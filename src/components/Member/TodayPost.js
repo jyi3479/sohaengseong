@@ -93,15 +93,21 @@ const ImageBox = styled.div`
 `;
 
 const Info = styled.div`
+  width: 132px;
   position: absolute;
-  right: 15px;
-  bottom: 15px;
   left: 15px;
-
+  bottom: 15px;
+  white-space: initial;
   p {
     font-size: 14px;
     text-align: left;
     color: #ffffff;
+    /* 2줄 말줄임 ----- */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 `;
 

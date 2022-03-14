@@ -1,9 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); //roboto => 디폴트 폰트
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap'); //poppins => 포인트 폰트
-
+    
     *, *::before, *::after {
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
@@ -11,8 +9,28 @@ export const GlobalStyle = createGlobalStyle`
         letter-spacing: -0.42px;
         color: #030102; /* Typo Color */
         background-repeat: no-repeat;
+        outline: none;
     }
 
+    //align -----------------------------------------------------
+    .t_center {text-align:center};
+    .t_left {text-align:left};
+    .t_right {text-align:right};
+
+    //말줄임
+    .ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;     
+    };
+    
+    .ellipsis2 { //2줄말줄임
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    };
     //font ---------------------------------------------------------
 
     h1 { //Hero title
@@ -41,7 +59,7 @@ export const GlobalStyle = createGlobalStyle`
         line-height: 16px;
         letter-spacing: -0.36px;
     }
-    p.small { //기간 & 작은 폰트
+    .small { //기간 & 작은 폰트
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.36px;
@@ -65,6 +83,10 @@ export const GlobalStyle = createGlobalStyle`
         color: #4149d3;
     }
 
+    .sub_point_color {
+        color: #17abd6;
+    }
+
     .sub_color {
         color: #7C8288;
     }
@@ -81,6 +103,23 @@ export const GlobalStyle = createGlobalStyle`
         border-color:#eff0f2
     }
 
+    .success_color {
+        color:#5a76ea;
+    }
+
+    .fail_color {
+        color:#f57391;
+    }
+
+
+
+
+    //margin & padding ---------------------------------
+
+    .mb4 { margin-bottom: 4px };
+    .mt4 { margin-top: 4px };
+    .mt12 {margin-top: 12px }
+
     //swiper -------------------------------------------
     .swiper-pagination {
         width: 40px;
@@ -93,6 +132,9 @@ export const GlobalStyle = createGlobalStyle`
         color: #eee;
         font-size: 12px;
         line-height: 1.8;
+        * {
+            color: #fff;
+        }
     }
 
 

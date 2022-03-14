@@ -10,7 +10,6 @@ const LOGOUT = "LOGOUT";
 const SET_USER = "SET_USER";
 const NICK_CHECK = "NICK_CHECK";
 const SET_WARNING = "SET_WARNING";
-const SEND_MAIL = "SIGN_UP";
 
 const logIn = createAction(LOGIN, (is_login) => ({ is_login }));
 const logOut = createAction(LOGOUT, (user) => ({ user }));
@@ -25,7 +24,6 @@ const setWarning = createAction(SET_WARNING, (detail, text) => ({
   detail,
   text,
 }));
-const sendMail = createAction(SEND_MAIL, (sendMail) => ({ sendMail }));
 
 const initialState = {
   user: null,
@@ -35,7 +33,6 @@ const initialState = {
     detail: false,
     text: "",
   },
-  sendMail: null,
 };
 
 //로그인
@@ -57,45 +54,25 @@ const loginDB = (email, password) => {
                 email: res.data.email,
                 nickname: res.data.nickname,
                 profileUrl: res.data.profileUrl,
+                count: res.data.dailyCount,
               })
             );
           })
           .catch((error) => console.log("유저정보저장오류", error));
         history.push("/");
       })
-
       .catch((code, message) => {
         console.log("로그인오류입니다!", code, message);
         dispatch(
           setWarning(
             true,
-            "이메일 또는 비밀번호를 잘못 입력했습니다.\n 입력하신 내용을 다시 확인해주세요."
+            "이메일 또는 비밀번호를 다시 확인해주세요."
           )
         );
       });
   };
 };
 
-//회원가입
-export const signupDB = (email, nickname, password, passwordCheck) => {
-  return function (dispatch, getState, { history }) {
-    const signup = {
-      email: email,
-      nickname: nickname,
-      password: password,
-      passwordCheck: passwordCheck,
-    };
-    userApis
-      .signup(signup)
-      .then((res) => {
-        console.log(res.data, "회원가입");
-      })
-      .catch((error) => {
-        window.alert("회원가입 오류입니다!");
-        console.log("회원가입 실패:", error);
-      });
-  };
-};
 
 //닉네임 중복체크
 const nicknameCheck = (nickname) => {
@@ -148,23 +125,7 @@ const emailCheckResend = (email) => {
       });
   };
 };
-//임시 비밀번호 발급
-const tempPasswordSend = (email) => {
-  return function (dispatch, getState, { history }) {
-    const mail = {
-      email: email,
-    };
-    userApis
-      .tempPasswordSend(mail)
-      .then((res) => {
-        console.log("비밀번호발급", res);
-        dispatch(sendMail(res.data.result));
-      })
-      .catch((err) => {
-        console.log("비밀번호 재발급오류", err);
-      });
-  };
-};
+
 
 //로그인유저확인
 const loginCheckDB = () => {
@@ -182,14 +143,15 @@ const loginCheckDB = () => {
             email: res.data.email,
             nickname: res.data.nickname,
             profileUrl: res.data.profileUrl,
+            count: res.data.dailyCount,
           })
         );
       })
       .catch((error) => console.log("유저정보저장오류", error));
   };
 };
-//카카오 로그인
 
+//카카오 로그인
 const loginBykakao = (code) => {
   return function (dispatch, getState, { history }) {
     userApis
@@ -242,17 +204,12 @@ export default handleActions(
         draft.setwarning.detail = action.payload.detail;
         draft.setwarning.text = action.payload.text;
       }),
-    [SEND_MAIL]: (state, action) =>
-      produce(state, (draft) => {
-        draft.sendMail = action.payload.sendMail;
-      }),
   },
   initialState
 );
 
 const ActionCreators = {
   //액션 생성자 내보내기
-  signupDB,
   loginDB,
   loginCheckDB,
   nicknameCheck,
@@ -260,7 +217,6 @@ const ActionCreators = {
   emailCheckToken,
   loginBykakao,
   emailCheckResend,
-  tempPasswordSend,
 };
 
 export { ActionCreators };

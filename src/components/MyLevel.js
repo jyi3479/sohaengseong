@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
+
 import { Button, Grid, Image } from "../elements";
+
 import { challengeApis, mypageApis } from "../shared/apis";
 import { actionCreators as mypageAction } from "../redux/modules/mypage";
-import { history } from "../redux/configureStore";
+
+import defaultImg from "../image/img_profile_defalt @2x.png";
+import bg from "../image/my_bg.png";
 
 const MyLevel = (props) => {
   const dispatch = useDispatch();
@@ -21,33 +26,20 @@ const MyLevel = (props) => {
     <Wrap>
       <MyContainer>
         <Grid is_flex padding="0px">
-          <div style={{ display: "flex" }}>
-            <div>
-              <Image shape="circle" size={40} profile={my_level.profileUrl} />
-            </div>
-            <Grid padding="0px 0px 0px 9px">
-              <p
-                style={{
-                  fontSize: "14px",
-                  lineHeight: "1.57",
-                  letterSpacing: "-0.42px",
-                }}
-              >
-                {my_level.nickname}
-              </p>
-              <p style={{ fontSize: "12px", color: "#999999" }}>
-                {my_level.levelName}
-              </p>
+          <div style={{ display: "flex", alignItems:"center" , width:"calc(100% - 70px)"}}>            
+            <Image shape="border" size="42" profile={my_level.profileUrl !== null? my_level.profileUrl : defaultImg}/>            
+            <Grid padding="0px 0px 0px 9px" width="calc(100% - 54px)">
+              <p>{my_level.nickname}</p>
+              <p className="sub_color caption caption_color">{my_level.levelName}</p>
             </Grid>
           </div>
-
-          <ProfileBtn
+          <Button small_btn
             onClick={() => {
               history.push("/mypage/profile");
             }}
           >
             편집
-          </ProfileBtn>
+          </Button>
         </Grid>
         <Progress my_level={my_level} />
       </MyContainer>
@@ -73,11 +65,14 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-image: url(${bg});
+  background-position: center;
+  background-size: cover;
 `;
 
 const MyContainer = styled.div`
   background-color: #ffffff;
-  width: 335px;
+  width: 100%;
   border-radius: 10px;
   padding: 14px;
 `;
@@ -163,15 +158,7 @@ export default MyLevel;
 
 const Progress = (props) => {
   const my_level = props.my_level;
-  //   const bucket_list = useSelector((state) => state.bucket.list);
-  //   console.log(bucket_list);
 
-  //   let count = 0;
-  //   bucket_list.map((b, idx) => {
-  //     if (b.completed) {
-  //       count++;
-  //     }
-  //   });
   return (
     <>
       <ProgressBar>
@@ -180,34 +167,26 @@ const Progress = (props) => {
           width={(my_level.rankingPoint / my_level.experiencePoint) * 100 + "%"}
         ></HighLight>
       </ProgressBar>
-      <Point>
-        {my_level.rankingPoint}/{my_level.experiencePoint}
-      </Point>
+      <p className="sub_color caption t_right">{my_level.rankingPoint}/{my_level.experiencePoint}</p>
     </>
   );
 };
 
 const ProgressBar = styled.div`
-  background: #eee;
-  width: 251px;
-  height: 9px;
+  background: #f4f6fa;
+  width: calc(100% - 54px);
+  height: 8px;
   border-radius: 10px;
   display: flex; // HighLight와 Circle이 한 줄에 붙어있게 하도록.
   align-items: center; //세로로 중앙 정렬
-  margin: 5px 20px 4px 48px;
+  margin: 16px 20px 2px 54px;
 `;
 
 const HighLight = styled.div`
-  background: #c6c6c6;
+  max-width: 100%;
+  background: #95c8d7;
   transition: 1s;
   width: ${(props) => props.width};
-  height: 9px;
+  height: 100%;
   border-radius: 10px;
-`;
-
-const Point = styled.p`
-  margin: 4px 10px 0 0;
-  font-size: 12px;
-  text-align: right;
-  color: #999;
 `;

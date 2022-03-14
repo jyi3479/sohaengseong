@@ -25,7 +25,7 @@ const Card = (props) => {
         <Image shape="rectangle" src={props.challengeImage[0]?props.challengeImage[0]:defaultImg}></Image>
         <p className="small "><img src={peopleIcon}/>{props.currentMember?props.currentMember:"0"}/{props.maxMember}명</p>
       </ImageBox>
-      <Grid padding="0"  style={{display:"inline-block", position:"relative", width:"calc(100% - 110px)",height: "98px"}}>
+      <Grid padding="0"  style={{display:"inline-block", position:"relative", width:"calc(100% - 110px)",height: "102px", top:"5px"}}>
         <TitleBox>
           <h3>{props.title}</h3>
           <p className="caption caption_color">{props.category}</p>
@@ -34,7 +34,7 @@ const Card = (props) => {
           {tagList.map((el, i) => {
             return <Tag key={i} tag={el}></Tag>;
           })}      
-          <Grid is_flex  padding="0" margin="6px 0 0">
+          <Grid is_flex  padding="0" margin="6px 0 0" style={{}}>
             <p className="small caption_color">{startDate} - {endDate}</p>
             <img src={props.isPrivate?lock:null} style={{width:"16px"}}></img>
           </Grid>
@@ -61,7 +61,7 @@ const ImageBox = styled.div`
   width: 98px;
   position:relative;
   margin-right:12px;
-  border-radius: 12px;
+  border-radius: 12px;  
   overflow: hidden;
   > p {
     display: inline-block;   

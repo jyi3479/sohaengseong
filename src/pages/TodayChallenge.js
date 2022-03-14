@@ -11,7 +11,7 @@ const TodayChallenge = (props) => {
     const list = useSelector(state => state.challenge.list);
 
     React.useEffect(()=>{
-        dispatch(baseAction.setHeader("오늘의 소행성"));
+        dispatch(baseAction.setHeader("오늘의 행성"));
         dispatch(baseAction.setGnb(false));
         return()=>{
             dispatch(baseAction.setHeader(false,""));
@@ -21,8 +21,8 @@ const TodayChallenge = (props) => {
     return(        
         <Grid margin="48px 0 0">
             <TopBox>
-                <p>진행중</p>
-                <p>{list.length}</p>
+                <p className="small sub_color mb4">진행중</p>
+                <p className="poppins">{list.length}</p>
             </TopBox>
             <ChallengeList/>
         </Grid>        
@@ -30,21 +30,11 @@ const TodayChallenge = (props) => {
 };
 
 const  TopBox = styled.div`
-    padding: 14px;
-    background-color : #f7f7f7;
-    margin : 16px 0 20px;
+    padding: 20px 0;
+    background-color : #fff;
+    margin : 20px 0 16px;
     text-align: center;
     border-radius:8px;
-    p:first-child {
-        font-size: 12px;
-        color: #808080;
-    }
-    p:last-child {
-        font-size: 16px;
-        font-weight: bold;
-        color: #000;
-        line-height: 20px;
-    }
 `;
 
 export default TodayChallenge;

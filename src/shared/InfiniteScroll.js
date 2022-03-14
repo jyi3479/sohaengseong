@@ -1,31 +1,46 @@
-import React from "react";
+import React, { useEffect, useRef } from 'react'
+import styled from 'styled-components'
+import CircularProgress from '@mui/material/CircularProgress'
 
-const InfiniteScroll = (props) => {
-    const Size = 5; // 한 번 요청으로 가져올 게시글의 개수 
-    const getScrollTop = function () { 
-        return (window.pageYOffset !== undefined) ? window.pageYOffset 
-        : (document.documentElement || document.body.parentNode || document.body).scrollTop; 
-    }; 
-    const getDocumentHeight = function () { 
-        const body = document.body; 
-        const html = document.documentElement; 
-        return Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ); 
-    }; 
+const InfinityScroll = ({ children, callNext, paging, type }) => {
+  const spinnerRef = useRef(null)
+  const handleObserver = new IntersectionObserver(([{ isIntersecting }]) => {
+    if (isIntersecting) {
+      callNext()
+    }
+  })
 
-    const onscroll = function () { 
-        if (getScrollTop() === getDocumentHeight() - window.innerHeight) {
-            const articleCards = document.querySelectorAll('.article-card'); 
-            const lastArticleId = Array.from(articleCards).map(function (card) { 
-            return parseInt(card.id, 10); }).reduce(function (previous, current) { 
-                return previous > current ? current : previous; 
-            }); // 현재 DOM에 그려진 게시물 중 가장 작은 id 값을 추려낸다. 
-            //dispatch(); // Axios 로직 실행 
-        } 
-    };
+  useEffect(() => {
+    if (paging.next === false) return
+    if (!spinnerRef.current) return
 
-    return(
-        <></>
-    );
-};
+    handleObserver.observe(spinnerRef.current)
 
-export default InfiniteScroll;
+    return () => {
+      spinnerRef.current && handleObserver.unobserve(spinnerRef.current)
+    }
+  }, [paging])
+
+  return (
+    <>
+      {children}
+      {paging.next && (
+        <Spinner ref={spinnerRef}>
+          <CircularProgress sx={{ color: `${type === 'white' ? '#FFFFFF' : '#444444'}` }} />
+        </Spinner>
+      )}
+    </>
+  )
+}
+
+InfinityScroll.defaultProps = {
+  children: null,
+  callNext: () => {},
+}
+
+const Spinner = styled.div`
+  width: 100%;
+  text-align: center;
+`
+
+export default InfinityScroll
