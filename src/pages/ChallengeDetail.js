@@ -277,32 +277,12 @@ const ChallengeDetail = (props) => {
                        </>
                     )}
                     
-                </Fixed>
-                {/* 삭제하기 버튼 클릭 시 뜨는 모달팝업 */}
-                <Modal open={modalType === "deleteModal"? modalOpen : ""} close={closeModal} double_btn btn_text="삭제" _onClick={()=>{
-                    if(after || today === dateA){
-                        setModalType("deleteModal2");
-                    }else {
-                        deleteChallenge()
-                    }
-                }}>
-                    <p>정말로 삭제하시겠습니까?</p>
-                </Modal>
-                {/* 삭제하기 눌렀을 때 진행중인 챌린지에 뜨는 모달팝업 */}
-                <Modal open={modalType === "deleteModal2"? modalOpen : ""} close={closeModal} btn_text="확인" _onClick={()=>{
-                    closeModal()
-                }}>
-                    <p>진행중인 챌린지는<br/>삭제하실 수 없습니다.</p>
-                </Modal>     
+                </Fixed>   
                 {/* 입장하기 버튼 클릭 시 뜨는 모달팝업 - 공개방 */}
                 <Modal open={modalType === "joinModal"? modalOpen : ""} close={closeModal} double_btn btn_text="입장" _onClick={()=>{
                     joinChallenge()
                 }}>
-                    <div>
-                        <h6>입장하시겠습니까?</h6>
-                        <p>다른 입주민분들을 위해 <br/>
-                        신중하게 선택해 주시기 바랍니다.<br/></p>
-                    </div>                
+                    <p>입장하시겠습니까?<br/>챌린지 시작 이후에 패널티가 있을 수 있습니다.</p>
                 </Modal>   
                 {/* 입장하기 버튼 클릭 시 뜨는 모달팝업 - 비밀방 */}
                 <Modal open={modalType === "privateModal"? modalOpen : ""} close={closeModal} header isPrivate>

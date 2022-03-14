@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import MyChallenge from "../components/MyChallenge";
 import MyLevel from "../components/MyLevel";
-import { Grid } from "../elements";
+import { Grid, Button } from "../elements";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import {ActionCreators as userActions} from "../redux/modules/user";
 
@@ -24,7 +24,7 @@ const MyPage = (props) => {
         <MyChallenge />
       </Container>
       <Grid margin="0 20px 24px" padding="36px 0 0" width="calc(100% - 40px)" style={{borderTop:"1px solid #e4e5e6"}}>
-        <Logout onClick={logout}>로그아웃</Logout>
+        <Button line_btn onClick={logout}>로그아웃</Button>
       </Grid>
     </Grid>
   );

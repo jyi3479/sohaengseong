@@ -118,6 +118,7 @@ export const GlobalStyle = createGlobalStyle`
 
     .mb4 { margin-bottom: 4px };
     .mt4 { margin-top: 4px };
+    .mt12 {margin-top: 12px }
 
     //swiper -------------------------------------------
     .swiper-pagination {
