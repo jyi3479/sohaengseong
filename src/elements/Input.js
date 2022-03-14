@@ -164,6 +164,9 @@ const InputField = styled.input`
     color: #7c8288;
     line-height: 1.29;
   }
+  &:disabled {
+    color: #a2aab3;
+  }
 `;
 
 const Label = styled.div`

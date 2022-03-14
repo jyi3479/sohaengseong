@@ -65,6 +65,10 @@ export const GlobalStyle = createGlobalStyle`
         letter-spacing: -0.36px;
     }
 
+    .bold {
+        font-weight: bold;
+    }
+
     .poppins{ //숫자 강조
         font-family: 'Poppins', sans-serif;
         font-size: 16px;

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
 
 import {Grid,Button} from "../elements/index";
 import MainHeader from "../components/MainHeader";
@@ -13,9 +14,14 @@ import plus from "../image/icon/ic_plus_l@2x.png";
 import bgImg from "../image/img_bg@2x.png"; 
 import arrow from "../image/icon/ic_arrow_s@2x.png";
 
+//카테고리이미지
+import category_01 from "../image/icon/category/ic_category_daily_l@2x.png";
+import category_02 from "../image/icon/category/ic_category_health_l@2x.png";
+import category_03 from "../image/icon/category/ic_category_study_l@2x.png";
 
 const Main = (props) => {
     const userInfo = useSelector(state => state.user.user);
+    const yesterday =  moment().subtract(1, 'days').format('YYYY.MM.DD');
 
     return(
         <>
@@ -56,27 +62,29 @@ const Main = (props) => {
                         <Grid padding="0">
                             <CategoryWrap>
                                 <li>
-                                    <a href={`/category/0`}>
-                                        <div></div>
-                                        <p className="small">일상 루틴</p>
+                                    <a href="/category/0">
+                                        <img src={category_01}/>
+                                        <p className="small mt4">일상 루틴</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href={`/category/1`}>
-                                        <div></div>
-                                        <p className="small">운동</p>
+                                    <a href="/category/1">
+                                        <img src={category_02}/>
+                                        <p className="small mt4">운동</p>
                                     </a>
                                 </li>
                                 <li>    
-                                    <a href={`/category/2`}>
-                                        <div></div>
-                                        <p className="small">스터디</p>
+                                    <a href="/category/2">
+                                        <img src={category_03}/>
+                                        <p className="small mt4">스터디</p>
                                     </a>
                                 </li>
                                 <li>
                                     <a href={`/category`}>
-                                        <div><img src={plus} style={{width:"32px",paddingTop:"20px"}}/></div>
-                                        <p>전체보기</p>
+                                        <div>
+                                            <div><img src={plus}/></div>
+                                        </div>
+                                        <p className="small mt4">전체보기</p>
                                     </a>
                                 </li>
                             </CategoryWrap>
@@ -88,7 +96,7 @@ const Main = (props) => {
                             </TitleBox>             
                             {/* 랭킹 */}
                             <RankingList/>
-                            <p className="small caption_color">집계기준 : 총 누적 경험치</p>
+                            <p className="small caption_color">집계기준 : {yesterday} 24:00 누적 경험치</p>
                         </Ranking>
                         <div>
                             <TitleBox>
@@ -159,17 +167,31 @@ const CategoryWrap = styled.ul`
     justify-content: space-around;
     li {        
         text-align: center;
-        div{
+        img{
             width: 72px;
             height: 72px;
-            border-radius: 50%;
-            background-color: #0e2031;
         }
-        p {
-            font-size: 12px;
-            margin-top: 4px;
+        &:last-child {
+            a>div{
+                width: 72px;
+                height: 72px;
+                >div{
+                    width: 60px;
+                    height: 60px;
+                    background-color: #899fe8;
+                    border-radius: 50%;
+                    padding-top: 13px;
+                    margin:5px auto 7px;
+                    img { 
+                        width: 32px;
+                        height: 32px;
+                    }
+                }         
+            }   
+            
         }
     }
+
 `;
 
 const Ranking = styled.div`

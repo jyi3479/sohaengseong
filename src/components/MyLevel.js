@@ -77,17 +77,6 @@ const MyContainer = styled.div`
   padding: 14px;
 `;
 
-const ProfileBtn = styled.button`
-  width: 43px;
-  height: 29px;
-  margin: 0px 0px 16px;
-  border-radius: 6px;
-  border: solid 1px #ccc;
-  background-color: #fff;
-  color: #cccccc;
-  font-size: 12px;
-  font-family: inherit;
-`;
 
 const MyPlanet = styled.div`
   padding: 110px 0px 50px 0px;
@@ -184,7 +173,7 @@ const ProgressBar = styled.div`
 
 const HighLight = styled.div`
   max-width: 100%;
-  background: #95c8d7;
+  background: #17abd6;
   transition: 1s;
   width: ${(props) => props.width};
   height: 100%;

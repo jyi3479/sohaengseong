@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import profileBorder from "../image/profile_border.png";
+import  defaultProfile from "../image/img_profile_defalt @2x.png";
 
 const Image = (props) => {
   const { shape, src, size, profile, radius, align, inline_block, padding , ranking} = props;
@@ -38,8 +39,8 @@ const Image = (props) => {
 Image.defaultProps = {
   shape: "circle",
   src: "",
-  size: 37,
-  profile: "",
+  size: 40,
+  profile: defaultProfile,
   radius: "0",
   inline_block: false,
   is_preview: false,
@@ -63,18 +64,31 @@ const AspectInner = styled.div`
   background-position: center;
   border-radius: ${(props) => props.radius};
   background-color: #f2f2f2;
+  overflow: ${(props) => props.className === "edit"? "hidden" : "initial"};
+  
 `;
 
 const ImageCircle = styled.div`
-  display: ${(props) => (props.inline_block ? "inline-block" : "block")};
-  --size: ${(props) => props.size}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+   --size: ${(props) => props.size}px;
   width: var(--size);
   height: var(--size);
-  border-radius: var(--size);
-  background-image: url("${(props) => props.profile}");
-  background-size: cover;
+  border-radius: 9px;
+  background-image: url(${profileBorder});
   background-position: center;
-  vertical-align: ${(props) => props.align};
+  background-size: contain;
+  > div{
+    display: block;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    background-image: url("${(props) => props.profile}");
+    background-size: cover;
+    background-position: center;
+    border-radius: 9px;
+  }
 `;
 
 const CircleWrap = styled.div`
