@@ -1,4 +1,6 @@
 import { createGlobalStyle } from "styled-components";
+import checked from "../image/icon/btn_checkbox_checked@2x.png";
+import unchecked from "../image/icon/btn_checkbox_unchecked@2x.png";
 
 export const GlobalStyle = createGlobalStyle`
     
@@ -10,6 +12,40 @@ export const GlobalStyle = createGlobalStyle`
         color: #030102; /* Typo Color */
         background-repeat: no-repeat;
         outline: none;
+    }
+
+    //checkBox ---------------------------------------------------
+    .style_checkbox {   
+        display: inline-block;    
+        width: 20px;
+        height: 20px;
+        vertical-align: sub;
+        input[type="checkbox"] {
+            display: none;
+        }
+        input[type="checkbox"]+label {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            border-radius: 2px;
+            background-image: url(${unchecked});
+            background-size: cover;
+            overflow: hidden;
+        }
+        input[type="checkbox"]:checked + label::after{
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;            
+            background-image: url(${checked});
+            background-size: cover;
+        }        
+    }
+    .style_checkbox + label {
+        margin-left:8px;
     }
 
     //align -----------------------------------------------------
@@ -80,8 +116,16 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
 
+    .font14 {
+        font-size: 14px;
+    }
+
 
     //color -----------------------------------------
+
+    .black_color {
+        color: #030102;
+    }
 
     .point_color {
         color: #4149d3;

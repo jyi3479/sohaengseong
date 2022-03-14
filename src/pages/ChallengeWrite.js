@@ -10,10 +10,13 @@ import { ko } from "date-fns/esm/locale";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as searchAction } from "../redux/modules/search";
-import { Grid, Input, Button } from "../elements";
+import { Grid, Input, Button, Image} from "../elements";
 import Modal from "../components/Modal";
-import plus from "../image/icons/btn_number_plus_l@2x.png";
+import plus from "../image/icon/ic_plus_g@2x.png";
+import drop from "../image/icons/ic_dropdown@2x.png";
 import defaultImg from "../image/ic_empty_s@2x.png";
+import deleteIcon from "../image/icon/btn_delete_g@2x.png";
+import deleteIconW from "../image/icon/btn_delete_s@2x.png";
 
 const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
@@ -83,9 +86,10 @@ const ChallengeWrite = (props) => {
     };
   }, []);
 
+  const [active,setActive] = React.useState(false); 
   const [title, setTitle] = React.useState(isEdit ? target.title : "");
-  const [content, setContent] = React.useState(isEdit ? target.content : "");
-  const [category, setCategory] = React.useState(isEdit ? target.category : "");
+  const [content, setContent] = React.useState(isEdit ? target.content : "");  
+  const [category, setCategory] = React.useState(isEdit ? target.category : "");  
   const [maxMember, setMaxMember] = React.useState(
     isEdit ? target.maxMember : ""
   );
@@ -112,6 +116,18 @@ const ChallengeWrite = (props) => {
   );
   const [password, setPassword] = React.useState(isEdit ? target.password : "");
 
+  console.log(category);
+
+  // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
+  const selectClick = () => {
+      setActive(!active);
+  };
+  const optionClick = (e) => {
+    setCategory(e.target.innerText);
+    setActive(!active);
+  };
+  
+
   // 비밀방 여부 체크 함수
   const changeHandler = (checked, id) => {
     if (checked) {
@@ -123,21 +139,20 @@ const ChallengeWrite = (props) => {
 
   // 날짜 선택 input 커스텀
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <InputBox ref={ref}>
+    <InputBox ref={ref} style={{marginTop:"0"}}>
       {isEdit ? (
         <Input
-          label="기간을 선택해주세요. (변경 불가)"
+          label="기간을 선택해주세요."          
           value={`${target.startDate} - ${target.endDate}`}
-          height="46px"
           onClick={onClick}
           disabled
         />
       ) : (
         <Input
-          label="기간을 선택해주세요. *"
-          placeholder="최소 2주"
+          label="기간을 선택해주세요."
+          subLabel="클릭 시 기간을 다시 설정할 수 있습니다."
+          placeholder="2022.03.06  - 2022.03.19"
           value={value}
-          height="46px"
           onClick={onClick}
         />
       )}
@@ -173,7 +188,6 @@ const ChallengeWrite = (props) => {
         //console.log("Enter Key 입력됨!", e.target.value);
         $HashWrapInner.innerHTML = e.target.value;
         $HashWrapOuter?.appendChild($HashWrapInner);
-        $HashDelete.innerHTML = "x";
         $HashWrapInner?.appendChild($HashDelete);
         setHashArr((hashArr) => [...hashArr, hashtag]);
         setHashtag("");
@@ -200,7 +214,6 @@ const ChallengeWrite = (props) => {
       console.log("추천 키워드 입력!", keyword);
       $HashWrapInner.innerHTML = keyword;
       $HashWrapOuter?.appendChild($HashWrapInner);
-      $HashDelete.innerHTML = "x";
       $HashWrapInner?.appendChild($HashDelete);
       setHashArr((hashArr) => [...hashArr, keyword]);
       setHashtag("");
@@ -378,61 +391,128 @@ const ChallengeWrite = (props) => {
   return (
     <Grid margin="48px 0px 64px" padding="0" bg="#f4f6fa">
       <InputContainer>
-        <label
-          htmlFor="select"
-          style={{ fontSize: "14px", color: "#000", margin: 0 }}
-        >
-          어떤 주제로 진행하나요? *
-        </label>
-        <div>
-          <Select
-            name="evaluation"
-            onChange={(e) => {
-              setCategory(e.target.value);
-            }}
-            value={category}
+        <label>어떤 주제로 진행하나요?</label>
+          <Grid
+          padding="0"
+          margin="0 0 28px"
+          is_flex
+          style={{ overflow: "revert" }}
           >
-            <option value="">카테고리 선택</option>
-            <option value="일상 루틴">일상 루틴</option>
-            <option value="운동">운동</option>
-            <option value="스터디">스터디</option>
-            <option value="식습관">식습관</option>
-            <option value="힐링">힐링</option>
-            <option value="취미">취미</option>
-            <option value="셀프케어">셀프케어</option>
-            <option value="펫">펫</option>
-            <option value="친환경">친환경</option>
-          </Select>
+
+            <Select className={category?active? "active ok" : "ok" : ""}>
+                <img src={drop}></img>
+                <button
+                className="label"
+                onClick={() => {
+                    selectClick();
+                }}
+                >
+                {category ? category : "카테고리를 선택하세요."}
+                </button>
+                <ul className="optionList" id={active ? "active" : ""}>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                          optionClick(e);
+                        }}
+                    >
+                        일상 루틴
+                    </li>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                        optionClick(e);
+                        }}
+                    >
+                        운동
+                    </li>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                        optionClick(e);
+                        }}
+                    >
+                        스터디
+                    </li>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                        optionClick(e);
+                        }}
+                    >
+                        식습관
+                    </li>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                        optionClick(e);
+                        }}
+                    >
+                        힐링
+                    </li>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                        optionClick(e);
+                        }}
+                    >
+                        취미
+                    </li>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                        optionClick(e);
+                        }}
+                    >
+                        셀프케어
+                    </li>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                        optionClick(e);
+                        }}
+                    >
+                        펫
+                    </li>
+                    <li
+                        className="optionItem"
+                        onClick={(e) => {
+                        optionClick(e);
+                        }}
+                    >
+                        친환경
+                    </li>
+                </ul>
+            </Select>
+          </Grid>
 
           <Input
-            label="함께 실천할 습관을 적어주세요. *"
+            label="함께 실천할 습관을 적어주세요."
             subLabel="상대방에게 불쾌감을 줄 수 있는 단어는 사용하지 않습니다."
-            placeholder="예) 하루에 한번 물마시기"
+            placeholder="예) 일어나자마자 물 한잔 마시기"
             maxLength="20"
             value={title}
             _onChange={(e) => setTitle(e.target.value)}
-            height="46px"
           />
 
-          <CountBox>({title.length}/20)</CountBox>
-        </div>
+          <CountBox className="t_right poppins mt4 sub_color">(<span className="black_color">{title.length}</span>/20)</CountBox>
+        
         <InputBox>
           <Input
-            label="챌린지에 관한 내용을 입력해주세요. *"
+            label="챌린지에 관한 내용을 입력해주세요."
             placeholder="설명, 인증 방법, 규칙 등을 자유롭게 적습니다."
             textarea
             maxLength="1000"
             value={content}
             _onChange={(e) => setContent(e.target.value)}
-            padding="14px 35px 13px 10px"
+            padding="5px 0 8px"
           />
-          <CountBox>({content.length}/1000)</CountBox>
+          <CountBox className="t_right poppins mt4 sub_color">(<span className="black_color">{content.length}</span>/1000)</CountBox>
         </InputBox>
         {/* 태그 부분 */}
         <InputBox>
-          <p style={{ fontSize: "14px", margin: "0px 0px 10px" }}>
-            태그를 작성해주세요.{" "}
-            <span style={{ color: "#797979" }}>(최대 10개)</span>
+          <p style={{ fontSize: "16px", margin: "0px 0px 12px" }}>
+            키워드를 작성해주세요. <span className="sub_color font14">(선택)</span>
           </p>
           {/* 태그 입력 부분 */}
 
@@ -444,7 +524,7 @@ const ChallengeWrite = (props) => {
               placeholder={
                 hashArr.length > 0
                   ? ""
-                  : "챌린지를 설명할 수 있는 단어를 적습니다."
+                  : "습관을 설명할 수 있는 단어를 적습니다."
               }
               value={hashtag}
               onChange={(e) => setHashtag(e.target.value)}
@@ -454,7 +534,7 @@ const ChallengeWrite = (props) => {
           </HashWrap>
 
           {/* 추천키워드 부분 */}
-          <Grid margin="14px 0px" padding="0px">
+          <Grid margin="12px 0 0" padding="0px">
             <span className="sub_color small" style={{
                 marginRight: "13px",
               }}>추천 키워드</span>
@@ -486,10 +566,6 @@ const ChallengeWrite = (props) => {
           endDate={endDate}
           selectsRange
           minDate={new Date()} // 과거 날짜 disable
-          // inline
-          // excludeDateIntervals={[
-          //   { start: subDays(startDate, 0), end: addDays(startDate, 14) },
-          // ]}
           onChange={(dates) => {
             const [start, end] = dates;
             let range = (end - start) / (1000 * 60 * 60 * 24);
@@ -508,33 +584,30 @@ const ChallengeWrite = (props) => {
         <InputBox>
           {isEdit ? (
             <Input
-              label="인원수를 선택해주세요. (변경 불가)"
+              label="제한 인원을 작성해주세요"
               placeholder="최대 30명"
               value={maxMember}
               _onChange={(e) => setMaxMember(e.target.value)}
-              height="46px"
               disabled
             />
           ) : (
             <Input
-              label="인원수를 선택해주세요. *"
+              label="제한 인원을 작성해주세요"
               placeholder="최대 30명"
               value={maxMember}
               _onChange={(e) => {
                 setMaxMember(e.target.value);
               }}
-              height="46px"
             />
           )}
         </InputBox>
 
         {/* 이미지 업로드 부분 */}
         <InputBox>
-          <p style={{ fontSize: "14px", margin: "0px" }}>
-            사진을 첨부해주세요.{" "}
-            <span style={{ color: "#797979" }}>(최대 3건)</span>
+          <p style={{ fontSize: "16px", margin: "0px 0px 2px" }}>
+            사진을 첨부해주세요. <span className="sub_color font14">(최대 3건)</span>
           </p>
-          <p style={{ fontSize: "12px", margin: "0px", color: "#808080" }}>
+          <p className="small sub_color">
             첫번째 이미지가 대표 이미지로 등록됩니다.
           </p>
           <div
@@ -546,61 +619,32 @@ const ChallengeWrite = (props) => {
           >
             {preview.map((el, idx) => {
               return (
-                <div
-                  key={idx}
-                  style={{
-                    padding: "0px",
-                    width: "auto",
-                    display: "inline-block",
-                    position: "relative",
-                  }}
+                <ImgBox
+                  key={idx}                  
                 >
-                  <img
-                    src={
-                      preview[idx]
-                        ? preview[idx]
-                        : "https://png.pngtree.com/element_our/20190601/ourlarge/pngtree-plus-icon-image_1338383.jpg"
-                    }
-                    style={{
-                      width: "74px",
-                      height: "74px",
-                      margin: "17px 8px 0px 0px",
-                    }}
-                  />
-                  <span
-                    onClick={() => deleteImage(idx)}
-                    style={{
-                      position: "absolute",
-                      top: "12px",
-                      right: "12px",
-                      cursor: "pointer",
-                    }} // absolute로 하기
-                  >
-                    x
-                  </span>
-                </div>
+                  <Image 
+                  shape="rectangle"
+                  src={
+                    preview[idx]
+                      ? preview[idx]
+                      : defaultImg
+                  }/>
+                  <button
+                    onClick={() => deleteImage(idx)}                    
+                  ></button>
+                </ImgBox>
               );
             })}
             {preview.length < 3 && (
               <ImageLabel
                 className="input-file-button"
-                htmlFor="input-file"
-                style={{
-                  width: "74px",
-                  height: "74px",
-                  margin: "17px 8px 0px 0px",
-                  display: "inline-block",
-                  position: "relative",
-                  border: "solid 1px #808080",
-                  verticalAlign: "top", // 최상단에 정렬 맞추기
-                  textAlign: "center", //이미지 가운데
-                }}
+                htmlFor="input-file"               
               >
                 <img
                   src={plus}
                   style={{
-                    width: "18px",
-                    margin: "27px 0px 0px",
+                    width: "32px",
+                    margin: "20px 0px 0px",
                   }}
                 ></img>
               </ImageLabel>
@@ -622,7 +666,7 @@ const ChallengeWrite = (props) => {
         <InputBox>
           {isEdit ? (
             <Grid is_flex padding="0px">
-              <p>방 공개 여부</p>
+              <p style={{fontSize:"16px"}}>방 공개 여부</p>
               <Grid is_flex width="auto">
                 <Grid width="auto">
                   <input
@@ -646,31 +690,39 @@ const ChallengeWrite = (props) => {
             </Grid>
           ) : (
             <Grid is_flex padding="0px">
-              <p>방 공개 여부</p>
-              <Grid is_flex width="auto">
-                <Grid width="auto">
-                  <input
-                    type="checkbox"
-                    id="public"
-                    onChange={(e) => {
-                      changeHandler(e.currentTarget.checked, "public");
-                      console.log(e.currentTarget.checked);
-                    }}
-                    checked={checkedInputs === "public" ? true : false}
-                  />
+              <p style={{fontSize:"16px"}}>방 공개 여부</p>
+              <Grid is_flex width="auto" style={{justifyContent: "flex-start"}}>
+                <Grid width="auto" padding="0" margin="0 0 0 20px">
+                  <label htmlFor="public" className="style_checkbox">
+                    <input                      
+                      type="checkbox"
+                      id="public"
+                      onChange={(e) => {
+                        changeHandler(e.currentTarget.checked, "public");
+                        console.log(e.currentTarget.checked);
+                      }}
+                      checked={checkedInputs === "public" ? true : false}
+                    />
+                    <label htmlFor="public"></label>
+                  </label>
+                  
                   <label htmlFor="public">공개</label>
                 </Grid>
-                <Grid width="auto">
-                  <input
-                    type="checkbox"
-                    id="private"
-                    onChange={(e) => {
-                      changeHandler(e.currentTarget.checked, "private");
-                      console.log(e.currentTarget.checked);
-                    }}
-                    checked={checkedInputs === "private" ? true : false}
-                  />
+                <Grid width="auto" padding="0" margin="0 0 0 20px">
+                  <label className="style_checkbox">
+                    <input
+                      type="checkbox"
+                      id="private"
+                      onChange={(e) => {
+                        changeHandler(e.currentTarget.checked, "private");
+                        console.log(e.currentTarget.checked);
+                      }}
+                      checked={checkedInputs === "private" ? true : false}
+                    />      
+                    <label htmlFor="private"></label>              
+                  </label>
                   <label htmlFor="private">비밀</label>
+                  
                 </Grid>
               </Grid>
             </Grid>
@@ -681,35 +733,35 @@ const ChallengeWrite = (props) => {
                 <div className="private_input">
                   <Input
                     // type="password"
-                    label="비밀번호 설정 (변경 불가)"
+                    label="비밀번호를 설정해주세요."
                     placeholder="비밀번호를 입력해주세요."
                     value={password}
                     _onChange={(e) => setPassword(e.target.value)}
-                    height="46px"
-                    margin="20px 0px 0"
                     disabled
                   />
                 </div>
               ) : (
                 <div className="private_input">
                   <Input
-                    // type="password"
-                    label="비밀번호 설정"
+                    label="비밀번호를 설정해주세요."
                     placeholder="비밀번호를 입력해주세요.(숫자 4자리)"
                     value={password}
                     _onChange={(e) => setPassword(e.target.value)}
-                    height="46px"
-                    margin="20px 0px 0"
                     maxLength="4"
                   />
                 </div>
               ))}
           </InputBox>
         </InputBox>
-      </InputContainer>
-      <Grid padding="24px 20px 32px">
-        유의사항 적을 곳
-      </Grid>
+      </InputContainer>      
+      <Notice>
+          <p className="bold sub_color">유의사항</p>
+          <ul>
+              <li className="sub_color">카테고리,제한 인원, 기간은 개설 이후 소행성측에서도 변경할 수 없으니, 개설 전 확인 부탁드립니다.</li>
+              <li className="sub_color mt4">인증 규정에 관한 참여자의 문의는 채팅방을 통해 직접 답변해 주시길 바랍니다.</li>
+              <li className="sub_color mt4">개설자도 함께 습관 형성에 참여해야하며, 시작 이후 개설자는 중도 포기가 불가능합니다.</li>
+          </ul>
+      </Notice>      
       <ButtonContainer>
         {isEdit ? (
           <Button _onClick={openModal}>수정하기</Button>
@@ -738,9 +790,16 @@ const ChallengeWrite = (props) => {
 
 const InputContainer = styled.div`
   background-color: #ffffff;
-  padding: 24px 20px 28px;
+  padding: 24px 20px;
   &:first-child {
     margin-bottom: 12px;
+  }
+  .label {
+    font-size: 16px !important;    
+  }
+  .label+.sub_label {
+    margin-top:2px;
+    color: #7c8288;
   }
 `;
 
@@ -754,26 +813,79 @@ const ButtonContainer = styled.div`
   box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
-const Select = styled.select`
-  width: 335px;
-  height: 46px;
-  margin: 10px 20px 28px 0px;
-  padding: 13px 10px;
-  border: solid 1px #999;
-  font-family: inherit;
-  color: #808080;
-  &:focus {
-    outline: none;
-    border: 1px solid #000;
-    color: #000;
-  }
 
-  /* 방향 화살표 없애기 + 화살표 모양 바꾸기 */
-  /* -webkit-appearance: none; 
-  -moz-appearance: none;
-  appearance: none;
-  background: url("../image/icons/ic_dropdown@2x.png") no-repeat right 9px
-    center; */
+const Select = styled.div`
+  position: relative;
+  width: 100%;
+  padding:8px 0;
+  border:none;
+  border-bottom: 1px solid rgba(124, 130, 136, 0.5);
+  outline: none;  
+  img {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    width: 16px;
+  }
+  &.active {
+    outline: none;
+    border-bottom: 1px solid #4149d3;    
+    .label{
+      color:rgba(124, 130, 136, 1);
+    }
+    img {
+      transform: rotate(180deg);
+    }
+  }
+  &.ok {
+    border-bottom: 1px solid #7c8288;
+    .label{
+      color: #030102;
+    }
+  }
+  .label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: inherit;
+    border: 0 none;
+    outline: 0 none;
+    background: transparent;
+    font-size: 14px !important;
+    color:rgba(124, 130, 136, 0.5);
+    cursor: pointer;
+  }
+  .optionList {
+    transform: scaleY(0);
+    transform-origin: 0px 0px;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background: #fff;
+    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: 0.2s ease-in;
+    opacity: 0;
+    padding: 6px 0;
+    z-index: 2;
+    > li {
+      font-size: 12px;
+      padding: 9px 10px;
+      color: #030102;
+      line-height: 14px;
+      cursor: pointer;
+      :hover {
+        background-color: rgba(162,170,179,0.2);
+      }
+    }
+    &#active {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
 `;
 
 const InputBox = styled.div`
@@ -783,68 +895,96 @@ const InputBox = styled.div`
     .private_input {
       margin-top:20px;
     }
-  }
+  }  
 `;
 
-const CountBox = styled.p`
-  width: 100%;
-  height: 19px;
-  margin-top: 4px;
-  font-size: 13px;
-  text-align: right;
-  color: #808080;
+const CountBox = styled.p` 
+  font-size: 12px;
+  font-weight: normal;
+`;
+
+const ImgBox = styled.div`
+  display: inline-block;
+  position: relative;
+  padding: 0px;
+  width: 72px;
+  height: 72px;
+  margin:12px 8px 0 0;
+  border-radius: 12px;
+  overflow: hidden;  
+  &::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: rgba(3, 1, 2, 0.5);
+    left: 0;
+    top:0;
+  }
+  button {   
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    cursor: pointer;
+    background-image: url(${deleteIconW});
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    z-index: 2;
+  }   
 `;
 
 const ImageLabel = styled.label`
-  /* border: 1px solid #c0c0c0;
-  border-radius: 5px;
-  font-weight: 900; */
   cursor: pointer;
+  width: 72px;
+  height: 72px;
+  margin: 12px 8px 0px 0px;
+  display: inline-block;
+  position: relative;
+  border: solid 1px #a2aab3;
+  vertical-align: top; // 최상단에 정렬 맞추기
+  text-align: center; //이미지 가운데
+  border-radius: 12px;
 `;
 
 /* emotion css 태그 */
 const HashWrap = styled.div`
-  height: 46px;
   color: rgb(52, 58, 64);
-  font-size: 1.125rem;
+  font-size: 12px;
   display: flex;
   flex-wrap: nowrap;
-  letter-spacing: -0.6px;
-
-  border: solid 1px #999;
-  /* padding: 2px 2px 8px 2px; */
-
+  border-bottom: solid 1px rgba(124, 130, 136, 0.5);
+  padding:8px 0;
+  overflow-y: scroll; //넘치면 좌우 스크롤
   // 생성된 태그 박스 span 태그 css
   .HashWrapOuter {
     display: inline-block;
     vertical-align: top;
     white-space: nowrap;
-    padding-left: 10px;
-    margin-top: 5px;
   }
   // 생성된 태그 내용물 span 태그 css
   .HashWrapInner {
-    height: 22px;
-    background: #ededed;
-    opacity: 0.9;
-    border-radius: 5px;
-    margin: 5px 5px 0px 0px;
-    padding: 2px 4px;
-    align-items: center;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
+    background: rgba(23,171,214,0.1);
+    color: #17abd6;
+    border-radius: 10px;
+    margin-right: 6px;
+    padding: 2px 6px;
     font-size: 12px;
+    line-height: 18px;
     text-align: center;
-    color: #7b7b7b;
   }
   //생성된 태그 삭제 표시 css
   .HashDelete {
-    margin: 0px 3px 2px 4px;
-    color: #000000 !important;
-    font-family: inherit;
-    font-weight: 700;
-    cursor: pointer;
+    display: inline-block;
+    background-image: url(${deleteIcon});
+    background-size: contain;
+    width: 16px;
+    height: 16px;
+    vertical-align: sub;
+    margin-left:4px;
+    margin-top:1px;
   }
 
   // 태그 작성 input
@@ -854,8 +994,6 @@ const HashWrap = styled.div`
     vertical-align: top;
     outline: none;
     cursor: text;
-    line-height: 2rem;
-    /* min-width: 8rem; */
     border: none;
     font-family: inherit;
   }
@@ -878,6 +1016,18 @@ const HashButton = styled.button`
   padding: 1px 6px;
   font-size: 12px;
   text-align: center;
+`;
+
+const Notice = styled.div`
+    padding: 24px 20px;
+    ul {
+        margin-top: 8px;
+        li {
+            font-size: 13px;
+            margin-left: 13px;
+            list-style: disc;
+        }
+    }
 `;
 
 export default ChallengeWrite;

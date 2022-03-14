@@ -11,7 +11,7 @@ import RankingList from "../components/Ranking/RankingList";
 import ChallengeList from "../components/ChallengeList";
 
 import plus from "../image/icon/ic_plus_l@2x.png";
-import bgImg from "../image/img_bg@2x.png"; 
+import bgImg from "../image/main_bg.png"; 
 import arrow from "../image/icon/ic_arrow_s@2x.png";
 
 //카테고리이미지

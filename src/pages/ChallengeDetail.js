@@ -212,6 +212,7 @@ const ChallengeDetail = (props) => {
                         <div className="admin_profile">
                             <Image shape="border" 
                                 size="40"
+                                level={admin.levelName}
                                 profile={admin.profileImage !== null ? admin.profileImage : defaultImg}
                             >
                             </Image>                            
@@ -370,8 +371,8 @@ const ContentBox = styled.div`
                 background-position: center;
                 background-size: cover;
                 position: absolute;
-                bottom:-3px;
-                right: -3px;
+                bottom:-5px;
+                right: -5px;
             }
         }
         h3 {
@@ -402,8 +403,8 @@ const Member = styled.div`
             background-position: center;
             background-size: cover;
             position: absolute;
-            bottom:-3px;
-            right: -3px;
+            bottom:-5px;
+            right: -5px;
         }
     }
 `;

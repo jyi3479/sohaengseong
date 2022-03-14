@@ -19,11 +19,11 @@ const Image = (props) => {
   if(shape === "border" ){
     //랭킹 프로필 이미지
     return <CircleWrap {...styles} style={{
-      backgroundImage:level === "levelName_1" ? "linear-gradient(#fff, #fff), linear-gradient(to right, #a0a515 0%,  #636610 100%)"
-      : level === "levelName_2" ? "linear-gradient(#fff, #fff), linear-gradient(to right, #e6cb35, #b09d35)"
-      : level === "levelName_3" ? "linear-gradient(#fff, #fff), linear-gradient(to right, #f7d382, #f5b92f)"
-      : level === "levelName_4" ? "linear-gradient(#fff, #fff), linear-gradient(to right, #fdc884, #f58524)"
-      : level === "levelName_5" ? "linear-gradient(#fff, #fff), linear-gradient(to right, #fd8a8a, #b12f21)" :null
+      backgroundImage:level === "levelName_1" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #a0a515 0%,  #636610 100%)"
+      : level === "levelName_2" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #e6cb35, #b09d35)"
+      : level === "levelName_3" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #f7d382, #f5b92f)"
+      : level === "levelName_4" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fdc884, #f58524)"
+      : level === "levelName_5" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fd8a8a, #b12f21)" :null
     }}><div></div></CircleWrap>
   }
 
@@ -82,19 +82,10 @@ const ImageCircle = styled.div`
    --size: ${(props) => props.size}px;
   width: var(--size);
   height: var(--size);
-  border-radius: 9px;
+  border-radius: 11px;
   background-image: url(${profileBorder});
   background-position: center;
   background-size: contain;
-  > div{
-    display: block;
-    width: calc(100% - 6px);
-    height: calc(100% - 6px);
-    background-image: url("${(props) => props.profile}");
-    background-size: cover;
-    background-position: center;
-    border-radius: 9px;
-  }
 `;
 
 const CircleWrap = styled.div`
