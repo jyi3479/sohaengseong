@@ -21,6 +21,10 @@
     border: 0;
   }
 
+  .fullmodal.modal main .send_btn {
+    border: 1px solid #a2aab3;
+  }
+
   .modal > section {
     width: calc(100% - 40px);
     max-width: 335px;
@@ -47,6 +51,11 @@
   .modal > section > header.showHeader {
     display: block;
   }
+
+  .fullmodal.modal > section > header {
+    display: block;
+  }
+
   .modal > section > header button {
     position: absolute;
     top: 15px;
@@ -78,14 +87,7 @@
     margin-top: 90px;
     height: 100%;
     border:none;
-  }
-
-  .fullmodal.modal > section > main p {
-    font-size: 14px;
-    color: #000;
-    line-height: 1.36;
-    letter-spacing: -0.36;
-    font-weight: normal;
+    padding: 0 20px;
   }
 
   .modal > section > main.is_private {

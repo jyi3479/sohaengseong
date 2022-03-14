@@ -9,7 +9,7 @@ const WarningText = (props) => {
     return (
       <React.Fragment>
         <Wraps>
-          <p>{text}</p>
+          <p className="small fail_color">{text}</p>
         </Wraps>
       </React.Fragment>
     );
@@ -25,10 +25,7 @@ WarningText.defaultProps = {
 };
 
 const Wraps = styled.div`
-    width: 90%;
-    font-size: 12px;
-    color: #ff3636;
-    margin-top: 12px;
+    margin-top: 4px;
 `
 
 export default WarningText

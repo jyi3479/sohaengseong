@@ -36,7 +36,7 @@ const Main = (props) => {
                                 <p className="sub_color">인증 가능한 행성</p>
                                 <p className="poppins"><b className="point_color" style={{opacity:"0.8"}}>{userInfo.count}</b>개</p>
                             </Grid>
-                        <Button
+                        <Button bg="#17abd6"
                         _onClick={()=>{
                             history.push("/mypage");
                         }}>인증하기</Button>
