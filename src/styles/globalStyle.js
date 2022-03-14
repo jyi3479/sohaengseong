@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
         letter-spacing: -0.42px;
         color: #030102; /* Typo Color */
         background-repeat: no-repeat;
+        outline: none;
     }
 
     //align -----------------------------------------------------
@@ -58,7 +59,7 @@ export const GlobalStyle = createGlobalStyle`
         line-height: 16px;
         letter-spacing: -0.36px;
     }
-    p.small { //기간 & 작은 폰트
+    .small { //기간 & 작은 폰트
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.36px;
@@ -82,6 +83,10 @@ export const GlobalStyle = createGlobalStyle`
         color: #4149d3;
     }
 
+    .sub_point_color {
+        color: #17abd6;
+    }
+
     .sub_color {
         color: #7C8288;
     }
@@ -97,6 +102,16 @@ export const GlobalStyle = createGlobalStyle`
     .line_color {
         border-color:#eff0f2
     }
+
+    .success_color {
+        color:#5a76ea;
+    }
+
+    .fail_color {
+        color:#f57391;
+    }
+
+
 
 
     //margin & padding ---------------------------------
@@ -123,4 +138,3 @@ export const GlobalStyle = createGlobalStyle`
 
 
 `;
-

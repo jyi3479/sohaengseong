@@ -94,7 +94,9 @@ const addChallengeDB = (challenge) => {
     challengeApis
       .addChallenge(challenge)
       .then((res) => {
-        // dispatch(chatAction.createRoomDB(res.))
+        dispatch(
+          chatAction.createRoomDB({ challengeId: res.data.challengeId })
+        );
         console.log("챌린지 등록", res);
         // history.replace("/today");
       })

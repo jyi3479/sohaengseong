@@ -19,8 +19,6 @@ const PostWrite = (props) => {
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
 
-
-
   //  인증 게시글 수정은 어디서 할건지에 따라 is_edit 변수 활용하기
   const [content, setContent] = React.useState(
     isEdit ? targetPost.content : ""
@@ -79,8 +77,8 @@ const PostWrite = (props) => {
       .addPost(challengeId, formData)
       .then((res) => {
         console.log("인증 게시글 작성", res);
-        setModalType("okModal");    
-        setModalOpen(true);        
+        setModalType("okModal");
+        setModalOpen(true);
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
@@ -156,16 +154,25 @@ const PostWrite = (props) => {
 
   return (
     <Grid padding="0px" height="700px" bg="#f5f5f5">
-      <Grid display="flex" bg="#ffffff" padding="16px 20px" style={{ alignItems: "flex-start" }}>
+      <Grid
+        display="flex"
+        bg="#ffffff"
+        padding="16px 20px"
+        style={{ alignItems: "flex-start" }}
+      >
         {/* 이미지 업로드 부분 */}
         <div>
           <ImageLabel
             className="input-file-button"
             htmlFor="input-file"
-            style={{backgroundImage: `url(${preview?preview:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"})`
-          }}
-          >
-          </ImageLabel>
+            style={{
+              backgroundImage: `url(${
+                preview
+                  ? preview
+                  : "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"
+              })`,
+            }}
+          ></ImageLabel>
           <input
             id="input-file"
             type="file"
@@ -217,7 +224,6 @@ const PostWrite = (props) => {
             editPost();
           } else {
             addPost();
-
           }
         }}
       >
@@ -230,11 +236,28 @@ const PostWrite = (props) => {
         isPrivate
       >
         <Grid>
-          <div style={{width:"110px",height:"110px",backgroundColor:"#eee", margin:"20px auto 13px"}} ></div>
-          <h1 style={{marginBottom:"9px"}}>인증 완료</h1>
-          <p style={{marginBottom:"35px"}}>인증을 완료했습니다.<br/>오늘도 즐거운 하루되세요!</p>
-          <Button _onClick={()=>{history.replace(`/post/${challengeId}`);}}>확인</Button>
-        </Grid>        
+          <div
+            style={{
+              width: "110px",
+              height: "110px",
+              backgroundColor: "#eee",
+              margin: "20px auto 13px",
+            }}
+          ></div>
+          <h1 style={{ marginBottom: "9px" }}>인증 완료</h1>
+          <p style={{ marginBottom: "35px" }}>
+            인증을 완료했습니다.
+            <br />
+            오늘도 즐거운 하루되세요!
+          </p>
+          <Button
+            _onClick={() => {
+              history.replace(`/post/${challengeId}`);
+            }}
+          >
+            확인
+          </Button>
+        </Grid>
       </Modal>
     </Grid>
   );

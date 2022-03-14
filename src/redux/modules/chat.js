@@ -79,8 +79,9 @@ const createRoomDB = (data) => {
     chatAPI
       .createRoom(data)
       .then((res) => {
-        window.alert("채팅방이 생성되었습니다.");
-        dispatch(getChatListDB());
+        // window.alert("채팅방이 생성되었습니다.");
+        console.log("채팅방 생성", res);
+        // dispatch(getChatListDB());
       })
       .catch((err) => {
         console.log("채팅방 생성 실패", err);
