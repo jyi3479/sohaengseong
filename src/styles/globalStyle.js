@@ -139,4 +139,3 @@ export const GlobalStyle = createGlobalStyle`
 
 
 `;
-
