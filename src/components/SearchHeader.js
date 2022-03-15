@@ -14,7 +14,7 @@ const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,ref}) => {
             }}><img src={arrow}/></button>
             <div>
                 <input type="text" onChange={_onChange} ref={ref} value={value} placeholder="습관 검색"></input>
-                <button type="button" className="delete" onClick={_deleteBtn}><img src={deleteIcon}></img></button>
+                <button type="button" className="delete" onClick={_deleteBtn} style={{display:value?"block":"none"}}><img src={deleteIcon}></img></button>
                 <button type="button" className="search_btn" onClick={_onClick} ><img src={searchIcon}></img></button>
             </div>
         </Wrap>
@@ -80,6 +80,7 @@ const Wrap = styled.div`
             position: absolute;
             right: 0;
             top: 2px;
+            transition: all 0.2s;
             img {
                 width: 100%;
             }

@@ -25,7 +25,7 @@ const ChatList = (props) => {
   return (
     <>
       {chatInfo && (
-        <Grid padding="28px 20px" margin="48px 0 0">
+        <Grid padding="24px 20px" margin="48px 0 0" bg="#fff">
           {/* 채팅방 -------- */}
           {chatInfo?.map((el, i) => {
             return <ChatRoomItem key={i} {...el} />;
@@ -35,5 +35,9 @@ const ChatList = (props) => {
     </>
   );
 };
+
+
+
+
 
 export default ChatList;

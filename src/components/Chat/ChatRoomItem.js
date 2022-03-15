@@ -16,62 +16,88 @@ const ChatRoomItem = (props) => {
     time = chatInfo.createdAt?.split("T")[0]; //일단 생성 날짜로 해놓기
   }
   return (
-    <Grid
-      padding="0"
-      margin="0 0 28px"
-      is_flex
-      style={{ alignItems: "flex-start", cursor: "pointer" }}
-      _onClick={() => {
+    <Box      
+      onClick={() => {
         history.push(`/chatting/${chatInfo.roomId}`);
       }}
     >
       <div style={{ width: "calc(100% - 78px)", display: "flex" }}>
         <ProfileBox>
           {/* 멤버정보 순서대로 노출 시켜줄 것 임의로 만들어둠 */}
-          <div
-            style={{
-              backgroundImage: `url(${
-                chatInfo.chatRoomImg[0] ? chatInfo.chatRoomImg[0] : defaultImg
-              })`,
-            }}
-          ></div>
-          <div
-            style={{
-              backgroundImage: `url(${
-                chatInfo.chatRoomImg[1] ? chatInfo.chatRoomImg[1] : defaultImg
-              })`,
-            }}
-          ></div>
+          {chatInfo.currentMember === 1? (
+             <div
+              className="one_member"
+              style={{
+                backgroundImage: `url(${
+                  chatInfo.chatRoomImg[0] ? chatInfo.chatRoomImg[0] : defaultImg
+                })`,
+              }}
+            ></div>
+          ) : (
+            <>
+             <div
+                style={{
+                  backgroundImage: `url(${
+                    chatInfo.chatRoomImg[0] ? chatInfo.chatRoomImg[0] : defaultImg
+                  })`,
+                }}
+              ></div>
+              <div
+                style={{
+                  backgroundImage: `url(${
+                    chatInfo.chatRoomImg[1] ? chatInfo.chatRoomImg[1] : defaultImg
+                  })`,
+                }}
+              ></div>
+            </>
+          )}
+         
         </ProfileBox>
         <Info>
           <div>
-            <h3>{chatInfo.chatRoomName}</h3>
-            <span>{chatInfo.currentMember}</span>
+            <p>{chatInfo.chatRoomName}</p>
+            <span className="poppins sub_color">{chatInfo.currentMember}</span>
           </div>
-          <p>{chatInfo.recentMessage}</p>
+          <p className="sub_color">{chatInfo.recentMessage}</p>
         </Info>
       </div>
-      <span style={{ fontSize: "11px", color: "#a8a8a8" }}>{time}</span>
-    </Grid>
+      <span className="caption_color" style={{ fontSize: "12px"}}>{time}</span>
+    </Box>
   );
 };
+
+const Box = styled.div`
+  display: flex; 
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0 0 20px;
+  cursor: pointer;
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
 
 const ProfileBox = styled.div`
   position: relative;
   width: 48px;
   height: 48px;
-  margin-right: 8px;
+  margin-right: 12px;
   div {
     position: absolute;
     left: 0;
     top: 0;
     width: 32px;
     height: 32px;
-    border-radius: 50%;
+    border-radius: 11px;
     background-color: #999;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    &.one_member {
+      width: 48px;
+      height: 48px;
+    }
     &:last-child {
       right: 0;
       bottom: 0;
@@ -86,25 +112,26 @@ const Info = styled.div`
   width: calc(100% - 56px);
   div {
     width: 100%;
-    margin-bottom: 4px;
-    h3 {
+    margin-bottom: 2px;
+    line-height: 1;
+    p {
       display: inline-block;
-      width: calc(100% - 20px);
-      font-size: 14px;
-      margin-right: 2px;
+      width: auto;
+      max-width: calc(100% - 20px);
+      font-size: 15px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis; //길어지면 말줄임
     }
     span {
-      color: #aaa;
+      display: inline-block;
       font-size: 12px;
       vertical-align: top;
+      margin-left: 6px;
     }
   }
   p {
     width: 100%;
-    font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; //길어지면 말줄임

@@ -16,7 +16,7 @@ const MainHeader = (props) => {
                 <>
                     <h1><a href="/"></a></h1>
                     <button onClick={()=>{
-                        history.push("/search");
+                        history.push("/category/all");
                     }}><img src={searchIconW}></img></button>
                 </>
             )}  

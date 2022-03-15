@@ -71,7 +71,7 @@ function App() {
                 component={CategoryTab}
               />
               {/* 카테고리리스트 */}
-              <Route path="/search" exact component={Search} />
+              <Route path="/search" exact component={CategoryTab} />
               {/* 검색페이지 */}
               <>
                 <Wrap>
@@ -215,7 +215,7 @@ const BackgroundOpacity = styled.div`
 `;
 
 const Wrap = styled.div`
-  margin-bottom: 64px;
+  margin-bottom: 56px;
 `;
 
 export default App;

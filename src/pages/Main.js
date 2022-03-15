@@ -62,19 +62,19 @@ const Main = (props) => {
                         <Grid padding="0">
                             <CategoryWrap>
                                 <li>
-                                    <a href="/category/0">
+                                    <a href="/category/1">
                                         <img src={category_01}/>
                                         <p className="small mt4">일상 루틴</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/category/1">
+                                    <a href="/category/2">
                                         <img src={category_02}/>
                                         <p className="small mt4">운동</p>
                                     </a>
                                 </li>
                                 <li>    
-                                    <a href="/category/2">
+                                    <a href="/category/3">
                                         <img src={category_03}/>
                                         <p className="small mt4">스터디</p>
                                     </a>
