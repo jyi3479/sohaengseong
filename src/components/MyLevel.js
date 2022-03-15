@@ -20,7 +20,7 @@ import level_img5 from "../image/icon/level/img_level5@2x.png";
 const MyLevel = (props) => {
   const dispatch = useDispatch();
   const my_level = useSelector((state) => state.mypage.myInfo);
-  const levelNum = my_level&&my_level.levelName.split("_")[1];
+  const levelNum = my_level&&my_level.levelName.split("_")[0];
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -54,11 +54,11 @@ const MyLevel = (props) => {
       </MyContainer>
       <MyPlanet>
         <img
-          src={levelNum === "1" ? level_img1 :
-          levelNum === "2" ? level_img2 :
-          levelNum === "3" ? level_img3 :
-          levelNum === "4" ? level_img4 :
-          levelNum === "5" ? level_img5 :
+          src={levelNum === "level1" ? level_img1 :
+          levelNum === "level2" ? level_img2 :
+          levelNum === "level3" ? level_img3 :
+          levelNum === "level4" ? level_img4 :
+          levelNum === "level5" ? level_img5 :
           null
         }
         />
@@ -87,7 +87,7 @@ const Wrap = styled.div`
 const MyContainer = styled.div`
   background-color: #ffffff;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 16px 20px;  
 `;
 

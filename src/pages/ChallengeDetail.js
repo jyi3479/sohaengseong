@@ -151,7 +151,7 @@ const ChallengeDetail = (props) => {
     return(
         <>  
         {target&&
-            <Grid padding="0" margin="48px 0 0" bg="#eee">
+            <Grid padding="0" margin="48px 0 0" >
                 <Grid padding="0" style={{position:"relative"}}>
                     <ShareBtn></ShareBtn>
                     {imageList.length > 0?
@@ -218,7 +218,7 @@ const ChallengeDetail = (props) => {
                             </Image>                            
                             <h3>{admin.nickname}</h3>
                         </div>
-                        <p>{target.content}</p>
+                        <pre style={{fontSize:"14px"}}>{target.content}</pre>
                     </ContentBox>
                     {/* 현재인원 - 디자인 확정 후 작업예정 */}
                     <Title>현재 입주민</Title>
@@ -349,14 +349,10 @@ const StatusContainer = styled.div`
 const Title = styled.h2`
     font-size:18px;
     margin-bottom:9px;
-    font-weight: 500;
     line-height:1.5;
 `;
 
 const ContentBox = styled.div`
-    padding: 15px;
-    border-radius: 15px;
-    border: solid 1px #efefef;
     .admin_profile{
         display: flex;
         align-items: center;

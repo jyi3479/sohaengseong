@@ -1,14 +1,15 @@
-import { useState, useCallback, useContext, useRef } from "react";
+import React, { useState, useCallback, useContext, useRef } from "react";
 import styled from "styled-components";
-import send from "../../image/icons/ic_message@2x.png";
-import React from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { getCookie } from "../../shared/cookie";
 import { history } from "../../redux/configureStore";
 import { useParams } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as chatAction } from "../../redux/modules/chat";
+
+import send from "../../image/icons/ic_message@2x.png";
 
 function MessageForm(props) {
   const dispatch = useDispatch();
@@ -74,6 +75,7 @@ function MessageForm(props) {
         <button
           type="button"
           className="send_btn"
+          style={{backgroundColor:messageText? "#4149d3":"rgba(162, 170, 179, 0.5)"}}
           onClick={() => {
             sendMessage();
             setMessageText("");
@@ -85,36 +87,43 @@ function MessageForm(props) {
 }
 const Wrap = styled.div`
   position: fixed;
-  width: calc(100% - 40px);
-  left: 20px;
-  bottom: 20px;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background-color: #fff;
+  box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
+  padding: 10px 20px;
 `;
 const MessgeInput = styled.div`
-  padding: 18px 48px 18px 16px;
-  background-color: #fff;
-  border-radius: 26px;
+  position: relative;
+  padding: 10px 20px;
+  border-radius: 18px;
+  background-color: rgba(124, 130, 136, 0.1);
   max-height: 100px;
   word-wrap: break-word;
   word-break: break-word;
   > textarea {
+    display: block;
     width: 100%;
-    min-height: 24px;
+    background-color: initial;
     outline: none;
     border: none;
     resize: none;
+    &::placeholder{
+      color: #a2aab3;
+    }
   }
   .send_btn {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 40px;
-    height: 40px;
-    background-color: #eaeaea;
+    bottom: 6px;
+    right: 4px;
+    width: 28px;
+    height: 28px;
+    background-color: rgba(162, 170, 179, 0.5);
     border-radius: 50%;
     border: none;
     background-image: url(${send});
-    background-repeat: no-repeat;
-    background-size: 24px;
+    background-size: 20px;
     background-position: center;
   }
 `;

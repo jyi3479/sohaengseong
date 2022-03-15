@@ -275,7 +275,7 @@ const Select = styled.div`
     width: 100%;
     height: 204px;
     background: #fff;
-    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.08);
     border-radius: 4px;
     overflow: hidden;
     transition: 0.2s ease-in;

@@ -764,9 +764,23 @@ const ChallengeWrite = (props) => {
       </Notice>      
       <ButtonContainer>
         {isEdit ? (
-          <Button _onClick={openModal}>수정하기</Button>
+          <Button _onClick={openModal}
+          disabled={ title === "" ||
+            content === "" ||
+            category === "" || 
+            maxMember === "" ||
+            startDate  === "" ? "disabled" : ""
+          }
+          >수정하기</Button>
         ) : (
-          <Button _onClick={openModal}>개설하기</Button>
+          <Button _onClick={openModal} 
+          disabled={ title === "" ||
+            content === "" ||
+            category === "" || 
+            maxMember === "" ||
+            startDate  === "" ? "disabled" : ""
+          }
+          >개설하기</Button>
         )}
       </ButtonContainer>
       <Modal

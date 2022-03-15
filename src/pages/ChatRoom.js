@@ -170,7 +170,7 @@ const ChatRoom = (props) => {
   }
 
   return (
-    <Grid padding="24px 20px 50px" margin="48px 0" bg="#f7f7f7">
+    <Grid padding="28px 20px" margin="48px 0">
       <Grid
         padding="0"
         margin="0"

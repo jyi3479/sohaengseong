@@ -1,14 +1,15 @@
 import React from "react";
+import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { Grid } from "../elements";
-import styled from "styled-components";
 import { useDispatch,  useSelector } from "react-redux";
-import Card from "../components/Card";
 import { actionCreators as baseAction } from "../redux/modules/base";
-
+import { actionCreators as myActions } from "../redux/modules/mypage";
+import Card from "../components/Card";
 
 const MyCompleted = (props) => {
   const dispatch = useDispatch();
+  const userId = localStorage.getItem("userId");
   const my_list = useSelector((state) => state.mypage.list);
   const completed_list = my_list.filter(
     (l) => l.status === "성공" || l.status === "실패"
@@ -18,6 +19,7 @@ const MyCompleted = (props) => {
 
   React.useEffect(() => {
     dispatch(baseAction.setHeader("마이 리포트"));
+    dispatch(myActions.getMyChallengeDB(userId));
   }, []);
 
 
