@@ -50,8 +50,9 @@ function App() {
   }, []);
 
   return (
-    <>      
-      <GlobalStyle/>{/* 전역 스타일컴포넌트 */}
+    <>
+      <GlobalStyle />
+      {/* 전역 스타일컴포넌트 */}
       <Wrapper>
         <ConnectedRouter history={history}>
           <BackgroundOpacity />
@@ -106,25 +107,25 @@ function App() {
                   />
                   {/* 챌린지 멤버 전용 상세*/}
                   <Route
-                    path="/post/:challengeId"
+                    path="/post/:challengeId/:roomId"
                     exact
                     component={MemberPostList}
                   />
                   {/* 챌린지 멤버 전용 속 인증 페이지 */}
                   <Route
-                    path="/post/:challengeId/write"
+                    path="/postwrite/:challengeId/:roomId"
                     exact
                     component={MemberPostWrite}
                   />
                   {/* 인증 페이지 속 인증글 작성 페이지 */}
                   <Route
-                    path="/post/:challengeId/write/:postId"
+                    path="/postwrite/:challengeId/:roomId/:postId"
                     exact
                     component={MemberPostWrite}
                   />
                   {/* 인증 페이지 속 인증글 수정 페이지 */}
                   <Route
-                    path="/post/:challengeId/detail/:postId"
+                    path="/post/:challengeId/detail/:postId/:roomId"
                     exact
                     component={MemberPostDetail}
                   />
@@ -146,7 +147,7 @@ function App() {
                   <Route path="/chatting" exact component={ChatList} />
                   {/* 채팅리스트 */}
                   <Route path="/chatting/:roomId" exact component={ChatRoom} />
-                  {/* 채팅방 - 뒤에 번호 임시 */}
+                  {/* 채팅방*/}
                   <Route
                     path="/mypage/completed"
                     exact

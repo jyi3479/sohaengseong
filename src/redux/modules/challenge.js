@@ -98,7 +98,7 @@ const addChallengeDB = (challenge) => {
           chatAction.createRoomDB({ challengeId: res.data.challengeId })
         );
         console.log("챌린지 등록", res);
-        // history.replace("/today");
+        history.replace("/today");
       })
       .catch((err) => {
         console.log("챌린지 등록 오류", err);

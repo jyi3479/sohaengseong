@@ -115,6 +115,10 @@ export const memberApis = {
 
   //챌린지 참여취소(나가기)
   exitChallenge: (challengeId) => apis.delete(`/challenge/${challengeId}/user`),
+
+  //챌린지 팀원 리포트
+  getReport: (challengeId, startDate) =>
+    apis.post(`/challenge/${challengeId}/report`, { startDate: startDate }),
 };
 
 export const searchApis = {

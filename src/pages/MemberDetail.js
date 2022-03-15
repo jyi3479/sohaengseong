@@ -17,7 +17,7 @@ import "swiper/css/pagination";
 import Modal from "../components/Modal";
 
 //사용자 import
-import { Grid, Image, Button } from "../elements/index";
+import { Grid, Image, Button, Tag } from "../elements/index";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as memberAction } from "../redux/modules/member";
 import * as baseAction from "../redux/modules/base";
@@ -116,17 +116,18 @@ const MemberDetail = (props) => {
                 slidesPerView={1}
                 pagination={{
                   type: "fraction", //페이지네이션 타입
-                  el: ".pagination", //페이지네이션 클래스
                 }}
                 modules={[Pagination]}
                 className="mySwiper"
-                onSlideChange={() => console.log("slide change")}
-                onSwiper={(swiper) => console.log(swiper)}
               >
                 {imageList.map((el, i) => {
                   return (
                     <SwiperSlide key={i}>
-                      <Image shape="rectangle" padding="250px" src={el}></Image>
+                      <Image
+                        shape="rectangle"
+                        padding="250px"
+                        src={el ? el : defaultImg}
+                      ></Image>
                     </SwiperSlide>
                   );
                 })}
@@ -137,31 +138,30 @@ const MemberDetail = (props) => {
             )}
           </Grid>
           <Grid bg="#fff" margin="0 0 10px" padding="20px">
-            <TitleBox>
-              <h1>{target.title}</h1>
-            </TitleBox>
-            <p style={{ fontSize: "14px", color: "#666" }}>{target.category}</p>
-            <Grid padding="0" margin="12px 0">
+            <h1>{target.title}</h1>
+
+            <p className="sub_color mt12">{target.category}</p>
+            <Grid padding="0" margin="10px 0">
               {tagList.map((el, i) => {
-                return <Tag key={i}>{el}</Tag>;
+                return <Tag key={i} tag={el}></Tag>;
               })}
             </Grid>
           </Grid>
 
           <Grid bg="#fff" padding="20px">
             <ContentBox>
-              <Title>방장</Title>
-              <Content>{admin.nickname}</Content>
+              <h3>방장</h3>
+              <p className="caption">{admin.nickname}</p>
             </ContentBox>
             <ContentBox>
-              <Title>개설일</Title>
-              <Content>
-                {target.startDate.split(" ")[0].split(".").join("/")}
-              </Content>
+              <h3>개설일</h3>
+              <p className="caption">
+                {target.startDate.split(" ")[0].split(".").join("-")}
+              </p>
             </ContentBox>
             <ContentBox>
-              <Title>멤버수</Title>
-              <Content>
+              <h3>멤버수</h3>
+              <p className="caption">
                 {target.currentMember}명{" "}
                 <Grid
                   padding="24px 0"
@@ -187,15 +187,15 @@ const MemberDetail = (props) => {
                     })}
                   <MemberBtn onClick={openMemberModal}></MemberBtn>
                 </Grid>
-              </Content>
+              </p>
             </ContentBox>
             <ContentBox>
-              <Title>소개글</Title>
-              <Content>{target.content}</Content>
+              <h3>소개글</h3>
+              <p className="caption">{target.content}</p>
             </ContentBox>
             <ContentBox>
-              <Title>공개 여부</Title>
-              <Content>{target.isPrivate ? "비밀" : "공개"}</Content>
+              <h3>공개 여부</h3>
+              <p className="caption">{target.isPrivate ? "비밀" : "공개"}</p>
             </ContentBox>
             <Fixed>
               {admin.userId === userInfo ? ( //내가 만든 챌린지
@@ -229,9 +229,7 @@ const MemberDetail = (props) => {
               ) : (
                 //방장 아닌 멤버인 경우
                 <Button
-                  bg="#ffffff"
-                  color="#020202"
-                  border="1px solid grey"
+                  line_btn
                   _onClick={() => {
                     exitModal();
                   }}
@@ -276,7 +274,12 @@ const MemberDetail = (props) => {
               exitChallenge();
             }}
           >
-            <p>정말로 나가시겠습니까?<br />중도 하차할 경우 패널티(경험치%손실)가 <br />적용됩니다.</p>
+            <p>
+              정말로 나가시겠습니까?
+              <br />
+              중도 하차할 경우 패널티(경험치%손실)가 <br />
+              적용됩니다.
+            </p>
           </Modal>
         </Grid>
       )}
@@ -306,46 +309,16 @@ const MemberDetail = (props) => {
   );
 };
 
-const TitleBox = styled.div`
-  margin-bottom: 5px;
-  h1 {
-    font-size: 20px;
-    line-height: 25px;
-    font-weight: 500;
-  }
-`;
-
-const Tag = styled.p`
-  display: inline-block;
-  margin: 0;
-  margin-right: 6px;
-  font-size: 12px;
-  color: #7b7b7b;
-  border-radius: 5px;
-  padding: 2px 4px;
-  background-color: #ededed;
-`;
-
 const ContentBox = styled.div`
   display: flex;
   margin-bottom: 14px;
-`;
-
-const Title = styled.p`
-  width: 65px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.43;
-  text-align: left;
-  color: #333;
-`;
-
-const Content = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.43;
-  text-align: left;
-  color: #333;
+  h3 {
+    width: 80px;
+    color: #333333;
+  }
+  p {
+    color: #333333;
+  }
 `;
 
 const Member = styled.div`

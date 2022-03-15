@@ -24,7 +24,7 @@ function MessageList() {
   const dateArr = [...new Set(_dateArr)];
   let messageSortArr = [];
 
-  console.log(_dateArr);
+  console.log(dateArr);
   //2. 분류된 날짜에 해당하는 요소들만 묶어서 구분하기
   for (let i = 0; i < dateArr.length; i++) {
     messageSortArr.push({
@@ -51,9 +51,9 @@ function MessageList() {
             return (
               <div key={idx}>
                 {el.date && (
-                  <DateText>
+                  <p className="caption sub_color t_center">
                     {moment(el.date).format("YYYY년 MM월 DD일")}
-                  </DateText>
+                  </p>
                 )}
 
                 <MessageBox className="chat-window card">
@@ -87,18 +87,7 @@ const DateText = styled.p`
 `;
 
 const MessageBox = styled.div`
-  /* height: calc(100vh - 48px);
-  overflow-y: scroll;
-  padding-bottom: 60px; */
-
-  /* display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 100%;
-  width: 100%;
-  & :first-child {
-    margin-top: auto;
-  } */
+  margin-top: 20px;
 `;
 
 export default MessageList;

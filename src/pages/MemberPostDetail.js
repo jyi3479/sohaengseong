@@ -11,6 +11,7 @@ const MemberPostDetail = (props) => {
   const dispatch = useDispatch();
   const challengeId = +useParams().challengeId;
   const postId = +useParams().postId;
+  const roomId = useParams().roomId;
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
   console.log(postList, targetPost);
@@ -25,7 +26,9 @@ const MemberPostDetail = (props) => {
   }, []);
   return (
     <Grid margin="48px 0" padding="0">
-      <PostCard {...targetPost} />
+      <div style={{ borderTop: "1px solid #e4e5e6" }}>
+        <PostCard {...targetPost} />
+      </div>
       <Fixed>
         <Grid padding="0" is_flex>
           <Button
@@ -33,8 +36,7 @@ const MemberPostDetail = (props) => {
             bg="#fff"
             style={{ color: "#666", border: "1px solid #666" }}
             _onClick={() => {
-              history.push("/chatting");
-              // history.push("/chatting/${roomId}");
+              history.push(`/chatting/${roomId}`);
             }}
           >
             실시간 톡
@@ -42,7 +44,7 @@ const MemberPostDetail = (props) => {
           <Button
             width="calc(70% - 5px)"
             _onClick={() => {
-              history.push(`/post/${challengeId}/write`);
+              history.push(`/postwrite/${challengeId}/${roomId}`);
             }}
           >
             인증하기

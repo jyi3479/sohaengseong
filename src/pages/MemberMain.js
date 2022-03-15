@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Grid, Button } from "../elements";
 import { history } from "../redux/configureStore";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import ChallengeInfo from "../components/Member/ChallengeInfo";
@@ -16,7 +16,11 @@ const MemberMain = (props) => {
   const challengeId = +useParams().challengeId;
   // 인증사진 나열 부분
 
+  const target = useSelector((state) => state.challenge.target);
+  console.log(target);
+
   React.useEffect(() => {
+    dispatch(challengeAction.getOneChallengeDB(challengeId));
     dispatch(baseAction.setHeader("", true));
     dispatch(baseAction.setGnb(false));
     return () => {
@@ -26,35 +30,45 @@ const MemberMain = (props) => {
   }, []);
 
   return (
-    <Grid margin="48px 0 0">
-      <ChallengeInfo challengeId={challengeId} />
-      <MemberReport />
-      {/* <div>입주민 랭킹</div> */}
-      <TodayPost challengeId={challengeId} />
-      <Fixed>
-        <Grid padding="0" is_flex>
-          <Button
-            width="calc(30% - 5px)"
-            bg="#fff"
-            style={{ color: "#666", border: "1px solid #666" }}
-            _onClick={() => {
-              history.push("/chatting");
-              // history.push("/chatting/${roomId}");
-            }}
-          >
-            실시간 톡
-          </Button>
-          <Button
-            width="calc(70% - 5px)"
-            _onClick={() => {
-              history.push(`/post/${challengeId}/write`);
-            }}
-          >
-            인증하기
-          </Button>
+    <>
+      {target && (
+        <Grid margin="48px 0 0">
+          <ChallengeInfo challengeId={challengeId} target={target} />
+          <MemberReport challengeId={challengeId} status={target.status} />
+          {/* <div>입주민 랭킹</div> */}
+          {target.status !== "모집중" && (
+            <>
+              <TodayPost challengeId={challengeId} roomId={target.roomId} />
+              <Fixed>
+                <Grid padding="0" is_flex>
+                  <Button
+                    width="calc(30% - 5px)"
+                    bg="#fff"
+                    style={{ color: "#666", border: "1px solid #666" }}
+                    _onClick={() => {
+                      history.push(`/chatting/${target.roomId}`);
+                      // history.push("/chatting/${roomId}");
+                    }}
+                  >
+                    실시간 톡
+                  </Button>
+                  <Button
+                    width="calc(70% - 5px)"
+                    _onClick={() => {
+                      history.push(
+                        `/postwrite/${challengeId}/${target.roomId}`
+                      );
+                    }}
+                  >
+                    인증하기
+                  </Button>
+                </Grid>
+              </Fixed>
+            </>
+          )}
         </Grid>
-      </Fixed>
-    </Grid>
+      )}
+    </>
   );
 };
 
