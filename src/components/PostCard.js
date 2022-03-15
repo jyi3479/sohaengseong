@@ -14,6 +14,7 @@ import more from "../image/icons/ic_more@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import moment from "moment";
 import "moment/locale/ko";
+import Modal from "./Modal";
 
 const PostCard = (props) => {
   moment.locale("ko"); // 모멘트 한글로 바꾸기
@@ -36,7 +37,7 @@ const PostCard = (props) => {
   };
   const deletePost = () => {
     dispatch(memberActions.deletePostDB(props.postId));
-    setModalState(false);
+    setModalOpen(false);
     history.replace(`/post/${challengeId}/${roomId}`);
   };
 
@@ -44,7 +45,7 @@ const PostCard = (props) => {
     dispatch(memberActions.deleteCommentDB(props.postId, commentId));
   };
 
-  // 모달 팝업 -------------------------------------------------
+  // 모달 팝업1 -------------------------------------------------
   const [modalState, setModalState] = React.useState(false);
   const openModal = () => {
     setModalState(true);
@@ -54,17 +55,33 @@ const PostCard = (props) => {
     setModalState(false);
   };
 
+  // 모달 팝업2 ---------------------------------
+  const [modalType, setModalType] = React.useState("");
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const openDeleteModal = () => {
+    setModalType("openModal");
+    console.log("챌린지 개설");
+    setModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    console.log("눌림");
+    setModalOpen(false);
+  };
+
   return (
     <Grid bg="#fff" padding="0px" margin="0 0 32px">
       {/* PostCard의 윗 부분 */}
       <Grid is_flex margin="16px 0px">
         <Grid is_flex width="auto" padding="0px">
           <Image
-            size={40}
+            shape="border"
+            size="40"
+            level={props.levelName}
             profile={
               props.profileImage !== null ? props.profileImage : defaultImg
             }
-          />
+          ></Image>
           <p style={{ margin: "0px 10px" }}>{props.nickname}</p>
         </Grid>
         {is_me && (
@@ -108,13 +125,15 @@ const PostCard = (props) => {
             <CommentWriteBox>
               <div>
                 <Image
-                  size={36}
+                  shape="border"
+                  size="36"
+                  level={props.levelName}
                   profile={
-                    userInfo
+                    userInfo.profileUrl !== null
                       ? userInfo.profileUrl
-                      : "https://www.garyqi.com/wp-content/uploads/2017/01/default-avatar-500x500.jpg"
+                      : defaultImg
                   }
-                />
+                ></Image>
               </div>
 
               <InputBox>
@@ -125,7 +144,9 @@ const PostCard = (props) => {
                   }}
                   placeholder="댓글달기"
                 />
-                <button onClick={addComment}>등록</button>
+                <button onClick={addComment}>
+                  <h3 className="caption_color">등록</h3>
+                </button>
               </InputBox>
             </CommentWriteBox>
           )}
@@ -139,7 +160,18 @@ const PostCard = (props) => {
                   is_flex
                 >
                   <ContentBox>
-                    {isDetail && <Image size={36} profile={el.profileImage} />}
+                    {isDetail && (
+                      <Image
+                        shape="border"
+                        size="36"
+                        level={el.levelName}
+                        profile={
+                          el.profileImage !== null
+                            ? el.profileImage
+                            : defaultImg
+                        }
+                      ></Image>
+                    )}
                     <p className="writer">{el.nickname}</p>
 
                     <p>{el.content}</p>
@@ -175,7 +207,12 @@ const PostCard = (props) => {
               <img src={edit} />
               <p>수정하기</p>
             </ModalBox>
-            <ModalBox onClick={deletePost}>
+            <ModalBox
+              onClick={() => {
+                openDeleteModal();
+                closeModal();
+              }}
+            >
               <img src={deleteIcon} />
               <p>삭제하기</p>
             </ModalBox>
@@ -186,6 +223,21 @@ const PostCard = (props) => {
           </Grid>
         </>
       </PostModal>
+
+      <Modal
+        open={modalType === "openModal" ? modalOpen : ""}
+        close={closeDeleteModal}
+        double_btn
+        btn_text="삭제"
+        _onClick={() => {
+          deletePost();
+        }}
+      >
+        <p>
+          해당 인증을 삭제하시겠어요? <br />
+          삭제 시 인증 미달성으로 바뀝니다.
+        </p>
+      </Modal>
     </Grid>
   );
 };
@@ -244,9 +296,11 @@ const InputBox = styled.div`
 const ContentBox = styled.div`
   display: flex;
   justify-content: space-between;
+
   p {
     margin: 0 10px 0 0;
   }
+
   .writer {
     font-weight: bold;
   }

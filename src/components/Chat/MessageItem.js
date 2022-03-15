@@ -38,7 +38,12 @@ function MessageItem(props) {
   if (userId === message.user.userId) {
     return (
       <Item className="is_me">
-        <Image profile={profileUrl}></Image>
+        <Image
+          shape="border"
+          size="40"
+          level={message.user.levelName}
+          profile={profileUrl}
+        ></Image>
         <Bubble className="is_me">
           <p className="small bold">{message.user ? message.user.nickname : message.sender}</p>
           <div>
@@ -57,7 +62,12 @@ function MessageItem(props) {
       <>
         {/* 다른 사용자가 보낸 메세지 */}
         <Item>
-          <Image profile={profileUrl}></Image>
+          <Image
+            shape="border"
+            size="40"
+            level={message.user.levelName}
+            profile={profileUrl}
+          ></Image>
           <Bubble>
             <p className="small bold"> {message.user ? message.user.nickname : message.sender}</p>
             <div>

@@ -25,7 +25,7 @@ import empty from "../image/ic_empty_s@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
 import share from "../image/icons/ic_share@2x.png";
-import plus from "../image/icons/ic_plus@2x.png";
+import plus from "../image/icons/ic_plus_s@2x.png";
 import MemberModal from "../components/Member/MemberModal";
 
 const MemberDetail = (props) => {
@@ -143,7 +143,7 @@ const MemberDetail = (props) => {
             <p className="sub_color mt12">{target.category}</p>
             <Grid padding="0" margin="10px 0">
               {tagList.map((el, i) => {
-                return <Tag key={i} tag={el}></Tag>;
+                return <Tag key={i} tag={el} className="detailPage"></Tag>;
               })}
             </Grid>
           </Grid>
@@ -174,15 +174,18 @@ const MemberDetail = (props) => {
                         <Member
                           key={el.userId}
                           className={admin.userId === el.userId ? "admin" : ""}
-                          style={{
-                            backgroundImage: `url(${
+                        >
+                          <Image
+                            shape="border"
+                            size="40"
+                            level={el.levelName}
+                            profile={
                               el.profileImage !== null
                                 ? el.profileImage
                                 : defaultImg
-                            })`,
-                          }}
-                          src={el.profileImage}
-                        ></Member>
+                            }
+                          ></Image>
+                        </Member>
                       );
                     })}
                   <MemberBtn onClick={openMemberModal}></MemberBtn>
@@ -292,14 +295,16 @@ const MemberDetail = (props) => {
                 <Member
                   key={el.userId}
                   className={admin.userId === el.userId ? "admin" : ""}
-                  style={{
-                    backgroundImage: `url(${
+                >
+                  <Image
+                    shape="border"
+                    size="40"
+                    level={el.levelName}
+                    profile={
                       el.profileImage !== null ? el.profileImage : defaultImg
-                    })`,
-                  }}
-                  src={el.profileImage}
-                  total
-                ></Member>
+                    }
+                  ></Image>
+                </Member>
                 <p>{el.nickname}</p>
               </MemberBox>
             );
@@ -323,61 +328,50 @@ const ContentBox = styled.div`
 
 const Member = styled.div`
   display: inline-block;
-  width: 35px;
-  height: 35px;
-  border: solid 1px #999;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  margin-right: 5px;
-
-  &:nth-child(n + 4) {
-    //3번째 멤버 이후로는 미노출
-    ${(props) => !props.total && `display: none;`}
+  margin-right: 4px;
+  &:nth-child(n + 5) {
+    //4번째 멤버 이후로는 미노출
+    display: none;
   }
   &.admin {
     //방장일 경우
     position: relative;
-    margin-right: 9px;
+    margin-right: 4px;
     &::after {
       content: "";
-      width: 17px;
-      height: 17px;
-      border-radius: 50%;
+      width: 20px;
+      height: 20px;
       background-image: url(${crown});
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
       position: absolute;
-      bottom: 0;
-      right: -3px;
+      bottom: -5px;
+      right: -5px;
     }
   }
 `;
 const MemberBtn = styled.button`
   display: inline-block;
-  width: 35px;
-  height: 35px;
-  border: solid 1px #999;
+  width: 40px;
+  height: 40px;
+  border: solid 1px #a2aab3;
   border-radius: 50%;
-  background-size: 60%;
+  background-size: 50%;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url(${plus});
-  margin-right: 5px;
+  background-color: #fff;
+  margin-left: 4px;
 `;
 
 const MemberBox = styled.div`
   width: 100%;
   display: flex;
   align-content: flex-start;
-  margin: 0 15px 20px 0px;
+  margin: 0 15px 10px 0px;
   p {
-    margin: 5px 0px 0px 15px;
-    font-size: 14px;
-    line-height: 1.43;
-    text-align: left;
-    color: #000;
+    margin: 10px 0px 0px 8px;
   }
 `;
 

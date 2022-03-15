@@ -10,13 +10,14 @@ import { ko } from "date-fns/esm/locale";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as searchAction } from "../redux/modules/search";
-import { Grid, Input, Button, Image} from "../elements";
+import { Grid, Input, Button, Image, Tag } from "../elements";
 import Modal from "../components/Modal";
 import plus from "../image/icon/ic_plus_g@2x.png";
 import drop from "../image/icons/ic_dropdown@2x.png";
 import defaultImg from "../image/ic_empty_s@2x.png";
 import deleteIcon from "../image/icon/btn_delete_g@2x.png";
 import deleteIconW from "../image/icon/btn_delete_s@2x.png";
+import { SettingsApplicationsTwoTone } from "@material-ui/icons";
 
 const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
@@ -34,9 +35,7 @@ const ChallengeWrite = (props) => {
 
   // Header 적용 (수정/작성 분기)
   React.useEffect(() => {
-    dispatch(
-      baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기")
-    );
+    dispatch(baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기"));
     dispatch(baseAction.setGnb(false));
 
     //추천 키워드 불러오기
@@ -45,38 +44,9 @@ const ChallengeWrite = (props) => {
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
       dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
-      // // 기존에 입력한 태그 보여주기
-      // const $HashWrapOuter = document.querySelector(".HashWrapOuter");
-      // const $HashWrapInner = document.createElement("span");
-      // $HashWrapInner.className = "HashWrapInner";
-      // // 삭제 버튼 만들기
-      // const $HashDelete = document.createElement("a");
-      // $HashDelete.className = "HashDelete";
 
-      // /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
-      // $HashDelete.addEventListener("click", () => {
-      //   $HashWrapOuter?.removeChild($HashWrapInner);
-
-      //   console.log($HashWrapInner.innerHTML);
-      //   setHashArr(hashArr.filter((hashtag) => hashtag));
-      // });
-
-      // // 입력했던 태그가 있을 경우
-      // if (hashArr.length > 0) {
-      //   console.log(hashArr);
-      //   // hashArr.map((el, idx)=>{
-      //   //   $HashWrapInner.innerHTML = e.target.value;
-      //   //         $HashWrapOuter?.appendChild($HashWrapInner);
-      //   //         $HashDelete.innerHTML = "x";
-      //   //         $HashWrapInner?.appendChild($HashDelete);
-      //   //   return null;
-      //   // })
-      //   // $HashWrapInner.innerHTML = e.target.value;
-      //   // $HashWrapOuter?.appendChild($HashWrapInner);
-      //   // $HashDelete.innerHTML = "x";
-      //   // $HashWrapInner?.appendChild($HashDelete);
-      //   // setHashArr((hashArr) => [...hashArr, hashtag]);
-      //   // setHashtag("");
+      // if (target.tagName) {
+      //   target.tagName.map((el) => recommendClick(el));
       // }
     }
 
@@ -86,10 +56,10 @@ const ChallengeWrite = (props) => {
     };
   }, []);
 
-  const [active,setActive] = React.useState(false); 
+  const [active, setActive] = React.useState(false);
   const [title, setTitle] = React.useState(isEdit ? target.title : "");
-  const [content, setContent] = React.useState(isEdit ? target.content : "");  
-  const [category, setCategory] = React.useState(isEdit ? target.category : "");  
+  const [content, setContent] = React.useState(isEdit ? target.content : "");
+  const [category, setCategory] = React.useState(isEdit ? target.category : "");
   const [maxMember, setMaxMember] = React.useState(
     isEdit ? target.maxMember : ""
   );
@@ -116,17 +86,14 @@ const ChallengeWrite = (props) => {
   );
   const [password, setPassword] = React.useState(isEdit ? target.password : "");
 
-  console.log(category);
-
   // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
   const selectClick = () => {
-      setActive(!active);
+    setActive(!active);
   };
   const optionClick = (e) => {
     setCategory(e.target.innerText);
     setActive(!active);
   };
-  
 
   // 비밀방 여부 체크 함수
   const changeHandler = (checked, id) => {
@@ -139,10 +106,10 @@ const ChallengeWrite = (props) => {
 
   // 날짜 선택 input 커스텀
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <InputBox ref={ref} style={{marginTop:"0"}}>
+    <InputBox ref={ref} style={{ marginTop: "0" }}>
       {isEdit ? (
         <Input
-          label="기간을 선택해주세요."          
+          label="기간을 선택해주세요."
           value={`${target.startDate} - ${target.endDate}`}
           onClick={onClick}
           disabled
@@ -160,75 +127,30 @@ const ChallengeWrite = (props) => {
   ));
 
   // 태그 관련 함수
-  // 1. 태그 직접 입력 시
-  const onKeyUp = React.useCallback(
-    (e) => {
-      //   if (process.browser) {
-      /* 요소 불러오기, 만들기*/
-      const $HashWrapOuter = document.querySelector(".HashWrapOuter");
-      const $HashWrapInner = document.createElement("span");
-      $HashWrapInner.className = "HashWrapInner";
-      // 삭제 버튼 만들기
-      const $HashDelete = document.createElement("a");
-      $HashDelete.className = "HashDelete";
+  //1. 태그 직접 입력 시
+  const onKeyPress = (e) => {
+    if (e.target.value.length !== 0 && e.key === "Enter") {
+      submitTagItem();
+    }
+  };
 
-      /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
-      $HashDelete.addEventListener("click", () => {
-        $HashWrapOuter?.removeChild($HashWrapInner);
+  const submitTagItem = (keyword) => {
+    let updatedTaglist = [...hashArr];
+    updatedTaglist.push(keyword ? keyword : hashtag);
+    setHashArr(updatedTaglist);
+    setHashtag("");
+  };
 
-        //console.log($HashWrapInner.innerHTML);
-        setHashArr(hashArr.filter((hashtag) => hashtag));
-      });
+  const deleteTagItem = (e) => {
+    console.log(typeof e.target.parentElement.firstChild.innerText);
+    const deleteTagItem = e.target.parentElement.firstChild.innerText;
+    const filteredTaglist = hashArr.filter((hashtag) => {
+      console.log(hashtag, deleteTagItem);
+      return hashtag !== deleteTagItem;
+    });
+    setHashArr(filteredTaglist);
+  };
 
-      /* enter 키 코드 :13 */
-      if (e.keyCode === 13 && e.target.value.trim() !== "") {
-        if (hashArr.length > 10) {
-          window.alert("태그 작성 개수를 확인해주세요!");
-        }
-        //console.log("Enter Key 입력됨!", e.target.value);
-        $HashWrapInner.innerHTML = e.target.value;
-        $HashWrapOuter?.appendChild($HashWrapInner);
-        $HashWrapInner?.appendChild($HashDelete);
-        setHashArr((hashArr) => [...hashArr, hashtag]);
-        setHashtag("");
-      }
-    },
-    [hashtag, hashArr]
-  );
-
-  // 2. 추천 키워드 클릭 시
-  const recommendClick = React.useCallback(
-    (keyword) => {
-      //   if (process.browser) {
-      /* 요소 불러오기, 만들기*/
-      if (hashArr.length > 10) {
-        window.alert("태그 작성 개수를 확인해주세요!");
-      }
-      const $HashWrapOuter = document.querySelector(".HashWrapOuter");
-      const $HashWrapInner = document.createElement("span");
-      $HashWrapInner.className = "HashWrapInner";
-      // 삭제 버튼 만들기
-      const $HashDelete = document.createElement("a");
-      $HashDelete.className = "HashDelete";
-
-      console.log("추천 키워드 입력!", keyword);
-      $HashWrapInner.innerHTML = keyword;
-      $HashWrapOuter?.appendChild($HashWrapInner);
-      $HashWrapInner?.appendChild($HashDelete);
-      setHashArr((hashArr) => [...hashArr, keyword]);
-      setHashtag("");
-      console.log(hashArr);
-
-      /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
-      $HashDelete.addEventListener("click", () => {
-        console.log(keyword, hashArr);
-        $HashWrapOuter?.removeChild($HashWrapInner);
-        console.log($HashWrapInner.innerHTML);
-        setHashArr(hashArr.filter((hashtag) => hashtag));
-      });
-    },
-    [hashtag, hashArr]
-  );
   // 이미지 업로드 부분
   const fileInput = React.useRef();
 
@@ -316,13 +238,11 @@ const ChallengeWrite = (props) => {
       isPrivate: checkedInputs === "private" ? true : false,
       password: checkedInputs === "private" ? password : null,
       tagName: hashArr,
-      
     };
-    
-      for (let i = 0; i < image.length; i++) {      
-        formData.append("challengeImage", image[i]);
-      }
-      
+
+    for (let i = 0; i < image.length; i++) {
+      formData.append("challengeImage", image[i]);
+    }
 
     formData.append(
       "challenge",
@@ -334,7 +254,7 @@ const ChallengeWrite = (props) => {
     }
 
     // 폼데이터에 이미지와 데이터 묶어서 보내기
-    console.log("이미지확인",image);
+    console.log("이미지확인", image);
 
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.addChallengeDB(formData));
@@ -374,7 +294,6 @@ const ChallengeWrite = (props) => {
     dispatch(challengeAction.editChallengeDB(+params.challengeId, formData));
   };
 
-
   // 모달 팝업 ---------------------------------
   const [modalType, setModalType] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -392,111 +311,112 @@ const ChallengeWrite = (props) => {
     <Grid margin="48px 0px 64px" padding="0" bg="#f4f6fa">
       <InputContainer>
         <label>어떤 주제로 진행하나요?</label>
-          <Grid
+        <Grid
           padding="0"
           margin="0 0 28px"
           is_flex
           style={{ overflow: "revert" }}
-          >
-
-            <Select className={category?active? "active ok" : "ok" : ""}>
-                <img src={drop}></img>
-                <button
-                className="label"
-                onClick={() => {
-                    selectClick();
+        >
+          <Select className={category ? (active ? "active ok" : "ok") : ""}>
+            <img src={drop}></img>
+            <button
+              className="label"
+              onClick={() => {
+                selectClick();
+              }}
+            >
+              {category ? category : "카테고리를 선택하세요."}
+            </button>
+            <ul className="optionList" id={active ? "active" : ""}>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
                 }}
-                >
-                {category ? category : "카테고리를 선택하세요."}
-                </button>
-                <ul className="optionList" id={active ? "active" : ""}>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                          optionClick(e);
-                        }}
-                    >
-                        일상 루틴
-                    </li>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                        optionClick(e);
-                        }}
-                    >
-                        운동
-                    </li>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                        optionClick(e);
-                        }}
-                    >
-                        스터디
-                    </li>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                        optionClick(e);
-                        }}
-                    >
-                        식습관
-                    </li>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                        optionClick(e);
-                        }}
-                    >
-                        힐링
-                    </li>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                        optionClick(e);
-                        }}
-                    >
-                        취미
-                    </li>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                        optionClick(e);
-                        }}
-                    >
-                        셀프케어
-                    </li>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                        optionClick(e);
-                        }}
-                    >
-                        펫
-                    </li>
-                    <li
-                        className="optionItem"
-                        onClick={(e) => {
-                        optionClick(e);
-                        }}
-                    >
-                        친환경
-                    </li>
-                </ul>
-            </Select>
-          </Grid>
+              >
+                일상 루틴
+              </li>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
+                }}
+              >
+                운동
+              </li>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
+                }}
+              >
+                스터디
+              </li>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
+                }}
+              >
+                식습관
+              </li>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
+                }}
+              >
+                힐링
+              </li>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
+                }}
+              >
+                취미
+              </li>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
+                }}
+              >
+                셀프케어
+              </li>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
+                }}
+              >
+                펫
+              </li>
+              <li
+                className="optionItem"
+                onClick={(e) => {
+                  optionClick(e);
+                }}
+              >
+                친환경
+              </li>
+            </ul>
+          </Select>
+        </Grid>
 
-          <Input
-            label="함께 실천할 습관을 적어주세요."
-            subLabel="상대방에게 불쾌감을 줄 수 있는 단어는 사용하지 않습니다."
-            placeholder="예) 일어나자마자 물 한잔 마시기"
-            maxLength="20"
-            value={title}
-            _onChange={(e) => setTitle(e.target.value)}
-          />
+        <Input
+          label="함께 실천할 습관을 적어주세요."
+          subLabel="상대방에게 불쾌감을 줄 수 있는 단어는 사용하지 않습니다."
+          placeholder="예) 일어나자마자 물 한잔 마시기"
+          maxLength="20"
+          value={title}
+          _onChange={(e) => setTitle(e.target.value)}
+        />
 
-          <CountBox className="t_right poppins mt4 sub_color">(<span className="black_color">{title.length}</span>/20)</CountBox>
-        
+        <CountBox className="t_right poppins mt4 sub_color">
+          (<span className="black_color">{title.length}</span>/20)
+        </CountBox>
+
         <InputBox>
           <Input
             label="챌린지에 관한 내용을 입력해주세요."
@@ -507,20 +427,30 @@ const ChallengeWrite = (props) => {
             _onChange={(e) => setContent(e.target.value)}
             padding="5px 0 8px"
           />
-          <CountBox className="t_right poppins mt4 sub_color">(<span className="black_color">{content.length}</span>/1000)</CountBox>
+          <CountBox className="t_right poppins mt4 sub_color">
+            (<span className="black_color">{content.length}</span>/1000)
+          </CountBox>
         </InputBox>
         {/* 태그 부분 */}
         <InputBox>
           <p style={{ fontSize: "16px", margin: "0px 0px 12px" }}>
-            키워드를 작성해주세요. <span className="sub_color font14">(선택)</span>
+            키워드를 작성해주세요.{" "}
+            <span className="sub_color font14">(선택)</span>
           </p>
           {/* 태그 입력 부분 */}
-
-          <HashWrap className="HashWrap">
-            {/* 동적으로 생성되는 태그를 담을 div */}
-            <span className="HashWrapOuter"></span>
+          <WholeBox>
+            <TagBox>
+              {hashArr.map((tagItem, index) => {
+                return (
+                  <TagItem key={index}>
+                    <span>{tagItem}</span>
+                    <DeleteButton onClick={deleteTagItem}></DeleteButton>
+                  </TagItem>
+                );
+              })}
+            </TagBox>
             <input
-              className="HashInput"
+              type="text"
               placeholder={
                 hashArr.length > 0
                   ? ""
@@ -528,22 +458,26 @@ const ChallengeWrite = (props) => {
               }
               value={hashtag}
               onChange={(e) => setHashtag(e.target.value)}
-              onKeyUp={onKeyUp}
               maxLength="6"
+              onKeyPress={onKeyPress}
             />
-          </HashWrap>
-
+          </WholeBox>
           {/* 추천키워드 부분 */}
           <Grid margin="12px 0 0" padding="0px">
-            <span className="sub_color small" style={{
+            <span
+              className="sub_color small"
+              style={{
                 marginRight: "13px",
-              }}>추천 키워드</span>
+              }}
+            >
+              추천 키워드
+            </span>
             {recommendList.map((el, idx) => {
               return (
                 <HashButton
                   key={idx}
                   onClick={() => {
-                    recommendClick(el);
+                    submitTagItem(el);
                   }}
                   disabled={hashArr.includes(el)}
                 >
@@ -605,7 +539,8 @@ const ChallengeWrite = (props) => {
         {/* 이미지 업로드 부분 */}
         <InputBox>
           <p style={{ fontSize: "16px", margin: "0px 0px 2px" }}>
-            사진을 첨부해주세요. <span className="sub_color font14">(최대 3건)</span>
+            사진을 첨부해주세요.{" "}
+            <span className="sub_color font14">(최대 3건)</span>
           </p>
           <p className="small sub_color">
             첫번째 이미지가 대표 이미지로 등록됩니다.
@@ -619,27 +554,17 @@ const ChallengeWrite = (props) => {
           >
             {preview.map((el, idx) => {
               return (
-                <ImgBox
-                  key={idx}                  
-                >
-                  <Image 
-                  shape="rectangle"
-                  src={
-                    preview[idx]
-                      ? preview[idx]
-                      : defaultImg
-                  }/>
-                  <button
-                    onClick={() => deleteImage(idx)}                    
-                  ></button>
+                <ImgBox key={idx}>
+                  <Image
+                    shape="rectangle"
+                    src={preview[idx] ? preview[idx] : defaultImg}
+                  />
+                  <button onClick={() => deleteImage(idx)}></button>
                 </ImgBox>
               );
             })}
             {preview.length < 3 && (
-              <ImageLabel
-                className="input-file-button"
-                htmlFor="input-file"               
-              >
+              <ImageLabel className="input-file-button" htmlFor="input-file">
                 <img
                   src={plus}
                   style={{
@@ -666,7 +591,7 @@ const ChallengeWrite = (props) => {
         <InputBox>
           {isEdit ? (
             <Grid is_flex padding="0px">
-              <p style={{fontSize:"16px"}}>방 공개 여부</p>
+              <p style={{ fontSize: "16px" }}>방 공개 여부</p>
               <Grid is_flex width="auto">
                 <Grid width="auto">
                   <input
@@ -690,11 +615,15 @@ const ChallengeWrite = (props) => {
             </Grid>
           ) : (
             <Grid is_flex padding="0px">
-              <p style={{fontSize:"16px"}}>방 공개 여부</p>
-              <Grid is_flex width="auto" style={{justifyContent: "flex-start"}}>
+              <p style={{ fontSize: "16px" }}>방 공개 여부</p>
+              <Grid
+                is_flex
+                width="auto"
+                style={{ justifyContent: "flex-start" }}
+              >
                 <Grid width="auto" padding="0" margin="0 0 0 20px">
                   <label htmlFor="public" className="style_checkbox">
-                    <input                      
+                    <input
                       type="checkbox"
                       id="public"
                       onChange={(e) => {
@@ -705,7 +634,7 @@ const ChallengeWrite = (props) => {
                     />
                     <label htmlFor="public"></label>
                   </label>
-                  
+
                   <label htmlFor="public">공개</label>
                 </Grid>
                 <Grid width="auto" padding="0" margin="0 0 0 20px">
@@ -718,11 +647,10 @@ const ChallengeWrite = (props) => {
                         console.log(e.currentTarget.checked);
                       }}
                       checked={checkedInputs === "private" ? true : false}
-                    />      
-                    <label htmlFor="private"></label>              
+                    />
+                    <label htmlFor="private"></label>
                   </label>
                   <label htmlFor="private">비밀</label>
-                  
                 </Grid>
               </Grid>
             </Grid>
@@ -753,15 +681,24 @@ const ChallengeWrite = (props) => {
               ))}
           </InputBox>
         </InputBox>
-      </InputContainer>      
+      </InputContainer>
       <Notice>
-          <p className="bold sub_color">유의사항</p>
-          <ul>
-              <li className="sub_color">카테고리,제한 인원, 기간은 개설 이후 소행성측에서도 변경할 수 없으니, 개설 전 확인 부탁드립니다.</li>
-              <li className="sub_color mt4">인증 규정에 관한 참여자의 문의는 채팅방을 통해 직접 답변해 주시길 바랍니다.</li>
-              <li className="sub_color mt4">개설자도 함께 습관 형성에 참여해야하며, 시작 이후 개설자는 중도 포기가 불가능합니다.</li>
-          </ul>
-      </Notice>      
+        <p className="bold sub_color">유의사항</p>
+        <ul>
+          <li className="sub_color">
+            카테고리,제한 인원, 기간은 개설 이후 소행성측에서도 변경할 수
+            없으니, 개설 전 확인 부탁드립니다.
+          </li>
+          <li className="sub_color mt4">
+            인증 규정에 관한 참여자의 문의는 채팅방을 통해 직접 답변해 주시길
+            바랍니다.
+          </li>
+          <li className="sub_color mt4">
+            개설자도 함께 습관 형성에 참여해야하며, 시작 이후 개설자는 중도
+            포기가 불가능합니다.
+          </li>
+        </ul>
+      </Notice>
       <ButtonContainer>
         {isEdit ? (
           <Button _onClick={openModal}
@@ -809,10 +746,10 @@ const InputContainer = styled.div`
     margin-bottom: 12px;
   }
   .label {
-    font-size: 16px !important;    
+    font-size: 16px !important;
   }
-  .label+.sub_label {
-    margin-top:2px;
+  .label + .sub_label {
+    margin-top: 2px;
     color: #7c8288;
   }
 `;
@@ -821,20 +758,19 @@ const ButtonContainer = styled.div`
   width: 100%;
   position: fixed;
   background-color: #fff;
-  bottom:0;
-  left:0;
-  padding:11px 20px;
+  bottom: 0;
+  left: 0;
+  padding: 11px 20px;
   box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
-
 
 const Select = styled.div`
   position: relative;
   width: 100%;
-  padding:8px 0;
-  border:none;
+  padding: 8px 0;
+  border: none;
   border-bottom: 1px solid rgba(124, 130, 136, 0.5);
-  outline: none;  
+  outline: none;
   img {
     position: absolute;
     top: 8px;
@@ -843,9 +779,9 @@ const Select = styled.div`
   }
   &.active {
     outline: none;
-    border-bottom: 1px solid #4149d3;    
-    .label{
-      color:rgba(124, 130, 136, 1);
+    border-bottom: 1px solid #4149d3;
+    .label {
+      color: rgba(124, 130, 136, 1);
     }
     img {
       transform: rotate(180deg);
@@ -853,7 +789,7 @@ const Select = styled.div`
   }
   &.ok {
     border-bottom: 1px solid #7c8288;
-    .label{
+    .label {
       color: #030102;
     }
   }
@@ -866,7 +802,7 @@ const Select = styled.div`
     outline: 0 none;
     background: transparent;
     font-size: 14px !important;
-    color:rgba(124, 130, 136, 0.5);
+    color: rgba(124, 130, 136, 0.5);
     cursor: pointer;
   }
   .optionList {
@@ -892,7 +828,7 @@ const Select = styled.div`
       line-height: 14px;
       cursor: pointer;
       :hover {
-        background-color: rgba(162,170,179,0.2);
+        background-color: rgba(162, 170, 179, 0.2);
       }
     }
     &#active {
@@ -905,14 +841,14 @@ const Select = styled.div`
 const InputBox = styled.div`
   margin-top: 28px;
   &.private_box {
-    margin-top:0;
+    margin-top: 0;
     .private_input {
-      margin-top:20px;
+      margin-top: 20px;
     }
-  }  
+  }
 `;
 
-const CountBox = styled.p` 
+const CountBox = styled.p`
   font-size: 12px;
   font-weight: normal;
 `;
@@ -923,19 +859,19 @@ const ImgBox = styled.div`
   padding: 0px;
   width: 72px;
   height: 72px;
-  margin:12px 8px 0 0;
+  margin: 12px 8px 0 0;
   border-radius: 12px;
-  overflow: hidden;  
+  overflow: hidden;
   &::after {
     position: absolute;
-    content: '';
+    content: "";
     width: 100%;
     height: 100%;
     background-color: rgba(3, 1, 2, 0.5);
     left: 0;
-    top:0;
+    top: 0;
   }
-  button {   
+  button {
     width: 16px;
     height: 16px;
     position: absolute;
@@ -947,7 +883,7 @@ const ImgBox = styled.div`
     background-color: transparent;
     border: none;
     z-index: 2;
-  }   
+  }
 `;
 
 const ImageLabel = styled.label`
@@ -964,46 +900,17 @@ const ImageLabel = styled.label`
 `;
 
 /* emotion css 태그 */
-const HashWrap = styled.div`
+const WholeBox = styled.div`
   color: rgb(52, 58, 64);
   font-size: 12px;
   display: flex;
   flex-wrap: nowrap;
   border-bottom: solid 1px rgba(124, 130, 136, 0.5);
-  padding:8px 0;
+  padding: 8px 0;
   overflow-y: scroll; //넘치면 좌우 스크롤
-  // 생성된 태그 박스 span 태그 css
-  .HashWrapOuter {
-    display: inline-block;
-    vertical-align: top;
-    white-space: nowrap;
-  }
-  // 생성된 태그 내용물 span 태그 css
-  .HashWrapInner {
-    background: rgba(23,171,214,0.1);
-    color: #17abd6;
-    border-radius: 10px;
-    margin-right: 6px;
-    padding: 2px 6px;
-    font-size: 12px;
-    line-height: 18px;
-    text-align: center;
-  }
-  //생성된 태그 삭제 표시 css
-  .HashDelete {
-    display: inline-block;
-    background-image: url(${deleteIcon});
-    background-size: contain;
-    width: 16px;
-    height: 16px;
-    vertical-align: sub;
-    margin-left:4px;
-    margin-top:1px;
-  }
 
-  // 태그 작성 input
-  .HashInput {
-    width: 100%;
+  input {
+    width: 100vw;
     display: inline-block;
     vertical-align: top;
     outline: none;
@@ -1013,17 +920,52 @@ const HashWrap = styled.div`
   }
 `;
 
+const TagBox = styled.div`
+  display: inline-block;
+  vertical-align: top;
+  white-space: nowrap;
+`;
+
+const TagItem = styled.span`
+  background: rgba(23, 171, 214, 0.1);
+  color: #17abd6;
+  border-radius: 10px;
+  margin-right: 6px;
+  padding: 2px 6px;
+
+  span {
+    color: #17abd6;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    vertical-align: middle;
+  }
+`;
+
+const DeleteButton = styled.span`
+  display: inline-block;
+  background-image: url(${deleteIcon});
+  background-size: contain;
+  width: 16px;
+  height: 16px;
+  vertical-align: sub;
+  margin-left: 4px;
+  margin-bottom: 2px;
+  border: none;
+`;
+
 // 추천키워드 버튼
 const HashButton = styled.button`
-  background: rgba(23,171,214,0.1);
+  background: rgba(23, 171, 214, 0.1);
   color: #17abd6;
   height: 19px;
-  ${(props) => (props.disabled ? `
+  ${(props) =>
+    props.disabled
+      ? `
       background: rgba(162,170,179,0.1);
       color:#a2aab3;
-    ` 
-    : "" 
-  )};
+    `
+      : ""};
   border-radius: 10px;
   border: none;
   margin: 0 6px 6px 0;
@@ -1033,15 +975,15 @@ const HashButton = styled.button`
 `;
 
 const Notice = styled.div`
-    padding: 24px 20px;
-    ul {
-        margin-top: 8px;
-        li {
-            font-size: 13px;
-            margin-left: 13px;
-            list-style: disc;
-        }
+  padding: 24px 20px;
+  ul {
+    margin-top: 8px;
+    li {
+      font-size: 13px;
+      margin-left: 13px;
+      list-style: disc;
     }
+  }
 `;
 
 export default ChallengeWrite;
