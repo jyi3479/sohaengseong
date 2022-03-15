@@ -218,7 +218,7 @@ const ChallengeDetail = (props) => {
                             </Image>                            
                             <h3>{admin.nickname}</h3>
                         </div>
-                        <pre style={{fontSize:"14px"}}>{target.content}</pre>
+                        <pre style={{fontSize:"14px",whiteSpace: "pre-wrap"}}>{target.content}</pre>
                     </ContentBox>
                     {/* 현재인원 - 디자인 확정 후 작업예정 */}
                     <Title>현재 입주민</Title>
