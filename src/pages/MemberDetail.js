@@ -143,7 +143,7 @@ const MemberDetail = (props) => {
             <p className="sub_color mt12">{target.category}</p>
             <Grid padding="0" margin="10px 0">
               {tagList.map((el, i) => {
-                return <Tag key={i} tag={el}></Tag>;
+                return <Tag key={i} tag={el} className="detailPage"></Tag>;
               })}
             </Grid>
           </Grid>

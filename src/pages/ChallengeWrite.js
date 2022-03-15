@@ -10,13 +10,14 @@ import { ko } from "date-fns/esm/locale";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as searchAction } from "../redux/modules/search";
-import { Grid, Input, Button, Image } from "../elements";
+import { Grid, Input, Button, Image, Tag } from "../elements";
 import Modal from "../components/Modal";
 import plus from "../image/icon/ic_plus_g@2x.png";
 import drop from "../image/icons/ic_dropdown@2x.png";
 import defaultImg from "../image/ic_empty_s@2x.png";
 import deleteIcon from "../image/icon/btn_delete_g@2x.png";
 import deleteIconW from "../image/icon/btn_delete_s@2x.png";
+import { SettingsApplicationsTwoTone } from "@material-ui/icons";
 
 const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
@@ -44,9 +45,9 @@ const ChallengeWrite = (props) => {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
       dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
 
-      if (target.tagName) {
-        target.tagName.map((el) => recommendClick(el));
-      }
+      // if (target.tagName) {
+      //   target.tagName.map((el) => recommendClick(el));
+      // }
     }
 
     return () => {
@@ -74,7 +75,7 @@ const ChallengeWrite = (props) => {
 
   //해시태그 부분
   const [hashtag, setHashtag] = React.useState(""); //onChange로 관리할 문자열
-  const [hashArr, setHashArr] = React.useState([]); // 해시태그 담을 배열
+  const [hashArr, setHashArr] = React.useState(isEdit ? target.tagName : []); // 해시태그 담을 배열
 
   // 날짜 선택 부분
   const [startDate, setStartDate] = React.useState();
@@ -84,8 +85,6 @@ const ChallengeWrite = (props) => {
     isEdit ? (target.isPrivate ? "private" : "public") : null
   );
   const [password, setPassword] = React.useState(isEdit ? target.password : "");
-
-  console.log(category);
 
   // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
   const selectClick = () => {
@@ -128,73 +127,30 @@ const ChallengeWrite = (props) => {
   ));
 
   // 태그 관련 함수
-  // 1. 태그 직접 입력 시
-  const onKeyUp = React.useCallback(
-    (e) => {
-      //   if (process.browser) {
-      /* 요소 불러오기, 만들기*/
-      const $HashWrapOuter = document.querySelector(".HashWrapOuter");
-      const $HashWrapInner = document.createElement("span");
-      $HashWrapInner.className = "HashWrapInner";
-      // 삭제 버튼 만들기
-      const $HashDelete = document.createElement("a");
-      $HashDelete.className = "HashDelete";
+  //1. 태그 직접 입력 시
+  const onKeyPress = (e) => {
+    if (e.target.value.length !== 0 && e.key === "Enter") {
+      submitTagItem();
+    }
+  };
 
-      /* enter 키 코드 :13 */
-      if (e.keyCode === 13 && e.target.value.trim() !== "") {
-        if (hashArr.length > 10) {
-          window.alert("태그 작성 개수를 확인해주세요!");
-        }
-        //console.log("Enter Key 입력됨!", e.target.value);
-        $HashWrapInner.innerHTML = e.target.value;
-        $HashWrapOuter?.appendChild($HashWrapInner);
-        $HashWrapInner?.appendChild($HashDelete);
-        setHashArr((hashArr) => [...hashArr, hashtag]);
-        setHashtag("");
-      }
+  const submitTagItem = (keyword) => {
+    let updatedTaglist = [...hashArr];
+    updatedTaglist.push(keyword ? keyword : hashtag);
+    setHashArr(updatedTaglist);
+    setHashtag("");
+  };
 
-      /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
-      $HashDelete.addEventListener("click", () => {
-        $HashWrapOuter?.removeChild($HashWrapInner);
-        console.log($HashWrapInner.innerHTML, hashArr);
-        setHashArr(hashArr.filter((hashtag) => hashtag));
-      });
-    },
-    [hashtag, hashArr]
-  );
+  const deleteTagItem = (e) => {
+    console.log(typeof e.target.parentElement.firstChild.innerText);
+    const deleteTagItem = e.target.parentElement.firstChild.innerText;
+    const filteredTaglist = hashArr.filter((hashtag) => {
+      console.log(hashtag, deleteTagItem);
+      return hashtag !== deleteTagItem;
+    });
+    setHashArr(filteredTaglist);
+  };
 
-  // 2. 추천 키워드 클릭 시
-  const recommendClick = React.useCallback(
-    (keyword) => {
-      //   if (process.browser) {
-      /* 요소 불러오기, 만들기*/
-      if (hashArr.length > 10) {
-        window.alert("태그 작성 개수를 확인해주세요!");
-      }
-      const $HashWrapOuter = document.querySelector(".HashWrapOuter");
-      const $HashWrapInner = document.createElement("span");
-      $HashWrapInner.className = "HashWrapInner";
-      // 삭제 버튼 만들기
-      const $HashDelete = document.createElement("a");
-      $HashDelete.className = "HashDelete";
-
-      console.log("추천 키워드 입력!", keyword);
-      $HashWrapInner.innerHTML = keyword;
-      $HashWrapOuter?.appendChild($HashWrapInner);
-      $HashWrapInner?.appendChild($HashDelete);
-
-      setHashArr((hashArr) => [...hashArr, keyword]);
-      console.log(hashArr);
-
-      /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
-      $HashDelete.addEventListener("click", () => {
-        console.log(keyword, hashArr);
-        $HashWrapOuter?.removeChild($HashWrapInner);
-        setHashArr(hashArr.filter((hashtag) => hashtag));
-      });
-    },
-    [hashtag, hashArr]
-  );
   // 이미지 업로드 부분
   const fileInput = React.useRef();
 
@@ -228,81 +184,80 @@ const ChallengeWrite = (props) => {
 
   // 인증 게시글 추가하기
   const addChallenge = () => {
-    console.log(hashArr);
-    // if (content === "") {
-    //   window.alert("내용을 입력해주세요!");
-    //   return;
-    // }
-    // if (+maxMember > 30) {
-    //   window.alert("30명 이하로 등록해주세요!");
-    //   return;
-    // } else if (+maxMember === 0 || maxMember === "") {
-    //   window.alert("모집 인원 수를 입력해주세요!");
-    //   return;
-    // }
-    // // 서버에 보내기 위한 작업
-    // // 폼데이터 생성
-    // let formData = new FormData();
+    if (content === "") {
+      window.alert("내용을 입력해주세요!");
+      return;
+    }
+    if (+maxMember > 30) {
+      window.alert("30명 이하로 등록해주세요!");
+      return;
+    } else if (+maxMember === 0 || maxMember === "") {
+      window.alert("모집 인원 수를 입력해주세요!");
+      return;
+    }
+    // 서버에 보내기 위한 작업
+    // 폼데이터 생성
+    let formData = new FormData();
 
-    // // 날짜 형식 맞춰주는 함수
-    // function dateFormat(date) {
-    //   let month = date.getMonth() + 1;
-    //   let day = date.getDate();
-    //   let hour = date.getHours();
-    //   let minute = date.getMinutes();
-    //   let second = date.getSeconds();
+    // 날짜 형식 맞춰주는 함수
+    function dateFormat(date) {
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      let hour = date.getHours();
+      let minute = date.getMinutes();
+      let second = date.getSeconds();
 
-    //   month = month >= 10 ? month : "0" + month;
-    //   day = day >= 10 ? day : "0" + day;
-    //   hour = hour >= 10 ? hour : "0" + hour;
-    //   minute = minute >= 10 ? minute : "0" + minute;
-    //   second = second >= 10 ? second : "0" + second;
+      month = month >= 10 ? month : "0" + month;
+      day = day >= 10 ? day : "0" + day;
+      hour = hour >= 10 ? hour : "0" + hour;
+      minute = minute >= 10 ? minute : "0" + minute;
+      second = second >= 10 ? second : "0" + second;
 
-    //   return (
-    //     date.getFullYear() +
-    //     "." +
-    //     month +
-    //     "." +
-    //     day +
-    //     " " +
-    //     hour +
-    //     ":" +
-    //     minute +
-    //     ":" +
-    //     second
-    //   );
-    // }
-    // // 보낼 데이터 묶음 (이미지 제외)
-    // const data = {
-    //   title: title,
-    //   content: content,
-    //   category: category,
-    //   maxMember: parseInt(maxMember),
-    //   startDate: dateFormat(startDate),
-    //   endDate: dateFormat(endDate),
-    //   isPrivate: checkedInputs === "private" ? true : false,
-    //   password: checkedInputs === "private" ? password : null,
-    //   tagName: hashArr,
-    // };
+      return (
+        date.getFullYear() +
+        "." +
+        month +
+        "." +
+        day +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second
+      );
+    }
+    // 보낼 데이터 묶음 (이미지 제외)
+    const data = {
+      title: title,
+      content: content,
+      category: category,
+      maxMember: parseInt(maxMember),
+      startDate: dateFormat(startDate),
+      endDate: dateFormat(endDate),
+      isPrivate: checkedInputs === "private" ? true : false,
+      password: checkedInputs === "private" ? password : null,
+      tagName: hashArr,
+    };
 
-    // for (let i = 0; i < image.length; i++) {
-    //   formData.append("challengeImage", image[i]);
-    // }
+    for (let i = 0; i < image.length; i++) {
+      formData.append("challengeImage", image[i]);
+    }
 
-    // formData.append(
-    //   "challenge",
-    //   new Blob([JSON.stringify(data)], { type: "application/json" })
-    // );
+    formData.append(
+      "challenge",
+      new Blob([JSON.stringify(data)], { type: "application/json" })
+    );
 
-    // for (let value of formData.values()) {
-    //   console.log(value);
-    // }
+    for (let value of formData.values()) {
+      console.log(value);
+    }
 
-    // // 폼데이터에 이미지와 데이터 묶어서 보내기
-    // console.log("이미지확인", image);
+    // 폼데이터에 이미지와 데이터 묶어서 보내기
+    console.log("이미지확인", image);
 
-    // // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
-    // dispatch(challengeAction.addChallengeDB(formData));
+    // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
+    dispatch(challengeAction.addChallengeDB(formData));
   };
 
   // 인증 게시글 수정하기
@@ -483,12 +438,19 @@ const ChallengeWrite = (props) => {
             <span className="sub_color font14">(선택)</span>
           </p>
           {/* 태그 입력 부분 */}
-
-          <HashWrap className="HashWrap">
-            {/* 동적으로 생성되는 태그를 담을 div */}
-            <span className="HashWrapOuter"></span>
+          <WholeBox>
+            <TagBox>
+              {hashArr.map((tagItem, index) => {
+                return (
+                  <TagItem key={index}>
+                    <span>{tagItem}</span>
+                    <DeleteButton onClick={deleteTagItem}></DeleteButton>
+                  </TagItem>
+                );
+              })}
+            </TagBox>
             <input
-              className="HashInput"
+              type="text"
               placeholder={
                 hashArr.length > 0
                   ? ""
@@ -496,11 +458,10 @@ const ChallengeWrite = (props) => {
               }
               value={hashtag}
               onChange={(e) => setHashtag(e.target.value)}
-              onKeyUp={onKeyUp}
               maxLength="6"
+              onKeyPress={onKeyPress}
             />
-          </HashWrap>
-
+          </WholeBox>
           {/* 추천키워드 부분 */}
           <Grid margin="12px 0 0" padding="0px">
             <span
@@ -516,7 +477,7 @@ const ChallengeWrite = (props) => {
                 <HashButton
                   key={idx}
                   onClick={() => {
-                    recommendClick(el);
+                    submitTagItem(el);
                   }}
                   disabled={hashArr.includes(el)}
                 >
@@ -925,7 +886,7 @@ const ImageLabel = styled.label`
 `;
 
 /* emotion css 태그 */
-const HashWrap = styled.div`
+const WholeBox = styled.div`
   color: rgb(52, 58, 64);
   font-size: 12px;
   display: flex;
@@ -933,38 +894,9 @@ const HashWrap = styled.div`
   border-bottom: solid 1px rgba(124, 130, 136, 0.5);
   padding: 8px 0;
   overflow-y: scroll; //넘치면 좌우 스크롤
-  // 생성된 태그 박스 span 태그 css
-  .HashWrapOuter {
-    display: inline-block;
-    vertical-align: top;
-    white-space: nowrap;
-  }
-  // 생성된 태그 내용물 span 태그 css
-  .HashWrapInner {
-    background: rgba(23, 171, 214, 0.1);
-    color: #17abd6;
-    border-radius: 10px;
-    margin-right: 6px;
-    padding: 2px 6px;
-    font-size: 12px;
-    line-height: 18px;
-    text-align: center;
-  }
-  //생성된 태그 삭제 표시 css
-  .HashDelete {
-    display: inline-block;
-    background-image: url(${deleteIcon});
-    background-size: contain;
-    width: 16px;
-    height: 16px;
-    vertical-align: sub;
-    margin-left: 4px;
-    margin-top: 1px;
-  }
 
-  // 태그 작성 input
-  .HashInput {
-    width: 100%;
+  input {
+    width: 100vw;
     display: inline-block;
     vertical-align: top;
     outline: none;
@@ -972,6 +904,40 @@ const HashWrap = styled.div`
     border: none;
     font-family: inherit;
   }
+`;
+
+const TagBox = styled.div`
+  display: inline-block;
+  vertical-align: top;
+  white-space: nowrap;
+`;
+
+const TagItem = styled.span`
+  background: rgba(23, 171, 214, 0.1);
+  color: #17abd6;
+  border-radius: 10px;
+  margin-right: 6px;
+  padding: 2px 6px;
+
+  span {
+    color: #17abd6;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    vertical-align: middle;
+  }
+`;
+
+const DeleteButton = styled.span`
+  display: inline-block;
+  background-image: url(${deleteIcon});
+  background-size: contain;
+  width: 16px;
+  height: 16px;
+  vertical-align: sub;
+  margin-left: 4px;
+  margin-bottom: 2px;
+  border: none;
 `;
 
 // 추천키워드 버튼
