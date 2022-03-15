@@ -325,17 +325,17 @@ const Wrap = styled.div`
 `;
 
 const Tag = styled.div`
-    display: inline-block;
-    background-color: rgba(162, 170, 179, 0.1);
-    font-size: 14px;
-    border: 1px solid rgba(162, 170, 179, 0.5);
-    padding: 4px 10px;
-    border-radius: 20px;
-    margin: 0 6px 6px 0;
-    cursor: pointer;
-    &:nth-child(n+6) {
-        display: none;
-    }
+  display: inline-block;
+  background-color: rgba(162, 170, 179, 0.1);
+  font-size: 14px;
+  border: 1px solid rgba(162, 170, 179, 0.5);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin: 0 6px 6px 0;
+  cursor: pointer;
+  &:nth-child(n+6) {
+      display: none;
+  }
 `;
 
 const NotFound = styled.div`

@@ -53,7 +53,7 @@ const ModalBlock = styled.div`
   @keyframes modal-show {
     from {
       opacity: 0;
-      margin-bottom: -50px;
+      margin-bottom: -100px;
     }
     to {
       opacity: 1;
