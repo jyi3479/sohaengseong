@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as memberActions } from "../../redux/modules/member";
 import styled from "styled-components";
 import { Button, Grid, Input, Image } from "../../elements";
+import defaultImg from "../../image/img_profile_defalt @2x.png";
 
 const PostDetail = (props) => {
   const dispatch = useDispatch();
@@ -26,7 +27,15 @@ const PostDetail = (props) => {
       {/* PostCard의 윗 부분 */}
       <Grid is_flex padding="0px" margin="20px 0px">
         <Grid is_flex width="auto" padding="0px">
-          <ProfileImage size={40} src={props.profileImage} />
+          {/* <ProfileImage size={40} src={props.profileImage} /> */}
+          <Image
+            shape="border"
+            size="40"
+            level={props.levelName}
+            profile={
+              props.profileImage !== null ? props.profileImage : defaultImg
+            }
+          ></Image>
           <p>{props.nickname}</p>
         </Grid>
         <Grid is_flex width="auto" padding="0px">

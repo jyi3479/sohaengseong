@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import close from "../../image/icons/btn_delete_s@2x.png";
+import { Grid } from "../../elements";
+import close from "../../image/icons/ic_delete_m.png";
 
 const Container = styled.div`
   position: absolute;
@@ -36,8 +37,7 @@ const Background = styled.div`
 const ModalBlock = styled.div`
   position: absolute;
   top: 6.5rem;
-  border-radius: 10px;
-  padding: 40px 30px;
+  border-radius: 8px;
   background-color: #fff;
   width: 316px;
   min-height: 35rem;
@@ -57,9 +57,6 @@ const ModalBlock = styled.div`
 const Close = styled.img.attrs({
   src: close,
 })`
-  position: absolute;
-  right: 1.5rem;
-  top: 1.5rem;
   cursor: pointer;
 `;
 
@@ -67,6 +64,7 @@ const Contents = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px 24px;
 `;
 
 const MemberModal = ({ state, _handleModal, children, ...rest }) => {
@@ -74,7 +72,16 @@ const MemberModal = ({ state, _handleModal, children, ...rest }) => {
     <Container>
       <Background onClick={_handleModal} />
       <ModalBlock {...rest}>
-        <Close onClick={_handleModal} />
+        <Grid
+          is_flex
+          height="58px"
+          padding="20px 24px 16px"
+          style={{ borderBottom: "solid 1px #eff0f2" }}
+        >
+          <h3 className="mt4">멤버 리스트</h3>
+          <Close onClick={_handleModal} />
+        </Grid>
+
         <Contents>{children}</Contents>
       </ModalBlock>
     </Container>

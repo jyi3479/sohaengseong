@@ -33,23 +33,22 @@ const ChallengeInfo = (props) => {
             <div>
               <Grid center>
                 <p className="caption caption_color mb4">기간</p>
-                <p className="poppins">15일</p>
+                <h3>15일</h3>
               </Grid>
             </div>
             <div>
               <Grid center>
                 <p className="caption caption_color mb4">멤버</p>
                 <p className="poppins">
-                  {target.currentMember}/{target.maxMember}
+                  {target.currentMember}
+                  <span className="caption_color">/{target.maxMember}</span>
                 </p>
               </Grid>
             </div>
             <div>
               <Grid center>
                 <p className="caption caption_color mb4">공개여부</p>
-                <p className="poppins">
-                  {target.isPrivate ? "비공개" : "공개"}
-                </p>
+                <h3>{target.isPrivate ? "비공개" : "공개"}</h3>
               </Grid>
             </div>
           </StatusContainer>
