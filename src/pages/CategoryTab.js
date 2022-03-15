@@ -6,23 +6,27 @@ import { useSelector , useDispatch} from "react-redux";
 import ChallengeCard from "../components/ChallengeCard";
 import ChallengeList from "../components/ChallengeList";
 import SearchHeader from "../components/SearchHeader";
-
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as searchActions} from "../redux/modules/search";
 import { StaticRouter } from "react-router-dom";
 import { Category } from "@material-ui/icons";
+import _ from 'lodash'
 
 const CategoryTab = (props) => {
     const dispatch = useDispatch();
     const params = props.match.params.categoryId;
     const [word,setWord] = React.useState("");
+    const [search_list,setSearch_list] = React.useState('');
     const categoryList = useSelector((state) => state.challenge.category_list);
+    const searchList = useSelector((state) => state.search.list)
     const allList = useSelector((state) => state.challenge.list);
     const location = window.location.pathname;
     const tabId = location.split("/")[2];
-
+    const throttle = _.throttle((e)=>
+      console.log('throttle :::', e.target.value)
+    , 1000)
+    const keyPress = React.useCallback(throttle, []);
     console.log("카테고리", params,location,tabId);
-     
 
     React.useEffect(()=>{
       if (tabId !== 'all'){
@@ -32,19 +36,24 @@ const CategoryTab = (props) => {
       }
     },[tabId]);
    
-      
+    const onChangeSearch = (e) => {
+        setWord(e.target.value);
+            keyPress(e)
+            dispatch(searchActions.getSearchDB(word))
+            setSearch_list(searchList);
+    }
     return (
       <>
         <SearchHeader
           value={word}
-          _onChange={(e) => {
-            setWord(e.target.value);
-          }}
+          _onChange={onChangeSearch}
           _deleteBtn={() => {
             setWord("");
           }}
           _onClick={() => {
             dispatch(searchActions.getSearchDB(word));
+            history.push("/category/all");
+            setSearch_list(searchList)
           }}
         />
         <Grid padding="0" margin="71px 0 0">
@@ -60,7 +69,7 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '1' ? "active" : ""}
+              className={tabId === "1" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/1`);
               }}
@@ -69,7 +78,7 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '2' ? "active" : ""}
+              className={tabId === "2" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/2`);
               }}
@@ -78,7 +87,7 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '3' ? "active" : ""}
+              className={tabId === "3" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/3`);
               }}
@@ -87,7 +96,7 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '4' ? "active" : ""}
+              className={tabId === "4" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/4`);
               }}
@@ -96,7 +105,7 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '5' ? "active" : ""}
+              className={tabId === "5" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/5`);
               }}
@@ -105,7 +114,7 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '6' ? "active" : ""}
+              className={tabId === "6" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/6`);
               }}
@@ -114,7 +123,7 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '7' ? "active" : ""}
+              className={tabId === "7" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/7`);
               }}
@@ -123,7 +132,7 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '8' ? "active" : ""}
+              className={tabId === "8" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/8`);
               }}
@@ -132,24 +141,32 @@ const CategoryTab = (props) => {
             </Tab>
             <Tab
               type="button"
-              className={tabId === '9' ? "active" : ""}
+              className={tabId === "9" ? "active" : ""}
               onClick={() => {
                 history.push(`/category/9`);
               }}
             >
               친환경
             </Tab>
-          </TabWrap>           
-            <p
-              style={{
-                fontSize: "18px",
-                marginTop: "20px",
-                marginLeft: "20px",
-                marginBottom: "24px",
-              }}
-            >
-              총<b>{tabId !== 'all'?categoryList[tabId]?categoryList[tabId].length:0:allList.length}</b>건
-            </p>         
+          </TabWrap>
+          <p
+            style={{
+              fontSize: "18px",
+              marginTop: "20px",
+              marginLeft: "20px",
+              marginBottom: "24px",
+            }}
+          >
+            총
+            <b>
+              {tabId !== "all"
+                ? categoryList[tabId]
+                  ? categoryList[tabId].length
+                  : 0
+                : search_list? searchList.length : allList.length}
+            </b>
+            건
+          </p>
           <Grid is_flex padding="20px">
             {tabId !== "all" ? (
               categoryList[tabId] ? (
@@ -169,17 +186,29 @@ const CategoryTab = (props) => {
               )
             ) : (
               <>
-                {allList.map((el,i)=>{
-                  return (
-                    <ChallengeCard
-                      key={el.challengeId}
-                      {...el}
-                      _onClick={() => {
-                        history.push(`/challenge/${el.challengeId}`);
-                      }}
-                    ></ChallengeCard>
-                  );
-                })}
+                {search_list
+                  ? searchList.map((el, i) => {
+                      return (
+                        <ChallengeCard
+                          key={i}
+                          {...el}
+                          _onClick={() => {
+                            history.push(`/challenge/${el.challengeId}`);
+                          }}
+                        ></ChallengeCard>
+                      );
+                    })
+                  : allList.map((el, i) => {
+                      return (
+                        <ChallengeCard
+                          key={i}
+                          {...el}
+                          _onClick={() => {
+                            history.push(`/challenge/${el.challengeId}`);
+                          }}
+                        ></ChallengeCard>
+                      );
+                    })}
               </>
             )}
           </Grid>
