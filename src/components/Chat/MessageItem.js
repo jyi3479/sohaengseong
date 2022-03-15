@@ -25,8 +25,7 @@ function MessageItem(props) {
   //   }, [])
 
   // 타임 스탬프
-  let time,
-    date = "";
+  let time = "";
   if (!(message.createdAt === null)) {
     time = moment(message.createdAt, "YYYY.MM.DD kk:mm:ss").format("LT");
   }

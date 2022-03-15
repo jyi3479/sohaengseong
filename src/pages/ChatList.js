@@ -28,7 +28,7 @@ const ChatList = (props) => {
         <Grid padding="28px 20px" margin="48px 0 0">
           {/* 채팅방 -------- */}
           {chatInfo?.map((el, i) => {
-            return <ChatRoomItem key={el.id} {...el} />;
+            return <ChatRoomItem key={i} {...el} />;
           })}
         </Grid>
       )}

@@ -6,17 +6,19 @@ import { Button, Grid, Input, Image } from "../elements";
 import PostModal from "./Member/PostModal";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
-import comment from "../image/icons/ic_chat@2x.png";
+import comment from "../image/icons/ic_relpy@2x.png";
 import deleteIcon from "../image/icons/ic_delete@2x.png";
 import close from "../image/icons/icon_close_btn@2x.png";
 import edit from "../image/icons/ic_edit@2x.png";
 import more from "../image/icons/ic_more@2x.png";
+import defaultImg from "../image/img_profile_defalt @2x.png";
 import moment from "moment";
 import "moment/locale/ko";
 
 const PostCard = (props) => {
   moment.locale("ko"); // 모멘트 한글로 바꾸기
   const challengeId = useParams().challengeId;
+  const roomId = useParams().roomId;
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.user);
   const is_me = userInfo.nickname === props.nickname;
@@ -34,7 +36,8 @@ const PostCard = (props) => {
   };
   const deletePost = () => {
     dispatch(memberActions.deletePostDB(props.postId));
-    history.replace(`/post/${challengeId}`);
+    setModalState(false);
+    history.replace(`/post/${challengeId}/${roomId}`);
   };
 
   const deleteComment = (commentId) => {
@@ -52,11 +55,16 @@ const PostCard = (props) => {
   };
 
   return (
-    <Grid>
+    <Grid bg="#fff" padding="0px" margin="0 0 32px">
       {/* PostCard의 윗 부분 */}
-      <Grid is_flex padding="0px" margin="20px 0px">
+      <Grid is_flex margin="16px 0px">
         <Grid is_flex width="auto" padding="0px">
-          <Image size={40} profile={props.profileImage} />
+          <Image
+            size={40}
+            profile={
+              props.profileImage !== null ? props.profileImage : defaultImg
+            }
+          />
           <p style={{ margin: "0px 10px" }}>{props.nickname}</p>
         </Grid>
         {is_me && (
@@ -70,7 +78,9 @@ const PostCard = (props) => {
         padding="0px"
         _onClick={() => {
           if (!isDetail) {
-            history.push(`/post/${challengeId}/detail/${props.postId}`);
+            history.push(
+              `/post/${challengeId}/detail/${props.postId}/${props.roomId}`
+            );
           }
         }}
       >
@@ -81,8 +91,8 @@ const PostCard = (props) => {
         ) : (
           ""
         )}
-        <Grid margin="16px 0" padding="0px">
-          <p style={{ fontSize: "14px" }}>{props.content}</p>
+        <Grid margin="16px 0">
+          <p style={{ color: "#333333" }}>{props.content}</p>
         </Grid>
 
         {/* PostCard의 댓글 조회 부분 */}
@@ -90,7 +100,7 @@ const PostCard = (props) => {
           <CommentBox>
             <img src={comment} />
             <p>
-              댓글 <span>{props.comments.length}</span>개
+              댓글 <span className="poppins">{props.comments.length}</span>개
             </p>
           </CommentBox>
           {/* PostCard의 댓글 입력 창 */}
@@ -119,30 +129,37 @@ const PostCard = (props) => {
               </InputBox>
             </CommentWriteBox>
           )}
-          {comments.map((el, i) => {
-            return (
-              <Grid padding="0px" margin="12px 0px" key={el.commentId} is_flex>
-                <ContentBox>
-                  {isDetail && <Image size={36} profile={el.profileImage} />}
-                  <p className="writer">{el.nickname}</p>
+          <Grid padding="0" margin="16px 0px">
+            {comments.map((el, i) => {
+              return (
+                <Grid
+                  padding="0px"
+                  margin="0 0 10px"
+                  key={el.commentId}
+                  is_flex
+                >
+                  <ContentBox>
+                    {isDetail && <Image size={36} profile={el.profileImage} />}
+                    <p className="writer">{el.nickname}</p>
 
-                  <p className="comment">{el.content}</p>
-
-                  <p className="date">
+                    <p>{el.content}</p>
+                  </ContentBox>
+                  <p className="caption_color small t_right">
                     {moment(el.createdAt, "YYYY.MM.DD kk:mm:ss").fromNow("")}
                   </p>
-                </ContentBox>
-                {isDetail && userInfo.nickname === el.nickname && (
-                  <Delete
-                    src={deleteIcon}
-                    onClick={() => {
-                      deleteComment(el.commentId);
-                    }}
-                  />
-                )}
-              </Grid>
-            );
-          })}
+
+                  {isDetail && userInfo.nickname === el.nickname && (
+                    <Delete
+                      src={deleteIcon}
+                      onClick={() => {
+                        deleteComment(el.commentId);
+                      }}
+                    />
+                  )}
+                </Grid>
+              );
+            })}
+          </Grid>
         </CommentContainer>
       </Grid>
       <PostModal state={modalState} _handleModal={closeModal}>
@@ -150,7 +167,9 @@ const PostCard = (props) => {
           <Grid width="auto" padding="0px">
             <ModalBox
               onClick={() => {
-                history.push(`/post/${challengeId}/write/${props.postId}`);
+                history.push(
+                  `/postwrite/${challengeId}/${roomId}/${props.postId}`
+                );
               }}
             >
               <img src={edit} />
@@ -172,8 +191,7 @@ const PostCard = (props) => {
 };
 
 const CommentContainer = styled.div`
-  margin: 16px 0px;
-  padding: 10px 0px;
+  padding: 16px;
   border-top: 1px solid #d9d9d9;
 `;
 
@@ -190,21 +208,9 @@ const CommentBox = styled.div`
   display: flex;
 
   img {
-    width: 24px;
-    height: 24px;
-    margin-right: 9px;
-  }
-
-  p {
-    font-size: 14px;
-    line-height: 1.43;
-    letter-spacing: -0.42px;
-    text-align: left;
-    color: #000;
-    span {
-      font-weight: bold;
-      margin-left: 4px;
-    }
+    width: 240x;
+    height: 20px;
+    margin-right: 5px;
   }
 `;
 
@@ -237,25 +243,12 @@ const InputBox = styled.div`
 
 const ContentBox = styled.div`
   display: flex;
+  justify-content: space-between;
   p {
-    margin: 7px 5px 5px;
+    margin: 0 10px 0 0;
   }
   .writer {
-    font-size: 14px;
     font-weight: bold;
-    line-height: 1.43;
-    color: #000;
-  }
-  .comment {
-    font-size: 14px;
-    line-height: 1.43;
-    color: #333;
-  }
-  .date {
-    font-size: 12px;
-    line-height: 1.5;
-    color: #9b9b9b;
-    margin-top: 9px;
   }
 `;
 

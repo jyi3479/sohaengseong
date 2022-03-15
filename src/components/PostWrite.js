@@ -12,6 +12,7 @@ import plus from "../image/icons/btn_number_plus_l@2x.png";
 
 const PostWrite = (props) => {
   const postId = +useParams().postId;
+  const roomId = useParams().roomId;
   const isEdit = postId ? true : false;
   const dispatch = useDispatch();
   const challengeId = +useParams().challengeId;
@@ -79,6 +80,7 @@ const PostWrite = (props) => {
         console.log("인증 게시글 작성", res);
         setModalType("okModal");
         setModalOpen(true);
+        history.push(`/post/${challengeId}/${roomId}`);
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
@@ -116,7 +118,7 @@ const PostWrite = (props) => {
         console.log("인증 게시글 작성", res);
         // dispatch(memberAction.editPost(post));
 
-        history.push(`/post/${challengeId}`);
+        history.push(`/post/${challengeId}/${roomId}`);
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);

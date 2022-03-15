@@ -29,6 +29,10 @@ const deleteComment = createAction(DELETE_COMMENT, (postId, commentId) => ({
   commentId,
 }));
 
+//리포트
+const GET_REPORT = "GET_REPORT";
+const getReport = createAction(GET_REPORT, (report) => ({ report }));
+
 const initialState = {
   postList: [
     {
@@ -115,6 +119,7 @@ const initialState = {
       ],
     },
   ],
+  report: [],
 };
 
 const getPostDB = (challengeId) => {
@@ -212,6 +217,20 @@ const exitChallengeDB = (challengeId) => {
   };
 };
 
+const getReportDB = (challengeId, startDate) => {
+  return function (dispatch, getState, { history }) {
+    memberApis
+      .getReport(challengeId, startDate)
+      .then((res) => {
+        console.log("리포트 조회", res);
+        dispatch(getReport(res.data));
+      })
+      .catch((err) => {
+        console.log("리포트 조회 오류", err);
+      });
+  };
+};
+
 export default handleActions(
   {
     //인증 게시글
@@ -251,6 +270,10 @@ export default handleActions(
         );
         draft.postList[postIdx].comments.splice(commentIdx, 1);
       }),
+    [GET_REPORT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.report = action.payload.report;
+      }),
   },
   initialState
 );
@@ -265,6 +288,7 @@ const actionCreators = {
   deletePostDB,
   deleteCommentDB,
   exitChallengeDB,
+  getReportDB,
 };
 
 export { actionCreators };

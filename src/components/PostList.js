@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 
 const PostList = (props) => {
   const challengeId = useParams().challengeId;
+  const roomId = useParams().roomId;
   const dispatch = useDispatch();
   const post_list = useSelector((state) => state.member.postList);
   console.log(post_list);
@@ -16,9 +17,9 @@ const PostList = (props) => {
     dispatch(memberActions.getPostDB(challengeId));
   }, []);
   return (
-    <Grid padding="0px" margin="0 0 10px" border="1px #dddddd">
+    <Grid padding="24px 20px 32px" border="1px #dddddd">
       {post_list.map((el, i) => {
-        return <PostCard key={i} {...el}></PostCard>;
+        return <PostCard key={i} roomId={roomId} {...el}></PostCard>;
       })}
       <Fixed>
         <Grid padding="0" is_flex>
@@ -27,8 +28,7 @@ const PostList = (props) => {
             bg="#fff"
             style={{ color: "#666", border: "1px solid #666" }}
             _onClick={() => {
-              history.push("/chatting");
-              // history.push("/chatting/${roomId}");
+              history.push(`/chatting/${roomId}`);
             }}
           >
             실시간 톡
@@ -36,7 +36,7 @@ const PostList = (props) => {
           <Button
             width="calc(70% - 5px)"
             _onClick={() => {
-              history.push(`/post/${challengeId}/write`);
+              history.push(`/postwrite/${challengeId}/${roomId}`);
             }}
           >
             인증하기
