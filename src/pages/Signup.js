@@ -172,7 +172,7 @@ const Signup = (props) => {
 
   return (
     <>
-    <Grid padding="0 40px" margin="100px 0 0" style={{ overflow: "revert" }}>
+    <Grid padding="24px 20px" margin="48px 0 0" bg="#fff" style={{ overflow: "revert" }}>
       <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
         <label style={{ fontSize: "12px" }}>아이디(이메일)</label>
         <Grid
@@ -394,7 +394,6 @@ const Signup = (props) => {
         <Button _onClick={()=>{
           signup()
         }} disabled={isPwd === true && samePwd === true && _nickCheck === "true"? "" : "disabled"}
-        style={{fontSize:"16px", fontWeight:"normal"}}
         >가입하기</Button>
       </Fixed>
     </Grid>
@@ -505,7 +504,7 @@ const Select = styled.div`
     width: 100%;
     height: 204px;
     background: #fff;
-    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.08);
     border-radius: 4px;
     overflow: hidden;
     transition: 0.2s ease-in;

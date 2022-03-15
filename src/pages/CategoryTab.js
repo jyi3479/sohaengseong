@@ -31,18 +31,15 @@ const CategoryTab = (props) => {
         history.push("/category/all");
         if(word !== "" || word !== " "){
             dispatch(searchActions.getSearchDB(word));
+            setSearch_list(searchList);
         }          
     }, 500);
     const keyPress = React.useCallback(debounce, []);
 
     const ChangeWord = (e) => { //추천 검색어 클릭 시
-      history.push({
-        pathname:"/category/all",
-        state: {targetWord: e.target.innerText},
-      });
-
-      setWord(e.target.innerText);
+      setWord(e.target.innerText);      
       dispatch(searchActions.getSearchDB(e.target.innerText));
+      setSearch_list(searchList);
     };
 
     const onChangeSearch = (e) => { //검색어 입력 시
@@ -54,12 +51,25 @@ const CategoryTab = (props) => {
     React.useEffect(()=>{
       dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
       if (tabId === 'all') {//전체 리스트 불러오기 
+        <Grid padding="30px 20px" margin="48px 0 0" className="recommend_box" >
+          <h3>실시간 추천 검색어</h3>
+          <div className="mt12">              
+            {recommend_list&&recommend_list.map((el,i) => {
+                return <Tag key={i} onClick={ChangeWord}>{el}</Tag>
+            })}
+          </div>
+        </Grid>
+
+
         dispatch(challengeAction.getChallengeDB());
       }else {//전체 탭이 아닐경우 카테고리 리스트 불러오기 
         dispatch(challengeAction.categoryChallengeDB(tabId));
       }
+      
 
     },[tabId]);
+
+    console.log("검색",searchList,"검색어",word,"전체",allList);
 
 
     return (
@@ -78,7 +88,7 @@ const CategoryTab = (props) => {
         />        
         
         <Grid padding="0" >
-          {location !== "/search" ? (
+          {word !== "" || tabId !== "all"? (
             <Wrap>
               <TabWrap className="tab_wrap">
                 <Tab
@@ -210,7 +220,7 @@ const CategoryTab = (props) => {
                   )
                 ) : (
                   <>
-                    {search_list? searchList.length !== 0? (
+                    {search_list? searchList.length > 0? (
                        searchList.map((el, i) => {
                           return (
                             <ChallengeCard

@@ -43,7 +43,7 @@ const Header = (props) => {
             className="search_btn"
             style={{ display: search ? "block" : "none" }}
             onClick={() => {
-              history.push("/search");
+              history.push("/category/all");
             }}
           >
             <img src={searchIconB} />

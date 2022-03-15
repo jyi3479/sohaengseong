@@ -6,6 +6,31 @@ import arrow from "../image/icons/ic_arrow_w.png";
 import logo from "../image/logo.png";
 
 const MainHeader = (props) => {
+    
+
+
+    // const headerHeight = header.offsetHeight;
+
+    // window.onscroll = function () {
+    //     let windowTop = window.scrollY;
+    //     // 스크롤 세로값이 헤더높이보다 크거나 같으면 
+    //     // 헤더에 클래스 'drop'을 추가한다
+    //     if (windowTop >= headerHeight) {
+    //         header.classList.add("scroll");
+    //     } 
+    //     // 아니면 클래스 'drop'을 제거
+    //     else {
+    //         header.classList.remove("scroll");
+    //     }
+    // };
+
+    React.useEffect(()=>{
+        // const headerHeight = document.getElementById('header').clientHeight;
+        // console.log(headerHeight);
+    });
+
+
+
     return(        
         <Wrap id="Header" className={props.className}>
             {props.className === "category"? (
@@ -38,6 +63,9 @@ const Wrap = styled.div`
     padding: 11px 20px;
     box-sizing: border-box;  
     z-index: 10;
+    &.scroll {
+        background-color: #fff;
+    }
     .title {
         display: flex;
         >p {
