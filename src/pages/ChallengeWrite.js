@@ -156,13 +156,8 @@ const ChallengeWrite = (props) => {
       /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
       $HashDelete.addEventListener("click", () => {
         $HashWrapOuter?.removeChild($HashWrapInner);
-        console.log($HashWrapInner.innerHTML);
-        setHashArr(
-          hashArr.filter((hashtag) => {
-            console.log($HashWrapInner.innerHTML);
-            return hashtag !== $HashWrapInner.innerHTML;
-          })
-        );
+        console.log($HashWrapInner.innerHTML, hashArr);
+        setHashArr(hashArr.filter((hashtag) => hashtag));
       });
     },
     [hashtag, hashArr]
@@ -189,20 +184,13 @@ const ChallengeWrite = (props) => {
       $HashWrapInner?.appendChild($HashDelete);
 
       setHashArr((hashArr) => [...hashArr, keyword]);
-      setHashtag("");
       console.log(hashArr);
 
       /* 삭제(x 표시)를 클릭 이벤트 관련 로직 */
       $HashDelete.addEventListener("click", () => {
         console.log(keyword, hashArr);
         $HashWrapOuter?.removeChild($HashWrapInner);
-        console.log($HashWrapInner.innerHTML);
-        setHashArr(
-          hashArr.filter((hashtag) => {
-            console.log($HashWrapInner.innerHTML);
-            return hashtag !== $HashWrapInner.innerHTML;
-          })
-        );
+        setHashArr(hashArr.filter((hashtag) => hashtag));
       });
     },
     [hashtag, hashArr]
@@ -240,80 +228,81 @@ const ChallengeWrite = (props) => {
 
   // 인증 게시글 추가하기
   const addChallenge = () => {
-    if (content === "") {
-      window.alert("내용을 입력해주세요!");
-      return;
-    }
-    if (+maxMember > 30) {
-      window.alert("30명 이하로 등록해주세요!");
-      return;
-    } else if (+maxMember === 0 || maxMember === "") {
-      window.alert("모집 인원 수를 입력해주세요!");
-      return;
-    }
-    // 서버에 보내기 위한 작업
-    // 폼데이터 생성
-    let formData = new FormData();
+    console.log(hashArr);
+    // if (content === "") {
+    //   window.alert("내용을 입력해주세요!");
+    //   return;
+    // }
+    // if (+maxMember > 30) {
+    //   window.alert("30명 이하로 등록해주세요!");
+    //   return;
+    // } else if (+maxMember === 0 || maxMember === "") {
+    //   window.alert("모집 인원 수를 입력해주세요!");
+    //   return;
+    // }
+    // // 서버에 보내기 위한 작업
+    // // 폼데이터 생성
+    // let formData = new FormData();
 
-    // 날짜 형식 맞춰주는 함수
-    function dateFormat(date) {
-      let month = date.getMonth() + 1;
-      let day = date.getDate();
-      let hour = date.getHours();
-      let minute = date.getMinutes();
-      let second = date.getSeconds();
+    // // 날짜 형식 맞춰주는 함수
+    // function dateFormat(date) {
+    //   let month = date.getMonth() + 1;
+    //   let day = date.getDate();
+    //   let hour = date.getHours();
+    //   let minute = date.getMinutes();
+    //   let second = date.getSeconds();
 
-      month = month >= 10 ? month : "0" + month;
-      day = day >= 10 ? day : "0" + day;
-      hour = hour >= 10 ? hour : "0" + hour;
-      minute = minute >= 10 ? minute : "0" + minute;
-      second = second >= 10 ? second : "0" + second;
+    //   month = month >= 10 ? month : "0" + month;
+    //   day = day >= 10 ? day : "0" + day;
+    //   hour = hour >= 10 ? hour : "0" + hour;
+    //   minute = minute >= 10 ? minute : "0" + minute;
+    //   second = second >= 10 ? second : "0" + second;
 
-      return (
-        date.getFullYear() +
-        "." +
-        month +
-        "." +
-        day +
-        " " +
-        hour +
-        ":" +
-        minute +
-        ":" +
-        second
-      );
-    }
-    // 보낼 데이터 묶음 (이미지 제외)
-    const data = {
-      title: title,
-      content: content,
-      category: category,
-      maxMember: parseInt(maxMember),
-      startDate: dateFormat(startDate),
-      endDate: dateFormat(endDate),
-      isPrivate: checkedInputs === "private" ? true : false,
-      password: checkedInputs === "private" ? password : null,
-      tagName: hashArr,
-    };
+    //   return (
+    //     date.getFullYear() +
+    //     "." +
+    //     month +
+    //     "." +
+    //     day +
+    //     " " +
+    //     hour +
+    //     ":" +
+    //     minute +
+    //     ":" +
+    //     second
+    //   );
+    // }
+    // // 보낼 데이터 묶음 (이미지 제외)
+    // const data = {
+    //   title: title,
+    //   content: content,
+    //   category: category,
+    //   maxMember: parseInt(maxMember),
+    //   startDate: dateFormat(startDate),
+    //   endDate: dateFormat(endDate),
+    //   isPrivate: checkedInputs === "private" ? true : false,
+    //   password: checkedInputs === "private" ? password : null,
+    //   tagName: hashArr,
+    // };
 
-    for (let i = 0; i < image.length; i++) {
-      formData.append("challengeImage", image[i]);
-    }
+    // for (let i = 0; i < image.length; i++) {
+    //   formData.append("challengeImage", image[i]);
+    // }
 
-    formData.append(
-      "challenge",
-      new Blob([JSON.stringify(data)], { type: "application/json" })
-    );
+    // formData.append(
+    //   "challenge",
+    //   new Blob([JSON.stringify(data)], { type: "application/json" })
+    // );
 
-    for (let value of formData.values()) {
-      console.log(value);
-    }
+    // for (let value of formData.values()) {
+    //   console.log(value);
+    // }
 
-    // 폼데이터에 이미지와 데이터 묶어서 보내기
-    console.log("이미지확인", image);
+    // // 폼데이터에 이미지와 데이터 묶어서 보내기
+    // console.log("이미지확인", image);
 
-    // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
-    dispatch(challengeAction.addChallengeDB(formData));
+    // // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
+    // dispatch(challengeAction.addChallengeDB(formData));
   };
 
   // 인증 게시글 수정하기
