@@ -31,8 +31,8 @@ const Input = ({
     return (
       <Double>
         <Label>
-          <p>{label}</p>
-          <p>{subLabel}</p>
+          <p className="label">{label}</p>
+          <p className="sub_label">{subLabel}</p>
         </Label>
         <div>
           <InputField
@@ -59,8 +59,8 @@ const Input = ({
   if (is_submit) {
     return (
       <Label>
-        <p>{label}</p>
-        <p>{subLabel}</p>
+        <p className="label">{label}</p>
+        <p className="sub_label">{subLabel}</p>
         <InputField
           ref={ref}
           type={type}
@@ -80,10 +80,10 @@ const Input = ({
   } else if (textarea) {
     return (
       <Label>
-        <p>{label}</p>
-        <p>{subLabel}</p>
+        <p className="label">{label}</p>
+        <p className="sub_label">{subLabel}</p>
         <TextAreaField
-          rows={10}
+          rows={8}
           ref={ref}
           value={value}
           placeholder={placeholder}
@@ -101,8 +101,8 @@ const Input = ({
   } else {
     return (
       <Label>
-        <p>{label}</p>
-        <p>{subLabel}</p>
+        <p className="label">{label}</p>
+        <p className="sub_label">{subLabel}</p>
         <InputField
           ref={ref}
           type={type}
@@ -164,6 +164,9 @@ const InputField = styled.input`
     color: #7c8288;
     line-height: 1.29;
   }
+  &:disabled {
+    color: #a2aab3;
+  }
 `;
 
 const Label = styled.div`
@@ -205,14 +208,20 @@ const TextAreaField = styled.textarea`
   ${(props) => (props.height ? `height: ${props.height};` : `height: 100%;`)}
   ${(props) => (props.padding ? `padding: ${props.padding};` : "")}
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")}
+  border:none;
   ${(props) =>
-    props.border ? `border: ${props.border};` : `border: 1px solid #999;`}
+    props.border ? `border: ${props.border};` : `border-bottom: 1px solid rgba(124, 130, 136, 0.5);`}
   box-sizing: border-box;
-  font-family: inherit; // font 상속
+  resize: none;
+  font-size: 14px;
   &:focus {
     outline: none;
-    border: 1px solid #000;
+    border-bottom: 1px solid #4149d3;
   }
+  &::placeholder{ 
+    color:rgba(124, 130, 136, 0.5);
+  }
+  
 `;
 
 export default Input;

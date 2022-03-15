@@ -9,11 +9,18 @@ import { challengeApis, mypageApis } from "../shared/apis";
 import { actionCreators as mypageAction } from "../redux/modules/mypage";
 
 import defaultImg from "../image/img_profile_defalt @2x.png";
-import bg from "../image/my_bg.png";
+import bg from "../image/img_bg@2x.png";
+import ground from "../image/img_ground@2x.png";
+import level_img1 from "../image/icon/level/img_level1@2x.png";
+import level_img2 from "../image/icon/level/img_level2@2x.png";
+import level_img3 from "../image/icon/level/img_level3@2x.png";
+import level_img4 from "../image/icon/level/img_level4@2x.png";
+import level_img5 from "../image/icon/level/img_level5@2x.png";
 
 const MyLevel = (props) => {
   const dispatch = useDispatch();
   const my_level = useSelector((state) => state.mypage.myInfo);
+  const levelNum = my_level&&my_level.levelName.split("_")[1];
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -24,13 +31,15 @@ const MyLevel = (props) => {
     <>
     {my_level&&   
     <Wrap>
+      <img className="ground" src={ground}/>
       <MyContainer>
         <Grid is_flex padding="0px">
+          
           <div style={{ display: "flex", alignItems:"center" , width:"calc(100% - 70px)"}}>            
-            <Image shape="border" size="42" profile={my_level.profileUrl !== null? my_level.profileUrl : defaultImg}/>            
+            <Image shape="border" size="42" level={my_level.levelName} profile={my_level.profileUrl !== null? my_level.profileUrl : defaultImg}/>            
             <Grid padding="0px 0px 0px 9px" width="calc(100% - 54px)">
               <p>{my_level.nickname}</p>
-              <p className="sub_color caption caption_color">{my_level.levelName}</p>
+              <p className="sub_color caption caption_color">Level {levelNum}</p>
             </Grid>
           </div>
           <Button small_btn
@@ -44,14 +53,15 @@ const MyLevel = (props) => {
         <Progress my_level={my_level} />
       </MyContainer>
       <MyPlanet>
-        {/* <TooltipBox>
-          <Tooltip>오늘 인증을 하면 레벨업!</Tooltip>
-        </TooltipBox> */}
-        <Icon
-          size={92}
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlwiGD-SGQ1o7a3LV6bv845DCONAKTsd7yw&usqp=CAU"
+        <img
+          src={levelNum === "1" ? level_img1 :
+          levelNum === "2" ? level_img2 :
+          levelNum === "3" ? level_img3 :
+          levelNum === "4" ? level_img4 :
+          levelNum === "5" ? level_img5 :
+          null
+        }
         />
-        {/* <Icon size={92} src={my_level.levelIcon} /> */}
       </MyPlanet>
     </Wrap>
      }      
@@ -60,38 +70,38 @@ const MyLevel = (props) => {
 };
 
 const Wrap = styled.div`
+  height: 417px;
   padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   background-image: url(${bg});
   background-position: center;
   background-size: cover;
+  position: relative;
+  .ground {
+    width: 100%;
+    position: absolute;
+    bottom:0;
+    left: 0;   
+  }
 `;
 
 const MyContainer = styled.div`
   background-color: #ffffff;
   width: 100%;
   border-radius: 10px;
-  padding: 14px;
+  padding: 16px 20px;  
 `;
 
-const ProfileBtn = styled.button`
-  width: 43px;
-  height: 29px;
-  margin: 0px 0px 16px;
-  border-radius: 6px;
-  border: solid 1px #ccc;
-  background-color: #fff;
-  color: #cccccc;
-  font-size: 12px;
-  font-family: inherit;
-`;
 
 const MyPlanet = styled.div`
-  padding: 110px 0px 50px 0px;
-  position: relative;
+  width: 100%;
+  position: absolute;
+  bottom: 52px;
+  left: 0;
+  >img{
+    display: block;
+    width:160px;
+    margin:auto;
+  }
 `;
 
 const TooltipBox = styled.div`
@@ -141,18 +151,6 @@ const Tooltip = styled.div`
   }
 `;
 
-//나의 레벨에 해당하는 아이콘 이미지
-const Icon = styled.img`
-  --size: ${(props) => props.size}px;
-  width: var(--size);
-  height: var(--size);
-  min-width: var(--size);
-  min-height: var(--size);
-  background-image: url(${(props) => props.src});
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%;
-`;
 
 export default MyLevel;
 
@@ -167,7 +165,7 @@ const Progress = (props) => {
           width={(my_level.rankingPoint / my_level.experiencePoint) * 100 + "%"}
         ></HighLight>
       </ProgressBar>
-      <p className="sub_color caption t_right">{my_level.rankingPoint}/{my_level.experiencePoint}</p>
+      <p className="poppins sub_color caption t_right">{my_level.rankingPoint}/{my_level.experiencePoint}</p>
     </>
   );
 };
@@ -179,12 +177,12 @@ const ProgressBar = styled.div`
   border-radius: 10px;
   display: flex; // HighLight와 Circle이 한 줄에 붙어있게 하도록.
   align-items: center; //세로로 중앙 정렬
-  margin: 16px 20px 2px 54px;
+  margin: 16px 20px 4px 54px;
 `;
 
 const HighLight = styled.div`
   max-width: 100%;
-  background: #95c8d7;
+  background: #17abd6;
   transition: 1s;
   width: ${(props) => props.width};
   height: 100%;

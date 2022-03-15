@@ -27,10 +27,10 @@ const RankingCard = (props) => {
                         ):(
                             <img src={same}/>
                         )}</State>
-                        <Image shape="border" size="42" profile={props.profileImage !== null? props.profileImage : defaultImg}/>
+                        <Image shape="border" size="42" level={props.level} profile={props.profileImage !== null? props.profileImage : defaultImg}/>
                     </div>
                     <Info>
-                        <p>{props.nickname}</p>
+                        <p>{props.nickname} <span className="sub_point_color small t_center" style={{display:props.className.includes("is_me")?"inline-block":"none"}}>Me</span></p>
                         <p className="small caption_color">{props.level}</p>
                     </Info>
                 </RankWrap>        
@@ -53,7 +53,7 @@ const RankWrap = styled.div`
     width: calc(100% - 30px);
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 12px 0;
 `;
 const Rank = styled.p`
     width: 22px;
@@ -78,14 +78,18 @@ const State = styled.div`
 `;
 const Info = styled.div`
     margin: 0 8px;
+    span {
+        width: 40px;
+        display: inline-block;
+        border-radius: 10px;
+        padding: 3px 6px 2px;
+        background-color: rgba(23,171,214,0.1);
+    }
 `;
 
 const Point = styled.p`
     width: 30px;
     text-align: right;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 37px;
 `;
 
 

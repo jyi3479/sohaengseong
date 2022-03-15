@@ -55,6 +55,7 @@ const loginDB = (email, password) => {
                 nickname: res.data.nickname,
                 profileUrl: res.data.profileUrl,
                 count: res.data.dailyCount,
+                level: res.data.levelName,
               })
             );
           })
@@ -144,6 +145,7 @@ const loginCheckDB = () => {
             nickname: res.data.nickname,
             profileUrl: res.data.profileUrl,
             count: res.data.dailyCount,
+            level: res.data.levelName,
           })
         );
       })

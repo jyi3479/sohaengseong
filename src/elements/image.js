@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import profileBorder from "../image/profile_border.png";
+import  defaultProfile from "../image/img_profile_defalt @2x.png";
 
 const Image = (props) => {
-  const { shape, src, size, profile, radius, align, inline_block, padding , ranking} = props;
+  const { shape, src, size, profile, radius, align, inline_block, padding , ranking, level} = props;
   const styles = {
     src: src,
     size: size,
@@ -17,7 +18,13 @@ const Image = (props) => {
 
   if(shape === "border" ){
     //랭킹 프로필 이미지
-    return <CircleWrap {...styles}><div></div></CircleWrap>
+    return <CircleWrap {...styles} style={{
+      backgroundImage:level === "levelName_1" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #a0a515 0%,  #636610 100%)"
+      : level === "levelName_2" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #e6cb35, #b09d35)"
+      : level === "levelName_3" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #f7d382, #f5b92f)"
+      : level === "levelName_4" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fdc884, #f58524)"
+      : level === "levelName_5" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fd8a8a, #b12f21)" :null
+    }}><div></div></CircleWrap>
   }
 
   if (shape === "circle") {
@@ -38,8 +45,8 @@ const Image = (props) => {
 Image.defaultProps = {
   shape: "circle",
   src: "",
-  size: 37,
-  profile: "",
+  size: 40,
+  profile: defaultProfile,
   radius: "0",
   inline_block: false,
   is_preview: false,
@@ -63,18 +70,22 @@ const AspectInner = styled.div`
   background-position: center;
   border-radius: ${(props) => props.radius};
   background-color: #f2f2f2;
+  overflow: ${(props) => props.className === "edit"? "hidden" : "initial"};
+  
 `;
 
 const ImageCircle = styled.div`
-  display: ${(props) => (props.inline_block ? "inline-block" : "block")};
-  --size: ${(props) => props.size}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+   --size: ${(props) => props.size}px;
   width: var(--size);
   height: var(--size);
-  border-radius: var(--size);
-  background-image: url("${(props) => props.profile}");
-  background-size: cover;
+  border-radius: 11px;
+  background-image: url(${profileBorder});
   background-position: center;
-  vertical-align: ${(props) => props.align};
+  background-size: contain;
 `;
 
 const CircleWrap = styled.div`
@@ -85,18 +96,21 @@ const CircleWrap = styled.div`
    --size: ${(props) => props.size}px;
   width: var(--size);
   height: var(--size);
-  border-radius: 9px;
-  background-image: url(${profileBorder});
-  background-position: center;
-  background-size: contain;
+  border: 2px solid transparent;
+  border-radius: 13px;
+  background-image: linear-gradient(#fff, #fff), 
+  linear-gradient(to right, #a0a515 0%,  #636610 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
   > div{
     display: block;
-    width: calc(100% - 6px);
-    height: calc(100% - 6px);
+    width: 100%;
+    height: 100%;
+    border: 1px solid #fff;
     background-image: url("${(props) => props.profile}");
     background-size: cover;
     background-position: center;
-    border-radius: 9px;
+    border-radius: 11px;
   }
 `;
 

@@ -51,34 +51,36 @@ const MyEdit = (props) => {
     }, [])
 
     return (     
-      <Grid padding="0 40px" margin="48px 0 0">
-          <Grid padding="0" margin="50px 0 40px">           
-            <h1 style={{fontSize:"20px", marginBottom:"4px"}}>회원 정보 수정</h1>
-            <p style={{fontSize:"14px", lineHeight:"1.5", wordBreak: "keep-all"}}>{userInfo?userInfo.nickname:"회원"}님의 회원정보를 안전하게 보호하기 위해 비밀번호를 한 번 더 입력해주세요.</p>
-          </Grid>
-        <Grid padding="0" margin="0 0 32px" style={{overflow:"initial"}}>
+      <>
+      <Grid padding="48px 20px" margin="48px 0 0" bg="#fff">                 
+        <h1>회원 정보 수정</h1>
+        <p className="small sub_color mt12" style={{lineHeight:"20px"}}>{userInfo?userInfo.nickname:"회원"}님의 회원정보를 안전하게 보호하기 위해<br/>비밀번호를 한 번 더 입력해주세요.</p>
+          
+        <Grid padding="0" margin="64px 0 0" style={{overflow:"initial"}}>
           <InputWrap>
             <Input
               type="password"
               label="비밀번호"
               value={pwd}
               is_submit
-              placeholder="비밀번호를 입력해 주세요."
+              placeholder="비밀번호를 입력하세요."
               _onChange={pwdChange}
+              className={  pwd.length === 0 ? "" : isPwd && pwd.length ? "green" : "red" }
             />
             <span className={  pwd.length === 0 ? "" : isPwd && pwd.length ? "green" : "red" }>
               {pwd === null || pwd === "" ? "" : isPwd && pwd.length  ? "" : "비밀번호가 맞지 않습니다."}
             </span>
           </InputWrap>
-        </Grid>
-        <Fixed>
-            <Button _disabled={pwd === null || pwd === "" || !isPwd ? "disabled" : ""} 
-                _onClick={()=>{
-                    history.push("/mypage/profile/edit");
-                }}
-            >확인</Button>
-        </Fixed>        
+        </Grid>        
       </Grid>
+      <Fixed>
+          <Button _disabled={pwd === null || pwd === "" || !isPwd ? "disabled" : ""} 
+              _onClick={()=>{
+                  history.push("/mypage/profile/edit");
+              }}
+          >계속하기</Button>
+      </Fixed>
+      </>        
        
     );
 };
@@ -92,10 +94,10 @@ const InputWrap = styled.div`
     font-size: 10px;
   }
   > span.green {
-    color: #00a106;
+    color: #5a76ea;
   }
   > span.red {
-    color: #fd5414;
+    color: #f57391;
   }
 `;
 
@@ -106,10 +108,7 @@ const Fixed = styled.div`
     bottom:0;
     left:0;
     padding:12px 20px;
-    box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
-    button {
-        border-radius: 5px;
-    }
+    box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
 

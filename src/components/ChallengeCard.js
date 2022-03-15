@@ -1,16 +1,20 @@
 import React from "react";
 import styled from "styled-components";
+
+import { Grid , Tag } from "../elements";
+
 import lock from "../image/icon/ic_lock@2x.png";
 import peopleIcon from "../image/icon/ic_people@2x.png";
-import { Grid , Tag } from "../elements";
+import defaultImg  from "../image/ic_empty_s@2x.png"
 
 const ChallengeCard = (props) => {
   const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;
   const endDate = `${props.endDate.split(" ")[0].split("-")[0]}`;
 
+
   return (
     <Box onClick={props._onClick} className={props.className}>
-      <ImageBox status={props.status} style={{backgroundImage:`url(${props.challengeImage?props.challengeImage[0]:""})`}}>
+      <ImageBox status={props.status} style={{backgroundImage:`url(${props.challengeImage[0]?props.challengeImage[0]:defaultImg})`}}>
         {props.dailyAuth && props.dailyAuth === "true" ?(
           <div
             style={{
@@ -49,6 +53,7 @@ const ChallengeCard = (props) => {
   );
 };
 
+
 const Box = styled.div`
   display: inline-block;
   width: calc(50% - 6px);
@@ -71,6 +76,7 @@ const ImageBox = styled.div`
   overflow: hidden;
   margin-bottom: 12px;
   background-color: #fff;
+  background-image: url(${defaultImg});
   p {
     color: #fff;
     background-color: rgba(3,1,2,0.5);

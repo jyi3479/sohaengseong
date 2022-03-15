@@ -20,7 +20,7 @@ import 'swiper/css/pagination';
 import Modal from '../components/Modal';
 
 //사용자 import
-import {Grid, Image, Button} from "../elements/index";
+import {Grid, Image, Button, Tag} from "../elements/index";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import * as baseAction from '../redux/modules/base';
 import empty from "../image/ic_empty_s@2x.png";
@@ -57,8 +57,6 @@ const ChallengeDetail = (props) => {
     //const join_day = dateB.from(today).split(" ");
     const remaining_day = Math.ceil(days*0.8); //입장 가능한 기간
 
-    console.log("입장 가능한 기간",remaining_day,"들어갈 때 남은 기간",join_day);
-
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
     };
@@ -71,6 +69,7 @@ const ChallengeDetail = (props) => {
     const [modalType, setModalType] = React.useState("");
     const [modalOpen, setModalOpen] = React.useState(false);
     const [checkPrivate, setCheckPrivate] = React.useState(false);//비밀방 비밀번호 맞는지 확인
+    const [error,setError] = React.useState("");
     const [isNum,setIsNum] = React.useState(false);//비밀방 비밀번호 숫자체크
     const [join, setJoin] = React.useState(false); //입장하기 클릭여부
     const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
@@ -115,15 +114,18 @@ const ChallengeDetail = (props) => {
 
         apis.post(`/challenge/${challengeId}/private`, {password:privatePwd})
         .then((res)=>{
-            console.log("비번 맞?",res);
+            console.log("비번 맞?",res, checkPrivate);
             if(res.data.result === 'true'){
-                setCheckPrivate(true);                
+                setCheckPrivate(true);
+                history.push(`/member/${challengeId}`);
+                //dispatch(challengeAction.joinChallengeDB(challengeId));
             }else{
-                setCheckPrivate(false);                
+                setCheckPrivate(false);
             }
-            dispatch(challengeAction.joinChallengeDB(challengeId));
         }).catch((err)=>{
             console.log("비밀번호 확인오류",err);
+            setError(err.response.data.message);
+            setCheckPrivate(false);
         });
     };
 
@@ -146,9 +148,6 @@ const ChallengeDetail = (props) => {
         }
     },[]);
 
-
-
-    
     return(
         <>  
         {target&&
@@ -179,88 +178,84 @@ const ChallengeDetail = (props) => {
                     <TitleBox>
                         <h1>{target.title}</h1>
                     </TitleBox>
-                    <p style={{fontSize:"14px", color:"#666"}}>{target.category}</p>
-                    <Grid padding="0" margin="12px 0">
+                    <p className="sub_color">{target.category}</p>
+                    <Grid padding="0" margin="8px 0 12px" style={{display:"flex", alignContent:"space-between"}}>
                         {tagList.map((el, i) => {
-                            return <Tag key={i}>{el}</Tag>;
+                            return <Tag key={i} tag={el} className="detailPage"></Tag>;
                         })}
                     </Grid>
                     <StatusContainer>
-                        <Grid padding="14px">
-                            <Grid padding="0" center>
-                                <p>기간</p>
-                                <p>{days}일</p>
+                        <div>
+                            <Grid center>
+                            <p className="caption caption_color mb4">기간</p>
+                            <p className="poppins">{days}일</p>
                             </Grid>
-                        </Grid>
-                        <div
-                        style={{
-                            borderRight: "1px solid #c7c7c7",
-                            height: "20px",
-                            margin: "auto 0px",
-                        }}
-                        />
-                        <Grid padding="14px">
-                            <Grid padding="0" center>
-                                <p>멤버</p>
-                                <p>{target.members.length !== 0 ? target.members.length: "0"}<span style={{fontSize:"14px", fontWeight:"400"}}>/{target.maxMember}</span></p>
+                        </div>
+                        <div>
+                            <Grid center>
+                            <p className="caption caption_color mb4">멤버</p>
+                            <p className="poppins">{target.members.length !== 0 ? target.members.length: "0"}<span className="sub_color">/{target.maxMember}</span></p>
                             </Grid>
-                        </Grid>
-                        <div
-                        style={{
-                            borderRight: "1px solid #c7c7c7",
-                            height: "20px",
-                            margin: "auto 0px",
-                        }}
-                        />
-                        <Grid padding="14px">
-                            <Grid padding="0" center>
-                                <p>공개여부</p>
-                                <p style={{fontSize:"15px"}}>{target.isPrivate ? "비공개" : "공개"}</p>
+                        </div>
+                        <div>
+                            <Grid center>
+                                <p className="caption caption_color mb4">공개여부</p>
+                                <h3 className="">{target.isPrivate ? "비공개" : "공개"}</h3>
                             </Grid>
-                        </Grid>
-                    </StatusContainer>                     
+                        </div>
+                    </StatusContainer>               
                 </Grid>
 
-                <Grid bg="#fff" padding="20px">
+                <Grid bg="#fff" padding="20px 20px 0">
                     <Title>소행성 설명</Title>
                     <ContentBox style={{marginBottom:"20px"}}>
                         <div className="admin_profile">
-                            <div  style={{backgroundImage:`url(${admin.profileImage === null || admin.profileImage === undefined ? defaultImg : admin.profileImage})`}}></div>
-                            <p>{admin.nickname}</p>
+                            <Image shape="border" 
+                                size="40"
+                                level={admin.levelName}
+                                profile={admin.profileImage !== null ? admin.profileImage : defaultImg}
+                            >
+                            </Image>                            
+                            <h3>{admin.nickname}</h3>
                         </div>
                         <p>{target.content}</p>
                     </ContentBox>
                     {/* 현재인원 - 디자인 확정 후 작업예정 */}
                     <Title>현재 입주민</Title>
-                    <Grid padding="24px 0" style={{display: "flex", alignItems: "center"}}>
+                    <Grid padding="0" style={{display: "flex", alignItems: "center", paddingBottom: "3px"}}>
                         {members&&members.map((el, i) => {
                             return (
                                 //만약에 방을 만든 userId와 멤버의 userId가 같은 경우(방장인 경우) className을 붙여준다.
-                                <Member 
-                                    key={el.userId} 
-                                    className={admin.userId === el.userId? "admin" : ""} 
-                                    style={{backgroundImage:`url(${el.profileImage !== null ?el.profileImage : defaultImg})`}}
-                                    src={el.profileImage}>    
+                                <Member key={el.userId} className={admin.userId === el.userId? "admin" : ""}>                                    
+                                    <Image shape="border" 
+                                        size="40"
+                                        level={el.levelName}
+                                        profile={el.profileImage !== null? el.profileImage : defaultImg}
+                                    >
+                                    </Image>
                                 </Member>
                             );
                         })}
-                        <p style={{fontSize:"14px",color:"#333"}}>외 {members.length > 4? members.length:0}명</p>
+                        <p style={{marginLeft:"3px"}}>외 {members.length > 4? members.length:0}명</p>
                     </Grid>
+                    <Notice>
+                        <p className="bold sub_color">유의사항</p>
+                        <ul>
+                            <li className="sub_color">시작 이후에는 퇴장 시 패널티가 있으므로, 신중히 선택하시기 바랍니다.</li>
+                            <li className="sub_color mt4">인증 규정 등 기타 문의 사항은 채팅방을 통해 개설자에게 직접 문의 부탁드립니다.</li>
+                        </ul>
+                    </Notice>
                 </Grid>                
-                <Grid padding="30px 20px" bg="#f8f7f7">
-                    <Title>입주 규칙</Title>
-                    <p style={{fontSize:"14px"}}>타인에게 어쩌구 입주 규칙은 고정 어쩌구</p>
-                </Grid>
                 <Fixed>
                     {target.status === "완료" || remaining_day > join_day ? ( //상태값이 완료거나 입장 가능한 기간이 지난 경우
                         //기간 끝남
-                        <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
+                        <Button _disabled
                         >기간이 만료되었습니다.</Button>
                     ): (                        
                         <>
                         {target.maxMember !== members.length ?  member !== undefined ?(                       
                            //내가 참여중인 챌린지
-                           <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
+                           <Button _disabled
                            >이미 입주한 행성입니다.</Button>
                        ):(
                            //참여가능한 챌린지
@@ -268,7 +263,7 @@ const ChallengeDetail = (props) => {
                                _onClick={()=>{
                                    joinModal()
                                }}
-                           >소행성 입주하기</Button>
+                           >시작하기</Button>
                        ):(
                            //참가자 꽉참
                            <Button bg="#bbb" color="#fff" style={{cursor:"auto"}} _disabled
@@ -287,34 +282,22 @@ const ChallengeDetail = (props) => {
                 {/* 입장하기 버튼 클릭 시 뜨는 모달팝업 - 비밀방 */}
                 <Modal open={modalType === "privateModal"? modalOpen : ""} close={closeModal} header isPrivate>
                     <div className="private_box">
-                        <h6>비밀번호를 입력해 주세요.</h6>
+                        <h3>비밀번호를 입력해 주세요.</h3>
                         <div>                       
-                            <ReactCodeInput className={join && !checkPrivate ? "ReactCodeInput disabled" : "ReactCodeInput"} type='password' fields={4} {...props} value={privatePwd} onChange={privateCheck}
+                            <ReactCodeInput className={isNum === true && checkPrivate === false  && join === true ? "ReactCodeInput fail" : "ReactCodeInput"} type='password' fields={4} {...props} value={privatePwd} onChange={privateCheck}
                                 inputStyle={{
-                                    borderRadius: "10px",
-                                    border: "none",
-                                    boxShadow: "none",
-                                    marginRight: "15px",
-                                    paddingLeft: "11px",
-                                    width: "40px",
-                                    height: "45px",
-                                    fontSize: "50px",
-                                    boxSizing: "border-box",
-                                    color: "#666",
-                                    backgroundColor: "#ddd",
-                                    borderColor: "#fff"                              
                                 }}
                             />
-                            <p style={{height:"18px",fontSize:"12px",color:"#999", marginTop:"8px"}}>
+                            <p className="fail_color small">
                             {isNum === null && checkPrivate === null ? "" 
-                            : isNum === false && checkPrivate === false && join === false ? "숫자 4자리로 입력해주세요." //숫자 체크 안하고 비밀번호가 틀린경우 or 입장하기 안누른경우
+                            : isNum === false && checkPrivate === false && join === false ? "숫자 4자리를 입력해주세요." //숫자 체크 안하고 비밀번호가 틀린경우 or 입장하기 안누른경우
                             : isNum === true && checkPrivate === false  && join === false ? "" //숫자는 맞는데 입장하기를 안누른 경우
                             : isNum === true && checkPrivate === false  && join === true ? "잘못된 비밀번호 입니다. 다시 시도해 주세요." //숫자는 맞는데 비밀번호가 틀린경우
                             : isNum === true && checkPrivate === true  && join === true ? "":"" //전부 맞음 (어차피 입장이지만...)
                             }
                             </p>
                         </div>
-                        <button type="button" onClick={pwdCheck}>입장하기</button>
+                        <Button type="button" _onClick={pwdCheck}>입장하기</Button>
                     </div>
                 </Modal>
             </Grid> 
@@ -350,30 +333,17 @@ const TitleBox = styled.div`
 
 const StatusContainer = styled.div`
   display: flex;
-  width: 335px;
-  height: 69px;
+  width: 100%;
+  padding: 20px 0;
   border-radius: 8px;
-  background-color: #f7f7f7;
-  p:first-child {
-    font-size: 12px;
-    color: #808080;
+  background-color: rgba(162, 170, 179, 0.1);
+  >div {
+    width: 33%;
+    border-right: 1px solid #e4e5e6;
+    &:last-child {
+      border:none;
+    }
   }
-  p:last-child {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000;
-  }
-
-`;
-const Tag = styled.p`
-  display: inline-block;
-  margin: 0;
-  margin-right: 6px;
-  font-size:12px;
-  color: #7b7b7b;
-  border-radius: 5px;
-  padding: 2px 4px;
-  background-color: #ededed;
 `;
 
 const Title = styled.h2`
@@ -390,30 +360,23 @@ const ContentBox = styled.div`
     .admin_profile{
         display: flex;
         align-items: center;
-        margin-bottom:10px;
+        margin-bottom:12px;
         div {
-            display: inline-block;
-            width: 35px;
-            height: 35px;
-            margin: 0 10px 0 0;
-            border: solid 1px #999;
-            border-radius:50%;
-            background-size: cover;
-            background-position: center;
-            position: relative;
             &::after {
                 content: '';
-                width:17px;
-                height: 17px;
-                border-radius: 50%;
+                width:20px;
+                height: 20px;
                 background-image: url(${crown});
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
                 position: absolute;
-                bottom:0;
-                right: -3px;
+                bottom:-5px;
+                right: -5px;
             }
+        }
+        h3 {
+            margin-left: 10px;
         }
     }
     p {
@@ -424,12 +387,6 @@ const ContentBox = styled.div`
 `;
 const Member = styled.div`  
     display: inline-block;
-    width: 35px;
-    height: 35px;
-    border: solid 1px #999;
-    border-radius:50%;
-    background-size: cover;
-    background-position: center;
     margin-right: 5px;
     &:nth-child(n+5) {//4번째 멤버 이후로는 미노출
         display: none;
@@ -439,19 +396,34 @@ const Member = styled.div`
         margin-right: 9px;
         &::after {
             content: '';
-            width:17px;
-            height: 17px;
-            border-radius: 50%;
+            width:20px;
+            height: 20px;
             background-image: url(${crown});
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
             position: absolute;
-            bottom:0;
-            right: -3px;
+            bottom:-5px;
+            right: -5px;
         }
     }
 `;
+
+const Notice = styled.div`
+    margin: 26px 0 24px;
+    padding: 16px;
+    background-color: rgba(162, 170, 179, 0.1);
+    border-radius: 8px;
+    ul {
+        margin-top: 8px;
+        li {
+            font-size: 13px;
+            margin-left: 13px;
+            list-style: disc;
+        }
+    }
+`;
+
 const Fixed = styled.div`
     width: 100%;
     position: fixed;
@@ -459,10 +431,7 @@ const Fixed = styled.div`
     bottom:0;
     left:0;
     padding:12px 20px;
-    box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
-    button {
-        border-radius: 5px;
-    }
+    box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
 

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import arrow from "../image/icons/ic_arrow@2x.png";
-import deleteIcon from '../image/icons/ic_search_delete@2x.png';
-import searchIconB from '../image/icons/ic_search_b@2x.png';
+import arrow from "../image/icon/ic_arrow@2x.png";
+import deleteIcon from '../image/icon/ic_text_delete@2x.png';
+import searchIcon from '../image/icons/ic_search_b@2x.png';
 
 const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,ref}) => {
 
@@ -13,9 +13,9 @@ const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,ref}) => {
                 history.go(-1);
             }}><img src={arrow}/></button>
             <div>
-                <input type="text" onChange={_onChange} ref={ref} value={value}></input>
+                <input type="text" onChange={_onChange} ref={ref} value={value} placeholder="습관 검색"></input>
                 <button type="button" className="delete" onClick={_deleteBtn}><img src={deleteIcon}></img></button>
-                <button type="button" className="search_btn" onClick={_onClick} ><img src={searchIconB}></img></button>
+                <button type="button" className="search_btn" onClick={_onClick} ><img src={searchIcon}></img></button>
             </div>
         </Wrap>
     );
@@ -39,13 +39,12 @@ const Wrap = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    padding: 15px 24px 15px 12px;
+    padding: 8px 16px;
     box-sizing: border-box;  
     z-index: 10;    
-    border-bottom: 1px solid #ddd;
     >button {
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
         background-color: transparent;
         border:none;
         padding: 0;
@@ -58,13 +57,18 @@ const Wrap = styled.div`
     >div {
         position: relative;
         width: 295px;
-        height: 40px;
         input {
             width: 100%;
             height: 100%;
-            padding: 10px;
-            border: solid 1px #ddd;
+            padding: 5px 50px 5px 5px;
+            border: none;
             outline: none;
+            font-size: 18px;
+            font-weight: bold;
+            &::placeholder {
+                font-weight: normal;
+                color:rgba(124, 130, 136, 0.5);
+            }
         }
         button {   
             width: 28px;
@@ -74,16 +78,16 @@ const Wrap = styled.div`
             border: none;
             background: transparent;
             position: absolute;
-            right: 10px;
-            top: 6px;
+            right: 0;
+            top: 2px;
             img {
                 width: 100%;
             }
             &.delete {
-                width: 17px;
-                height: 17px;
-                right: 41px;
-                top: 11px;
+                width: 20px;
+                height: 20px;
+                right: 44px;
+                top: 5px;
             }
         }
     }
