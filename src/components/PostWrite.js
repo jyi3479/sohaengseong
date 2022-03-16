@@ -281,7 +281,8 @@ const ImageLabel = styled.label`
   margin: 12px auto;
   display: inline-block;
   position: relative;
-  border: solid 1px #a2aab3;
+  ${(props) => (props.src ? "border: none;" : "border: solid 1px #a2aab3;")}
+
   border-radius: 12px;
   cursor: pointer;
   background-image: url("${(props) => props.default}");
@@ -304,6 +305,21 @@ const ImageLabel = styled.label`
     background-size: cover;
     border-radius: 12px;
   }
+
+  &::after {
+    position: absolute;
+    content: "";
+    width: 335px;
+    height: 280px;
+    ${(props) => (props.src ? "background-color: rgba(3, 1, 2, 0.5);" : "")}
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 12px;
+  }
+
   button {
     width: 20px;
     height: 20px;

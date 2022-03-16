@@ -88,7 +88,7 @@ const CategoryTab = (props) => {
         />        
         
         <Grid padding="0" >
-          {word !== "" || tabId !== "all"? (
+          {word !== "" || tabId ? (
             <Wrap>
               <TabWrap className="tab_wrap">
                 <Tab

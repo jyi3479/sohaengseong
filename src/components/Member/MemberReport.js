@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as memberAction } from "../../redux/modules/member";
+import React from "react";
+import {useSelector } from "react-redux";
 import styled from "styled-components";
 import { Grid } from "../../elements";
-import dropdown from "../../image/icons/ic_dropdown@2x.png";
-import { memberApis } from "../../shared/apis";
+import CustomDay from "./Date";
 
 const MemberReport = (props) => {
-  const dispatch = useDispatch();
   const status = props.status;
-  const challengeId = props.challengeId;
-  const [startDate, setStartDate] = useState("2022.03.13");
   const report = useSelector((state) => state.member.report);
   console.log(report);
-  useEffect(() => {
-    dispatch(memberAction.getReportDB(challengeId, startDate));
-  }, [startDate]);
-
+  
   return (
     <Grid padding="0px" margin="35px 0 0">
       <h2 className="mb4">위클리 리포트</h2>
       <p className="sub_color mt6">일주일 간 인증률 확인하기</p>
-      {/* <Date>
-        2022년 3월 13~19 <img src={dropdown} />
-      </Date> */}
-
+    <hr style={{border:"0.5px solid #e4e5e6", margin:"8px 0 12px 0"}}></hr>
+<CustomDay/>
       <div
         style={{
           width: "335px",
@@ -102,13 +92,14 @@ const IndexBox = styled.div`
 
 export default MemberReport;
 
+
+
+// 리포트 부분
 const Progress = (props) => {
-  const my_level = props.my_level;
 
   return (
     <ReportBox>
       <ProgressBar>
-        {/* <HighLight width={(count / bucket_list.length) * 100 + "%"}></HighLight> */}
         <HighLight
           height={(props.percentage < 100 ? props.percentage : 100) + "%"}
         ></HighLight>
