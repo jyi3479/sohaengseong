@@ -924,7 +924,7 @@ const WholeBox = styled.div`
   flex-wrap: nowrap;
   border-bottom: solid 1px rgba(124, 130, 136, 0.5);
   padding: 8px 0;
-  overflow-y: scroll; //넘치면 좌우 스크롤
+  overflow-y: hidden;
 
   input {
     width: 100vw;

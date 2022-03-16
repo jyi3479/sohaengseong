@@ -18,7 +18,7 @@ const MemberReport = (props) => {
 <CustomDay startDate={startDate}/>
       <div
         style={{
-          width: "335px",
+          width: "100%",
           height: "268px",
           backgroundColor: "#fff",
           margin: "12px 0px",
