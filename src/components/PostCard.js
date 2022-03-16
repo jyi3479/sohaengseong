@@ -1,20 +1,25 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as memberActions } from "../redux/modules/member";
 import styled from "styled-components";
-import { Button, Grid, Input, Image } from "../elements";
-import PostModal from "./Member/PostModal";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
+
+import moment from "moment";
+import "moment/locale/ko";
+
+import { actionCreators as memberActions } from "../redux/modules/member";
+import { actionCreators as challengeActions } from "../redux/modules/challenge";
+import { Grid, Image } from "../elements";
+import Modal from "./Modal";
+import PostModal from "./Member/PostModal";
 import comment from "../image/icons/ic_relpy@2x.png";
 import deleteIcon from "../image/icons/ic_delete@2x.png";
 import close from "../image/icons/icon_close_btn@2x.png";
 import edit from "../image/icons/ic_edit@2x.png";
 import more from "../image/icons/ic_more@2x.png";
+import crown from "../image/icons/ic_crown@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
-import moment from "moment";
-import "moment/locale/ko";
-import Modal from "./Modal";
+
 
 const PostCard = (props) => {
   moment.locale("ko"); // 모멘트 한글로 바꾸기
@@ -22,11 +27,20 @@ const PostCard = (props) => {
   const roomId = useParams().roomId;
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.user);
+  const post = useSelector((state) => state.member.post);
   const is_me = userInfo&&userInfo.nickname === props.nickname;
   const isDetail = useParams().postId ? true : false;
-  const comments = props.comments.filter((l, idx) =>
-    isDetail ? true : idx < 2
-  );
+  // const comments = props.comments.filter((l, idx) =>
+  //   isDetail ? true : idx < 2
+  // );
+  const comments = props.comments;
+  const no_comment = comments&&comments.length === 0;
+  const target = useSelector(state => state.challenge.target);
+  const members = target&&target.members;
+  const member_idx = members&&members.findIndex((m) => m.userId === parseInt(target.userId));
+  const admin = members&&members[member_idx].nickname === props.nickname;
+
+
   const [content, setContent] = React.useState("");
   const addComment = () => {
     // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
@@ -69,21 +83,28 @@ const PostCard = (props) => {
     setModalOpen(false);
   };
 
+  React.useEffect(()=>{
+    dispatch(challengeActions.getOneChallengeDB(challengeId));
+  },[]);
+
   return (
     <>
-        <Grid bg="#fff" padding="0px" margin="0 0 32px">
+        <Wrap className={isDetail? "is_detail" : ""}>
           {/* PostCard의 윗 부분 */}
-          <Grid is_flex margin="16px 0px">
-            <Grid is_flex width="auto" padding="0px">
-              <Image
-                shape="border"
-                size="40"
-                level={props.levelName}
-                profile={
-                  props.profileImage !== null ? props.profileImage : defaultImg
-                }
-              ></Image>
-              <p style={{ margin: "0px 10px" }}>{props.nickname}</p>
+          <Grid is_flex padding="16px 12px 16px 20px">
+            <Grid is_flex width="auto" padding="0px" style={{overflow:"initial"}}>
+              <ProfileBox className={admin? "admin" : ""}>
+                <Image
+                  shape="border"
+                  size="40"
+                  level={props.levelName}
+                  profile={
+                    props.profileImage !== null ? props.profileImage : defaultImg
+                  }
+                ></Image>
+              </ProfileBox>
+              
+              <p style={{ marginLeft: "12px" }}>{props.nickname}</p>
             </Grid>
             {is_me && (
               <MoreBtn onClick={openModal}>
@@ -109,24 +130,24 @@ const PostCard = (props) => {
             ) : (
               ""
             )}
-            <Grid margin="16px 0">
-              <p style={{ color: "#333333" }}>{props.content}</p>
+            <Grid padding="16px 20px">
+              <p className={isDetail? "" : "ellipsis2"} style={{ color: "#333333" }}>{props.content}</p>
             </Grid>
 
             {/* PostCard의 댓글 조회 부분 */}
             <CommentContainer>
               <CommentBox>
                 <img src={comment} />
-                <p>
-                  댓글 <span className="poppins">{props.comments.length}</span>개
+                <p className="font15">
+                  댓글 <span className="poppins font15">{props.comments? props.comments.length : "0"}</span>개
                 </p>
               </CommentBox>
               {/* PostCard의 댓글 입력 창 */}
-              {isDetail && (
-                <CommentWriteBox>
+              {isDetail && userInfo&& (
+                <CommentWriteBox className="comment_write_box">
                   <div>
                     <Image
-                      shape="border"
+                      shape="circle"
                       size="36"
                       level={props.levelName}
                       profile={
@@ -136,7 +157,6 @@ const PostCard = (props) => {
                       }
                     ></Image>
                   </div>
-
                   <InputBox>
                     <input
                       value={content}
@@ -151,48 +171,51 @@ const PostCard = (props) => {
                   </InputBox>
                 </CommentWriteBox>
               )}
-              <Grid padding="0" margin="16px 0px">
+               
+              <Grid padding={no_comment ? "0" : "15px 0 0"}>
                 {comments.map((el, i) => {
                   return (
-                    <Grid
-                      padding="0px"
-                      margin="0 0 10px"
+                    <Comment
+                      className="comment"
                       key={el.commentId}
-                      is_flex
                     >
-                      <ContentBox>
-                        {isDetail && (
-                          <Image
-                            shape="border"
-                            size="36"
-                            level={el.levelName}
-                            profile={
-                              el.profileImage !== null
-                                ? el.profileImage
-                                : defaultImg
-                            }
-                          ></Image>
-                        )}
-                        <p className="writer">{el.nickname}</p>
-
-                        <p>{el.content}</p>
-                      </ContentBox>
-                      <p className="caption_color small t_right">
-                        {moment(el.createdAt, "YYYY.MM.DD kk:mm:ss").fromNow("")}
-                      </p>
-
-                      {isDetail && userInfo.nickname === el.nickname && (
-                        <Delete
-                          src={deleteIcon}
-                          onClick={() => {
-                            deleteComment(el.commentId);
-                          }}
-                        />
+                      {isDetail && (
+                        <Image
+                          shape="border"
+                          size="36"
+                          level={el.levelName}
+                          profile={
+                            el.profileImage !== null
+                              ? el.profileImage
+                              : defaultImg
+                          }
+                        ></Image>
                       )}
-                    </Grid>
+                      <div className="comment_box">
+                        <div className="comment_info">
+                          <p className="bold">{el.nickname}</p>
+                          <p className="ellipsis">{el.content}</p>
+                        </div>
+                        <div className="comment_tool">                      
+                          <p className="caption_color small t_right">
+                            {moment(el.createdAt, "YYYY.MM.DD kk:mm:ss").fromNow("")}
+                          </p>
+
+                          {isDetail && userInfo.nickname === el.nickname && (
+                            <Delete
+                              className="sub_point_color small"
+                              onClick={() => {
+                                deleteComment(el.commentId);
+                              }}
+                            >삭제하기</Delete>
+                          )}
+                        </div>        
+                      </div>              
+                    </Comment>
                   );
                 })}
               </Grid>
+              
             </CommentContainer>
           </Grid>
           <PostModal state={modalState} _handleModal={closeModal}>
@@ -239,19 +262,88 @@ const PostCard = (props) => {
               삭제 시 인증 미달성으로 바뀝니다.
             </p>
           </Modal>
-        </Grid>
+        </Wrap>
     </>
   );
 };
 
+const Wrap = styled.div`
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  &.is_detail {
+    .comment {
+      align-items: flex-start;
+      &:nth-child(n+3) {
+        display: flex;
+      }
+      .comment_box {
+        display: inline-block;
+        margin-left: 13px;
+        width: calc(100% - 50px);
+        .comment_info{
+          width: 100%;
+          p:last-child {
+            white-space: normal;
+          }
+        }
+        .comment_tool {
+          width: 100%;
+          line-height: 1;
+          p:first-child {
+            display: inline-block;
+            margin-right: 8px;
+          }         
+        }
+      }
+    }
+  }
+  .comment {
+    &:nth-child(n+3) {
+      display: none;
+    }
+    .comment_box {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      .comment_info {
+        display: flex;
+        width: calc(100% - 60px);
+        p:last-child {
+          margin-left:4px;
+          width: calc(100% - 100px);
+        }
+      }
+    }
+  }
+
+`;
+
+const ProfileBox = styled.div`
+  position: relative;
+  &.admin {
+    &::after {
+      content: '';
+      width:20px;
+      height: 20px;
+      background-image: url(${crown});
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      position: absolute;
+      bottom:-3px;
+      right: -5px;
+    }
+  }  
+`;
+
 const CommentContainer = styled.div`
   padding: 16px;
-  border-top: 1px solid #d9d9d9;
+  border-top: 1px solid #eff0f2;
 `;
 
 const MoreBtn = styled.div`
   cursor: pointer;
-
   img {
     width: 24px;
     height: 24px;
@@ -260,11 +352,12 @@ const MoreBtn = styled.div`
 
 const CommentBox = styled.div`
   display: flex;
-
+  align-items: center;
   img {
-    width: 240x;
+    width: 20px;
     height: 20px;
-    margin-right: 5px;
+    margin-right: 4px;
+    margin-left: -4px
   }
 `;
 
@@ -272,46 +365,46 @@ const CommentWriteBox = styled.div`
   display: flex;
   margin-top: 12px;
 `;
+
+const Comment = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+  margin-bottom:8px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
 const InputBox = styled.div`
   width: 100%;
   height: 36px;
   display: flex;
-  border-radius: 15px;
-  background-color: #eaeaea;
+  border-radius: 18px;
+  background-color: rgba(124, 130, 136, 0.1);
   margin-left: 6px;
+  overflow: hidden;
   input {
     border: none;
     width: 80%;
-    border-radius: 15px;
     padding: 8px 16px;
-    font-family: inherit;
-    background-color: #eaeaea;
+    background-color: initial;
+    &::placeholder {
+      color: #a2aab3;
+    }
   }
   button {
     border: none;
     background: none;
-    font-family: inherit;
     width: 20%;
   }
 `;
 
-const ContentBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  p {
-    margin: 0 10px 0 0;
-  }
-
-  .writer {
-    font-weight: bold;
-  }
-`;
-
-const Delete = styled.img`
-  width: 20px;
-  height: 20px;
-  margin: 0px 5px;
+const Delete = styled.button`
+  border:none;
+  background-color: transparent;
   cursor: pointer;
 `;
 

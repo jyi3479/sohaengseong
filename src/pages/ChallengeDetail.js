@@ -141,6 +141,7 @@ const ChallengeDetail = (props) => {
         }).catch((err)=>{
             console.log("특정 챌린지 조회 오류",err);
         });
+        
         dispatch(baseAction.setGnb(false));
         return()=>{
             dispatch(baseAction.setHeader(false,""));
