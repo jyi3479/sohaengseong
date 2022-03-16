@@ -34,7 +34,7 @@ const MemberMain = (props) => {
       {target && (
         <Grid margin="48px 0 0">
           <ChallengeInfo challengeId={challengeId} target={target} />
-          <MemberReport challengeId={challengeId} status={target.status} />
+          <MemberReport status={target.status} startDate={target.startDate} />
           {/* <div>입주민 랭킹</div> */}
           {target.status !== "모집중" && (
             <>

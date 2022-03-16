@@ -6,6 +6,7 @@ import CustomDay from "./Date";
 
 const MemberReport = (props) => {
   const status = props.status;
+  const startDate = props.startDate
   const report = useSelector((state) => state.member.report);
   console.log(report);
   
@@ -14,7 +15,7 @@ const MemberReport = (props) => {
       <h2 className="mb4">위클리 리포트</h2>
       <p className="sub_color mt6">일주일 간 인증률 확인하기</p>
     <hr style={{border:"0.5px solid #e4e5e6", margin:"8px 0 12px 0"}}></hr>
-<CustomDay/>
+<CustomDay startDate={startDate}/>
       <div
         style={{
           width: "335px",

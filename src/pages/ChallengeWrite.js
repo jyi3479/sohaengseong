@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateRangePicker from '@mui/lab/DateRangePicker';
+import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker';
 import Box from '@mui/material/Box';
 
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
@@ -46,10 +47,6 @@ const ChallengeWrite = (props) => {
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
       dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
-
-      // if (target.tagName) {
-      //   target.tagName.map((el) => recommendClick(el));
-      // }
     }
 
     return () => {
@@ -482,14 +479,23 @@ console.log(data)
           <p className="small sub_color">
             클릭 시 기간을 다시 설정할 수 있습니다.
           </p>
-        <DateRangePicker
+        <MobileDateRangePicker
           calendars={1}
           value={value}
+          minDate={new Date()} // 오늘 이전 날짜 선택 못 함
           onChange={(newValue) => {
             setValue(newValue);
-            setStartDate(value[0])
-            setEndDate(value[1])
+       
+         let range = (newValue[1] - newValue[0]) / (1000 * 60 * 60 * 24);
+         if (newValue[1] && range < 14) {
+           window.alert("2주 이상 선택해주세요!");
+           setValue([null, null]);
+         } else {
+          setStartDate(newValue[0]);
+         setEndDate(newValue[1]);
+         }
           }}
+    
           renderInput={(startProps, endProps) => (
             <React.Fragment>
               <DateBox>
@@ -853,7 +859,8 @@ border:none;
 
   input {
     border:none;
-    width: 80px;
+    width: 70px;
+    cursor: pointer;
   }
 
 `;
