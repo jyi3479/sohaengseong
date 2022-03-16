@@ -3,9 +3,12 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 // 기간 선택 라이브러리
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { ko } from "date-fns/esm/locale";
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateRangePicker from '@mui/lab/DateRangePicker';
+import Box from '@mui/material/Box';
 
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
@@ -77,6 +80,7 @@ const ChallengeWrite = (props) => {
   const [hashArr, setHashArr] = React.useState(isEdit ? target.tagName : []); // 해시태그 담을 배열
 
   // 날짜 선택 부분
+  const [value, setValue] = React.useState([null, null]);
   const [startDate, setStartDate] = React.useState();
   const [endDate, setEndDate] = React.useState(null);
   // 방 공개 여부
@@ -102,28 +106,6 @@ const ChallengeWrite = (props) => {
       setCheckedInputs(null);
     }
   };
-
-  // 날짜 선택 input 커스텀
-  const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <InputBox ref={ref} style={{ marginTop: "0" }}>
-      {isEdit ? (
-        <Input
-          label="기간을 선택해주세요."
-          value={`${target.startDate} - ${target.endDate}`}
-          onClick={onClick}
-          disabled
-        />
-      ) : (
-        <Input
-          label="기간을 선택해주세요."
-          subLabel="클릭 시 기간을 다시 설정할 수 있습니다."
-          placeholder="2022.03.06  - 2022.03.19"
-          value={value}
-          onClick={onClick}
-        />
-      )}
-    </InputBox>
-  ));
 
   // 태그 관련 함수
   //1. 태그 직접 입력 시
@@ -181,6 +163,35 @@ const ChallengeWrite = (props) => {
     }
   };
 
+   // 날짜 형식 맞춰주는 함수
+   function dateFormat(date) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+
+    month = month >= 10 ? month : "0" + month;
+    day = day >= 10 ? day : "0" + day;
+    hour = hour >= 10 ? hour : "0" + hour;
+    minute = minute >= 10 ? minute : "0" + minute;
+    second = second >= 10 ? second : "0" + second;
+
+    return (
+      date.getFullYear() +
+      "." +
+      month +
+      "." +
+      day +
+      " " +
+      hour +
+      ":" +
+      minute +
+      ":" +
+      second
+    );
+  }
+
   // 인증 게시글 추가하기
   const addChallenge = () => {
     if (content === "") {
@@ -198,34 +209,7 @@ const ChallengeWrite = (props) => {
     // 폼데이터 생성
     let formData = new FormData();
 
-    // 날짜 형식 맞춰주는 함수
-    function dateFormat(date) {
-      let month = date.getMonth() + 1;
-      let day = date.getDate();
-      let hour = date.getHours();
-      let minute = date.getMinutes();
-      let second = date.getSeconds();
-
-      month = month >= 10 ? month : "0" + month;
-      day = day >= 10 ? day : "0" + day;
-      hour = hour >= 10 ? hour : "0" + hour;
-      minute = minute >= 10 ? minute : "0" + minute;
-      second = second >= 10 ? second : "0" + second;
-
-      return (
-        date.getFullYear() +
-        "." +
-        month +
-        "." +
-        day +
-        " " +
-        hour +
-        ":" +
-        minute +
-        ":" +
-        second
-      );
-    }
+   
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
       title: title,
@@ -254,6 +238,7 @@ const ChallengeWrite = (props) => {
 
     // 폼데이터에 이미지와 데이터 묶어서 보내기
     console.log("이미지확인", image);
+console.log(data)
 
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.addChallengeDB(formData));
@@ -489,29 +474,34 @@ const ChallengeWrite = (props) => {
       </InputContainer>
       {/* 기간 선택 부분 */}
       <InputContainer>
-        <DatePicker
-          locale={ko} // 달력 한글화
-          dateFormat="yyyy.MM.dd" // 날짜형식
-          showPopperArrow={false} // popover 화살표 없애기
-          fixedHeight // 고정된 height에서 남은 공간은 다음 달로 채워지기
-          selected={startDate} // 날짜 state
-          startDate={startDate}
-          endDate={endDate}
-          selectsRange
-          minDate={new Date()} // 과거 날짜 disable
-          onChange={(dates) => {
-            const [start, end] = dates;
-            let range = (end - start) / (1000 * 60 * 60 * 24);
-            if (end && range < 14) {
-              window.alert("2주 이상 선택해주세요!");
-              setStartDate("");
-            } else {
-              setStartDate(start);
-              setEndDate(end);
-            }
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <div>
+      <p style={{ fontSize: "16px", margin: "0px 0px 2px" }}>
+            기간을 선택해주세요.
+          </p>
+          <p className="small sub_color">
+            클릭 시 기간을 다시 설정할 수 있습니다.
+          </p>
+        <DateRangePicker
+          calendars={1}
+          value={value}
+          onChange={(newValue) => {
+            setValue(newValue);
+            setStartDate(value[0])
+            setEndDate(value[1])
           }}
-          customInput={<CustomInput />}
+          renderInput={(startProps, endProps) => (
+            <React.Fragment>
+              <DateBox>
+             <input ref={startProps.inputRef} {...startProps.inputProps} placeholder="2022.03.06" value={startDate?dateFormat(startDate).split(" ")[0]:""} />
+              - <input ref={endProps.inputRef} {...endProps.inputProps} placeholder="2022.03.19" value={endDate?dateFormat(endDate).split(" ")[0]:""} />
+             </DateBox>
+            </React.Fragment>
+          )}
         />
+   
+      </div>
+    </LocalizationProvider>
 
         {/* 인원수 선택 부분 */}
         <InputBox>
@@ -845,6 +835,27 @@ const InputBox = styled.div`
       margin-top: 20px;
     }
   }
+`;
+
+const DateBox = styled.div`
+width:100%;
+padding:8px 0px;
+border:none;
+  border-bottom: 1px solid #7c8288;
+  background-color: transparent;
+  opacity: 0.5;
+
+  &:focus {
+    outline: none;
+    opacity: 1;
+    border-bottom: 1px solid #4149d3;
+  }
+
+  input {
+    border:none;
+    width: 80px;
+  }
+
 `;
 
 const CountBox = styled.p`
