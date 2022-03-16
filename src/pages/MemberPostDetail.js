@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import { actionCreators as baseAction } from "../redux/modules/base";
+import { actionCreators as memberAction } from "../redux/modules/member";
 import PostCard from "../components/PostCard";
 import { Grid, Button } from "../elements";
 
@@ -16,7 +17,9 @@ const MemberPostDetail = (props) => {
   const targetPost = postList.filter((el) => el.postId === postId)[0];
   console.log(postList, targetPost);
 
+
   React.useEffect(() => {
+    dispatch(memberAction.getPostDB(challengeId));
     dispatch(baseAction.setHeader("", false));
     dispatch(baseAction.setGnb(false));
     return () => {
@@ -25,7 +28,9 @@ const MemberPostDetail = (props) => {
     };
   }, []);
   return (
-    <Grid margin="48px 0" padding="0">
+    <>
+    
+    {targetPost && (<Grid margin="48px 0" padding="0">
       <div>
         <PostCard {...targetPost} />
       </div>
@@ -51,7 +56,9 @@ const MemberPostDetail = (props) => {
           </Button>
         </Grid>
       </Fixed>
-    </Grid>
+    </Grid>)}
+    </>
+    
   );
 };
 

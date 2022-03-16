@@ -89,6 +89,9 @@ const PostCard = (props) => {
 
   return (
     <>
+    {userInfo && (
+
+<>
         <Wrap className={isDetail? "is_detail" : ""}>
           {/* PostCard의 윗 부분 */}
           <Grid is_flex padding="16px 12px 16px 20px">
@@ -263,6 +266,9 @@ const PostCard = (props) => {
             </p>
           </Modal>
         </Wrap>
+    </>
+
+  )}
     </>
   );
 };

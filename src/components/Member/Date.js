@@ -101,6 +101,7 @@ const CustomDay = (props) => {
         displayStaticWrapperAs="desktop"
         label="Week picker"
         value={value}
+        minDate={new Date(props.startDate)} // 시작일 이전은 선택 불가능
         onChange={(newValue) => {
           setValue(newValue);
         }}

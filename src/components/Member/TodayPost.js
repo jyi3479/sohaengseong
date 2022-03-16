@@ -36,7 +36,7 @@ const MemberPost = (props) => {
         <Container>
           {postImageList.map((el, i) => {
             return (
-              <>
+      
                 <ImageBox
                   key={el.postId}
                   src={el.postImage}
@@ -50,7 +50,7 @@ const MemberPost = (props) => {
                     <p>{el.content}</p> <h3 className="mt6">{el.nickname}</h3>
                   </Info>
                 </ImageBox>
-              </>
+       
             );
           })}
         </Container>
