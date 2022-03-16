@@ -32,7 +32,7 @@ const CategoryTab = (props) => {
         if(word !== "" || word !== " "){
             dispatch(searchActions.getSearchDB(word));
             setSearch_list(searchList);
-        }          
+        }
     }, 500);
     const keyPress = React.useCallback(debounce, []);
 

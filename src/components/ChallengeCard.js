@@ -6,6 +6,7 @@ import { Grid , Tag } from "../elements";
 import lock from "../image/icon/ic_lock@2x.png";
 import peopleIcon from "../image/icon/ic_people@2x.png";
 import defaultImg  from "../image/ic_empty_s@2x.png"
+import stamp from "../image/icon/ic_stamp@2x.png";
 
 const ChallengeCard = (props) => {
   const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;
@@ -16,16 +17,8 @@ const ChallengeCard = (props) => {
     <Box onClick={props._onClick} className={props.className}>
       <ImageBox status={props.status} style={{backgroundImage:`url(${props.challengeImage[0]?props.challengeImage[0]:defaultImg})`}}>
         {props.dailyAuth && props.dailyAuth === "true" ?(
-          <div
-            style={{
-              color: "white",
-              fontWeight: "700",
-              height: "100%",
-              backgroundColor:"rgba(0,0,0,0.5)"
-            }}
-          >
-            {props.dailyAuth !== "false"? "내가해냄": ""}
-          </div>
+          <Done>
+          </Done>
         ):null}
         <p className="small">
           <img src={peopleIcon} />
@@ -90,6 +83,16 @@ const ImageBox = styled.div`
       vertical-align: sub;
     }
   }
+`;
+
+const Done = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color:rgba(0,0,0,0.6);
+  background-size: 82px;
+  background-image: url(${stamp});
+  background-position: center;
 `;
 
 const ContentBox = styled.div`  

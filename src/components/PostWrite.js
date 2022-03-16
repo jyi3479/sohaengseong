@@ -187,14 +187,14 @@ const PostWrite = (props) => {
           }}
         />
       </Grid>
-      <NoticeBox>
-        <p className="sub_color bold">유의사항</p>
-        <p className="sub_color mt6">
-          타인을 불쾌하게 하는 사진을 업로드 시 방장의 권한에 따라 재인증을
-          해야할 수도 있습니다.
-        </p>
-      </NoticeBox>
-
+      <Notice>
+        <p className="bold sub_color">유의사항</p>
+        <ul>
+          <li className="sub_color">인증 사진은 필수값 입니다.</li>
+          <li className="sub_color mt4">타인을 불쾌하게 하는 사진을 업로드 시 관리자의 권한에 따라 
+삭제될 수 있습니다. </li>
+        </ul>
+      </Notice>
       <Fixed>
         <Button
           width="calc(100% - 5px)"
@@ -334,9 +334,16 @@ const ImageLabel = styled.label`
     z-index: 2;
   }
 `;
-
-const NoticeBox = styled.div`
-  padding: 20px;
+const Notice = styled.div`
+  padding: 24px 20px;
+  ul {
+    margin-top: 8px;
+    li {
+      font-size: 13px;
+      margin-left: 13px;
+      list-style: disc;
+    }
+  }
 `;
 
 const Fixed = styled.div`

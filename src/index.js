@@ -4,12 +4,17 @@ import './index.css';
 import App from './shared/App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import store from './redux/configureStore';
+import ScrollToTop from './shared/ScrollToTop'
 
 ReactDOM.render(
-  
-  <Provider store={store}>
-    <App />
+  <Provider store={store}>  
+    <BrowserRouter>
+      <ScrollToTop />  
+      <App />
+    </BrowserRouter>
+    
   </Provider>,
   document.getElementById('root')
 );

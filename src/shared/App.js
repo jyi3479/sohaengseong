@@ -54,7 +54,7 @@ function App() {
       <GlobalStyle />
       {/* 전역 스타일컴포넌트 */}
       <Wrapper>
-        <ConnectedRouter history={history}>
+        <ConnectedRouter history={history}>          
           <BackgroundOpacity />
           {/* <Background className="BackgroundPage" /> */}
           <MobileFrame className="MobileFramePage">

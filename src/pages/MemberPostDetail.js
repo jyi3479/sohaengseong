@@ -26,7 +26,7 @@ const MemberPostDetail = (props) => {
   }, []);
   return (
     <Grid margin="48px 0" padding="0">
-      <div style={{ borderTop: "1px solid #e4e5e6" }}>
+      <div>
         <PostCard {...targetPost} />
       </div>
       <Fixed>

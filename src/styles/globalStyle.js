@@ -119,6 +119,9 @@ export const GlobalStyle = createGlobalStyle`
     .font14 {
         font-size: 14px;
     }
+    .font15 {
+        font-size: 15px;
+    }
 
 
     //color -----------------------------------------
