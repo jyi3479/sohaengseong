@@ -20,10 +20,10 @@ const Image = (props) => {
     //랭킹 프로필 이미지
     return <CircleWrap {...styles} style={{
       backgroundImage:level === "levelName_1" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #a0a515 0%,  #636610 100%)"
-      : level === "levelName_2" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #e6cb35, #b09d35)"
-      : level === "levelName_3" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #f7d382, #f5b92f)"
-      : level === "levelName_4" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fdc884, #f58524)"
-      : level === "levelName_5" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fd8a8a, #b12f21)" :null
+      : level === "level2_name" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #e6cb35, #b09d35)"
+      : level === "level3_name" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #f7d382, #f5b92f)"
+      : level === "level4_name" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fdc884, #f58524)"
+      : level === "level5_name" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fd8a8a, #b12f21)" :null
     }}><div></div></CircleWrap>
   }
 
