@@ -15,15 +15,15 @@ const ChallengeCard = (props) => {
 
   return (
     <Box onClick={props._onClick} className={props.className}>
-      <ImageBox status={props.status} style={{backgroundImage:`url(${props.challengeImage[0]?props.challengeImage[0]:defaultImg})`}}>
-        {props.dailyAuth && props.dailyAuth === "true" ?(
-          <Done>
-          </Done>
-        ):null}
+      <ImageBox status={props.status} style={{backgroundImage:`url(${props.challengeImage[0]?props.challengeImage[0]:defaultImg})`}}>        
         <p className="small">
           <img src={peopleIcon} />
           {props.currentMember}/{props.maxMember}명
         </p>
+        {props.dailyAuth && props.dailyAuth === "true" ?(
+          <Done>
+          </Done>
+        ):null}
       </ImageBox>      
       <ContentBox>
         <div style={{height:"58px"}}>

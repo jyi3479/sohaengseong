@@ -190,7 +190,7 @@ const PostWrite = (props) => {
       <Notice>
         <p className="bold sub_color">유의사항</p>
         <ul>
-          <li className="sub_color">인증 사진은 필수값 입니다.</li>
+          <li className="sub_color">인증 사진은 필수입니다.</li>
           <li className="sub_color mt4">타인을 불쾌하게 하는 사진을 업로드 시 관리자의 권한에 따라 
 삭제될 수 있습니다. </li>
         </ul>

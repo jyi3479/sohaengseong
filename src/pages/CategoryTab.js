@@ -19,76 +19,73 @@ const CategoryTab = (props) => {
     const tabId = location.split("/")[2];
     const [word,setWord] = React.useState("");
     const [search_list,setSearch_list] = React.useState('');    
+    const [active,setActive] = React.useState(true);    
+    const [focus,setFocus] = React.useState(true);
     const categoryList = useSelector((state) => state.challenge.category_list);
     const recommend_list = useSelector(state => state.search.recommend); //추천검색어
     const searchList = useSelector((state) => state.search.list)
     const allList = useSelector((state) => state.challenge.list);
-    
+
 
     //검색 axios 요청을 줄이기위한 debounce
     const debounce = _.debounce((word) =>{
-        console.log(word);
+        console.log("단어확인",word);
         history.push("/category/all");
         if(word !== "" || word !== " "){
             dispatch(searchActions.getSearchDB(word));
             setSearch_list(searchList);
         }
-    }, 500);
+    }, 600);
     const keyPress = React.useCallback(debounce, []);
 
     const ChangeWord = (e) => { //추천 검색어 클릭 시
-      setWord(e.target.innerText);      
+      setFocus(false);
+      setWord(e.target.innerText);
       dispatch(searchActions.getSearchDB(e.target.innerText));
       setSearch_list(searchList);
     };
 
     const onChangeSearch = (e) => { //검색어 입력 시
-      setWord(e.target.value);
-      keyPress(e.target.value);
+      if(word !== "" || word !== " "){
+        setFocus(false);
+        setWord(e.target.value);
+        keyPress(e.target.value);
+      }      
       setSearch_list(searchList);
     };
 
     React.useEffect(()=>{
       dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
       if (tabId === 'all') {//전체 리스트 불러오기 
-        <Grid padding="30px 20px" margin="48px 0 0" className="recommend_box" >
-          <h3>실시간 추천 검색어</h3>
-          <div className="mt12">              
-            {recommend_list&&recommend_list.map((el,i) => {
-                return <Tag key={i} onClick={ChangeWord}>{el}</Tag>
-            })}
-          </div>
-        </Grid>
-
-
-        dispatch(challengeAction.getChallengeDB());
+        dispatch(challengeAction.getChallengeDB());        
       }else {//전체 탭이 아닐경우 카테고리 리스트 불러오기 
         dispatch(challengeAction.categoryChallengeDB(tabId));
+        setFocus(false);
       }
-      
-
     },[tabId]);
 
-    console.log("검색",searchList,"검색어",word,"전체",allList);
-
-
+    console.log(active,focus,tabId);
     return (
       <>
         <SearchHeader
+          id="search_header"
           value={word}
           _onChange={onChangeSearch}
           _deleteBtn={() => {
             setWord("");
+          }}
+          _onFocus={(e)=>{
+            setFocus(true);
           }}
           _onClick={() => {
             dispatch(searchActions.getSearchDB(word));
             history.push("/category/all");
             setSearch_list(searchList);
           }}
-        />        
+        />
         
         <Grid padding="0" >
-          {word !== "" || tabId ? (
+          
             <Wrap>
               <TabWrap className="tab_wrap">
                 <Tab
@@ -259,17 +256,15 @@ const CategoryTab = (props) => {
                 )}
                 </Grid>
               </Grid>
+              <Grid padding="30px 20px" margin="48px 0 0" className={focus ? "recommend_box show": "recommend_box"}>
+                <h3>실시간 추천 검색어</h3>
+                <div className="mt12">              
+                  {recommend_list&&recommend_list.map((el,i) => {
+                      return <Tag key={i} onClick={ChangeWord}>{el}</Tag>
+                  })}
+                </div>
+              </Grid>
             </Wrap>
-          ):(
-            <Grid padding="30px 20px" margin="48px 0 0" className="recommend_box" >
-              <h3>실시간 추천 검색어</h3>
-              <div className="mt12">              
-                {recommend_list&&recommend_list.map((el,i) => {
-                    return <Tag key={i} onClick={ChangeWord}>{el}</Tag>
-                })}
-              </div>
-            </Grid>
-          )}          
         </Grid>
       </>
     );
@@ -321,6 +316,19 @@ const Wrap = styled.div`
     margin-bottom: 16px;
     font-size:15px;
     b {margin-left:4px;}
+  }
+  .recommend_box {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: calc(100vh - 48px);
+    background-color: #f4f6fa;
+    left:0;
+    top:0;
+    z-index: 5;
+    &.show {
+      display: block;
+    }
   }
 `;
 

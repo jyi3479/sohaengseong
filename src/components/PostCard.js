@@ -162,14 +162,14 @@ const PostCard = (props) => {
                   </div>
                   <InputBox>
                     <input
-                      value={content}
+                      value={content}                      
                       onChange={(e) => {
                         setContent(e.target.value);
                       }}
                       placeholder="댓글달기"
                     />
                     <button onClick={addComment}>
-                      <h3 className="caption_color">등록</h3>
+                      <h3 className={content?"point_color":"caption_color"}>등록</h3>
                     </button>
                   </InputBox>
                 </CommentWriteBox>
@@ -405,6 +405,9 @@ const InputBox = styled.div`
     border: none;
     background: none;
     width: 20%;
+    h3 {
+
+    }
   }
 `;
 

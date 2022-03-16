@@ -4,8 +4,9 @@ import { history } from "../redux/configureStore";
 import arrow from "../image/icon/ic_arrow@2x.png";
 import deleteIcon from '../image/icon/ic_text_delete@2x.png';
 import searchIcon from '../image/icons/ic_search_b@2x.png';
+import { set } from "lodash";
 
-const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,ref}) => {
+const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,_ref,_onFocus,_onKeyUp}) => {
 
     return(
         <Wrap id="Header" className="searchHeader">
@@ -13,7 +14,7 @@ const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,ref}) => {
                 history.go(-1);
             }}><img src={arrow}/></button>
             <div>
-                <input type="text" onChange={_onChange} ref={ref} value={value} placeholder="습관 검색"></input>
+                <input id="search_input" type="text" onFocus={_onFocus} onKeyUp={_onKeyUp} onChange={_onChange} ref={_ref} value={value} placeholder="습관 검색"></input>
                 <button type="button" className="delete" onClick={_deleteBtn} style={{display:value?"block":"none"}}><img src={deleteIcon}></img></button>
                 <button type="button" className="search_btn" onClick={_onClick} ><img src={searchIcon}></img></button>
             </div>
