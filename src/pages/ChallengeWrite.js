@@ -108,6 +108,11 @@ const ChallengeWrite = (props) => {
   //1. 태그 직접 입력 시
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && e.key === "Enter") {
+      // 중복된 태그 값 있으면 입력안되고 hashtag 초기화 되도록 설정
+      if(hashArr.includes(e.target.value)){
+        setHashtag("")
+        return;
+      }
       submitTagItem();
     }
   };
@@ -195,13 +200,35 @@ const ChallengeWrite = (props) => {
       window.alert("내용을 입력해주세요!");
       return;
     }
-    if (+maxMember > 30) {
-      window.alert("30명 이하로 등록해주세요!");
-      return;
-    } else if (+maxMember === 0 || maxMember === "") {
-      window.alert("모집 인원 수를 입력해주세요!");
+    if(parseInt(maxMember)){
+      // 숫자만 추출해서 유효성 검사하기
+      if (parseInt(maxMember) > 30) {
+        window.alert("30명 이하로 등록해주세요!");
+        return;
+      } else if (parseInt(maxMember) === 0 || maxMember === "") {
+        window.alert("모집 인원 수를 입력해주세요!");
+        return;
+      }
+    }else{
+      // 문자만 입력했을 때
+      window.alert("모집 인원 수를 입력해주세요!")
       return;
     }
+  
+    // 기간 선택 유효성 검사
+    if(value.includes(null)){
+      window.alert("시작날짜와 종료날짜를 모두 입력해주세요!")
+    }
+
+    // 비밀번호 유효성 검사(숫자 4자리 정규식 적용)
+    if(checkedInputs === "private"){
+      const pwdRegex = /[0-9].{3,4}$/;
+      if(!pwdRegex.test(password)){
+        window.alert("비밀번호 숫자 4자리를 입력해주세요!")
+        return;
+      }  
+    }
+
     // 서버에 보내기 위한 작업
     // 폼데이터 생성
     let formData = new FormData();
@@ -485,7 +512,7 @@ console.log(data)
           minDate={new Date()} // 오늘 이전 날짜 선택 못 함
           onChange={(newValue) => {
             setValue(newValue);
-       
+
          let range = (newValue[1] - newValue[0]) / (1000 * 60 * 60 * 24);
          if (newValue[1] && range < 14) {
            window.alert("2주 이상 선택해주세요!");
@@ -496,11 +523,12 @@ console.log(data)
          }
           }}
     
-          renderInput={(startProps, endProps) => (
+          renderInput={(startProps, endProps, inputRef) => (
             <React.Fragment>
               <DateBox>
-             <input ref={startProps.inputRef} {...startProps.inputProps} placeholder="2022.03.06" value={startDate?dateFormat(startDate).split(" ")[0]:""} />
-              - <input ref={endProps.inputRef} {...endProps.inputProps} placeholder="2022.03.19" value={endDate?dateFormat(endDate).split(" ")[0]:""} />
+             {/* <input ref={startProps.inputRef} {...startProps.inputProps} placeholder="시작 날짜" value={startDate?dateFormat(startDate).split(" ")[0]:""} />
+              - <input ref={endProps.inputRef} {...endProps.inputProps} placeholder="종료 날짜" value={endDate?dateFormat(endDate).split(" ")[0]:""} /> */}
+            <input ref={startProps.inputRef} {...startProps.inputProps}value={(startDate?dateFormat(startDate).split(" ")[0]:"")+"-"+(endDate?dateFormat(endDate).split(" ")[0]:"")} ></input>
              </DateBox>
             </React.Fragment>
           )}
@@ -517,7 +545,7 @@ console.log(data)
               placeholder="최대 30명"
               value={maxMember}
               _onChange={(e) => setMaxMember(e.target.value)}
-              disabled
+              disabled         
             />
           ) : (
             <Input
@@ -859,7 +887,7 @@ border:none;
 
   input {
     border:none;
-    width: 70px;
+    width: 100%;
     cursor: pointer;
   }
 
