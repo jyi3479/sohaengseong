@@ -135,7 +135,7 @@ const Signup = (props) => {
           }
         })
         .catch((error) => {
-          window.alert("회원가입 오류입니다!");
+          window.alert(error.response.data.message);
           console.log("회원가입 실패:", error);
           setModalOpen(false);
         });

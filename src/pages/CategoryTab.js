@@ -64,7 +64,6 @@ const CategoryTab = (props) => {
       }
     },[tabId]);
 
-    console.log(active,focus,tabId);
     return (
       <>
         <SearchHeader
