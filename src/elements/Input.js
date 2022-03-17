@@ -142,9 +142,9 @@ const InputField = styled.input`
   box-sizing: border-box;
   line-height: 1.29;
   border:none;
-  border-bottom: 1px solid #7c8288;
+  ${(props) => (props.value==="" ? ` border-bottom: 1px solid rgba(124, 130, 136, 0.5);` : ` border-bottom: 1px solid #7c8288;`)};
   background-color: transparent;
-  opacity: 0.5;
+  /* opacity: 0.5; */
   &.red {
     border-bottom: 1px solid #f57391;
     &:focus {
@@ -161,7 +161,7 @@ const InputField = styled.input`
   }
   ::placeholder {
     font-size: 14px;
-    color: #7c8288;
+    color: rgba(124, 130, 136, 0.5);
     line-height: 1.29;
   }
   &:disabled {
@@ -211,6 +211,7 @@ const TextAreaField = styled.textarea`
   border:none;
   ${(props) =>
     props.border ? `border: ${props.border};` : `border-bottom: 1px solid rgba(124, 130, 136, 0.5);`}
+   ${(props) => (props.value==="" ? ` border-bottom: 1px solid rgba(124, 130, 136, 0.5);` : ` border-bottom: 1px solid #7c8288;`)};
   box-sizing: border-box;
   resize: none;
   font-size: 14px;
