@@ -141,18 +141,30 @@ const ChallengeWrite = (props) => {
   const fileInput = React.useRef();
 
   const selectFile = (e) => {
-    const reader = new FileReader();
+    const fileArr = fileInput.current.files;
+    console.log(fileArr);
+    let fileURLs = []; // preview 담을 배열
+    let files = []; // image 담을 배열
 
-    const file = fileInput.current.files[0];
-    // 파일 내용을 읽어온다.
-    reader.readAsDataURL(file);
-    // 읽기가 끝나면 발생하는 이벤트 핸들러.
-    reader.onloadend = () => {
-      //console.log(reader.result); // 파일 컨텐츠(내용물)
-      setPreview([...preview, reader.result]);
-    };
-    if (file) {
-      setImage([...image, file]);
+    let file; // 임시 변수
+    let filesLength = fileArr.length > 3 ? 3 : fileArr.length;
+
+    for (let i = 0; i < filesLength; i++) {
+      file = fileArr[i];
+      let reader = new FileReader();
+      // 파일 내용을 읽어온다.
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        // 읽기가 끝나면 발생하는 이벤트 핸들러.
+        // console.log(reader.result);
+        fileURLs[i] = reader.result;
+        setPreview([...preview, ...fileURLs]);
+      };
+      // 이미지 state에 저장
+      if (file) {
+        files[i] = fileArr[i];
+        setImage([...image, ...files]);
+      }
     }
   };
 
@@ -640,7 +652,7 @@ const ChallengeWrite = (props) => {
             onChange={selectFile}
             ref={fileInput}
             // disabled={is_uploading}
-            // multiple // 다중 업로드 가능
+            multiple // 다중 업로드 가능
             accept="image/*" // 이미지에 해당하는 모든 파일 허용 (JPG,JPEG,GIF,PNG 제한?)
             style={{ display: "none" }}
           />

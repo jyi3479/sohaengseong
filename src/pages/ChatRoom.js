@@ -23,14 +23,13 @@ import { history } from "../redux/configureStore";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 import { useParams } from "react-router-dom";
-const server_port = process.env.REACT_APP_SERVER_PORT;
+const server_port = process.env.REACT_APP_CHATTING_SERVER;
 
 const ChatRoom = (props) => {
   const dispatch = useDispatch();
 
   // 소켓 통신 객체
-  // const sock = new SockJS("http://15.164.245.252:8080/chatting");
-  const sock = new SockJS("http://13.125.107.22:8080/chatting");
+  const sock = new SockJS(server_port);
   const client = Stomp.over(sock);
 
   // 방 제목 가져오기
