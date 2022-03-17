@@ -14,9 +14,9 @@ const GET_CATEGORY_LIST = "GET_CATEGORY_LIST";
 const ADD_CHALLENGE = "ADD_CHALLENGE";
 const EDIT_CHALLENGE = "EDIT_CHALLENGE";
 const DELETE_CHALLENGE = "DELETE_CHALLENGE";
-
-const getChallenge = createAction(GET_CHALLENGE, (challenge_list) => ({
-  challenge_list,
+const LOADING = 'LOADING'
+const getChallenge = createAction(GET_CHALLENGE, (challenge_list, paging) => ({
+  challenge_list, paging
 }));
 export const targetChallenge = createAction(TARGET_CHALLENGE, (target) => ({
   target,
@@ -36,20 +36,34 @@ const getCategoryList = createAction(
   GET_CATEGORY_LIST,
   (categoryId, category_list) => ({ categoryId, category_list })
 );
-
+const loading = createAction(LOADING, (is_loading)=>({is_loading}))
 const initialState = {
   list: [],
   target: null,
   category_list: [],
+  paging:{start : null, next : null, size : 6},
+  is_loading : false,
 };
 
-const getChallengeDB = () => {
+const getChallengeDB = (start = null, size=6) => {
   return function (dispatch, getState, { history }) {
+    let _paging = getState().challenge.paging
+    if(_paging.start && !_paging.next){
+      return;
+    }
+
+    dispatch(loading(true));
+
     challengeApis
       .getChallenge()
       .then((res) => {
         const challenge_list = res.data;
-        dispatch(getChallenge(challenge_list));
+        let paging = {
+          start : res.data[0],
+          next : res.data.length === size? res.data[res.data.length] : null,
+          size : size
+        }
+        dispatch(getChallenge(challenge_list, paging));
       })
       .catch((err) => {
         console.log("전체 챌린지 조회 오류", err);
@@ -145,6 +159,7 @@ const categoryChallengeDB = (categoryId) => {
       .then((res) => {
         console.log("카테고리 챌린지", res);
         dispatch(getCategoryList(categoryId, res.data));
+        dispatch(loading(true))
       })
       .catch((err) => {
         console.log("카테고리 챌린지 오류", err);
@@ -167,7 +182,9 @@ export default handleActions(
   {
     [GET_CHALLENGE]: (state, action) =>
       produce(state, (draft) => {
-        draft.list = action.payload.challenge_list;
+        draft.list.push(...action.payload.challenge_list);
+        draft.paging = action.payload.paging;
+        draft.is_loading = false
       }),
 
     [ADD_CHALLENGE]: (state, action) =>
@@ -196,6 +213,10 @@ export default handleActions(
         const categoryId = action.payload.categoryId;
         const category_list = action.payload.category_list;
         draft.category_list[categoryId] = category_list;
+      }),
+    [LOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_loading = action.payload.is_loading;
       }),
   },
   initialState

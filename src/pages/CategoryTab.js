@@ -11,6 +11,7 @@ import { actionCreators as searchActions} from "../redux/modules/search";
 import { StaticRouter } from "react-router-dom";
 import { Category } from "@material-ui/icons";
 import _ from 'lodash'
+import InfinityScroll from "../shared/InfinityScroll";
 
 const CategoryTab = (props) => {
     const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const CategoryTab = (props) => {
     const [word,setWord] = React.useState("");
     const [search_list,setSearch_list] = React.useState('');
     const categoryList = useSelector((state) => state.challenge.category_list);
+    const paging = useSelector((state) => state.challenge.paging);
+    const is_loading = useSelector((state) => state.challenge.is_loading);
     const searchList = useSelector((state) => state.search.list)
     const allList = useSelector((state) => state.challenge.list);
     const location = window.location.pathname;
@@ -53,7 +56,7 @@ const CategoryTab = (props) => {
           _onClick={() => {
             dispatch(searchActions.getSearchDB(word));
             history.push("/category/all");
-            setSearch_list(searchList)
+            setSearch_list(searchList);
           }}
         />
         <Grid padding="0" margin="71px 0 0">
@@ -163,55 +166,68 @@ const CategoryTab = (props) => {
                 ? categoryList[tabId]
                   ? categoryList[tabId].length
                   : 0
-                : search_list? searchList.length : allList.length}
+                : search_list
+                ? searchList.length
+                : allList.length}
             </b>
             건
           </p>
-          <Grid is_flex padding="20px">
-            {tabId !== "all" ? (
-              categoryList[tabId] ? (
-                categoryList[tabId].map((el, i) => {
-                  return (
-                    <ChallengeCard
-                      key={el.challengeId}
-                      {...el}
-                      _onClick={() => {
-                        history.push(`/challenge/${el.challengeId}`);
-                      }}
-                    ></ChallengeCard>
-                  );
-                })
+          <InfinityScroll
+          callNext={()=>{
+              console.log('next!');
+              dispatch(challengeAction.getChallengeDB(paging.next))
+              console.log(paging.next);
+          }}
+          is_next={paging.next? true : false}
+          
+          loading={is_loading}
+          >
+            <Grid is_flex padding="20px">
+              {tabId !== "all" ? (
+                categoryList[tabId] ? (
+                  categoryList[tabId].map((el, i) => {
+                    return (
+                      <ChallengeCard
+                        key={el.challengeId}
+                        {...el}
+                        _onClick={() => {
+                          history.push(`/challenge/${el.challengeId}`);
+                        }}
+                      ></ChallengeCard>
+                    );
+                  })
+                ) : (
+                  <h1>앗 게시글이 없어요 !</h1>
+                )
               ) : (
-                <h1>앗 게시글이 없어요 !</h1>
-              )
-            ) : (
-              <>
-                {search_list
-                  ? searchList.map((el, i) => {
-                      return (
-                        <ChallengeCard
-                          key={i}
-                          {...el}
-                          _onClick={() => {
-                            history.push(`/challenge/${el.challengeId}`);
-                          }}
-                        ></ChallengeCard>
-                      );
-                    })
-                  : allList.map((el, i) => {
-                      return (
-                        <ChallengeCard
-                          key={i}
-                          {...el}
-                          _onClick={() => {
-                            history.push(`/challenge/${el.challengeId}`);
-                          }}
-                        ></ChallengeCard>
-                      );
-                    })}
-              </>
-            )}
-          </Grid>
+                <>
+                  {search_list
+                    ? searchList.map((el, i) => {
+                        return (
+                          <ChallengeCard
+                            key={i}
+                            {...el}
+                            _onClick={() => {
+                              history.push(`/challenge/${el.challengeId}`);
+                            }}
+                          ></ChallengeCard>
+                        );
+                      })
+                    : allList.map((el, i) => {
+                        return (
+                          <ChallengeCard
+                            key={i}
+                            {...el}
+                            _onClick={() => {
+                              history.push(`/challenge/${el.challengeId}`);
+                            }}
+                          ></ChallengeCard>
+                        );
+                      })}
+                </>
+              )}
+            </Grid>
+          </InfinityScroll>
         </Grid>
       </>
     );
