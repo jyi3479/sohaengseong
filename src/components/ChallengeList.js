@@ -1,10 +1,12 @@
 import React from "react";
+import styled from "styled-components";
+
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import {actionCreators as challengeAction} from "../redux/modules/challenge";
+
 import Card from "./Card";
-import {Grid} from "../elements/index";
-import styled from "styled-components";
+
 
 const ChallengeList = (props) => {
     const dispatch = useDispatch();

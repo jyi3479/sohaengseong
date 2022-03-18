@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import styled from "styled-components";
 import { Image } from "../../elements";
 import defaultImg from "../../image/img_profile_defalt @2x.png";
@@ -7,26 +6,15 @@ import moment from "moment";
 
 function MessageItem(props) {
   const message = props;
-  //   console.log(message);
-  const userId = +localStorage.getItem("userId");
+  const userId = parseInt(localStorage.getItem("userId"));
   const profileUrl = message.user.profileUrl
     ? message.user.profileUrl
     : defaultImg;
-  //   React.useEffect(() => {
-  //     // 로딩중
-  //     if (!messageInfo) {
-  //       return (
-  //         <MessageWrap>
-  //           <Spinner />
-  //         </MessageWrap>
-  //       )
-  //     }
-
-  //   }, [])
 
   // 타임 스탬프
   let time = "";
   if (!(message.createdAt === null)) {
+    // ex) 오후 6:30 형태로 바꿔주기
     time = moment(message.createdAt, "YYYY.MM.DD kk:mm:ss").format("LT");
   }
 
@@ -34,7 +22,7 @@ function MessageItem(props) {
   if (message.type === "ENTER") {
     return <EnterWrap className="t_center">{message.message}</EnterWrap>;
   }
-  // 메시지의 유저 id 정보와 현재 유저 id가 같으면 본인 메시지 (user store에 저장되어있는거 쓰기 or localstorage)
+  // 메시지의 유저 id 정보와 현재 유저 id가 같으면 본인 메시지
   if (userId === message.user.userId) {
     return (
       <Item className="is_me">
@@ -45,7 +33,9 @@ function MessageItem(props) {
           profile={profileUrl}
         ></Image>
         <Bubble className="is_me">
-          <p className="small bold">{message.user ? message.user.nickname : message.sender}</p>
+          <p className="small bold">
+            {message.user ? message.user.nickname : message.sender}
+          </p>
           <div>
             <Text className="is_me">{message.message}</Text>
             <p className="time caption_color">{time}</p>
@@ -69,7 +59,10 @@ function MessageItem(props) {
             profile={profileUrl}
           ></Image>
           <Bubble>
-            <p className="small bold"> {message.user ? message.user.nickname : message.sender}</p>
+            <p className="small bold">
+              {" "}
+              {message.user ? message.user.nickname : message.sender}
+            </p>
             <div>
               <Text>{message.message}</Text>
               <p className="time caption_color">{time}</p>

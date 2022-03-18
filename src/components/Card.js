@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
 import { Grid , Image, Tag} from "../elements/index";
 
 import peopleIcon from "../image/icon/ic_people@2x.png";
