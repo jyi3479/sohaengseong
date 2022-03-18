@@ -8,7 +8,7 @@ import { Grid, Input, Button } from "../elements";
 import Modal from "./Modal";
 import { useParams } from "react-router-dom";
 import { memberApis } from "../shared/apis";
-import plus from "../image/icons/ic_plus_xl.png";
+import plus from "../image/icons/ic_plus_xl@2x.png";
 import deleteIcon from "../image/icon/ic_delete_m.png";
 import confirmIcon from "../image/img_good@2x.png";
 
@@ -43,7 +43,7 @@ const PostWrite = (props) => {
     reader.readAsDataURL(file);
     // 읽기가 끝나면 발생하는 이벤트 핸들러.
     reader.onloadend = () => {
-      console.log(reader.result); // 파일 컨텐츠(내용물)
+      //console.log(reader.result); // 파일 컨텐츠(내용물)
       setPreview(reader.result);
     };
     if (file) {
@@ -65,7 +65,6 @@ const PostWrite = (props) => {
       return;
     }
     const contentJson = { content: content };
-    // formData.append("content", content);
     formData.append(
       "post",
       new Blob([JSON.stringify(contentJson)], { type: "application/json" })
@@ -197,12 +196,10 @@ const PostWrite = (props) => {
       </Notice>
       <Fixed>
         <Button
-          width="calc(100% - 5px)"
-          bg="#fff"
-          style={{ color: "#666", border: "1px solid #666" }}
           _onClick={openModal}
+          disabled={preview === "" || content === "" ? "disabled" : ""}
         >
-          {isEdit ? "수정하기" : "인증하기"}
+          {isEdit ? "수정하기" : "저장하기"}
         </Button>
       </Fixed>
       <Modal
@@ -276,21 +273,20 @@ const PostWrite = (props) => {
 };
 
 const ImageLabel = styled.label`
-  width: 335px;
+  width: 100%;
   height: 280px;
-  margin: 12px auto;
+  margin: 12px auto 16px;
   display: inline-block;
   position: relative;
   ${(props) => (props.src ? "border: none;" : "border: solid 1px #a2aab3;")}
-
   border-radius: 12px;
   cursor: pointer;
   background-image: url("${(props) => props.default}");
   background-position: center;
-  background-size: 20%;
-
+  background-size: 48px;
+  overflow: hidden;
   ::before {
-    width: 335px;
+    width: 100%;
     height: 280px;
     position: absolute;
     top: 0;
@@ -305,14 +301,12 @@ const ImageLabel = styled.label`
     background-size: cover;
     border-radius: 12px;
   }
-
   &::after {
     position: absolute;
     content: "";
-    width: 335px;
+    width: 100%;
     height: 280px;
     ${(props) => (props.src ? "background-color: rgba(3, 1, 2, 0.5);" : "")}
-
     top: 0;
     right: 0;
     bottom: 0;
@@ -347,16 +341,13 @@ const Notice = styled.div`
 `;
 
 const Fixed = styled.div`
-  width: 100%;
-  position: fixed;
-  background-color: #fff;
-  bottom: 0;
-  left: 0;
-  padding: 12px 20px;
-  box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
-  button {
-    border-radius: 5px;
-  }
+    width: 100%;
+    position: fixed;
+    background-color: #fff;
+    bottom:0;
+    left:0;
+    padding:12px 20px;
+    box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
 const CharacterImg = styled.div`

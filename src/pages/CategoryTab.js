@@ -29,7 +29,6 @@ const CategoryTab = (props) => {
 
     //검색 axios 요청을 줄이기위한 debounce
     const debounce = _.debounce((word) =>{
-        console.log("단어확인",word);
         history.push("/category/all");
         if(word !== "" || word !== " "){
             dispatch(searchActions.getSearchDB(word));
@@ -63,6 +62,7 @@ const CategoryTab = (props) => {
         setFocus(false);
       }
     },[tabId]);
+
 
     return (
       <>
