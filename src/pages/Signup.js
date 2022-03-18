@@ -48,6 +48,19 @@ const Signup = (props) => {
       setModalOpen(false);
   };
 
+  // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
+  const selectClick = () => {
+    setActive(!active);
+    setOption("");
+  };
+  const optionClick = (e) => {
+    setOption(e.target.innerText);
+    setActive(false);    
+    if (option !== "직접 입력") {
+      setDomain(e.target.innerText);
+    }
+  };
+
   const send = () => {
     const mail = `${email}@${domain}`;
     dispatch(userActions.emailCheckResend(mail));
@@ -115,12 +128,11 @@ const Signup = (props) => {
     setKeypressNick(_nickCheck);
     dispatch(userActions.nicknameCheck(nickname));
   };
+  
 
   const signup = () => {
     if (isPwd === true && samePwd === true && _nickCheck === "true") {
-      const mail = `${email}@${domain}`;
-
-      console.log(mail);
+      const mail = `${email}@${domain}`;    
 
       const signup = {
         email: mail,
@@ -148,17 +160,7 @@ const Signup = (props) => {
     }
   };
 
-  // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
-  const selectClick = () => {
-    setActive(!active);
-  };
-  const optionClick = (e) => {
-    setOption(e.target.innerText);
-    setActive(false);    
-    if (option !== "직접 입력") {
-      setDomain(e.target.innerText);
-    }
-  };
+  
 
 
   //헤더&푸터 state
@@ -394,7 +396,8 @@ const Signup = (props) => {
       <Fixed>
         <Button _onClick={()=>{
           signup()
-        }} disabled={isPwd === true && samePwd === true && _nickCheck === "true"? "" : "disabled"}
+        }} 
+        disabled={isPwd === true && samePwd === true && _nickCheck === "true"? "" : "disabled"}
         >가입하기</Button>
       </Fixed>
     </Grid>
