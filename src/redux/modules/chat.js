@@ -32,10 +32,6 @@ const moveChat = createAction(MOVE_CHAT, (currentChat) => ({ currentChat }));
 
 const getMessages = createAction(GET_MESSAGES, (messages) => ({ messages }));
 
-const writeMessage = createAction(WRITE_MESSAGE, (messageText) => ({
-  messageText,
-}));
-
 const clearMessages = createAction(CLEAR_MESSAGES, () => ({}));
 
 const setMessages = createAction(SET_MESSAGES, (chatRoomInfo, messages) => ({
@@ -60,8 +56,6 @@ const initialState = {
   },
   // 현재 접속 채팅 메시지
   messages: [],
-  messageText: null,
-  // 메시지 현재 페이지
   messageCurPage: null,
   // 메시지 총 페이지
   messageTotalPage: null,
@@ -141,11 +135,6 @@ export default handleActions(
         draft.editDone = true;
       }),
 
-    [WRITE_MESSAGE]: (state, action) =>
-      produce(state, (draft) => {
-        draft.messageText = action.payload.messageText;
-      }),
-
     [CLEAR_MESSAGES]: (state, action) =>
       produce(state, (draft) => {
         draft.messages = [];
@@ -180,7 +169,6 @@ const actionCreators = {
   getChatMessagesDB,
   moveChat,
   getMessages,
-  writeMessage,
   clearMessages,
   isLoading,
   isLoaded,

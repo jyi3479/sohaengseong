@@ -166,6 +166,7 @@ const ChallengeWrite = (props) => {
         setImage([...image, ...files]);
       }
     }
+    e.target.value = ""; // 같은 파일 upload를 위한 처리
   };
 
   const deleteImage = (index) => {

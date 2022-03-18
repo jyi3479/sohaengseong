@@ -23,7 +23,7 @@ function MessageForm(props) {
   // 텍스트 기록 함수
   const handleMessageText = (e) => {
     setMessageText(e.target.value);
-    dispatch(chatAction.writeMessage(e.target.value));
+    // dispatch(chatAction.writeMessage(e.target.value));
   };
 
   // 오토 포커스 대상
@@ -41,12 +41,16 @@ function MessageForm(props) {
     text.style.height = text.scrollHeight + "px";
   };
 
+  // 보낼 메세지 텍스트
+  const msg = textArea.current;
+
   // 엔터 시 제출용
   const onEnterPress = (e) => {
     if (e.key === "Enter") {
       // enter + shift 누르면 줄바꿈 되도록 하기
       if (!e.shiftKey) {
-        sendMessage();
+        console.log("보낼 메세지 내용", typeof msg.defaultValue);
+        sendMessage(msg.defaultValue);
         setMessageText("");
         // 메세지를 보내고 바로 엔터 실행되어 줄바꿈 안되도록 방지
         e.preventDefault();
@@ -75,9 +79,13 @@ function MessageForm(props) {
         <button
           type="button"
           className="send_btn"
-          style={{backgroundColor:messageText? "#4149d3":"rgba(162, 170, 179, 0.5)"}}
+          style={{
+            backgroundColor: messageText
+              ? "#4149d3"
+              : "rgba(162, 170, 179, 0.5)",
+          }}
           onClick={() => {
-            sendMessage();
+            sendMessage(msg.defaultValue);
             setMessageText("");
           }}
         ></button>
@@ -109,7 +117,7 @@ const MessgeInput = styled.div`
     outline: none;
     border: none;
     resize: none;
-    &::placeholder{
+    &::placeholder {
       color: #a2aab3;
     }
   }

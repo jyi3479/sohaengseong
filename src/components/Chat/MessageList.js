@@ -14,9 +14,9 @@ function MessageList() {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.chat.messages);
   console.log(messages);
-  useEffect(() => {
-    dispatch(chatAction.getChatMessagesDB(roomId));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(chatAction.getChatMessagesDB(roomId));
+  // }, []);
 
   // 날짜별로 분류하기
   //1. 받아온 데이터 중 존재하는 날짜값만 가져오기
