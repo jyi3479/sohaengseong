@@ -5,13 +5,26 @@ import styled from "styled-components";
 import { actionCreators as challengeAction } from "../../redux/modules/challenge";
 import { Grid, Button } from "../../elements";
 import { history } from "../../redux/configureStore";
+import dayjs from "dayjs";
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 const ChallengeInfo = (props) => {
+  dayjs.extend(customParseFormat);
   const dispatch = useDispatch();
   // router 경로 설정한 challengeId 가져오기 (string 이어서 +연산자로 숫자 변환)
   // 특정 챌린지 조회할 때 사용하면 됨
   const challengeId = props.challengeId;
   const target = props.target;
+
+
+  //날짜 포맷 변경 뒤 날짜 간격 계산하기
+  const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}`;
+  const endDate = target&&`${target.endDate.split(" ")[0].split("-")[0]}`;
+  const date1 = dayjs(startDate,"YYYY-MM-DD",'ko');
+  const date2 = dayjs(endDate,"YYYY-MM-DD",'ko');
+  const days = Number(date2.diff(date1, "day"))+1;
+
+
 
   return (
     <>
@@ -33,7 +46,7 @@ const ChallengeInfo = (props) => {
             <div>
               <Grid center>
                 <p className="caption caption_color mb4">기간</p>
-                <h3>15일</h3>
+                <h3 className="poppins">{days}일</h3>
               </Grid>
             </div>
             <div>

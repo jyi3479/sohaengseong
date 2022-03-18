@@ -15,7 +15,7 @@ const MemberPostDetail = (props) => {
   const roomId = useParams().roomId;
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
-  console.log(postList, targetPost);
+  //console.log(postList, targetPost);
 
 
   React.useEffect(() => {
@@ -37,6 +37,7 @@ const MemberPostDetail = (props) => {
       <Fixed>
         <Grid padding="0" is_flex>
           <Button
+            line_btn
             width="calc(30% - 4px)"
             _onClick={() => {
               history.push(`/chatting/${roomId}`);
