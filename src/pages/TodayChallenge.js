@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from "../redux/modules/base";
 import ChallengeList from "../components/ChallengeList";
 
+import {actionCreators as challengeAction} from "../redux/modules/challenge"
 const TodayChallenge = (props) => {
     const dispatch = useDispatch();
     const list = useSelector(state => state.challenge.list);
-
+   
     React.useEffect(()=>{
         dispatch(baseAction.setHeader("오늘의 행성"));
         dispatch(baseAction.setGnb(false));
@@ -18,14 +19,14 @@ const TodayChallenge = (props) => {
             dispatch(baseAction.setGnb(true));
         }
     });
-    return(        
-        <Grid margin="48px 0 0">
-            <TopBox>
-                <p className="small sub_color mb4">진행중</p>
-                <p className="poppins">{list.length}</p>
-            </TopBox>
-            <ChallengeList/>
-        </Grid>        
+    return (
+      <Grid margin="48px 0 0">
+        <TopBox>
+          <p className="small sub_color mb4">진행중</p>
+          <p className="poppins">{list.length}</p>
+        </TopBox>
+          <ChallengeList />
+      </Grid>
     );
 };
 

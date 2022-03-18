@@ -41,11 +41,11 @@ const initialState = {
   list: [],
   target: null,
   category_list: [],
-  paging:{start : null, next : null, size : 6},
+  paging:{start : null, next : null, size : 5},
   is_loading : false,
 };
 
-const getChallengeDB = (start = null, size=6) => {
+const getChallengeDB = (start = null, size=5) => {
   return function (dispatch, getState, { history }) {
     let _paging = getState().challenge.paging
     if(_paging.start && !_paging.next){
@@ -60,7 +60,7 @@ const getChallengeDB = (start = null, size=6) => {
         const challenge_list = res.data;
         let paging = {
           start : res.data[0],
-          next : res.data.length === size? res.data[res.data.length] : null,
+          next : res.data.length === size? res.data[res.data.length-1] : null,
           size : size
         }
         dispatch(getChallenge(challenge_list, paging));
