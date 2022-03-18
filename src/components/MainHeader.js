@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import searchIconW from '../image/icon/ic_ search@2x.png';
-import arrow from "../image/icons/ic_arrow_w.png";
+import arrow from "../image/icon/ic_arrow_w@2x.png";
 import logo from "../image/logo.png";
 
 const MainHeader = (props) => {

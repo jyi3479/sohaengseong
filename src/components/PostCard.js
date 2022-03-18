@@ -288,9 +288,12 @@ const Wrap = styled.div`
         margin-left: 13px;
         width: calc(100% - 50px);
         .comment_info{
+          display: block;
           width: 100%;
           p:last-child {
             white-space: normal;
+            width: 100%;
+            margin: 2px 0 0 0;
           }
         }
         .comment_tool {
