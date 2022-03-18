@@ -2,15 +2,15 @@
     margin-left: 75px; // dialog 위치 너무 바깥에 있음
 } */
 
-.css-1laqsz7-MuiInputAdornment-root {
+.MuiInputAdornment-root {
     margin: 0 0 2px 6px;
 }
 
-.css-1yq5fb3-MuiButtonBase-root-MuiIconButton-root > svg {
-display: none;
+.MuiInputAdornment-root > button > svg {
+    display: none;
 }
 
-.css-1yq5fb3-MuiButtonBase-root-MuiIconButton-root >span {
+.MuiInputAdornment-root > button >span {
     width:16px;
     height:16px;
     background-image: url("../../image/icons/ic_dropdown@2x.png");

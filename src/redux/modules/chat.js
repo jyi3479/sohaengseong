@@ -12,8 +12,6 @@ const GET_CHAT = "GET_CHAT";
 const MOVE_CHAT = "MOVE_CHAT";
 // 채팅방의 대화 내용을 가져오기 (채팅하면서 추가)
 const GET_MESSAGES = "GET_MESSAGES";
-// 사용자가 입력한 메시지의 텍스트를 기록
-const WRITE_MESSAGE = "WRITE_MESSAGE";
 // 저장한 대화 내용 없애기
 const CLEAR_MESSAGES = "CLEAR_MESSAGES";
 // DB의 채팅방의 대화 내용 넣어놓기
