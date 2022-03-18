@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { history } from "../../redux/configureStore";
 import { Button, Grid } from "../../elements/index";
+
+import { history } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux/modules/ranking";
-import defaultImg from "../../image/img_profile_defalt @2x.png";
+
 import RankingCard from "./RankingCard";
 
 const RankingList = () => {

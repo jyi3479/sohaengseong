@@ -181,60 +181,37 @@ const PostWrite = (props) => {
 
             {/* PostWrite의 작성 input */}
 
-        <Input
-          placeholder="오늘의 활동은 어떠셨나요? 소감을 남겨주세요."
-          value={content}
-          _onChange={(e) => {
-            setContent(e.target.value);
-          }}
-        />
-      </Grid>
-      <Notice>
-        <p className="bold sub_color">유의사항</p>
-        <ul>
-          <li className="sub_color">인증 사진은 필수입니다.</li>
-          <li className="sub_color mt4">타인을 불쾌하게 하는 사진을 업로드 시 관리자의 권한에 따라 
-삭제될 수 있습니다. </li>
-        </ul>
-      </Notice>
-      <Fixed>
-        <Button
-          _onClick={openModal}
-          disabled={preview === "" || content === "" ? "disabled" : ""}
-        >
-          {isEdit ? "수정하기" : "저장하기"}
-        </Button>
-      </Fixed>
-      <Modal
-        open={modalType === "openModal" ? modalOpen : ""}
-        close={closeModal}
-        double_btn
-        btn_text={isEdit ? "수정" : "인증"}
-        _onClick={() => {
-          if (isEdit) {
-            editPost();
-          } else {
-            addPost();
-          }
-        }}
-      >
-        <p>{isEdit ? "수정하시겠습니까?" : "인증하시겠습니까?"}</p>
-      </Modal>
-      <Modal
-        open={modalType === "okModal" ? modalOpen : ""}
-        close={closeModal}
-        header
-        isPrivate
-      >
-        <Grid>
-          <CharacterImg></CharacterImg>
-          <h2 style={{ marginBottom: "9px" }}>인증 완료</h2>
-          <p style={{ marginBottom: "35px" }}>
-            인증을 완료했습니다.
-            <br />
-            오늘도 즐거운 하루되세요!
-          </p>
-          <Button
+            <Input
+              placeholder="오늘의 활동은 어떠셨나요? 소감을 남겨주세요."
+              value={content}
+              _onChange={(e) => {
+                setContent(e.target.value);
+              }}
+            />
+          </Grid>
+          <Notice>
+            <p className="bold sub_color">유의사항</p>
+            <ul>
+              <li className="sub_color">인증 사진은 필수입니다.</li>
+              <li className="sub_color mt4">
+                타인을 불쾌하게 하는 사진을 업로드 시 관리자의 권한에 따라
+                삭제될 수 있습니다.{" "}
+              </li>
+            </ul>
+          </Notice>
+          <Fixed>
+            <Button
+              _onClick={openModal}
+              disabled={preview === "" || content === "" ? "disabled" : ""}
+            >
+              {isEdit ? "수정하기" : "저장하기"}
+            </Button>
+          </Fixed>
+          <Modal
+            open={modalType === "openModal" ? modalOpen : ""}
+            close={closeModal}
+            double_btn
+            btn_text={isEdit ? "수정" : "인증"}
             _onClick={() => {
               if (isEdit) {
                 editPost();
@@ -371,13 +348,13 @@ const Notice = styled.div`
 `;
 
 const Fixed = styled.div`
-    width: 100%;
-    position: fixed;
-    background-color: #fff;
-    bottom:0;
-    left:0;
-    padding:12px 20px;
-    box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  bottom: 0;
+  left: 0;
+  padding: 12px 20px;
+  box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
 const CharacterImg = styled.div`

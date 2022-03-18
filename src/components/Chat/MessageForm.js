@@ -1,55 +1,36 @@
-import React, { useState, useCallback, useContext, useRef } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
-import { getCookie } from "../../shared/cookie";
-import { history } from "../../redux/configureStore";
-import { useParams } from "react-router-dom";
-
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as chatAction } from "../../redux/modules/chat";
 
 import send from "../../image/icons/ic_message@2x.png";
 
 function MessageForm(props) {
-  const dispatch = useDispatch();
   // 메시지 텍스트 입력받기
   const [messageText, setMessageText] = React.useState("");
-
+  // 웹소켓 연결 컴포넌트에서 만든 메세지 전송 함수 받아오기
   const { sendMessage } = props;
 
-  const loading = useSelector((state) => state.chat.loading);
-
-  // 텍스트 기록 함수
+  // 텍스트 입력 onChange
   const handleMessageText = (e) => {
     setMessageText(e.target.value);
-    // dispatch(chatAction.writeMessage(e.target.value));
   };
 
-  // 오토 포커스 대상
-  const autoFocusRef = React.useRef(null);
-  React.useEffect(() => {
-    autoFocusRef.current?.focus();
-  }, []);
+  // 웹소켓에 전송할 메세지
+  const textArea = useRef();
+  const msg = textArea.current;
 
   //리사이즈 스크립트 설정
-  const textArea = useRef();
-
   const resize = () => {
     const text = textArea.current;
     text.style.height = "auto";
     text.style.height = text.scrollHeight + "px";
   };
 
-  // 보낼 메세지 텍스트
-  const msg = textArea.current;
-
-  // 엔터 시 제출용
+  // 엔터 시 메세지 전송
   const onEnterPress = (e) => {
     if (e.key === "Enter") {
       // enter + shift 누르면 줄바꿈 되도록 하기
       if (!e.shiftKey) {
-        console.log("보낼 메세지 내용", typeof msg.defaultValue);
+        // 웹소켓에 메세지 전송
         sendMessage(msg.defaultValue);
         setMessageText("");
         // 메세지를 보내고 바로 엔터 실행되어 줄바꿈 안되도록 방지
@@ -72,9 +53,6 @@ function MessageForm(props) {
           onChange={handleMessageText}
           onKeyPress={onEnterPress}
           ref={textArea}
-
-          // ref={autoFocusRef}
-          // loading={loading}
         />
         <button
           type="button"

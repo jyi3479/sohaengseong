@@ -1,20 +1,20 @@
 import React, { forwardRef } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-// 기간 선택 라이브러리
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DateRangePicker from "@mui/lab/DateRangePicker";
-import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
-import Box from "@mui/material/Box";
 
+import { useParams } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as searchAction } from "../redux/modules/search";
-import { Grid, Input, Button, Image, Tag } from "../elements";
+
+// 기간 선택 라이브러리(MUI)
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
+
+import { Grid, Input, Button, Image} from "../elements";
+
 import Modal from "../components/Modal";
 import plus from "../image/icon/ic_plus_g@2x.png";
 import drop from "../image/icons/ic_dropdown@2x.png";
@@ -29,15 +29,15 @@ const ChallengeWrite = (props) => {
   const params = useParams();
   const target = useSelector((state) => state.challenge.target);
   const isEdit = params.challengeId ? true : false;
-  // 챌린지 시작 하루 전까지 수정 가능함 (오늘 날짜랑 시작일 비교하기)
 
   // 추천 태그 리스트 가져오기
   const recommendList = useSelector((state) => state.search.recommend).filter(
     (el, idx) => idx < 5
   );
 
-  // Header 적용 (수정/작성 분기)
+
   React.useEffect(() => {
+      // Header 적용 (수정/작성 분기)
     dispatch(baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기"));
     dispatch(baseAction.setGnb(false));
 
@@ -55,10 +55,12 @@ const ChallengeWrite = (props) => {
     };
   }, []);
 
-  const [active, setActive] = React.useState(false);
+
+
   const [title, setTitle] = React.useState(isEdit ? target.title : "");
   const [content, setContent] = React.useState(isEdit ? target.content : "");
   const [category, setCategory] = React.useState(isEdit ? target.category : "");
+  const [active, setActive] = React.useState(false); // select 활성화 여부
   const [maxMember, setMaxMember] = React.useState(
     isEdit ? target.maxMember : ""
   );
@@ -74,14 +76,14 @@ const ChallengeWrite = (props) => {
 
   //해시태그 부분
   const [hashtag, setHashtag] = React.useState(""); //onChange로 관리할 문자열
-  const [hashArr, setHashArr] = React.useState(isEdit ? target.tagName : []); // 해시태그 담을 배열
-  const [tagFocus, setTagFocus] = React.useState(false);
+  const [hashArr, setHashArr] = React.useState(isEdit ? target.tagName : []); // 태그 담을 배열
+  const [tagFocus, setTagFocus] = React.useState(false); // 태그 입력창 활성화 여부
 
   // 날짜 선택 부분
   const [value, setValue] = React.useState([null, null]);
   const [startDate, setStartDate] = React.useState();
   const [endDate, setEndDate] = React.useState(null);
-  const [dateFocus, setDateFocus] = React.useState(false);
+  const [dateFocus, setDateFocus] = React.useState(false); // 날짜 선택 입력창 활성화 여부
 
   // 방 공개 여부
   const [checkedInputs, setCheckedInputs] = React.useState(
@@ -108,7 +110,7 @@ const ChallengeWrite = (props) => {
   };
 
   // 태그 관련 함수
-  //1. 태그 직접 입력 시
+  // 엔터 시 태그 제출
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && e.key === "Enter") {
       // 중복된 태그 값 있으면 입력안되고 hashtag 초기화 되도록 설정
@@ -119,7 +121,7 @@ const ChallengeWrite = (props) => {
       submitTagItem();
     }
   };
-
+  // 엔터 및 키워드 클릭 시 실행 함수
   const submitTagItem = (keyword) => {
     let updatedTaglist = [...hashArr];
     updatedTaglist.push(keyword ? keyword : hashtag);
@@ -137,6 +139,7 @@ const ChallengeWrite = (props) => {
     setHashArr(filteredTaglist);
   };
 
+
   // 이미지 업로드 부분
   const fileInput = React.useRef();
 
@@ -147,7 +150,7 @@ const ChallengeWrite = (props) => {
     let files = []; // image 담을 배열
 
     let file; // 임시 변수
-    let filesLength = fileArr.length > 3 ? 3 : fileArr.length;
+    let filesLength = fileArr.length > 3 ? 3 : fileArr.length; // 이미지 3장 제한
 
     for (let i = 0; i < filesLength; i++) {
       file = fileArr[i];
@@ -156,8 +159,8 @@ const ChallengeWrite = (props) => {
       reader.readAsDataURL(file);
       reader.onload = () => {
         // 읽기가 끝나면 발생하는 이벤트 핸들러.
-        // console.log(reader.result);
         fileURLs[i] = reader.result;
+        // 미리보기 state에 저장
         setPreview([...preview, ...fileURLs]);
       };
       // 이미지 state에 저장
