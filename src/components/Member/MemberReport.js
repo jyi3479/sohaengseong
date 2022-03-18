@@ -72,6 +72,7 @@ const MemberReport = (props) => {
 const IndexBox = styled.div`
   display: flex;
   margin-left: 8px;
+  align-items: flex-end;
   div {
     width: 12px;
     height: 12px;
