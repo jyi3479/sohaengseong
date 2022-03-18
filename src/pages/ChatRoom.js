@@ -4,7 +4,6 @@ import * as baseAction from "../redux/modules/base";
 // Components
 import MessageList from "../components/Chat/MessageList";
 import MessageForm from "../components/Chat/MessageForm";
-// import NoRoom from "../components/Chat/NoRoom";
 
 // elements
 import { Grid } from "../elements/index";
@@ -25,6 +24,7 @@ import SockJS from "sockjs-client";
 import { useParams } from "react-router-dom";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
+
 const ChatRoom = (props) => {
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const ChatRoom = (props) => {
 
   const userId = +localStorage.getItem("userId");
 
-  // 헤더&푸터 state
+  // 헤더&푸터 state (채팅방 바뀔 때마다 헤더 바뀌도록)
   React.useEffect(() => {
     dispatch(
       baseAction.setHeader(
@@ -58,6 +58,7 @@ const ChatRoom = (props) => {
     };
   }, [currentChat]);
 
+  // 서버에서 이전 메세지 가져오기
   React.useEffect(() => {
     dispatch(chatAction.getChatMessagesDB(roomId));
   }, []);
@@ -74,7 +75,7 @@ const ChatRoom = (props) => {
             `/sub/chat/rooms/${roomId}`,
             (data) => {
               const newMessage = JSON.parse(data.body);
-              // 메세지 추가하는 부분(reducer에서 push)
+              // 메세지 추가하는 부분 (reducer에서 push)
               dispatch(chatAction.getMessages(newMessage));
             },
             {
@@ -156,8 +157,6 @@ const ChatRoom = (props) => {
           },
           JSON.stringify(data)
         );
-        console.log();
-        console.log(client.ws.readyState);
       });
     } catch (error) {
       console.log(error);
@@ -169,7 +168,6 @@ const ChatRoom = (props) => {
       <Grid
         padding="0"
         margin="0"
-        // height="calc(100vh - 48px)"
         style={{ overflowY: "auto" }}
       >
         <MessageList />

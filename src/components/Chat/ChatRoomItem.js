@@ -1,31 +1,28 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { history } from "../../redux/configureStore";
-import { Grid } from "../../elements/index";
 import defaultImg from "../../image/img_profile_defalt @2x.png";
 
 const ChatRoomItem = (props) => {
   const chatInfo = props;
-  // console.log(chatInfo.roomId);
-  // const currentRoomId = useSelector((state) => state.chat.currentChat.roomId);
 
   // 타임 스탬프
   let time = "";
   if (!(chatInfo.createdAt === null)) {
-    time = chatInfo.createdAt?.split("T")[0]; //일단 생성 날짜로 해놓기
+    time = chatInfo.createdAt?.split("T")[0];
   }
   return (
-    <Box      
+    <Box
       onClick={() => {
+        // 채팅방 입장
         history.push(`/chatting/${chatInfo.roomId}`);
       }}
     >
       <div style={{ width: "calc(100% - 78px)", display: "flex" }}>
         <ProfileBox>
-          {/* 멤버정보 순서대로 노출 시켜줄 것 임의로 만들어둠 */}
-          {chatInfo.currentMember === 1? (
-             <div
+          {/* 채팅 섬네일 부분 (한명이면 프로필 사진 한개 / 두명 이상이면 두개) */}
+          {chatInfo.currentMember === 1 ? (
+            <div
               className="one_member"
               style={{
                 backgroundImage: `url(${
@@ -35,23 +32,26 @@ const ChatRoomItem = (props) => {
             ></div>
           ) : (
             <>
-             <div
+              <div
                 style={{
                   backgroundImage: `url(${
-                    chatInfo.chatRoomImg[0] ? chatInfo.chatRoomImg[0] : defaultImg
+                    chatInfo.chatRoomImg[0]
+                      ? chatInfo.chatRoomImg[0]
+                      : defaultImg
                   })`,
                 }}
               ></div>
               <div
                 style={{
                   backgroundImage: `url(${
-                    chatInfo.chatRoomImg[1] ? chatInfo.chatRoomImg[1] : defaultImg
+                    chatInfo.chatRoomImg[1]
+                      ? chatInfo.chatRoomImg[1]
+                      : defaultImg
                   })`,
                 }}
               ></div>
             </>
           )}
-         
         </ProfileBox>
         <Info>
           <div>
@@ -61,13 +61,15 @@ const ChatRoomItem = (props) => {
           <p className="sub_color">{chatInfo.recentMessage}</p>
         </Info>
       </div>
-      <span className="caption_color" style={{ fontSize: "12px"}}>{time}</span>
+      <span className="caption_color" style={{ fontSize: "12px" }}>
+        {time}
+      </span>
     </Box>
   );
 };
 
 const Box = styled.div`
-  display: flex; 
+  display: flex;
   align-items: flex-start;
   justify-content: space-between;
   padding: 0;
