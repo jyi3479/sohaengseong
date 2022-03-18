@@ -44,7 +44,7 @@ const MemberMain = (props) => {
                   <Button
                     width="calc(30% - 5px)"
                     bg="#fff"
-                    style={{ color: "#666", border: "1px solid #666" }}
+                    style={{ color: "#030102", border: "1px solid #666" }}
                     _onClick={() => {
                       history.push(`/chatting/${target.roomId}`);
                       // history.push("/chatting/${roomId}");
@@ -80,9 +80,6 @@ const Fixed = styled.div`
   left: 0;
   padding: 12px 20px;
   box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
-  button {
-    border-radius: 5px;
-  }
 `;
 
 export default MemberMain;

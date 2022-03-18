@@ -75,7 +75,6 @@ const DateText = styled.p`
   /* width: 81px;
   height: 18px;
   margin: 40px 127px 16px; */
-  font-family: NotoSansCJKkr;
   font-size: 12px;
   font-weight: normal;
   font-stretch: normal;

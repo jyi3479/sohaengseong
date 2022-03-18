@@ -108,7 +108,7 @@ const MemberDetail = (props) => {
   return (
     <>
       {target && (
-        <Grid padding="0" margin="48px 0 0" bg="#eee">
+        <Grid padding="0" margin="48px 0 -23px">
           <Grid padding="0" style={{ position: "relative" }}>
             {imageList.length > 0 ? (
               <Swiper
@@ -199,49 +199,50 @@ const MemberDetail = (props) => {
             <ContentBox>
               <h3>공개 여부</h3>
               <p className="caption">{target.isPrivate ? "비밀" : "공개"}</p>
-            </ContentBox>
-            <Fixed>
-              {admin.userId === userInfo ? ( //내가 만든 챌린지
-                moment(target.startDate, "YYYY.MM.DD kk:mm:ss").diff(
-                  moment(),
-                  "seconds"
-                ) > 0 ? ( // 챌린지 시작 하루 전까지 수정/삭제 가능
-                  <Grid padding="0" is_flex>
-                    <Button
-                      width="calc(50% - 5px)"
-                      bg="#fff"
-                      style={{ color: "#666", border: "1px solid #666" }}
-                      _onClick={() => {
-                        deleteModal();
-                      }}
-                    >
-                      삭제하기
-                    </Button>
-                    <Button
-                      width="calc(50% - 5px)"
-                      _onClick={() => {
-                        history.push(`/challengewrite/${challengeId}`);
-                      }}
-                    >
-                      수정하기
-                    </Button>
-                  </Grid>
-                ) : (
-                  ""
-                )
-              ) : (
-                //방장 아닌 멤버인 경우
+            </ContentBox>              
+          </Grid>
+          {admin.userId === userInfo ? ( //내가 만든 챌린지
+            moment(target.startDate, "YYYY.MM.DD kk:mm:ss").diff(
+              moment(),
+              "seconds"
+            ) > 0 ? ( // 챌린지 시작 하루 전까지 수정/삭제 가능
+              <Grid margin="28px 0 0" is_flex>
                 <Button
                   line_btn
+                  width="calc(50% - 4px)"
+                  style={{ color: "#030102", border: "1px solid #666" }}
                   _onClick={() => {
-                    exitModal();
+                    deleteModal();
                   }}
                 >
-                  행성 나가기
+                  삭제하기
                 </Button>
-              )}
-            </Fixed>
-          </Grid>
+                <Button
+                  width="calc(50% - 4px)"
+                  _onClick={() => {
+                    history.push(`/challengewrite/${challengeId}`);
+                  }}
+                >
+                  수정하기
+                </Button>
+              </Grid>
+            ) : (
+              ""
+            )
+          ) : (
+            //방장 아닌 멤버인 경우
+            <Grid>
+              <Button
+                margin="28px 0 0"
+                line_btn
+                _onClick={() => {
+                  exitModal();
+                }}
+              >
+                행성 나가기
+              </Button>
+            </Grid>
+          )}
 
           {/* 삭제하기 버튼 클릭 시 뜨는 모달팝업 */}
           <Modal
@@ -375,17 +376,5 @@ const MemberBox = styled.div`
   }
 `;
 
-const Fixed = styled.div`
-  width: 100%;
-  position: fixed;
-  background-color: #fff;
-  bottom: 0;
-  left: 0;
-  padding: 12px 20px;
-  box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
-  button {
-    border-radius: 5px;
-  }
-`;
 
 export default MemberDetail;

@@ -2,10 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
-import { challengeApis } from "../shared/apis";
-import { targetChallenge } from "../redux/modules/challenge";
-import { apis } from "../shared/apis";
-import moment from "moment";
+import dayjs from "dayjs";
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 //비밀방 비밀번호 커스텀
 import ReactCodeInput from "react-code-input";
@@ -21,18 +19,22 @@ import Modal from '../components/Modal';
 
 //사용자 import
 import {Grid, Image, Button, Tag} from "../elements/index";
+import { apis } from "../shared/apis";
+import { challengeApis } from "../shared/apis";
+import { targetChallenge } from "../redux/modules/challenge";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import * as baseAction from '../redux/modules/base';
 import empty from "../image/ic_empty_s@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
 import share from "../image/icons/ic_share@2x.png"
+import { useState } from "react";
 
 
 
 
 const ChallengeDetail = (props) => {
-    moment.locale("en"); //모멘트 영어로 바꾸기
+    dayjs.extend(customParseFormat);
 
     const dispatch = useDispatch();
     const userInfo = parseInt(localStorage.getItem("userId"));
@@ -42,27 +44,22 @@ const ChallengeDetail = (props) => {
     const members = target&&target.members;
     const member_idx = members&&members.findIndex((m) => m.userId === parseInt(target.userId));
     const member = members&&members.find((m) => m.userId === parseInt(userInfo));
-    const admin = members&&members[member_idx];      
+    const admin = members&&members[member_idx];
     const imageList = target&&target.challengeImage;
 
     //날짜 포맷 변경 뒤 날짜 간격 계산하기
     const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}`;
     const endDate = target&&`${target.endDate.split(" ")[0].split("-")[0]}`;
-    const today = moment().format('YYYY.MM.DD'); //오늘 날짜
-    const dateA = moment(startDate, 'YYYY.MM.DD');
-    const dateB = moment(endDate, 'YYYY.MM.DD');
-    const days = dateA.from(dateB).split(" ")[0] === 'a' ? "30" : parseInt(dateA.from(dateB).split(" ")[0])+1; //16 days ago 이런 식으로 나와서 자름
-    const after = moment(today).isAfter(dateA); //오늘 날짜 이후라면 true 아니면 false
-    const join_day = dateB.from(today).split(" ")[0] === 'in' ? dateB.from(today).split(" ")[1] : null;
-    //const join_day = dateB.from(today).split(" ");
-    const remaining_day = Math.ceil(days*0.8); //입장 가능한 기간
+    const today = dayjs();
+    const date1 = dayjs(startDate,"YYYY-MM-DD",'ko');
+    const date2 = dayjs(endDate,"YYYY-MM-DD",'ko');
+    const days = Number(date2.diff(date1, "day"))+1;
+    const join_day = +today.diff(date1, "day")+1;
+    const remaining_day = Math.ceil(days*0.8);
+    
 
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
-    };
-
-    const deleteChallenge = () => {
-        dispatch(challengeAction.deleteChallengeDB(challengeId));
     };
 
     //모달 팝업 -----------------------------------------
@@ -74,11 +71,6 @@ const ChallengeDetail = (props) => {
     const [join, setJoin] = React.useState(false); //입장하기 클릭여부
     const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
    
-    const deleteModal = () => {        
-        setModalType("deleteModal");
-        console.log("챌린지 삭제");
-        setModalOpen(true);
-    };
     const joinModal = () => {
         if(!target.isPrivate){
             setModalType("joinModal");
@@ -111,26 +103,28 @@ const ChallengeDetail = (props) => {
 
     const pwdCheck = () => {
         setJoin(true);
-
         apis.post(`/challenge/${challengeId}/private`, {password:privatePwd})
         .then((res)=>{
-            console.log("비번 맞?",res, checkPrivate);
             if(res.data.result === 'true'){
                 setCheckPrivate(true);
-                history.push(`/member/${challengeId}`);
-                //dispatch(challengeAction.joinChallengeDB(challengeId));
+                setJoin(true);   
+                setTimeout(() => {
+                    history.push(`/member/${challengeId}`);
+                }, 300);
             }else{
                 setCheckPrivate(false);
             }
         }).catch((err)=>{
             console.log("비밀번호 확인오류",err);
             setError(err.response.data.message);
+            setPrivatePwd(null);
             setCheckPrivate(false);
         });
     };
 
     
     React.useEffect(() => {
+        //타이틀 값을 받아오기 위해 컴포넌트에서 바로 apis 호출
         challengeApis.getOneChallenge(challengeId)
         .then((res)=>{
             console.log("한개", res);
@@ -248,7 +242,7 @@ const ChallengeDetail = (props) => {
                     </Notice>
                 </Grid>                
                 <Fixed>
-                    {target.status === "완료" || remaining_day > join_day ? ( //상태값이 완료거나 입장 가능한 기간이 지난 경우
+                    {target.status === "완료" || remaining_day < join_day ? ( //상태값이 완료거나 입장 가능한 기간이 지난 경우
                         //기간 끝남
                         <Button _disabled
                         >기간이 만료되었습니다.</Button>
@@ -285,16 +279,20 @@ const ChallengeDetail = (props) => {
                     <div className="private_box">
                         <h3>비밀번호를 입력해 주세요.</h3>
                         <div>                       
-                            <ReactCodeInput className={isNum === true && checkPrivate === false  && join === true ? "ReactCodeInput fail" : "ReactCodeInput"} type='password' fields={4} {...props} value={privatePwd} onChange={privateCheck}
-                                inputStyle={{
-                                }}
+                            <ReactCodeInput className={
+                                isNum === null && checkPrivate === null ? "ReactCodeInput" 
+                                : isNum === false && checkPrivate === false && join === false ? "ReactCodeInput" 
+                                : privatePwd === null && isNum === true && checkPrivate === false  && join === false ? "ReactCodeInput"
+                                : privatePwd === null && isNum === true && checkPrivate === false && join === true ? "ReactCodeInput fail" 
+                                : privatePwd !== null  && isNum === true && checkPrivate === true  && join === true ? "ReactCodeInput":"ReactCodeInput"                            
+                            } type='password' fields={4} {...props} value={privatePwd} onChange={privateCheck}
                             />
                             <p className="fail_color small">
                             {isNum === null && checkPrivate === null ? "" 
                             : isNum === false && checkPrivate === false && join === false ? "숫자 4자리를 입력해주세요." //숫자 체크 안하고 비밀번호가 틀린경우 or 입장하기 안누른경우
-                            : isNum === true && checkPrivate === false  && join === false ? "" //숫자는 맞는데 입장하기를 안누른 경우
-                            : isNum === true && checkPrivate === false  && join === true ? "잘못된 비밀번호 입니다. 다시 시도해 주세요." //숫자는 맞는데 비밀번호가 틀린경우
-                            : isNum === true && checkPrivate === true  && join === true ? "":"" //전부 맞음 (어차피 입장이지만...)
+                            : privatePwd === null && isNum === true && checkPrivate === false  && join === false ? "" //숫자는 맞는데 입장하기를 안누른 경우
+                            : privatePwd === null && isNum === true && checkPrivate === false && join === true ? "잘못된 비밀번호 입니다. 다시 시도해 주세요." //숫자는 맞는데 비밀번호가 틀린경우
+                            : privatePwd !== null  && isNum === true && checkPrivate === true  && join === true ? "":"" //전부 맞음 (어차피 입장이지만...)
                             }
                             </p>
                         </div>
@@ -303,7 +301,6 @@ const ChallengeDetail = (props) => {
                 </Modal>
             </Grid> 
         }
-
 
         </>
     );
