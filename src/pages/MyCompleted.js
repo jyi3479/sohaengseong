@@ -46,7 +46,7 @@ const MyCompleted = (props) => {
             key={el.challengeId}
             {...el}
             _onClick={() => {
-              history.push(`/challenge/${el.challengeId}`); //소개 페이지로 이동
+              history.push(`/member/${el.challengeId}`); //멤버 전용 페이지로 이동
             }}
           ></Card>
         );

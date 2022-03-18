@@ -17,8 +17,8 @@ const ChallengeInfo = (props) => {
     <>
       {target && (
         <Grid padding="0px">
-          <Grid is_flex padding="0" margin="19px 0px">
-            <h1>{target.title}</h1>
+          <Grid is_flex padding="0" margin="19px 0px" style={{alignItems: "baseline"}}>
+            <h1 style={{width:"calc(100% - 70px)"}}>{target.title}</h1>
             <Button
               small_btn
               onClick={() => {

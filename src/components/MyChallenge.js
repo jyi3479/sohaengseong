@@ -155,19 +155,19 @@ const MyChallenge = (props) => {
 const Wrap = styled.div``;
 
 const Tabs = styled.ul`
-  margin: 32px 0 16px;
+  margin: 32px 0 12px;
   li {
     display: inline-block;
-    font-size: 18px;
     margin-right: 16px;
     padding-bottom: 4px;
+    font-size: 15px;
     color: rgba(3, 1, 2, 0.5);
     cursor: pointer;
   }
   li.active {
     font-weight: bold;
-    color: rgba(3, 1, 2, 1);
-    border-bottom: 2px solid #000;
+    color:#4149d3;
+    border-bottom: 2px solid #4149d3;
   }
 `;
 

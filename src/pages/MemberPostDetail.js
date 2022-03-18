@@ -37,9 +37,7 @@ const MemberPostDetail = (props) => {
       <Fixed>
         <Grid padding="0" is_flex>
           <Button
-            width="calc(30% - 5px)"
-            bg="#fff"
-            style={{ color: "#666", border: "1px solid #666" }}
+            width="calc(30% - 4px)"
             _onClick={() => {
               history.push(`/chatting/${roomId}`);
             }}
@@ -47,7 +45,7 @@ const MemberPostDetail = (props) => {
             실시간 톡
           </Button>
           <Button
-            width="calc(70% - 5px)"
+            width="calc(70% - 4px)"
             _onClick={() => {
               history.push(`/postwrite/${challengeId}/${roomId}`);
             }}
@@ -70,9 +68,6 @@ const Fixed = styled.div`
   left: 0;
   padding: 12px 20px;
   box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
-  button {
-    border-radius: 5px;
-  }
 `;
 
 export default MemberPostDetail;

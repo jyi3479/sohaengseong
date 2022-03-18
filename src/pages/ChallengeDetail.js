@@ -231,7 +231,7 @@ const ChallengeDetail = (props) => {
                                 </Member>
                             );
                         })}
-                        <p style={{marginLeft:"3px"}}>외 {members.length > 4? members.length:0}명</p>
+                        <p style={{marginLeft:"3px"}}>외 {members.length > 4? members.length-4:0}명</p>
                     </Grid>
                     <Notice>
                         <p className="bold sub_color">유의사항</p>
