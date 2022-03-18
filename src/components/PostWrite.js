@@ -49,6 +49,7 @@ const PostWrite = (props) => {
     if (file) {
       setImage(file);
     }
+    e.target.value = ""; // 같은 파일 upload를 위한 처리
   };
 
   const deleteImage = () => {
@@ -154,29 +155,31 @@ const PostWrite = (props) => {
   };
 
   return (
-    <Grid className="bg_color" padding="0px" height="700px">
-      <Grid bg="#ffffff" padding="24px 20px">
-        <h3>{userInfo.nickname}님, 오늘의 인증을 남겨주세요!</h3>
-        {/* 이미지 업로드 부분 */}
+    <>
+      {userInfo && (
+        <Grid className="bg_color" padding="0px" height="700px">
+          <Grid bg="#ffffff" padding="24px 20px">
+            <h3>{userInfo.nickname}님, 오늘의 인증을 남겨주세요!</h3>
+            {/* 이미지 업로드 부분 */}
 
-        <ImageLabel
-          className="input-file-button"
-          htmlFor="input-file"
-          src={preview ? preview : ""}
-          default={plus}
-        >
-          <button onClick={() => deleteImage()}></button>
-        </ImageLabel>
-        <input
-          id="input-file"
-          type="file"
-          onChange={selectFile}
-          ref={fileInput}
-          // disabled={is_uploading}
-          style={{ display: "none" }}
-        />
+            <ImageLabel
+              className="input-file-button"
+              htmlFor="input-file"
+              src={preview ? preview : ""}
+              default={plus}
+            >
+              <button onClick={() => deleteImage()}></button>
+            </ImageLabel>
+            <input
+              id="input-file"
+              type="file"
+              onChange={selectFile}
+              ref={fileInput}
+              // disabled={is_uploading}
+              style={{ display: "none" }}
+            />
 
-        {/* PostWrite의 작성 input */}
+            {/* PostWrite의 작성 input */}
 
         <Input
           placeholder="오늘의 활동은 어떠셨나요? 소감을 남겨주세요."
@@ -233,42 +236,69 @@ const PostWrite = (props) => {
           </p>
           <Button
             _onClick={() => {
-              if (isLevelUp) {
-                setModalType("levelUpModal");
-                setModalOpen(true);
+              if (isEdit) {
+                editPost();
               } else {
-                history.replace(`/post/${challengeId}/${roomId}`);
+                addPost();
               }
             }}
           >
-            확인
-          </Button>
-        </Grid>
-      </Modal>
-      <Modal
-        open={modalType === "levelUpModal" ? modalOpen : ""}
-        close={closeModal}
-        header
-        isPrivate
-      >
-        <Grid>
-          <CharacterImg></CharacterImg>
-          <h2 style={{ marginBottom: "9px" }}>Level UP!</h2>
-          <p style={{ marginBottom: "35px" }}>
-            축하합니다! {userInfo.level}이 되었습니다.
-            <br />
-            뭐가 달라졌는지 보러갈까요?
-          </p>
-          <Button
-            _onClick={() => {
-              history.replace(`/mypage`);
-            }}
+            <p>{isEdit ? "수정하시겠습니까?" : "인증하시겠습니까?"}</p>
+          </Modal>
+          <Modal
+            open={modalType === "okModal" ? modalOpen : ""}
+            close={closeModal}
+            header
+            isPrivate
           >
-            보러가기
-          </Button>
+            <Grid>
+              <CharacterImg></CharacterImg>
+              <h2 style={{ marginBottom: "9px" }}>인증 완료</h2>
+              <p style={{ marginBottom: "35px" }}>
+                인증을 완료했습니다.
+                <br />
+                오늘도 즐거운 하루되세요!
+              </p>
+              <Button
+                _onClick={() => {
+                  if (isLevelUp) {
+                    setModalType("levelUpModal");
+                    setModalOpen(true);
+                  } else {
+                    history.replace(`/post/${challengeId}/${roomId}`);
+                  }
+                }}
+              >
+                확인
+              </Button>
+            </Grid>
+          </Modal>
+          <Modal
+            open={modalType === "levelUpModal" ? modalOpen : ""}
+            close={closeModal}
+            header
+            isPrivate
+          >
+            <Grid>
+              <CharacterImg></CharacterImg>
+              <h2 style={{ marginBottom: "9px" }}>Level UP!</h2>
+              <p style={{ marginBottom: "35px" }}>
+                축하합니다! {userInfo.level}이 되었습니다.
+                <br />
+                뭐가 달라졌는지 보러갈까요?
+              </p>
+              <Button
+                _onClick={() => {
+                  history.replace(`/mypage`);
+                }}
+              >
+                보러가기
+              </Button>
+            </Grid>
+          </Modal>
         </Grid>
-      </Modal>
-    </Grid>
+      )}
+    </>
   );
 };
 

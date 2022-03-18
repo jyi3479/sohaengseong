@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 // 기간 선택 라이브러리
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateRangePicker from '@mui/lab/DateRangePicker';
-import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker';
-import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DateRangePicker from "@mui/lab/DateRangePicker";
+import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
+import Box from "@mui/material/Box";
 
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
@@ -75,11 +75,14 @@ const ChallengeWrite = (props) => {
   //해시태그 부분
   const [hashtag, setHashtag] = React.useState(""); //onChange로 관리할 문자열
   const [hashArr, setHashArr] = React.useState(isEdit ? target.tagName : []); // 해시태그 담을 배열
+  const [tagFocus, setTagFocus] = React.useState(false);
 
   // 날짜 선택 부분
   const [value, setValue] = React.useState([null, null]);
   const [startDate, setStartDate] = React.useState();
   const [endDate, setEndDate] = React.useState(null);
+  const [dateFocus, setDateFocus] = React.useState(false);
+
   // 방 공개 여부
   const [checkedInputs, setCheckedInputs] = React.useState(
     isEdit ? (target.isPrivate ? "private" : "public") : null
@@ -108,6 +111,11 @@ const ChallengeWrite = (props) => {
   //1. 태그 직접 입력 시
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && e.key === "Enter") {
+      // 중복된 태그 값 있으면 입력안되고 hashtag 초기화 되도록 설정
+      if (hashArr.includes(e.target.value)) {
+        setHashtag("");
+        return;
+      }
       submitTagItem();
     }
   };
@@ -133,19 +141,32 @@ const ChallengeWrite = (props) => {
   const fileInput = React.useRef();
 
   const selectFile = (e) => {
-    const reader = new FileReader();
+    const fileArr = fileInput.current.files;
+    console.log(fileArr);
+    let fileURLs = []; // preview 담을 배열
+    let files = []; // image 담을 배열
 
-    const file = fileInput.current.files[0];
-    // 파일 내용을 읽어온다.
-    reader.readAsDataURL(file);
-    // 읽기가 끝나면 발생하는 이벤트 핸들러.
-    reader.onloadend = () => {
-      //console.log(reader.result); // 파일 컨텐츠(내용물)
-      setPreview([...preview, reader.result]);
-    };
-    if (file) {
-      setImage([...image, file]);
+    let file; // 임시 변수
+    let filesLength = fileArr.length > 3 ? 3 : fileArr.length;
+
+    for (let i = 0; i < filesLength; i++) {
+      file = fileArr[i];
+      let reader = new FileReader();
+      // 파일 내용을 읽어온다.
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        // 읽기가 끝나면 발생하는 이벤트 핸들러.
+        // console.log(reader.result);
+        fileURLs[i] = reader.result;
+        setPreview([...preview, ...fileURLs]);
+      };
+      // 이미지 state에 저장
+      if (file) {
+        files[i] = fileArr[i];
+        setImage([...image, ...files]);
+      }
     }
+    e.target.value = ""; // 같은 파일 upload를 위한 처리
   };
 
   const deleteImage = (index) => {
@@ -160,8 +181,8 @@ const ChallengeWrite = (props) => {
     }
   };
 
-   // 날짜 형식 맞춰주는 함수
-   function dateFormat(date) {
+  // 날짜 형식 맞춰주는 함수
+  function dateFormat(date) {
     let month = date.getMonth() + 1;
     let day = date.getDate();
     let hour = date.getHours();
@@ -191,22 +212,50 @@ const ChallengeWrite = (props) => {
 
   // 인증 게시글 추가하기
   const addChallenge = () => {
+    if (category === "") {
+      window.alert("카테고리를 선택해주세요.");
+      return;
+    }
+    if (title === "") {
+      window.alert("타이틀을 적어주세요.");
+    }
     if (content === "") {
-      window.alert("내용을 입력해주세요!");
+      window.alert("내용을 적어주세요.");
       return;
     }
-    if (+maxMember > 30) {
-      window.alert("30명 이하로 등록해주세요!");
-      return;
-    } else if (+maxMember === 0 || maxMember === "") {
-      window.alert("모집 인원 수를 입력해주세요!");
+    if (parseInt(maxMember)) {
+      // 숫자만 추출해서 유효성 검사하기
+      if (parseInt(maxMember) > 30) {
+        window.alert("30명 이하로 등록해주세요.");
+        return;
+      } else if (parseInt(maxMember) === 0 || maxMember === "") {
+        window.alert("모집 인원 수를 입력해주세요!");
+        return;
+      }
+    } else {
+      // 문자만 입력했을 때
+      window.alert("모집 인원 수를 입력해주세요.");
       return;
     }
+
+    // 기간 선택 유효성 검사
+    if (value.includes(null)) {
+      window.alert("기간을 선택해주세요.");
+    }
+
+    // 비밀번호 유효성 검사(숫자 4자리 정규식 적용)
+    if (checkedInputs === "private") {
+      const pwdRegex = /[0-9].{3,4}$/;
+      if (!pwdRegex.test(password)) {
+        window.alert("비밀번호 숫자 4자리를 입력해주세요!");
+        return;
+      }
+    }
+
     // 서버에 보내기 위한 작업
     // 폼데이터 생성
     let formData = new FormData();
 
-   
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
       title: title,
@@ -235,7 +284,7 @@ const ChallengeWrite = (props) => {
 
     // 폼데이터에 이미지와 데이터 묶어서 보내기
     console.log("이미지확인", image);
-console.log(data)
+    console.log(data);
 
     // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.addChallengeDB(formData));
@@ -243,8 +292,15 @@ console.log(data)
 
   // 인증 게시글 수정하기
   const editChallenge = () => {
+    if (category === "") {
+      window.alert("카테고리를 선택해주세요.");
+      return;
+    }
+    if (title === "") {
+      window.alert("타이틀을 적어주세요.");
+    }
     if (content === "") {
-      window.alert("내용을 입력해주세요!");
+      window.alert("내용을 적어주세요.");
       return;
     }
 
@@ -298,7 +354,7 @@ console.log(data)
           is_flex
           style={{ overflow: "revert" }}
         >
-          <Select className={category ? (active ? "active ok" : "ok") : ""}>
+          <Select className={active ? "active" : category ? "ok" : ""}>
             <img src={drop}></img>
             <button
               className="label"
@@ -419,7 +475,9 @@ console.log(data)
             <span className="sub_color font14">(선택)</span>
           </p>
           {/* 태그 입력 부분 */}
-          <WholeBox>
+          <WholeBox
+            className={tagFocus ? "active" : hashArr.length ? "ok" : ""}
+          >
             <TagBox>
               {hashArr.map((tagItem, index) => {
                 return (
@@ -441,6 +499,8 @@ console.log(data)
               onChange={(e) => setHashtag(e.target.value)}
               maxLength="6"
               onKeyPress={onKeyPress}
+              onFocus={() => setTagFocus(true)}
+              onBlur={() => setTagFocus(false)}
             />
           </WholeBox>
           {/* 추천키워드 부분 */}
@@ -471,43 +531,59 @@ console.log(data)
       </InputContainer>
       {/* 기간 선택 부분 */}
       <InputContainer>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div>
-      <p style={{ fontSize: "16px", margin: "0px 0px 2px" }}>
-            기간을 선택해주세요.
-          </p>
-          <p className="small sub_color">
-            클릭 시 기간을 다시 설정할 수 있습니다.
-          </p>
-        <MobileDateRangePicker
-          calendars={1}
-          value={value}
-          minDate={new Date()} // 오늘 이전 날짜 선택 못 함
-          onChange={(newValue) => {
-            setValue(newValue);
-       
-         let range = (newValue[1] - newValue[0]) / (1000 * 60 * 60 * 24);
-         if (newValue[1] && range < 14) {
-           window.alert("2주 이상 선택해주세요!");
-           setValue([null, null]);
-         } else {
-          setStartDate(newValue[0]);
-         setEndDate(newValue[1]);
-         }
-          }}
-    
-          renderInput={(startProps, endProps) => (
-            <React.Fragment>
-              <DateBox>
-             <input ref={startProps.inputRef} {...startProps.inputProps} placeholder="2022.03.06" value={startDate?dateFormat(startDate).split(" ")[0]:""} />
-              - <input ref={endProps.inputRef} {...endProps.inputProps} placeholder="2022.03.19" value={endDate?dateFormat(endDate).split(" ")[0]:""} />
-             </DateBox>
-            </React.Fragment>
-          )}
-        />
-   
-      </div>
-    </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <div>
+            <p style={{ fontSize: "16px", margin: "0px 0px 2px" }}>
+              기간을 선택해주세요.
+            </p>
+            <p className="small sub_color">
+              클릭 시 기간을 다시 설정할 수 있습니다.
+            </p>
+            <MobileDateRangePicker
+              calendars={1}
+              value={value}
+              minDate={new Date()} // 오늘 이전 날짜 선택 못 함
+              onChange={(newValue) => {
+                setValue(newValue);
+
+                let range = (newValue[1] - newValue[0]) / (1000 * 60 * 60 * 24);
+                if (newValue[1] && range < 14) {
+                  window.alert("2주 이상 선택해주세요!");
+                  setValue([null, null]);
+                } else {
+                  setStartDate(newValue[0]);
+                  setEndDate(newValue[1]);
+                }
+              }}
+              renderInput={(startProps, endProps, inputRef) => (
+                <React.Fragment>
+                  <DateBox
+                    className={
+                      dateFocus ? "active" : !value.includes(null) ? "ok" : ""
+                    }
+                  >
+                    <input
+                      ref={startProps.inputRef}
+                      {...startProps.inputProps}
+                      placeholder="예) 2022.03.06 - 2022.03.19"
+                      value={
+                        startDate || endDate
+                          ? (startDate
+                              ? dateFormat(startDate).split(" ")[0]
+                              : "") +
+                            " - " +
+                            (endDate ? dateFormat(endDate).split(" ")[0] : "")
+                          : ""
+                      }
+                      onFocus={() => setDateFocus(true)}
+                      onBlur={() => setDateFocus(false)}
+                    ></input>
+                  </DateBox>
+                </React.Fragment>
+              )}
+            />
+          </div>
+        </LocalizationProvider>
 
         {/* 인원수 선택 부분 */}
         <InputBox>
@@ -577,7 +653,7 @@ console.log(data)
             onChange={selectFile}
             ref={fileInput}
             // disabled={is_uploading}
-            // multiple // 다중 업로드 가능
+            multiple // 다중 업로드 가능
             accept="image/*" // 이미지에 해당하는 모든 파일 허용 (JPG,JPEG,GIF,PNG 제한?)
             style={{ display: "none" }}
           />
@@ -696,23 +772,35 @@ console.log(data)
       </Notice>
       <ButtonContainer>
         {isEdit ? (
-          <Button _onClick={openModal}
-          disabled={ title === "" ||
-            content === "" ||
-            category === "" || 
-            maxMember === "" ||
-            startDate  === "" ? "disabled" : ""
-          }
-          >수정하기</Button>
+          <Button
+            _onClick={openModal}
+            disabled={
+              title === "" ||
+              content === "" ||
+              category === "" ||
+              maxMember === "" ||
+              startDate === ""
+                ? "disabled"
+                : ""
+            }
+          >
+            수정하기
+          </Button>
         ) : (
-          <Button _onClick={openModal} 
-          disabled={ title === "" ||
-            content === "" ||
-            category === "" || 
-            maxMember === "" ||
-            startDate  === "" ? "disabled" : ""
-          }
-          >개설하기</Button>
+          <Button
+            _onClick={openModal}
+            disabled={
+              title === "" ||
+              content === "" ||
+              category === "" ||
+              maxMember === "" ||
+              startDate === ""
+                ? "disabled"
+                : ""
+            }
+          >
+            개설하기
+          </Button>
         )}
       </ButtonContainer>
       <Modal
@@ -772,6 +860,7 @@ const Select = styled.div`
     right: 0;
     width: 16px;
   }
+
   &.active {
     outline: none;
     border-bottom: 1px solid #4149d3;
@@ -782,6 +871,7 @@ const Select = styled.div`
       transform: rotate(180deg);
     }
   }
+
   &.ok {
     border-bottom: 1px solid #7c8288;
     .label {
@@ -844,25 +934,31 @@ const InputBox = styled.div`
 `;
 
 const DateBox = styled.div`
-width:100%;
-padding:8px 0px;
-border:none;
-  border-bottom: 1px solid #7c8288;
+  width: 100%;
+  padding: 8px 0px;
+  border: none;
+  border-bottom: solid 1px rgba(124, 130, 136, 0.5);
   background-color: transparent;
-  opacity: 0.5;
 
-  &:focus {
+  input {
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    ::placeholder {
+      font-size: 14px;
+      color: rgba(124, 130, 136, 0.5);
+      line-height: 1.29;
+    }
+  }
+
+  &.active {
     outline: none;
-    opacity: 1;
     border-bottom: 1px solid #4149d3;
   }
 
-  input {
-    border:none;
-    width: 70px;
-    cursor: pointer;
+  &.ok {
+    border-bottom: 1px solid #7c8288;
   }
-
 `;
 
 const CountBox = styled.p`
@@ -934,6 +1030,20 @@ const WholeBox = styled.div`
     cursor: text;
     border: none;
     font-family: inherit;
+    ::placeholder {
+      font-size: 14px;
+      color: rgba(124, 130, 136, 0.5);
+      line-height: 1.29;
+    }
+  }
+
+  &.active {
+    outline: none;
+    border-bottom: 1px solid #4149d3;
+  }
+
+  &.ok {
+    border-bottom: 1px solid #7c8288;
   }
 `;
 
