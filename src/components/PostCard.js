@@ -74,7 +74,6 @@ const PostCard = (props) => {
   const [modalOpen, setModalOpen] = React.useState(false);
   const openDeleteModal = () => {
     setModalType("openModal");
-    console.log("챌린지 개설");
     setModalOpen(true);
   };
 

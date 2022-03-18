@@ -17,7 +17,6 @@ const MemberMain = (props) => {
   // 인증사진 나열 부분
 
   const target = useSelector((state) => state.challenge.target);
-  console.log(target);
 
   React.useEffect(() => {
     dispatch(challengeAction.getOneChallengeDB(challengeId));
@@ -39,31 +38,33 @@ const MemberMain = (props) => {
           {target.status !== "모집중" && (
             <>
               <TodayPost challengeId={challengeId} roomId={target.roomId} />
-              <Fixed>
-                <Grid padding="0" is_flex>
-                  <Button
-                    width="calc(30% - 5px)"
-                    bg="#fff"
-                    style={{ color: "#030102", border: "1px solid #666" }}
-                    _onClick={() => {
-                      history.push(`/chatting/${target.roomId}`);
-                      // history.push("/chatting/${roomId}");
-                    }}
-                  >
-                    실시간 톡
-                  </Button>
-                  <Button
-                    width="calc(70% - 5px)"
-                    _onClick={() => {
-                      history.push(
-                        `/postwrite/${challengeId}/${target.roomId}`
-                      );
-                    }}
-                  >
-                    인증하기
-                  </Button>
-                </Grid>
-              </Fixed>
+              {target.status !== "완료" && (
+                <Fixed>
+                  <Grid padding="0" is_flex>
+                    <Button
+                      width="calc(30% - 5px)"
+                      bg="#fff"
+                      style={{ color: "#030102", border: "1px solid #666" }}
+                      _onClick={() => {
+                        history.push(`/chatting/${target.roomId}`);
+                        // history.push("/chatting/${roomId}");
+                      }}
+                    >
+                      실시간 톡
+                    </Button>
+                    <Button
+                      width="calc(70% - 5px)"
+                      _onClick={() => {
+                        history.push(
+                          `/postwrite/${challengeId}/${target.roomId}`
+                        );
+                      }}
+                    >
+                      인증하기
+                    </Button>
+                  </Grid>
+                </Fixed>
+              )}              
             </>
           )}
         </Grid>

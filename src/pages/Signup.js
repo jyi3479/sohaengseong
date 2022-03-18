@@ -34,6 +34,9 @@ const Signup = (props) => {
   const [isPwd, setIsPwd] = React.useState(false);
   const [samePwd, setSamePwd] = React.useState(false);
 
+
+  console.log(email,domain);
+
   //중복검사
   const _nickCheck = useSelector((state) => state.user.nickCk);
 
@@ -152,9 +155,7 @@ const Signup = (props) => {
   const optionClick = (e) => {
     setOption(e.target.innerText);
     setActive(false);    
-    if (option === "직접 입력") {
-      setDomain("");
-    }else {
+    if (option !== "직접 입력") {
       setDomain(e.target.innerText);
     }
   };
