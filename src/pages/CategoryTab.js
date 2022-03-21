@@ -23,12 +23,8 @@ const CategoryTab = (props) => {
     const [active,setActive] = React.useState(true);    
     const [focus,setFocus] = React.useState(true);
     const categoryList = useSelector((state) => state.challenge.category_list);
-<<<<<<< HEAD
-    const paging = useSelector((state) => state.challenge.paging);
-    const is_loading = useSelector((state) => state.challenge.is_loading);
-=======
+
     const recommend_list = useSelector(state => state.search.recommend); //추천검색어
->>>>>>> 15ac8feb3bc853b5512a26f176ef8526772edcf5
     const searchList = useSelector((state) => state.search.list)
     const allList = useSelector((state) => state.challenge.list);
 
@@ -88,177 +84,7 @@ const CategoryTab = (props) => {
             setSearch_list(searchList);
           }}
         />
-<<<<<<< HEAD
-        <Grid padding="0" margin="71px 0 0">
-          <TabWrap className="tab_wrap">
-            <Tab
-              type="button"
-              className={tabId === "all" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/all`);
-              }}
-            >
-              전체
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "1" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/1`);
-              }}
-            >
-              일상 루틴
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "2" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/2`);
-              }}
-            >
-              운동
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "3" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/3`);
-              }}
-            >
-              스터디
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "4" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/4`);
-              }}
-            >
-              식습관
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "5" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/5`);
-              }}
-            >
-              힐링
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "6" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/6`);
-              }}
-            >
-              취미
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "7" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/7`);
-              }}
-            >
-              셀프케어
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "8" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/8`);
-              }}
-            >
-              펫
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "9" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/9`);
-              }}
-            >
-              친환경
-            </Tab>
-          </TabWrap>
-          <p
-            style={{
-              fontSize: "18px",
-              marginTop: "20px",
-              marginLeft: "20px",
-              marginBottom: "24px",
-            }}
-          >
-            총
-            <b>
-              {tabId !== "all"
-                ? categoryList[tabId]
-                  ? categoryList[tabId].length
-                  : 0
-                : search_list
-                ? searchList.length
-                : allList.length}
-            </b>
-            건
-          </p>
-          <InfinityScroll
-          callNext={()=>{
-              console.log('next!');
-              dispatch(challengeAction.getChallengeDB(paging.next))
-              console.log(paging.next);
-          }}
-          is_next={paging.next? true : false}
-          
-          loading={is_loading}
-          >
-            <Grid is_flex padding="20px">
-              {tabId !== "all" ? (
-                categoryList[tabId] ? (
-                  categoryList[tabId].map((el, i) => {
-                    return (
-                      <ChallengeCard
-                        key={el.challengeId}
-                        {...el}
-                        _onClick={() => {
-                          history.push(`/challenge/${el.challengeId}`);
-                        }}
-                      ></ChallengeCard>
-                    );
-                  })
-                ) : (
-                  <h1>앗 게시글이 없어요 !</h1>
-                )
-              ) : (
-                <>
-                  {search_list
-                    ? searchList.map((el, i) => {
-                        return (
-                          <ChallengeCard
-                            key={i}
-                            {...el}
-                            _onClick={() => {
-                              history.push(`/challenge/${el.challengeId}`);
-                            }}
-                          ></ChallengeCard>
-                        );
-                      })
-                    : allList.map((el, i) => {
-                        return (
-                          <ChallengeCard
-                            key={i}
-                            {...el}
-                            _onClick={() => {
-                              history.push(`/challenge/${el.challengeId}`);
-                            }}
-                          ></ChallengeCard>
-                        );
-                      })}
-                </>
-              )}
-            </Grid>
-          </InfinityScroll>
-=======
+
         
         <Grid padding="0" >
           
@@ -441,7 +267,6 @@ const CategoryTab = (props) => {
                 </div>
               </Grid>
             </Wrap>
->>>>>>> 15ac8feb3bc853b5512a26f176ef8526772edcf5
         </Grid>
       </>
     );
