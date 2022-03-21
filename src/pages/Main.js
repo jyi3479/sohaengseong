@@ -50,7 +50,7 @@ const Main = (props) => {
                     ):(
                         <Info>
                             <Grid padding="0" height="auto" margin="22px 0 35px" style={{textAlign:"center"}}>
-                                <p className="sub_color">로그인 하시고 나의 인증정보를 확인하세요.</p>
+                                <p className="sub_color">로그인하고 나의 인증 정보를 확인해보세요!</p>
                                 <Button small_btn margin="20px 0 0"
                                 _onClick={()=>{
                                     history.push("/login");
@@ -62,19 +62,19 @@ const Main = (props) => {
                         <Grid padding="0">
                             <CategoryWrap>
                                 <li>
-                                    <a href="/category/0">
+                                    <a href="/category/1">
                                         <img src={category_01}/>
                                         <p className="small mt4">일상 루틴</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/category/1">
+                                    <a href="/category/2">
                                         <img src={category_02}/>
                                         <p className="small mt4">운동</p>
                                     </a>
                                 </li>
                                 <li>    
-                                    <a href="/category/2">
+                                    <a href="/category/3">
                                         <img src={category_03}/>
                                         <p className="small mt4">스터디</p>
                                     </a>

@@ -6,7 +6,6 @@ import { Grid , Button } from "../elements";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as searchActions} from "../redux/modules/search";
 import SearchHeader from "../components/SearchHeader";
-import notFount from "../image/ic_search_nomark@2x.png"; 
 import ChallengeCard from "../components/ChallengeCard";
 
 
@@ -78,7 +77,7 @@ const Search = (props) => {
                             </ResultWrap>
                         ):(
                             <NotFount>
-                                <img src={notFount}/>
+                                <img/>
                                 <h6>검색 결과가 없습니다.</h6>
                                 <p>원하는 챌린지를 찾지 못했다면<br/>챌린지를 직접 개설해보세요.</p>
                                 <Button width="250px" radius="20px" _onClick={()=>{

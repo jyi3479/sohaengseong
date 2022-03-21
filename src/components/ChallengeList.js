@@ -1,11 +1,18 @@
 import React from "react";
+import styled from "styled-components";
+
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import {actionCreators as challengeAction} from "../redux/modules/challenge";
+
 import Card from "./Card";
+<<<<<<< HEAD
 import {Grid} from "../elements/index";
 import styled from "styled-components";
 import InfinityScroll from "../shared/InfinityScroll";
+=======
+
+>>>>>>> 15ac8feb3bc853b5512a26f176ef8526772edcf5
 
 const ChallengeList = (props) => {
     const dispatch = useDispatch();

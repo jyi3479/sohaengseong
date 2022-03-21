@@ -34,6 +34,9 @@ const Signup = (props) => {
   const [isPwd, setIsPwd] = React.useState(false);
   const [samePwd, setSamePwd] = React.useState(false);
 
+
+  console.log(email,domain);
+
   //중복검사
   const _nickCheck = useSelector((state) => state.user.nickCk);
 
@@ -43,6 +46,19 @@ const Signup = (props) => {
 
   const closeModal = () => {
       setModalOpen(false);
+  };
+
+  // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
+  const selectClick = () => {
+    setActive(!active);
+    setOption("");
+  };
+  const optionClick = (e) => {
+    setOption(e.target.innerText);
+    setActive(false);    
+    if (option !== "직접 입력") {
+      setDomain(e.target.innerText);
+    }
   };
 
   const send = () => {
@@ -112,12 +128,11 @@ const Signup = (props) => {
     setKeypressNick(_nickCheck);
     dispatch(userActions.nicknameCheck(nickname));
   };
+  
 
   const signup = () => {
     if (isPwd === true && samePwd === true && _nickCheck === "true") {
-      const mail = `${email}@${domain}`;
-
-      console.log(mail);
+      const mail = `${email}@${domain}`;    
 
       const signup = {
         email: mail,
@@ -135,7 +150,7 @@ const Signup = (props) => {
           }
         })
         .catch((error) => {
-          window.alert("회원가입 오류입니다!");
+          window.alert(error.response.data.message);
           console.log("회원가입 실패:", error);
           setModalOpen(false);
         });
@@ -145,19 +160,7 @@ const Signup = (props) => {
     }
   };
 
-  // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
-  const selectClick = () => {
-    setActive(!active);
-  };
-  const optionClick = (e) => {
-    setOption(e.target.innerText);
-    setActive(false);    
-    if (option === "직접 입력") {
-      setDomain("");
-    }else {
-      setDomain(e.target.innerText);
-    }
-  };
+  
 
 
   //헤더&푸터 state
@@ -172,7 +175,7 @@ const Signup = (props) => {
 
   return (
     <>
-    <Grid padding="0 40px" margin="100px 0 0" style={{ overflow: "revert" }}>
+    <Grid padding="24px 20px" margin="48px 0 0" bg="#fff" style={{ overflow: "revert" }}>
       <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
         <label style={{ fontSize: "12px" }}>아이디(이메일)</label>
         <Grid
@@ -393,8 +396,8 @@ const Signup = (props) => {
       <Fixed>
         <Button _onClick={()=>{
           signup()
-        }} disabled={isPwd === true && samePwd === true && _nickCheck === "true"? "" : "disabled"}
-        style={{fontSize:"16px", fontWeight:"normal"}}
+        }} 
+        disabled={isPwd === true && samePwd === true && _nickCheck === "true"? "" : "disabled"}
         >가입하기</Button>
       </Fixed>
     </Grid>
@@ -505,7 +508,7 @@ const Select = styled.div`
     width: 100%;
     height: 204px;
     background: #fff;
-    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.08);
     border-radius: 4px;
     overflow: hidden;
     transition: 0.2s ease-in;

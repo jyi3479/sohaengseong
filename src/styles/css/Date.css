@@ -1,0 +1,19 @@
+/* .css-1smlk3z-MuiPaper-root {
+    margin-left: 75px; // dialog 위치 너무 바깥에 있음
+} */
+
+.MuiInputAdornment-root {
+    margin: 0 0 2px 6px;
+}
+
+.MuiInputAdornment-root > button > svg {
+    display: none;
+}
+
+.MuiInputAdornment-root > button >span {
+    width:16px;
+    height:16px;
+    background-image: url("../../image/icons/ic_dropdown@2x.png");
+    background-size: cover;
+}
+

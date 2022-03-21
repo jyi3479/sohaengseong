@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{ useEffect,useRef } from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
@@ -10,6 +10,7 @@ import { GlobalStyle } from "../styles/globalStyle";
 
 //page import
 import MobileFrame from "../components/MobileFrame";
+import ScrollToTop from '../shared/ScrollToTop'
 import { ActionCreators as userActions } from "../redux/modules/user";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -43,7 +44,7 @@ function App() {
   const user = useSelector((state) => state.user.user);
   const token = getCookie("token");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token && user === null) {
       dispatch(userActions.loginCheckDB());
     }
@@ -54,7 +55,7 @@ function App() {
       <GlobalStyle />
       {/* 전역 스타일컴포넌트 */}
       <Wrapper>
-        <ConnectedRouter history={history}>
+        <ConnectedRouter history={history} onUpdate={() => window.scrollTo(0, 0)}>          
           <BackgroundOpacity />
           {/* <Background className="BackgroundPage" /> */}
           <MobileFrame className="MobileFramePage">
@@ -71,7 +72,7 @@ function App() {
                 component={CategoryTab}
               />
               {/* 카테고리리스트 */}
-              <Route path="/search" exact component={Search} />
+              <Route path="/search" exact component={CategoryTab} />
               {/* 검색페이지 */}
               <>
                 <Wrap>
@@ -215,7 +216,7 @@ const BackgroundOpacity = styled.div`
 `;
 
 const Wrap = styled.div`
-  margin-bottom: 64px;
+  margin-bottom: 56px;
 `;
 
 export default App;

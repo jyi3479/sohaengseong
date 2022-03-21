@@ -8,7 +8,9 @@ import { Grid, Input, Button } from "../elements";
 import Modal from "./Modal";
 import { useParams } from "react-router-dom";
 import { memberApis } from "../shared/apis";
-import plus from "../image/icons/btn_number_plus_l@2x.png";
+import plus from "../image/icons/ic_plus_xl@2x.png";
+import deleteIcon from "../image/icon/ic_delete_m.png";
+import confirmIcon from "../image/img_good@2x.png";
 
 const PostWrite = (props) => {
   const postId = +useParams().postId;
@@ -29,6 +31,8 @@ const PostWrite = (props) => {
     isEdit ? targetPost.postImage : ""
   );
 
+  const [isLevelUp, setIsLevelup] = React.useState(false);
+
   // 이미지 업로드 부분
   const fileInput = React.useRef();
 
@@ -39,12 +43,18 @@ const PostWrite = (props) => {
     reader.readAsDataURL(file);
     // 읽기가 끝나면 발생하는 이벤트 핸들러.
     reader.onloadend = () => {
-      console.log(reader.result); // 파일 컨텐츠(내용물)
+      //console.log(reader.result); // 파일 컨텐츠(내용물)
       setPreview(reader.result);
     };
     if (file) {
       setImage(file);
     }
+    e.target.value = ""; // 같은 파일 upload를 위한 처리
+  };
+
+  const deleteImage = () => {
+    setPreview("");
+    setImage(null);
   };
 
   // 인증 게시글 추가하기
@@ -56,31 +66,21 @@ const PostWrite = (props) => {
       return;
     }
     const contentJson = { content: content };
-    // formData.append("content", content);
     formData.append(
       "post",
       new Blob([JSON.stringify(contentJson)], { type: "application/json" })
     );
     formData.append("postImage", image);
 
-    // formData api랑 통신하는 부분으로 dispatch 하기
-
-    // // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
-    // // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
-    // const post = {
-    //   nickname: userInfo.nickname,
-    //   profileImage: "",
-    //   content: content,
-    //   postImage: preview, // 임시로 지정해둠
-    //   comments: [], // 첫 게시글에는 댓글이 없으니까 일단 이렇게 설정했습니다.
-    // };
     memberApis
       .addPost(challengeId, formData)
       .then((res) => {
         console.log("인증 게시글 작성", res);
         setModalType("okModal");
         setModalOpen(true);
-        history.push(`/post/${challengeId}/${roomId}`);
+        if (res.data.experiencePoint === res.data.rankingPoint) {
+          setIsLevelup(true);
+        }
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
@@ -115,13 +115,13 @@ const PostWrite = (props) => {
     memberApis
       .editPost(postId, formData)
       .then((res) => {
-        console.log("인증 게시글 작성", res);
+        console.log("인증 게시글 수정", res);
         // dispatch(memberAction.editPost(post));
 
-        history.push(`/post/${challengeId}/${roomId}`);
+        history.replace(`/post/${challengeId}/${roomId}`);
       })
       .catch((err) => {
-        console.log("인증 게시글 작성 오류", err);
+        console.log("인증 게시글 수정 오류", err);
       });
     setPreview("");
   };
@@ -155,147 +155,195 @@ const PostWrite = (props) => {
   };
 
   return (
-    <Grid padding="0px" height="700px" bg="#f5f5f5">
-      <Grid
-        display="flex"
-        bg="#ffffff"
-        padding="16px 20px"
-        style={{ alignItems: "flex-start" }}
-      >
-        {/* 이미지 업로드 부분 */}
-        <div>
-          <ImageLabel
-            className="input-file-button"
-            htmlFor="input-file"
-            style={{
-              backgroundImage: `url(${
-                preview
-                  ? preview
-                  : "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"
-              })`,
-            }}
-          ></ImageLabel>
-          <input
-            id="input-file"
-            type="file"
-            onChange={selectFile}
-            ref={fileInput}
-            // disabled={is_uploading}
-            style={{ display: "none" }}
-          />
-        </div>
-        {/* PostWrite의 작성 input */}
+    <>
+      {userInfo && (
+        <Grid className="bg_color" padding="0px" height="700px">
+          <Grid bg="#ffffff" padding="24px 20px">
+            <h3>{userInfo.nickname}님, 오늘의 인증을 남겨주세요!</h3>
+            {/* 이미지 업로드 부분 */}
 
-        <Input
-          textarea
-          value={content}
-          _onChange={(e) => {
-            setContent(e.target.value);
-          }}
-          placeholder={`${userInfo.nickname}님, 오늘의 인증을 남겨주세요`}
-          border="none"
-          width="220px"
-          margin="0 0 0 16px"
-        ></Input>
-      </Grid>
-      <NoticeBox>
-        <p>유의사항</p>
-        <p>
-          타인을 불쾌하게 하는 사진을 업로드 시 방장의 권한에 따라 재인증을
-          해야할 수도 있습니다.
-        </p>
-      </NoticeBox>
+            <ImageLabel
+              className="input-file-button"
+              htmlFor="input-file"
+              src={preview ? preview : ""}
+              default={plus}
+            >
+              <button onClick={() => deleteImage()}></button>
+            </ImageLabel>
+            <input
+              id="input-file"
+              type="file"
+              onChange={selectFile}
+              ref={fileInput}
+              // disabled={is_uploading}
+              style={{ display: "none" }}
+            />
 
-      <Fixed>
-        <Button
-          width="calc(100% - 5px)"
-          bg="#fff"
-          style={{ color: "#666", border: "1px solid #666" }}
-          _onClick={openModal}
-        >
-          {isEdit ? "수정하기" : "인증하기"}
-        </Button>
-      </Fixed>
-      <Modal
-        open={modalType === "openModal" ? modalOpen : ""}
-        close={closeModal}
-        double_btn
-        btn_text={isEdit ? "수정" : "인증"}
-        _onClick={() => {
-          if (isEdit) {
-            editPost();
-          } else {
-            addPost();
-          }
-        }}
-      >
-        <p>{isEdit ? "수정하시겠습니까?" : "인증하시겠습니까?"}</p>
-      </Modal>
-      <Modal
-        open={modalType === "okModal" ? modalOpen : ""}
-        close={closeModal}
-        header
-        isPrivate
-      >
-        <Grid>
-          <div
-            style={{
-              width: "110px",
-              height: "110px",
-              backgroundColor: "#eee",
-              margin: "20px auto 13px",
-            }}
-          ></div>
-          <h1 style={{ marginBottom: "9px" }}>인증 완료</h1>
-          <p style={{ marginBottom: "35px" }}>
-            인증을 완료했습니다.
-            <br />
-            오늘도 즐거운 하루되세요!
-          </p>
-          <Button
+            {/* PostWrite의 작성 input */}
+
+            <Input
+              placeholder="오늘의 활동은 어떠셨나요? 소감을 남겨주세요."
+              value={content}
+              _onChange={(e) => {
+                setContent(e.target.value);
+              }}
+            />
+          </Grid>
+          <Notice>
+            <p className="bold sub_color">유의사항</p>
+            <ul>
+              <li className="sub_color">인증 사진은 필수입니다.</li>
+              <li className="sub_color mt4">
+                타인을 불쾌하게 하는 사진을 업로드 시 관리자의 권한에 따라
+                삭제될 수 있습니다.{" "}
+              </li>
+            </ul>
+          </Notice>
+          <Fixed>
+            <Button
+              _onClick={openModal}
+              disabled={preview === "" || content === "" ? "disabled" : ""}
+            >
+              {isEdit ? "수정하기" : "저장하기"}
+            </Button>
+          </Fixed>
+          <Modal
+            open={modalType === "openModal" ? modalOpen : ""}
+            close={closeModal}
+            double_btn
+            btn_text={isEdit ? "수정" : "인증"}
             _onClick={() => {
-              history.replace(`/post/${challengeId}`);
+              if (isEdit) {
+                editPost();
+              } else {
+                addPost();
+              }
             }}
           >
-            확인
-          </Button>
+            <p>{isEdit ? "수정하시겠습니까?" : "인증하시겠습니까?"}</p>
+          </Modal>
+          <Modal
+            open={modalType === "okModal" ? modalOpen : ""}
+            close={closeModal}
+            header
+            isPrivate
+          >
+            <Grid>
+              <CharacterImg></CharacterImg>
+              <h2 style={{ marginBottom: "9px" }}>인증 완료</h2>
+              <p style={{ marginBottom: "35px" }}>
+                인증을 완료했습니다.
+                <br />
+                오늘도 즐거운 하루되세요!
+              </p>
+              <Button
+                _onClick={() => {
+                  if (isLevelUp) {
+                    setModalType("levelUpModal");
+                    setModalOpen(true);
+                  } else {
+                    history.replace(`/post/${challengeId}/${roomId}`);
+                  }
+                }}
+              >
+                확인
+              </Button>
+            </Grid>
+          </Modal>
+          <Modal
+            open={modalType === "levelUpModal" ? modalOpen : ""}
+            close={closeModal}
+            header
+            isPrivate
+          >
+            <Grid>
+              <CharacterImg></CharacterImg>
+              <h2 style={{ marginBottom: "9px" }}>Level UP!</h2>
+              <p style={{ marginBottom: "35px" }}>
+                축하합니다! {userInfo.level}이 되었습니다.
+                <br />
+                뭐가 달라졌는지 보러갈까요?
+              </p>
+              <Button
+                _onClick={() => {
+                  history.replace(`/mypage`);
+                }}
+              >
+                보러가기
+              </Button>
+            </Grid>
+          </Modal>
         </Grid>
-      </Modal>
-    </Grid>
+      )}
+    </>
   );
 };
 
 const ImageLabel = styled.label`
-  width: 98px;
-  height: 98px;
-  margin: 0x 8px 0px 0px;
+  width: 100%;
+  height: 280px;
+  margin: 12px auto 16px;
   display: inline-block;
   position: relative;
-  border: solid 1px #808080;
-  vertical-align: top; // 최상단에 정렬 맞추기
-  text-align: center; //이미지 가운데
-  overflow: hidden; //이미지 넘치면 자르기
+  ${(props) => (props.src ? "border: none;" : "border: solid 1px #a2aab3;")}
+  border-radius: 12px;
   cursor: pointer;
+  background-image: url("${(props) => props.default}");
   background-position: center;
-  background-size: cover;
-`;
+  background-size: 48px;
+  overflow: hidden;
+  ::before {
+    width: 100%;
+    height: 280px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* 빈 값으로 넣어야 가상의 요소 생성; */
+    content: "";
 
-const NoticeBox = styled.div`
-  padding: 20px;
-
-  p:first-child {
-    font-weight: 500;
-    line-height: 1.43;
-    text-align: left;
-    color: #333;
-    margin-bottom: 6px;
+    background-image: url("${(props) => props.src}");
+    background-position: center;
+    background-size: cover;
+    border-radius: 12px;
+  }
+  &::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 280px;
+    ${(props) => (props.src ? "background-color: rgba(3, 1, 2, 0.5);" : "")}
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 12px;
   }
 
-  p:last-child {
-    font-size: 12px;
-    line-height: 1.58;
-    text-align: left;
-    color: #333;
+  button {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+    background-image: url(${deleteIcon});
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    z-index: 2;
+  }
+`;
+const Notice = styled.div`
+  padding: 24px 20px;
+  ul {
+    margin-top: 8px;
+    li {
+      font-size: 13px;
+      margin-left: 13px;
+      list-style: disc;
+    }
   }
 `;
 
@@ -306,10 +354,15 @@ const Fixed = styled.div`
   bottom: 0;
   left: 0;
   padding: 12px 20px;
-  box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
-  button {
-    border-radius: 5px;
-  }
+  box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
+`;
+
+const CharacterImg = styled.div`
+  width: 120px;
+  height: 120px;
+  margin: 20px auto 13px;
+  background-image: url(${confirmIcon});
+  background-size: cover;
 `;
 
 export default PostWrite;

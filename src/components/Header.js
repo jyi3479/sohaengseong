@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+
 import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+
 import arrow from "../image/icon/ic_arrow@2x.png";
 import searchIconB from "../image/icons/ic_search_b@2x.png";
 
@@ -43,7 +45,7 @@ const Header = (props) => {
             className="search_btn"
             style={{ display: search ? "block" : "none" }}
             onClick={() => {
-              history.push("/search");
+              history.push("/category/all");
             }}
           >
             <img src={searchIconB} />
@@ -78,9 +80,11 @@ const Wrap = styled.div`
   left: 0;
   padding: 11px 20px;
   box-sizing: border-box;
+  border-bottom: 1px solid #e4e5e6;
   z-index: 10;
   .title {
     display: flex;
+    align-items: center;
     > h2 {
       max-width: 230px;
       text-align: center;

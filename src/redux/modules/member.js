@@ -177,6 +177,7 @@ const addCommentDB = (postId, content) => {
       .then((res) => {
         console.log("댓글 작성", res);
         const comment = {
+          levelName: userInfo.level,
           nickname: userInfo.nickname,
           profileImage: userInfo.profileUrl,
           commentId: res.data.commentId,

@@ -12,8 +12,6 @@ const GET_CHAT = "GET_CHAT";
 const MOVE_CHAT = "MOVE_CHAT";
 // 채팅방의 대화 내용을 가져오기 (채팅하면서 추가)
 const GET_MESSAGES = "GET_MESSAGES";
-// 사용자가 입력한 메시지의 텍스트를 기록
-const WRITE_MESSAGE = "WRITE_MESSAGE";
 // 저장한 대화 내용 없애기
 const CLEAR_MESSAGES = "CLEAR_MESSAGES";
 // DB의 채팅방의 대화 내용 넣어놓기
@@ -31,10 +29,6 @@ const getChat = createAction(GET_CHAT, (chatInfo) => ({
 const moveChat = createAction(MOVE_CHAT, (currentChat) => ({ currentChat }));
 
 const getMessages = createAction(GET_MESSAGES, (messages) => ({ messages }));
-
-const writeMessage = createAction(WRITE_MESSAGE, (messageText) => ({
-  messageText,
-}));
 
 const clearMessages = createAction(CLEAR_MESSAGES, () => ({}));
 
@@ -60,8 +54,6 @@ const initialState = {
   },
   // 현재 접속 채팅 메시지
   messages: [],
-  messageText: null,
-  // 메시지 현재 페이지
   messageCurPage: null,
   // 메시지 총 페이지
   messageTotalPage: null,
@@ -141,11 +133,6 @@ export default handleActions(
         draft.editDone = true;
       }),
 
-    [WRITE_MESSAGE]: (state, action) =>
-      produce(state, (draft) => {
-        draft.messageText = action.payload.messageText;
-      }),
-
     [CLEAR_MESSAGES]: (state, action) =>
       produce(state, (draft) => {
         draft.messages = [];
@@ -180,7 +167,6 @@ const actionCreators = {
   getChatMessagesDB,
   moveChat,
   getMessages,
-  writeMessage,
   clearMessages,
   isLoading,
   isLoaded,

@@ -63,7 +63,6 @@ export const userApis = {
   tempPasswordSend: (email) => apis.post("/auth/send-temp-password", email),
 
   // 소셜로그인(카카오)
-  // loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),
   loginByKakao: (code) => apis.get(`/auth/kakao/callback?code=${code}`),
 };
 

@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
 import { Grid , Image, Tag} from "../elements/index";
 
 import peopleIcon from "../image/icon/ic_people@2x.png";
 import lock from "../image/icon/ic_lock@2x.png";
 import defaultImg from "../image/ic_empty_s@2x.png";
+import fail from "../image/icon/ic_fail@2x.png";
+import success from "../image/icon/ic_success@2x.png";
 
 const Card = (props) => {
   const tagList = props.tagName;
@@ -18,8 +19,7 @@ const Card = (props) => {
     <Box onClick={props._onClick} className="card">
       <ImageBox>
         {props.status === "성공" || props.status === "실패" ?(
-          <div className="status">
-            {props.status === "성공"? "성공": "실패"}
+          <div className={props.status === "성공"? "status": "status fail" }>
           </div>
         ):null}
         <Image shape="rectangle" src={props.challengeImage[0]?props.challengeImage[0]:defaultImg}></Image>
@@ -84,8 +84,14 @@ const ImageBox = styled.div`
     font-weight: bold;
     width: 100%;
     height: 100%;
-    background-color:rgba(0,0,0,0.5);
+    background-color:rgba(0,0,0,0.6);
+    background-image: url(${success});
+    background-size: 48px;
+    background-position: center;
     z-index: 1;
+    &.fail {
+      background-image: url(${fail});
+    }
   }
 `;
 

@@ -33,12 +33,12 @@ const InfinityScroll = (props) => {
     }
 
     if (is_next) {
-      window.addEventListener("scroll", handleScroll);
+      document.body.addEventListener("scroll", handleScroll);
     } else {
-      window.removeEventListener("scroll", handleScroll);
+      document.body.removeEventListener("scroll", handleScroll);
     }
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => document.body.removeEventListener("scroll", handleScroll);
   }, [is_next, loading, handleScroll]);
 
   return <>{children}</>;

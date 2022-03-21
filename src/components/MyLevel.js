@@ -20,7 +20,7 @@ import level_img5 from "../image/icon/level/img_level5@2x.png";
 const MyLevel = (props) => {
   const dispatch = useDispatch();
   const my_level = useSelector((state) => state.mypage.myInfo);
-  const levelNum = my_level&&my_level.levelName.split("_")[1];
+  const levelNum = my_level && my_level.levelName.split("_")[0];
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -29,43 +29,66 @@ const MyLevel = (props) => {
 
   return (
     <>
-    {my_level&&   
-    <Wrap>
-      <img className="ground" src={ground}/>
-      <MyContainer>
-        <Grid is_flex padding="0px">
-          
-          <div style={{ display: "flex", alignItems:"center" , width:"calc(100% - 70px)"}}>            
-            <Image shape="border" size="42" level={my_level.levelName} profile={my_level.profileUrl !== null? my_level.profileUrl : defaultImg}/>            
-            <Grid padding="0px 0px 0px 9px" width="calc(100% - 54px)">
-              <p>{my_level.nickname}</p>
-              <p className="sub_color caption caption_color">Level {levelNum}</p>
+      {my_level && (
+        <Wrap>
+          <img className="ground" src={ground} />
+          <MyContainer>
+            <Grid is_flex padding="0px">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "calc(100% - 70px)",
+                }}
+              >
+                <Image
+                  shape="border"
+                  size="42"
+                  level={my_level.levelName}
+                  profile={
+                    my_level.profileUrl !== null
+                      ? my_level.profileUrl
+                      : defaultImg
+                  }
+                />
+                <Grid padding="0px 0px 0px 9px" width="calc(100% - 54px)">
+                  <p>{my_level.nickname}</p>
+                  <p className="sub_color caption caption_color">
+                    Level {levelNum}
+                  </p>
+                </Grid>
+              </div>
+              <Button
+                small_btn
+                onClick={() => {
+                  history.push("/mypage/profile");
+                }}
+              >
+                편집
+              </Button>
             </Grid>
-          </div>
-          <Button small_btn
-            onClick={() => {
-              history.push("/mypage/profile");
-            }}
-          >
-            편집
-          </Button>
-        </Grid>
-        <Progress my_level={my_level} />
-      </MyContainer>
-      <MyPlanet>
-        <img
-          src={levelNum === "1" ? level_img1 :
-          levelNum === "2" ? level_img2 :
-          levelNum === "3" ? level_img3 :
-          levelNum === "4" ? level_img4 :
-          levelNum === "5" ? level_img5 :
-          null
-        }
-        />
-      </MyPlanet>
-    </Wrap>
-     }      
-     </>
+            <Progress my_level={my_level} />
+          </MyContainer>
+          <MyPlanet>
+            <img
+              src={
+                levelNum === "level1"
+                  ? level_img1
+                  : levelNum === "level2"
+                  ? level_img2
+                  : levelNum === "level3"
+                  ? level_img3
+                  : levelNum === "level4"
+                  ? level_img4
+                  : levelNum === "level5"
+                  ? level_img5
+                  : null
+              }
+            />
+          </MyPlanet>
+        </Wrap>
+      )}
+    </>
   );
 };
 
@@ -79,28 +102,27 @@ const Wrap = styled.div`
   .ground {
     width: 100%;
     position: absolute;
-    bottom:0;
-    left: 0;   
+    bottom: 0;
+    left: 0;
   }
 `;
 
 const MyContainer = styled.div`
   background-color: #ffffff;
   width: 100%;
-  border-radius: 10px;
-  padding: 16px 20px;  
+  border-radius: 8px;
+  padding: 16px 20px;
 `;
-
 
 const MyPlanet = styled.div`
   width: 100%;
   position: absolute;
   bottom: 52px;
   left: 0;
-  >img{
+  > img {
     display: block;
-    width:160px;
-    margin:auto;
+    width: 160px;
+    margin: auto;
   }
 `;
 
@@ -151,7 +173,6 @@ const Tooltip = styled.div`
   }
 `;
 
-
 export default MyLevel;
 
 const Progress = (props) => {
@@ -165,7 +186,9 @@ const Progress = (props) => {
           width={(my_level.rankingPoint / my_level.experiencePoint) * 100 + "%"}
         ></HighLight>
       </ProgressBar>
-      <p className="poppins sub_color caption t_right">{my_level.rankingPoint}/{my_level.experiencePoint}</p>
+      <p className="poppins sub_color caption t_right">
+        {my_level.rankingPoint}/{my_level.experiencePoint}
+      </p>
     </>
   );
 };
