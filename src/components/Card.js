@@ -10,22 +10,19 @@ import success from "../image/icon/ic_success@2x.png";
 
 const Card = (props) => {
   const tagList = props.tagName;
-
   const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;
   const endDate = `${props.endDate.split(" ")[0].split("-")[0]}`;
-
   
   return (    
     <Box onClick={props._onClick} className="card">
       <ImageBox>
         {props.status === "성공" || props.status === "실패" ?(
-          <div className={props.status === "성공"? "status": "status fail" }>
-          </div>
+          <div className={props.status === "성공"? "status": "status fail" }></div>
         ):null}
         <Image shape="rectangle" src={props.challengeImage[0]?props.challengeImage[0]:defaultImg}></Image>
         <p className="small "><img src={peopleIcon}/>{props.currentMember?props.currentMember:"0"}/{props.maxMember}명</p>
       </ImageBox>
-      <Grid padding="0"  style={{display:"inline-block", position:"relative", width:"calc(100% - 110px)",height: "102px", top:"5px"}}>
+      <Grid padding="0" style={{display:"inline-block", position:"relative", width:"calc(100% - 110px)",height: "102px", top:"5px"}}>
         <TitleBox>
           <h3>{props.title}</h3>
           <p className="caption caption_color">{props.category}</p>

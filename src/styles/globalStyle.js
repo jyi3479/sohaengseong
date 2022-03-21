@@ -15,7 +15,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     //checkBox ---------------------------------------------------
-    .style_checkbox {   
+    .style_checkbox {//input checkbox custom
         display: inline-block;    
         width: 20px;
         height: 20px;
@@ -49,9 +49,9 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     //align -----------------------------------------------------
-    .t_center {text-align:center};
-    .t_left {text-align:left};
-    .t_right {text-align:right};
+    .t_center {text-align:center}; //폰트 가운데 정렬
+    .t_left {text-align:left}; //폰트 좌측 정렬
+    .t_right {text-align:right}; //폰트 우측 정렬
 
     //말줄임
     .ellipsis {
@@ -73,26 +73,29 @@ export const GlobalStyle = createGlobalStyle`
         font-weight: bold;
         font-size: 22px;
         line-height: 30px;
+        letter-spacing: -0.66px;
     }
     h2 { //Section title
         font-weight: bold;
         font-size: 18px;
         line-height: 24px;
+        letter-spacing: -0.54px;
     }
     h3 { //Content title
         font-weight: bold;
         font-size: 15px;
-        line-height: 18px;
+        line-height: 22px;
+        letter-spacing: -0.45px;
     }
 
     p {//Sub title
         font-size: 14px;
-        line-height: 18px;
+        line-height: 21px;
         letter-spacing: -0.42px;
     }
     p.caption { //Caption
         font-size: 12px;
-        line-height: 16px;
+        line-height: 18px;
         letter-spacing: -0.36px;
     }
     .small { //기간 & 작은 폰트
@@ -126,23 +129,23 @@ export const GlobalStyle = createGlobalStyle`
 
     //color -----------------------------------------
 
-    .black_color {
+    .black_color { //검정색
         color: #030102;
     }
 
-    .point_color {
+    .point_color { // 파란색
         color: #4149d3;
     }
 
-    .sub_point_color {
+    .sub_point_color { //하늘색
         color: #17abd6;
     }
 
-    .sub_color {
+    .sub_color {//회색
         color: #7C8288;
     }
 
-    .caption_color {
+    .caption_color {//연회색
         color: #A2AAB3;
     }
 
@@ -154,11 +157,11 @@ export const GlobalStyle = createGlobalStyle`
         border-color:#eff0f2
     }
 
-    .success_color {
+    .success_color {//파랑색
         color:#5a76ea;
     }
 
-    .fail_color {
+    .fail_color {//분홍색
         color:#f57391;
     }
 
@@ -173,7 +176,7 @@ export const GlobalStyle = createGlobalStyle`
     .mt12 {margin-top: 12px }
 
     //swiper —————————————————————
-    .swiper-pagination {
+    .swiper-pagination { //스와이퍼 슬라이드 페이지네이션 커스텀
         width: 40px;
         height: 20px;
         border-radius: 5px;
@@ -183,7 +186,7 @@ export const GlobalStyle = createGlobalStyle`
         left:auto;
         color: #eee;
         font-size: 12px;
-        line-height: 1.8;
+        line-height: 1.6;
         * {
             color: #fff;
         }

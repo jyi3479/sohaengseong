@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 //css
 import { GlobalStyle } from "../styles/globalStyle";
+import backgroundImg from "../image/background.png";
+import star from "../image/img_star2@2x.png";
 
 //page import
 import MobileFrame from "../components/MobileFrame";
@@ -23,7 +25,6 @@ import MyPage from "../pages/MyPage";
 import MemberMain from "../pages/MemberMain";
 import MemberPostList from "../pages/MemberPostList";
 import ChallengeWrite from "../pages/ChallengeWrite";
-import Search from "../pages/Search";
 import CategoryMain from "../pages/CategoryMain";
 import Find from "../pages/Find";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
@@ -35,7 +36,6 @@ import TodayChallenge from "../pages/TodayChallenge";
 import MyEdit from "../pages/MyEdit";
 import MyProfile from "../pages/MyProfile";
 import MemberPostWrite from "../pages/MemberPostWrite";
-import PostDetail from "../components/Member/PostDetail";
 import MemberPostDetail from "../pages/MemberPostDetail";
 import MemberDetail from "../pages/MemberDetail";
 
@@ -56,7 +56,9 @@ function App() {
       {/* 전역 스타일컴포넌트 */}
       <Wrapper>
         <ConnectedRouter history={history} onUpdate={() => window.scrollTo(0, 0)}>          
-          <BackgroundOpacity />
+          <BackgroundOpacity>
+            <img src={star} className="star1"></img>
+          </BackgroundOpacity>
           {/* <Background className="BackgroundPage" /> */}
           <MobileFrame className="MobileFramePage">
             <Switch>
@@ -188,7 +190,7 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
 
-  /* .BackgroundPage {
+  /* .BackgroundPage {    
     position: absolute;
     top: 0;
     left: 0;
@@ -206,13 +208,18 @@ const BackgroundOpacity = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgb(250, 250, 250, 0.5);
-  background-size: contain;
+  background-image: url(${backgroundImg});
+  background-size: cover;
   overflow: hidden;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  .star1 {
+    position: absolute;
+    top: 109px;    
+  }
 `;
 
 const Wrap = styled.div`

@@ -25,19 +25,17 @@ const RankingList = () => {
                     <RankingCard
                         key={i}
                         {...el}
-                        className={i === 3? "is_me rankCard":"rankCard"}
+                        className={i === 3? "is_me rankCard":"rankCard"} //랭킹 리스트의 마지막 카드는 내 랭킹정보
                     />                    
                 );
-            }):(
-                <>
-                    <Grid padding="0" height="auto" margin="39px 0 35px" style={{textAlign:"center"}}>
-                        <p className="sub_color">로그인하고 실시간 랭킹 정보를 확인해보세요!</p>
-                        <Button small_btn margin="20px 0 0"
-                        _onClick={()=>{
-                            history.push("/login");
-                        }}>로그인</Button>
-                    </Grid>
-                </>
+            }):(                
+                <Grid padding="0" height="auto" margin="39px 0 35px" className="t_center">
+                    <p className="sub_color">로그인하고 실시간 랭킹 정보를 확인해보세요!</p>
+                    <Button small_btn margin="20px 0 0"
+                    _onClick={()=>{
+                        history.push("/login");
+                    }}>로그인</Button>
+                </Grid>
             )}            
         </Wrap>
     );

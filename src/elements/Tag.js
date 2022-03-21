@@ -13,7 +13,7 @@ const Item = styled.p`
   margin: 0;
   margin-right: 5px;
   border-radius: 10px;
-  padding: 3px 6px 2px;
+  padding: 1px 6px;
   background-color: rgba(23,171,214,0.1);
   &:nth-child(n+3) {
     display: none;

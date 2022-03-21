@@ -9,10 +9,6 @@ import same from "../../image/icon/ic_same@2x.png";
 import defaultImg from "../../image/img_profile_defalt @2x.png";
 
 const RankingCard = (props) => {
-  const ranking = useSelector((state) => state.ranking.list);
-  const userId = localStorage.getItem("userId");
-  const myRank = ranking.find((m) => m.userId === +userId);
-
   return (
     <>
       <Box className={props.className}>
@@ -112,7 +108,7 @@ const Info = styled.div`
     width: 40px;
     display: inline-block;
     border-radius: 10px;
-    padding: 3px 6px 2px;
+    padding: 1px 6px 2px;
     background-color: rgba(23, 171, 214, 0.1);
   }
 `;

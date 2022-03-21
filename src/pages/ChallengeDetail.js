@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
+//날짜 라이브러리
 import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
@@ -28,9 +29,6 @@ import empty from "../image/ic_empty_s@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
 import share from "../image/icons/ic_share@2x.png"
-import { useState } from "react";
-
-
 
 
 const ChallengeDetail = (props) => {
@@ -66,7 +64,6 @@ const ChallengeDetail = (props) => {
     const [modalType, setModalType] = React.useState("");
     const [modalOpen, setModalOpen] = React.useState(false);
     const [checkPrivate, setCheckPrivate] = React.useState(false);//비밀방 비밀번호 맞는지 확인
-    const [error,setError] = React.useState("");
     const [isNum,setIsNum] = React.useState(false);//비밀방 비밀번호 숫자체크
     const [join, setJoin] = React.useState(false); //입장하기 클릭여부
     const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
@@ -108,7 +105,7 @@ const ChallengeDetail = (props) => {
             if(res.data.result === 'true'){
                 setCheckPrivate(true);
                 setJoin(true);   
-                setTimeout(() => {
+                setTimeout(() => { //비밀번호가 맞는데도 setJoin이 바로 true가 되지않아서 경고창이 뜨는 걸 방지하기 위해 조금 기다렸다가 입장
                     history.push(`/member/${challengeId}`);
                 }, 300);
             }else{
@@ -116,7 +113,6 @@ const ChallengeDetail = (props) => {
             }
         }).catch((err)=>{
             console.log("비밀번호 확인오류",err);
-            setError(err.response.data.message);
             setPrivatePwd(null);
             setCheckPrivate(false);
         });
@@ -127,10 +123,9 @@ const ChallengeDetail = (props) => {
         //타이틀 값을 받아오기 위해 컴포넌트에서 바로 apis 호출
         challengeApis.getOneChallenge(challengeId)
         .then((res)=>{
-            console.log("한개", res);
             const target = res.data;
             dispatch(targetChallenge(target));
-            //헤더&푸터 state        
+            //헤더&푸터 state
             dispatch(baseAction.setHeader(target.title,true));
         }).catch((err)=>{
             console.log("특정 챌린지 조회 오류",err);
@@ -140,7 +135,8 @@ const ChallengeDetail = (props) => {
         return()=>{
             dispatch(baseAction.setHeader(false,""));
             dispatch(baseAction.setGnb(true));
-        }
+        };
+
     },[]);
 
     return(
@@ -154,7 +150,7 @@ const ChallengeDetail = (props) => {
                             spaceBetween={0}
                             slidesPerView={1}
                             pagination={{
-                                type : 'fraction', //페이지네이션 타입                 
+                                type : 'fraction', //페이지네이션 타입
                             }}
                             modules={[Pagination]}
                             className="mySwiper"
@@ -165,7 +161,7 @@ const ChallengeDetail = (props) => {
                                 );
                             })}
                         </Swiper>
-                        //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출 (디폴트 이미지 변경예정)
+                        //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
                         : <Image shape="rectangle" padding="250px" src={empty}></Image>
                     }
                 </Grid>
@@ -215,7 +211,7 @@ const ChallengeDetail = (props) => {
                         </div>
                         <pre style={{fontSize:"14px",whiteSpace: "pre-wrap"}}>{target.content}</pre>
                     </ContentBox>
-                    {/* 현재인원 - 디자인 확정 후 작업예정 */}
+                    {/* 현재인원 */}
                     <Title>현재 입주민</Title>
                     <Grid padding="0" style={{display: "flex", alignItems: "center", paddingBottom: "3px"}}>
                         {members&&members.map((el, i) => {
