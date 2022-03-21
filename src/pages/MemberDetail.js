@@ -4,7 +4,6 @@ import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
 import { challengeApis } from "../shared/apis";
 import { targetChallenge } from "../redux/modules/challenge";
-import { apis } from "../shared/apis";
 import moment from "moment";
 
 //이미지 슬라이더(Swiper) import
@@ -24,7 +23,6 @@ import * as baseAction from "../redux/modules/base";
 import empty from "../image/ic_empty_s@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
-import share from "../image/icons/ic_share@2x.png";
 import plus from "../image/icons/ic_plus_s@2x.png";
 import MemberModal from "../components/Member/MemberModal";
 
@@ -37,14 +35,8 @@ const MemberDetail = (props) => {
   const members = target && target.members;
   const member_idx =
     members && members.findIndex((m) => m.userId === parseInt(target.userId));
-  const member =
-    members && members.find((m) => m.userId === parseInt(userInfo));
   const admin = members && members[member_idx];
   const imageList = target && target.challengeImage;
-  const startDate = target && `${target.startDate.split(" ")[0].split("-")[0]}`;
-  const endDate = target && `${target.endDate.split(" ")[0].split("-")[0]}`;
-
-  console.log(member);
 
   const exitChallenge = () => {
     dispatch(memberAction.exitChallengeDB(challengeId));

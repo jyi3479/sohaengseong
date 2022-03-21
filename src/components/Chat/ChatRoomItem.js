@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+
 import { history } from "../../redux/configureStore";
 import defaultImg from "../../image/img_profile_defalt @2x.png";
 
@@ -11,6 +12,7 @@ const ChatRoomItem = (props) => {
   if (!(chatInfo.createdAt === null)) {
     time = chatInfo.createdAt?.split("T")[0];
   }
+  
   return (
     <Box
       onClick={() => {

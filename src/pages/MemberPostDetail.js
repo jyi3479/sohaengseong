@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as memberAction } from "../redux/modules/member";
+
 import PostCard from "../components/PostCard";
 import { Grid, Button } from "../elements";
 
@@ -13,13 +15,13 @@ const MemberPostDetail = (props) => {
   const challengeId = +useParams().challengeId;
   const postId = +useParams().postId;
   const roomId = useParams().roomId;
+
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
-  //console.log(postList, targetPost);
-
 
   React.useEffect(() => {
     dispatch(memberAction.getPostDB(challengeId));
+    // header, footer 부분
     dispatch(baseAction.setHeader("", false));
     dispatch(baseAction.setGnb(false));
     return () => {
@@ -27,9 +29,9 @@ const MemberPostDetail = (props) => {
       dispatch(baseAction.setGnb(true));
     };
   }, []);
+  
   return (
     <>
-    
     {targetPost && (<Grid margin="48px 0" padding="0">
       <div>
         <PostCard {...targetPost} />

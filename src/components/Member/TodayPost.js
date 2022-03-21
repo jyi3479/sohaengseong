@@ -1,27 +1,32 @@
 import React, { useEffect } from "react";
-import { Grid } from "../../elements";
+import styled from "styled-components";
+
 import { history } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import { actionCreators as memberAction } from "../../redux/modules/member";
+
+import { Grid } from "../../elements";
+
 import arrow from "../../image/icon/ic_arrow_s@2x.png";
 
-const MemberPost = (props) => {
+
+const TodayPost = (props) => {
   const dispatch = useDispatch();
   const postList = useSelector((state) => state.member.postList);
-  // 인증 게시글에 사진 있는 post만 가져오기
-  const postImageList = postList.filter((l) => l.postImage);
 
+  // 인증 게시글 리스트 조회
   useEffect(() => {
     dispatch(memberAction.getPostDB(props.challengeId));
   }, []);
+
+
   return (
     <Grid padding="0px" margin="39px 0 0">
       <Grid is_flex padding="0" margin="19px 0px">
         <h2>실시간 인증</h2>
         <p
           onClick={() => {
-            history.push(`/post/${props.challengeId}/${props.roomId}`); // 멤버 전용 챌린지 인증페이지로 이동
+            history.push(`/post/${props.challengeId}/${props.roomId}`); // 인증게시글 리스트 페이지로 이동
           }}
           style={{ cursor: "pointer" }}
         >
@@ -34,9 +39,8 @@ const MemberPost = (props) => {
       </Grid>
       <Grid padding="0px" margin="13px 0 0">
         <Container>
-          {postImageList.map((el, i) => {
+          {postList.map((el, i) => {
             return (
-      
                 <ImageBox
                   key={el.postId}
                   src={el.postImage}
@@ -116,13 +120,5 @@ const Info = styled.div`
   }
 `;
 
-const Title = styled.h3`
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 1.22;
-  letter-spacing: -0.54px;
-  text-align: left;
-  color: #000;
-`;
 
-export default MemberPost;
+export default TodayPost;

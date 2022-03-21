@@ -182,7 +182,7 @@ const addCommentDB = (postId, content) => {
           profileImage: userInfo.profileUrl,
           commentId: res.data.commentId,
           content: content,
-          createdAt: moment().startOf("seconds"),
+          createdAt: moment().startOf("seconds"), // 오늘 날짜의 초의 시작이 언제였는지
         };
         dispatch(addComment(postId, comment));
       })

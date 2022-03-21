@@ -35,7 +35,6 @@ import TodayChallenge from "../pages/TodayChallenge";
 import MyEdit from "../pages/MyEdit";
 import MyProfile from "../pages/MyProfile";
 import MemberPostWrite from "../pages/MemberPostWrite";
-import PostDetail from "../components/Member/PostDetail";
 import MemberPostDetail from "../pages/MemberPostDetail";
 import MemberDetail from "../pages/MemberDetail";
 

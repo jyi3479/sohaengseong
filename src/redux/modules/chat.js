@@ -1,8 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
-import axios from "axios";
-
 // api 가져오기
 import { chatAPI } from "../../shared/apis";
 
@@ -71,9 +69,7 @@ const createRoomDB = (data) => {
     chatAPI
       .createRoom(data)
       .then((res) => {
-        // window.alert("채팅방이 생성되었습니다.");
         console.log("채팅방 생성", res);
-        // dispatch(getChatListDB());
       })
       .catch((err) => {
         console.log("채팅방 생성 실패", err);
@@ -99,7 +95,6 @@ const getChatListDB = () => {
 // DB에 존재하는 채팅방 메시지들 가져오기
 const getChatMessagesDB = (roomId) => {
   return function (dispatch, getState, { history }) {
-    // const roomId = getState().chat.currentChat.roomId;
     chatAPI
       .getChatMessages(roomId)
       .then((res) => {

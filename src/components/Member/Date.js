@@ -1,11 +1,10 @@
 import * as React from 'react';
+// MUI datepicker -----------------------------------
 import { styled } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import PickersDay from '@mui/lab/PickersDay';
 import endOfWeek from 'date-fns/endOfWeek';
 import isSameDay from 'date-fns/isSameDay';
@@ -42,6 +41,7 @@ const CustomPickersDay = styled(PickersDay, {
 const CustomDay = (props) => {
     const dispatch = useDispatch()
     const challengeId = useParams().challengeId
+    // 
     const [value, setValue] = React.useState(new Date());
     const [startDate, setStartDate] = React.useState(dateFormat(startOfWeek(value))); // 오늘 날짜가 포함된 일주일 시작날짜
     const [endDate, setEndDate] = React.useState(dateFormat(endOfWeek(value)))
@@ -68,7 +68,7 @@ const CustomDay = (props) => {
     if (!value) {
       return <PickersDay {...pickersDayProps} />;
     }
-
+    // 선택한 날짜가 포함된 주의 시작일과 종료일
     const start = startOfWeek(value);
     const end = endOfWeek(value);
 
@@ -76,10 +76,11 @@ const CustomDay = (props) => {
     const isFirstDay = isSameDay(date, start);
     const isLastDay = isSameDay(date, end);
     
+    // useState로 관리
+    setStartDate(dateFormat(start))
+    setEndDate(dateFormat(end))
 
-  
-  setStartDate(dateFormat(start))
-  setEndDate(dateFormat(end))
+
     return (
       <CustomPickersDay
         {...pickersDayProps}
@@ -91,6 +92,7 @@ const CustomDay = (props) => {
     );
   };
 
+  // startDate 바뀔 때마다 리포트 정보 get요청 하기
     React.useEffect(() => {
         dispatch(memberAction.getReportDB(challengeId, startDate));
       }, [startDate]);
@@ -101,7 +103,7 @@ const CustomDay = (props) => {
         displayStaticWrapperAs="desktop"
         label="Week picker"
         value={value}
-        minDate={new Date(props.startDate)} // 시작일 이전은 선택 불가능
+        minDate={new Date(props.startDate)} // 챌린지 시작일 이전은 선택 불가능
         onChange={(newValue) => {
           setValue(newValue);
         }}
