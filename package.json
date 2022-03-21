@@ -42,7 +42,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "aws s3 sync ./build s3://sohangsung.co.kr --profile=Administrator",
+    "invalidate": "aws cloudfront create-invalidation --profil=Administrator --distribution-id E246A4WHF2LGZK --paths /*"
+
   },
   "eslintConfig": {
     "extends": [

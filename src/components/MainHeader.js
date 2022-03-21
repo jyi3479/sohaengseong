@@ -4,37 +4,33 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 
 import searchIconW from '../image/icon/ic_ search@2x.png';
+import searchIconB from "../image/icons/ic_search_b@2x.png";
 import arrow from "../image/icon/ic_arrow_w@2x.png";
 import logo from "../image/logo.png";
+import logo2 from "../image/logo2.png";
 
 const MainHeader = (props) => {
     
+    const [scrollPosition, setScrollPosition] = React.useState(0);
 
+    const updateScroll = (scrollY) => {
+        setScrollPosition(scrollY);
+    };
+    
+    React.useEffect(()=>{        
+        const scrollDiv = document.getElementById("scroll");
+        const mainDiv = document.getElementById("main_wrap");
 
-    // const headerHeight = header.offsetHeight;
-
-    // window.onscroll = function () {
-    //     let windowTop = window.scrollY;
-    //     // 스크롤 세로값이 헤더높이보다 크거나 같으면 
-    //     // 헤더에 클래스 'drop'을 추가한다
-    //     if (windowTop >= headerHeight) {
-    //         header.classList.add("scroll");
-    //     } 
-    //     // 아니면 클래스 'drop'을 제거
-    //     else {
-    //         header.classList.remove("scroll");
-    //     }
-    // };
-
-    React.useEffect(()=>{
-        // const headerHeight = document.getElementById('header').clientHeight;
-        // console.log(headerHeight);
+        scrollDiv.addEventListener("scroll", () => {
+            let scrollY = Math.abs(mainDiv.getBoundingClientRect().top);
+            updateScroll(scrollY);
+        });
     });
 
 
 
     return(        
-        <Wrap id="Header" className={props.className}>
+        <Wrap id="Header"  className={scrollPosition > 100 ? "scroll" : ""} >
             {props.className === "category"? (
                 <button onClick={()=>{
                     history.go(-1);
@@ -44,7 +40,7 @@ const MainHeader = (props) => {
                     <h1><a href="/"></a></h1>
                     <button onClick={()=>{
                         history.push("/category/all");
-                    }}><img src={searchIconW}></img></button>
+                    }}><img src={scrollPosition > 100 ? searchIconB : searchIconW}></img></button>
                 </>
             )}  
             
@@ -63,10 +59,19 @@ const Wrap = styled.div`
     top: 0;
     left: 0;
     padding: 11px 20px;
-    box-sizing: border-box;  
+    box-sizing: border-box;
+    transition : all 0.1s;
     z-index: 10;
     &.scroll {
         background-color: #fff;
+        box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.04);
+        h1 { 
+            a {
+                margin-top: -2px;
+                margin-left: -3px;
+                background-image: url(${logo2});
+            }            
+        }
     }
     .title {
         display: flex;
