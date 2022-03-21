@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import { Grid, Button } from "../elements";
-import { history } from "../redux/configureStore";
 
+import { useParams } from "react-router-dom";
+import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
+
+import { Grid, Button } from "../elements";
 import ChallengeInfo from "../components/Member/ChallengeInfo";
 import MemberReport from "../components/Member/MemberReport";
 import TodayPost from "../components/Member/TodayPost";
@@ -14,10 +15,9 @@ import TodayPost from "../components/Member/TodayPost";
 const MemberMain = (props) => {
   const dispatch = useDispatch();
   const challengeId = +useParams().challengeId;
-  // 인증사진 나열 부분
-
   const target = useSelector((state) => state.challenge.target);
 
+  // header, footer 부분
   React.useEffect(() => {
     dispatch(challengeAction.getOneChallengeDB(challengeId));
     dispatch(baseAction.setHeader("", true));
@@ -38,7 +38,7 @@ const MemberMain = (props) => {
           {target.status !== "모집중" && (
             <>
               <TodayPost challengeId={challengeId} roomId={target.roomId} />
-              {target.status !== "완료" && (
+              {target.status === "진행중" && (
                 <Fixed>
                   <Grid padding="0" is_flex>
                     <Button
@@ -47,7 +47,6 @@ const MemberMain = (props) => {
                       style={{ color: "#030102", border: "1px solid #666" }}
                       _onClick={() => {
                         history.push(`/chatting/${target.roomId}`);
-                        // history.push("/chatting/${roomId}");
                       }}
                     >
                       실시간 톡

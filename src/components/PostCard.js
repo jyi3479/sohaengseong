@@ -1,17 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { history } from "../redux/configureStore";
-import { useParams } from "react-router-dom";
 
 import moment from "moment";
 import "moment/locale/ko";
 
+import { useDispatch, useSelector } from "react-redux";
+import { history } from "../redux/configureStore";
 import { actionCreators as memberActions } from "../redux/modules/member";
 import { actionCreators as challengeActions } from "../redux/modules/challenge";
+import { useParams } from "react-router-dom";
+
 import { Grid, Image } from "../elements";
 import Modal from "./Modal";
 import PostModal from "./Member/PostModal";
+
 import comment from "../image/icons/ic_relpy@2x.png";
 import deleteIcon from "../image/icons/ic_delete@2x.png";
 import close from "../image/icons/icon_close_btn@2x.png";
@@ -23,43 +25,53 @@ import defaultImg from "../image/img_profile_defalt @2x.png";
 
 const PostCard = (props) => {
   moment.locale("ko"); // 모멘트 한글로 바꾸기
+  const dispatch = useDispatch();
+// params에서 Id 가져오기
   const challengeId = useParams().challengeId;
   const roomId = useParams().roomId;
-  const dispatch = useDispatch();
+
+
+// 유저와 게시글 작성자 비교
   const userInfo = useSelector((state) => state.user.user);
-  const post = useSelector((state) => state.member.post);
   const is_me = userInfo&&userInfo.nickname === props.nickname;
-  const isDetail = useParams().postId ? true : false;
-  // const comments = props.comments.filter((l, idx) =>
-  //   isDetail ? true : idx < 2
-  // );
+
+// 인증게시글 상세페이지 여부
+  const isDetail = useParams().postId ? true : false; 
+
+// 댓글 정보
   const comments = props.comments;
   const no_comment = comments&&comments.length === 0;
+
+
+// 특정 챌린지 멤버 정보
   const target = useSelector(state => state.challenge.target);
   const members = target&&target.members;
+  // 챌린지 멤버 중 방장의 index 찾기
   const member_idx = members&&members.findIndex((m) => m.userId === parseInt(target.userId));
+  // 방장의 닉네임과 인증 게시글 작성자의 닉네임이 같은지 여부
   const admin = members&&members[member_idx].nickname === props.nickname;
 
 
-  const [content, setContent] = React.useState("");
-  const addComment = () => {
-    // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
-
-    // dispatch(memberActions.addComment(props.postId, comment));
-    dispatch(memberActions.addCommentDB(props.postId, content));
-    setContent("");
-  };
+// 인증 게시글 삭제
   const deletePost = () => {
     dispatch(memberActions.deletePostDB(props.postId));
     setModalOpen(false);
     history.replace(`/post/${challengeId}/${roomId}`);
   };
 
+// 댓글 작성 및 삭제
+  const [content, setContent] = React.useState("");
+  const addComment = () => {
+    dispatch(memberActions.addCommentDB(props.postId, content));
+    setContent("");
+  };
+
   const deleteComment = (commentId) => {
     dispatch(memberActions.deleteCommentDB(props.postId, commentId));
   };
 
-  // 모달 팝업1 -------------------------------------------------
+
+  // 모달 팝업1 (인증 게시글 상세버튼 클릭 시 모달 - 수정/삭제) -------------------------------------------------
   const [modalState, setModalState] = React.useState(false);
   const openModal = () => {
     setModalState(true);
@@ -69,7 +81,7 @@ const PostCard = (props) => {
     setModalState(false);
   };
 
-  // 모달 팝업2 ---------------------------------
+  // 모달 팝업2 (인증 게시글 삭제 클릭 시 모달) ---------------------------------
   const [modalType, setModalType] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
   const openDeleteModal = () => {
@@ -78,7 +90,6 @@ const PostCard = (props) => {
   };
 
   const closeDeleteModal = () => {
-    console.log("눌림");
     setModalOpen(false);
   };
 
@@ -89,7 +100,6 @@ const PostCard = (props) => {
   return (
     <>
     {userInfo && (
-
 <>
         <Wrap className={isDetail? "is_detail" : ""}>
           {/* PostCard의 윗 부분 */}
@@ -126,12 +136,7 @@ const PostCard = (props) => {
             }}
           >
             {/* PostCard의 내용 부분 */}
-            {/* 인증사진 올리지 않는 경우 대비 */}
-            {props.postImage ? (
-              <Image shape="rectangle" size={375} src={props.postImage} />
-            ) : (
-              ""
-            )}
+            <Image shape="rectangle" size={375} src={props.postImage} />
             <Grid padding="16px 20px">
               <p className={isDetail? "" : "ellipsis2"} style={{ color: "#333333" }}>{props.content}</p>
             </Grid>
@@ -200,7 +205,8 @@ const PostCard = (props) => {
                         </div>
                         <div className="comment_tool">                      
                           <p className="caption_color small t_right">
-                            {moment(el.createdAt, "YYYY.MM.DD kk:mm:ss").fromNow("")}
+                            {/* 댓글 작성일이 오늘로부터 얼마나 지났는지 보여줌 */}
+                            {moment(el.createdAt, "YYYY.MM.DD kk:mm:ss").fromNow()}
                           </p>
 
                           {isDetail && userInfo.nickname === el.nickname && (
@@ -220,6 +226,8 @@ const PostCard = (props) => {
               
             </CommentContainer>
           </Grid>
+
+          {/* 인증 게시글 상세 버튼 클릭 시 모달 */}
           <PostModal state={modalState} _handleModal={closeModal}>
             <>
               <Grid width="auto" padding="0px">
@@ -250,6 +258,7 @@ const PostCard = (props) => {
             </>
           </PostModal>
 
+          {/* 인증 게시글 삭제 버튼 클릭 시 모달 */}
           <Modal
             open={modalType === "openModal" ? modalOpen : ""}
             close={closeDeleteModal}
@@ -319,7 +328,7 @@ const Wrap = styled.div`
         width: calc(100% - 60px);
         p:last-child {
           margin-left:4px;
-          width: calc(100% - 100px);
+          width: calc(100% - 105px);
         }
       }
     }

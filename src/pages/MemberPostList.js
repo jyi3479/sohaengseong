@@ -1,8 +1,9 @@
 import React from "react";
-import PostList from "../components/PostList";
+
 import { useDispatch } from "react-redux";
 import { actionCreators as baseAction } from "../redux/modules/base";
 
+import PostList from "../components/PostList";
 import { Grid } from "../elements";
 
 const MemberPostList = (props) => {

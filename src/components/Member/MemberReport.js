@@ -1,21 +1,24 @@
 import React from "react";
-import {useSelector } from "react-redux";
 import styled from "styled-components";
+
+import { useSelector } from "react-redux";
+
 import { Grid } from "../../elements";
 import CustomDay from "./Date";
 
 const MemberReport = (props) => {
+  // 챌린지 상태 받아오기
   const status = props.status;
-  const startDate = props.startDate
+  // 챌린지 시작 날짜 받아오기
+  const startDate = props.startDate; 
   const report = useSelector((state) => state.member.report);
-  console.log(report);
   
   return (
     <Grid padding="0px" margin="35px 0 0">
       <h2 className="mb4">위클리 리포트</h2>
       <p className="sub_color mt6">일주일 간 인증률 확인하기</p>
     <hr style={{border:"0.5px solid #e4e5e6", margin:"8px 0 12px 0"}}></hr>
-<CustomDay startDate={startDate}/>
+      <CustomDay startDate={startDate}/>
       <div
         style={{
           width: "100%",
@@ -96,7 +99,7 @@ export default MemberReport;
 
 
 
-// 리포트 부분
+// 리포트 그래프 속 막대
 const Progress = (props) => {
 
   return (
@@ -114,7 +117,6 @@ const Progress = (props) => {
 };
 
 const ReportBox = styled.div`
-  /* margin: 0 10px; */
   text-align: center;
 `;
 

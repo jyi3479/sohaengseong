@@ -1,8 +1,7 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { useParams } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
@@ -14,8 +13,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
 
 import { Grid, Input, Button, Image} from "../elements";
-
 import Modal from "../components/Modal";
+
 import plus from "../image/icon/ic_plus_g@2x.png";
 import drop from "../image/icons/ic_dropdown@2x.png";
 import defaultImg from "../image/ic_empty_s@2x.png";
@@ -34,7 +33,6 @@ const ChallengeWrite = (props) => {
   const recommendList = useSelector((state) => state.search.recommend).filter(
     (el, idx) => idx < 5
   );
-
 
   React.useEffect(() => {
       // Header 적용 (수정/작성 분기)
@@ -55,8 +53,8 @@ const ChallengeWrite = (props) => {
     };
   }, []);
 
-
-
+// state 관리 부분 ------------------------------------------------------------------------
+  
   const [title, setTitle] = React.useState(isEdit ? target.title : "");
   const [content, setContent] = React.useState(isEdit ? target.content : "");
   const [category, setCategory] = React.useState(isEdit ? target.category : "");
@@ -68,7 +66,7 @@ const ChallengeWrite = (props) => {
   //이미지 부분
   const [compareImage, setCompareImage] = React.useState(
     isEdit ? target.challengeImage : []
-  );
+  ); // 기존에 작성했던 이미지 url 담은 state (이미지 수정 시 새로운 이미지 등록과 비교하기 위해)
   const [image, setImage] = React.useState([]);
   const [preview, setPreview] = React.useState(
     isEdit ? target.challengeImage : []
@@ -91,7 +89,8 @@ const ChallengeWrite = (props) => {
   );
   const [password, setPassword] = React.useState(isEdit ? target.password : "");
 
-  // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
+
+  // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘 -----------------------------------------------------
   const selectClick = () => {
     setActive(!active);
   };
@@ -100,49 +99,57 @@ const ChallengeWrite = (props) => {
     setActive(!active);
   };
 
-  // 비밀방 여부 체크 함수
+  // 비밀방 여부 체크 함수 ------------------------------------------------------------------------------
   const changeHandler = (checked, id) => {
     if (checked) {
-      setCheckedInputs(id); // checked가 true이면 해당 id값이 state에 저장된다.
+      // checked가 true이면 해당 id값(private/public)이 state에 저장된다.(체크된 박스가 어떤 박스인지 알도록)
+      setCheckedInputs(id); 
     } else {
       setCheckedInputs(null);
     }
   };
 
-  // 태그 관련 함수
+
+// 태그 관련 함수 ----------------------------------------------------------------------------------------
   // 엔터 시 태그 제출
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && e.key === "Enter") {
-      // 중복된 태그 값 있으면 입력안되고 hashtag 초기화 되도록 설정
+      // 예외처리 : 중복된 태그 값 있으면 입력안되고 hashtag 초기화 되도록 설정
       if (hashArr.includes(e.target.value)) {
         setHashtag("");
         return;
       }
+      // 태그 추가 함수 실행
       submitTagItem();
     }
   };
-  // 엔터 및 키워드 클릭 시 실행 함수
+
+  // 엔터 및 키워드 클릭 시 실행 함수 (태그 추가 함수)
   const submitTagItem = (keyword) => {
-    let updatedTaglist = [...hashArr];
-    updatedTaglist.push(keyword ? keyword : hashtag);
+    // 기존에 입력된 태그 배열
+    let updatedTaglist = [...hashArr]; 
+    // 키워드 클릭 시 keyword 추가, 직접 입력 시 onChange로 업데이트 되는 hashtag state 추가
+    updatedTaglist.push(keyword ? keyword : hashtag); 
+    // 태그 배열 state 업데이트
     setHashArr(updatedTaglist);
+    // 태그 input 창 초기화
     setHashtag("");
   };
 
+  // 입력된 태그 삭제 함수
   const deleteTagItem = (e) => {
-    console.log(typeof e.target.parentElement.firstChild.innerText);
+    // 지우려는 태그 내용 가져오기
     const deleteTagItem = e.target.parentElement.firstChild.innerText;
+    // 지우려는 태그 내용과 다른 태그들만 걸러서 hashArr 업데이트 하기
     const filteredTaglist = hashArr.filter((hashtag) => {
-      console.log(hashtag, deleteTagItem);
       return hashtag !== deleteTagItem;
     });
     setHashArr(filteredTaglist);
   };
 
 
-  // 이미지 업로드 부분
+  // 이미지 업로드 부분 ----------------------------------------------------------------------------
   const fileInput = React.useRef();
-
   const selectFile = (e) => {
     const fileArr = fileInput.current.files;
     console.log(fileArr);
@@ -150,8 +157,16 @@ const ChallengeWrite = (props) => {
     let files = []; // image 담을 배열
 
     let file; // 임시 변수
-    let filesLength = fileArr.length > 3 ? 3 : fileArr.length; // 이미지 3장 제한
+    let filesLength;
 
+    if(isEdit){
+      filesLength = 3-compareImage.length // 이미지 3장 제한
+    } else{
+      filesLength = fileArr.length > 3 ? 3 : fileArr.length; // 이미지 3장 제한
+    }
+    
+
+    // 다중 선택된 이미지 file 객체들을 반복문을 돌리며 preview와 image 배열에 추가하기
     for (let i = 0; i < filesLength; i++) {
       file = fileArr[i];
       let reader = new FileReader();
@@ -172,16 +187,24 @@ const ChallengeWrite = (props) => {
     e.target.value = ""; // 같은 파일 upload를 위한 처리
   };
 
+  // 업로드한 이미지 삭제 함수
   const deleteImage = (index) => {
-    const imageArr = image.filter((el, idx) => idx !== index);
     const previewArr = preview.filter((el, idx) => idx !== index);
-
-    setImage([...imageArr]);
     setPreview([...previewArr]);
-    if (isEdit) {
-      const compareArr = compareImage.filter((el, idx) => idx !== index);
-      setCompareImage([...compareArr]);
+
+    // 수정일 때, 기존 이미지 배열과 새로운 이미지 배열 모두 고려해야 함
+    let compareArr=[];
+    let imageArr = [];
+    if(index<compareImage.length){
+      // 1) 삭제 이미지가 기존 이미지 배열 안에 있을 때, compareImage에서 지우기
+     compareArr = compareImage.filter((el, idx) => idx !== index);
+     setCompareImage([...compareArr]);
+    } else{
+      // 2) 삭제 이미지가 새로운 이미지 배열 안에 있을 때, image에서 지우기
+      imageArr = image.filter((el, idx) => idx !== (index-compareImage.length));
+      setImage([...imageArr]);
     }
+      
   };
 
   // 날짜 형식 맞춰주는 함수
@@ -213,8 +236,9 @@ const ChallengeWrite = (props) => {
     );
   }
 
-  // 인증 게시글 추가하기
+  // 인증 게시글 추가하기 --------------------------------------------------------------------
   const addChallenge = () => {
+  // 예외처리
     if (category === "") {
       window.alert("카테고리를 선택해주세요.");
       return;
@@ -231,7 +255,7 @@ const ChallengeWrite = (props) => {
       if (parseInt(maxMember) > 30) {
         window.alert("30명 이하로 등록해주세요.");
         return;
-      } else if (parseInt(maxMember) === 0 || maxMember === "") {
+      } else if (parseInt(maxMember) <= 0 || maxMember === "") {
         window.alert("모집 인원 수를 입력해주세요!");
         return;
       }
@@ -255,10 +279,9 @@ const ChallengeWrite = (props) => {
       }
     }
 
-    // 서버에 보내기 위한 작업
-    // 폼데이터 생성
-    let formData = new FormData();
+  // 서버에 보내기 위한 작업
 
+    let formData = new FormData();
     // 보낼 데이터 묶음 (이미지 제외)
     const data = {
       title: title,
@@ -281,20 +304,14 @@ const ChallengeWrite = (props) => {
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
-    for (let value of formData.values()) {
-      console.log(value);
-    }
-
-    // 폼데이터에 이미지와 데이터 묶어서 보내기
-    console.log("이미지확인", image);
-    console.log(data);
-
-    // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.addChallengeDB(formData));
   };
 
-  // 인증 게시글 수정하기
+
+
+  // 인증 게시글 수정하기 ------------------------------------------------------------------------------
   const editChallenge = () => {
+  // 예외처리
     if (category === "") {
       window.alert("카테고리를 선택해주세요.");
       return;
@@ -307,11 +324,10 @@ const ChallengeWrite = (props) => {
       return;
     }
 
-    // 서버에 보내기 위한 작업
+  // 서버에 보내기 위한 작업
     // 폼데이터 생성
     let formData = new FormData();
-
-    // 보낼 데이터 묶음 (이미지 제외)
+    // 보낼 데이터 묶음 (새로 업로드된 이미지 제외, 기존에 등록된 이미지 url 포함)
     const data = {
       image: compareImage,
       title: title,
@@ -320,17 +336,15 @@ const ChallengeWrite = (props) => {
       tagName: hashArr,
     };
 
-    // 폼데이터에 이미지와 데이터 묶어서 보내기
+    // 폼데이터에 새로운 이미지와 데이터 묶어서 보내기
     for (let i = 0; i < image.length; i++) {
       formData.append("challengeImage", image[i]);
     }
-    // formData.append("challenge", data, { type: "application/json" });
     formData.append(
       "challenge",
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
-    // formData api랑 통신하는 부분으로 dispatch 하기(apis에서 미리 설정해둠)
     dispatch(challengeAction.editChallengeDB(+params.challengeId, formData));
   };
 
@@ -549,7 +563,7 @@ const ChallengeWrite = (props) => {
               onChange={(newValue) => {
                 setValue(newValue);
 
-                let range = (newValue[1] - newValue[0]) / (1000 * 60 * 60 * 24);
+                const range = (newValue[1] - newValue[0]) / (1000 * 60 * 60 * 24);
                 if (newValue[1] && range < 14) {
                   window.alert("2주 이상 선택해주세요!");
                   setValue([null, null]);

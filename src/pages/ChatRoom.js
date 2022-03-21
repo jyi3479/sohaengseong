@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, useMemo } from "react";
 import * as baseAction from "../redux/modules/base";
 
 // Components
@@ -25,7 +25,7 @@ import { useParams } from "react-router-dom";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
 
-const ChatRoom = (props) => {
+const ChatRoom = ({match}) => {
   const dispatch = useDispatch();
 
   // 소켓 통신 객체
@@ -107,11 +107,20 @@ const ChatRoom = (props) => {
 
   // 렌더링 될 때마다 연결,구독 다른 방으로 옮길 때 연결, 구독 해제
   React.useEffect(() => {
-    wsConnectSubscribe();
-    return () => {
-      wsDisConnectUnsubscribe();
-    };
-  }, [dispatch, userId, roomId]);
+    if(performance.navigation.type==1){
+      window.alert("새로고침")
+    } else {
+      window.alert("구독")
+      wsConnectSubscribe();
+    }
+    
+
+  return () => {
+    window.alert("구독 해제")
+    wsDisConnectUnsubscribe();
+  };
+    
+  }, [match.params.roomId]);
 
   // 웹소켓이 연결될 때 까지 실행하는 함수
   const waitForConnection = (waitWs, callback) => {

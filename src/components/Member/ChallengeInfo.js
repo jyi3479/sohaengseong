@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { actionCreators as challengeAction } from "../../redux/modules/challenge";
 import { Grid, Button } from "../../elements";
 import { history } from "../../redux/configureStore";
 import dayjs from "dayjs";
@@ -10,12 +8,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 const ChallengeInfo = (props) => {
   dayjs.extend(customParseFormat);
-  const dispatch = useDispatch();
-  // router 경로 설정한 challengeId 가져오기 (string 이어서 +연산자로 숫자 변환)
-  // 특정 챌린지 조회할 때 사용하면 됨
   const challengeId = props.challengeId;
   const target = props.target;
-
 
   //날짜 포맷 변경 뒤 날짜 간격 계산하기
   const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}`;
@@ -38,7 +32,6 @@ const ChallengeInfo = (props) => {
                 history.push(`/member/detail/${challengeId}`);
               }}
             >
-              {" "}
               상세보기
             </Button>
           </Grid>

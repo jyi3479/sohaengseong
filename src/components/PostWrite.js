@@ -1,41 +1,46 @@
 import React from "react";
 import styled from "styled-components";
+
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as memberAction } from "../redux/modules/member";
 import { actionCreators as baseAction } from "../redux/modules/base";
+import { memberApis } from "../shared/apis";
+
 import { Grid, Input, Button } from "../elements";
 import Modal from "./Modal";
-import { useParams } from "react-router-dom";
-import { memberApis } from "../shared/apis";
+
 import plus from "../image/icons/ic_plus_xl@2x.png";
 import deleteIcon from "../image/icon/ic_delete_m.png";
 import confirmIcon from "../image/img_good@2x.png";
 
 const PostWrite = (props) => {
-  const postId = +useParams().postId;
-  const roomId = useParams().roomId;
-  const isEdit = postId ? true : false;
   const dispatch = useDispatch();
   const challengeId = +useParams().challengeId;
+  const postId = +useParams().postId;
+  const roomId = useParams().roomId;
+
   const userInfo = useSelector((state) => state.user.user);
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
 
-  //  인증 게시글 수정은 어디서 할건지에 따라 is_edit 변수 활용하기
+
+  const isEdit = postId ? true : false; // 인증 게시글 수정 여부
   const [content, setContent] = React.useState(
     isEdit ? targetPost.content : ""
-  );
-  const [image, setImage] = React.useState(null);
+  ); // 인증 게시글 내용
+  const [image, setImage] = React.useState(null); // 이미지 file 객체 담는 곳
   const [preview, setPreview] = React.useState(
     isEdit ? targetPost.postImage : ""
-  );
+  ); // filereader 후 미리보기 데이터 담는 곳
+  const [isLevelUp, setIsLevelup] = React.useState(false); // 레벨업 여부
+  const [nextLevel, setNextLevel] = React.useState("")
 
-  const [isLevelUp, setIsLevelup] = React.useState(false);
+
 
   // 이미지 업로드 부분
   const fileInput = React.useRef();
-
   const selectFile = (e) => {
     const reader = new FileReader();
     const file = fileInput.current.files[0];
@@ -51,20 +56,23 @@ const PostWrite = (props) => {
     }
     e.target.value = ""; // 같은 파일 upload를 위한 처리
   };
-
+  // 이미지 삭제 함수
   const deleteImage = () => {
     setPreview("");
     setImage(null);
   };
 
+
   // 인증 게시글 추가하기
   const addPost = () => {
-    // 서버에 보내기 위한 작업
-    let formData = new FormData();
+    // 예외처리
     if (content === "") {
       window.alert("내용을 입력해주세요!");
       return;
     }
+
+    // 서버에 보내기 위한 작업
+    let formData = new FormData();
     const contentJson = { content: content };
     formData.append(
       "post",
@@ -72,53 +80,50 @@ const PostWrite = (props) => {
     );
     formData.append("postImage", image);
 
+    // 인증 게시글 추가 api 호출
     memberApis
       .addPost(challengeId, formData)
       .then((res) => {
         console.log("인증 게시글 작성", res);
+        // 인증 완료 모달 띄우기
         setModalType("okModal");
         setModalOpen(true);
-        if (res.data.experiencePoint === res.data.rankingPoint) {
-          setIsLevelup(true);
+        // 레벨업 여부 확인하기
+        if (res.data.levelUp) {
+          setNextLevel(res.data.levelName)
+          setIsLevelup(true); // true일 경우 레벨업 모달 띄워줌
         }
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
       });
-    setPreview("");
+    setPreview(""); // 작성 후 미리보기,이미지 state는 빈값으로 바꿔주기
   };
+
+
   // 인증 게시글 수정하기
   const editPost = () => {
-    // 서버에 보내기 위한 작업
-    let formData = new FormData();
+    // 예외처리
     if (content === "") {
       window.alert("내용을 입력해주세요!");
       return;
     }
+
+    // 서버에 보내기 위한 작업
+    let formData = new FormData();
     const contentJson = { content: content };
-    // formData.append("content", content);
     formData.append(
       "post",
       new Blob([JSON.stringify(contentJson)], { type: "application/json" })
     );
     formData.append("postImage", image);
-    // formData api랑 통신하는 부분으로 dispatch 하기
-    // 유저 정보랑 날짜 등 합치고 initialstate 형식에 맞추어서 딕셔너리 만들기
-    // state 관리를 위한 작업 필요 : user 정보까지 포함해서 reducer에 전달해야 한다.
-    const post = {
-      nickname: userInfo.nickname,
-      profileImage: "",
-      content: content,
-      postImage: preview, // 임시로 지정해둠
-      comments: [], // 첫 게시글에는 댓글이 없으니까 일단 이렇게 설정했습니다.
-    };
+
+    // 인증 게시글 수정 api 호출
     memberApis
       .editPost(postId, formData)
       .then((res) => {
         console.log("인증 게시글 수정", res);
-        // dispatch(memberAction.editPost(post));
-
-        history.replace(`/post/${challengeId}/${roomId}`);
+        history.replace(`/post/${challengeId}/${roomId}`); // 인증 게시글 리스트 페이지 이동
       })
       .catch((err) => {
         console.log("인증 게시글 수정 오류", err);
@@ -126,6 +131,8 @@ const PostWrite = (props) => {
     setPreview("");
   };
 
+
+  // header, footer 부분
   React.useEffect(() => {
     dispatch(baseAction.setHeader(isEdit ? "수정하기" : "인증하기", false));
 
@@ -140,19 +147,19 @@ const PostWrite = (props) => {
     };
   }, []);
 
-  // 모달 팝업 ---------------------------------
+
+  // 모달 팝업 -------------------------------------
   const [modalType, setModalType] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
   const openModal = () => {
     setModalType("openModal");
-    console.log("챌린지 개설");
     setModalOpen(true);
   };
 
   const closeModal = () => {
-    console.log("눌림");
     setModalOpen(false);
   };
+
 
   return (
     <>
@@ -160,8 +167,8 @@ const PostWrite = (props) => {
         <Grid className="bg_color" padding="0px" height="700px">
           <Grid bg="#ffffff" padding="24px 20px">
             <h3>{userInfo.nickname}님, 오늘의 인증을 남겨주세요!</h3>
-            {/* 이미지 업로드 부분 */}
 
+            {/* 이미지 업로드 부분 */}
             <ImageLabel
               className="input-file-button"
               htmlFor="input-file"
@@ -175,12 +182,10 @@ const PostWrite = (props) => {
               type="file"
               onChange={selectFile}
               ref={fileInput}
-              // disabled={is_uploading}
               style={{ display: "none" }}
             />
 
             {/* PostWrite의 작성 input */}
-
             <Input
               placeholder="오늘의 활동은 어떠셨나요? 소감을 남겨주세요."
               value={content}
@@ -199,6 +204,8 @@ const PostWrite = (props) => {
               </li>
             </ul>
           </Notice>
+
+          {/* PostWrite의 fixed 버튼*/}
           <Fixed>
             <Button
               _onClick={openModal}
@@ -207,6 +214,8 @@ const PostWrite = (props) => {
               {isEdit ? "수정하기" : "저장하기"}
             </Button>
           </Fixed>
+
+          {/* 저장/수정 버튼 누르면 나오는 모달 */}
           <Modal
             open={modalType === "openModal" ? modalOpen : ""}
             close={closeModal}
@@ -222,6 +231,8 @@ const PostWrite = (props) => {
           >
             <p>{isEdit ? "수정하시겠습니까?" : "인증하시겠습니까?"}</p>
           </Modal>
+
+          {/* 인증 게시글 작성 성공하면 나오는 모달*/}
           <Modal
             open={modalType === "okModal" ? modalOpen : ""}
             close={closeModal}
@@ -239,9 +250,11 @@ const PostWrite = (props) => {
               <Button
                 _onClick={() => {
                   if (isLevelUp) {
+                    // 레벨업 했으면 레벨업 모달 나오도록 하기
                     setModalType("levelUpModal");
                     setModalOpen(true);
                   } else {
+                    // 레벨업 안했으면 인증 게시글 리스트 페이지 이동
                     history.replace(`/post/${challengeId}/${roomId}`);
                   }
                 }}
@@ -250,6 +263,8 @@ const PostWrite = (props) => {
               </Button>
             </Grid>
           </Modal>
+
+          {/* 레벨업 모달 */}
           <Modal
             open={modalType === "levelUpModal" ? modalOpen : ""}
             close={closeModal}
@@ -260,7 +275,7 @@ const PostWrite = (props) => {
               <CharacterImg></CharacterImg>
               <h2 style={{ marginBottom: "9px" }}>Level UP!</h2>
               <p style={{ marginBottom: "35px" }}>
-                축하합니다! {userInfo.level}이 되었습니다.
+                축하합니다! {nextLevel}이 되었습니다.
                 <br />
                 뭐가 달라졌는지 보러갈까요?
               </p>
