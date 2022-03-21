@@ -2,7 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
-import moment from "moment";
+
+//날짜 라이브러리 
+import dayjs from "dayjs";
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import {Grid,Button} from "../elements/index";
 import MainHeader from "../components/MainHeader";
@@ -14,14 +17,16 @@ import plus from "../image/icon/ic_plus_l@2x.png";
 import bgImg from "../image/main_bg.png"; 
 import arrow from "../image/icon/ic_arrow_s@2x.png";
 
-//카테고리이미지
+//카테고리이미지 (순서대로 앞 3번째까지만 노출)
 import category_01 from "../image/icon/category/ic_category_daily_l@2x.png";
 import category_02 from "../image/icon/category/ic_category_health_l@2x.png";
 import category_03 from "../image/icon/category/ic_category_study_l@2x.png";
 
 const Main = (props) => {
+    dayjs.extend(customParseFormat); //날짜 포맷 맞추기 (파폭, 모바일 등에도 맞도록)
+
     const userInfo = useSelector(state => state.user.user);
-    const yesterday =  moment().subtract(1, 'days').format('YYYY.MM.DD');
+    const yesterday = dayjs().subtract(1, "day").format('YYYY.MM.DD');
 
     return(
         <>
@@ -34,61 +39,59 @@ const Main = (props) => {
                 </Banner>
             </Grid>
             <Wrap >
-                <Grid style={{overflow: "hidden"}}>
-                    {userInfo?(
-                        <Info>
-                            <h2>안녕하세요. <b>{userInfo&&userInfo.nickname}</b> 님</h2>
-                            <Grid padding="0" is_flex height="auto" margin="0 0 22px">
-                                <p className="sub_color">인증 가능한 행성</p>
-                                <p className="poppins"><b className="point_color" style={{opacity:"0.8"}}>{userInfo.count}</b>개</p>
-                            </Grid>
+                <Grid style={{overflow: "hidden"}}>                   
+                    <Info>
+                    {userInfo?(//유저 정보가 있다면 유저 정보 노출
+                        <>
+                        <h2>안녕하세요. <b>{userInfo&&userInfo.nickname}</b> 님</h2>
+                        <Grid padding="0" is_flex height="auto" margin="0 0 22px">
+                            <p className="sub_color">인증 가능한 행성</p>
+                            <p className="poppins"><b className="point_color" style={{opacity:"0.8"}}>{userInfo.count}</b>개</p>
+                        </Grid>
                         <Button bg="#17abd6"
                         _onClick={()=>{
                             history.push("/mypage");
                         }}>인증하기</Button>
-                        </Info>
-                    ):(
-                        <Info>
-                            <Grid padding="0" height="auto" margin="22px 0 35px" style={{textAlign:"center"}}>
-                                <p className="sub_color">로그인하고 나의 인증 정보를 확인해보세요!</p>
-                                <Button small_btn margin="20px 0 0"
-                                _onClick={()=>{
-                                    history.push("/login");
-                                }}>로그인</Button>
-                            </Grid>                            
-                        </Info>
-                    )}
-                    <Grid padding="0" margin="150px 0 28px" >  
-                        <Grid padding="0">
-                            <CategoryWrap>
-                                <li>
-                                    <a href="/category/1">
-                                        <img src={category_01}/>
-                                        <p className="small mt4">일상 루틴</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/category/2">
-                                        <img src={category_02}/>
-                                        <p className="small mt4">운동</p>
-                                    </a>
-                                </li>
-                                <li>    
-                                    <a href="/category/3">
-                                        <img src={category_03}/>
-                                        <p className="small mt4">스터디</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href={`/category`}>
-                                        <div>
-                                            <div><img src={plus}/></div>
-                                        </div>
-                                        <p className="small mt4">전체보기</p>
-                                    </a>
-                                </li>
-                            </CategoryWrap>
-                        </Grid>
+                        </>
+                    ):(//유저 정보가 없다면 로그인 유도                           
+                        <Grid padding="0" height="auto" margin="22px 0 35px" style={{textAlign:"center"}}>
+                            <p className="sub_color">로그인하고 나의 인증 정보를 확인해보세요!</p>
+                            <Button small_btn margin="20px 0 0"
+                            _onClick={()=>{
+                                history.push("/login");
+                            }}>로그인</Button>
+                        </Grid>                            
+                        )}
+                    </Info>                    
+                    <Grid padding="0" margin="150px 0 28px" >
+                        <CategoryWrap>
+                            <li>
+                                <a href="/category/1">
+                                    <img src={category_01}/>
+                                    <p className="small mt4">일상 루틴</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/category/2">
+                                    <img src={category_02}/>
+                                    <p className="small mt4">운동</p>
+                                </a>
+                            </li>
+                            <li>    
+                                <a href="/category/3">
+                                    <img src={category_03}/>
+                                    <p className="small mt4">스터디</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href={`/category`}>
+                                    <div>
+                                        <div><img src={plus}/></div>
+                                    </div>
+                                    <p className="small mt4">전체보기</p>
+                                </a>
+                            </li>
+                        </CategoryWrap>                        
                         <Ranking>
                             <TitleBox>
                                 <h2>입주민 실시간 랭킹</h2>
@@ -108,8 +111,7 @@ const Main = (props) => {
                             </TitleBox>                                                   
                             <Grid padding="0">
                                 <ChallengeList className="main"/>
-                            </Grid>
-                            
+                            </Grid>                            
                         </div>
                     </Grid>
                 </Grid>

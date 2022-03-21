@@ -39,14 +39,14 @@ const Find = (props) => {
     // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘
     const selectClick = () => {
         setActive(!active);
+        setOption("");
     };
+
     const optionClick = (e) => {
         setOption(e.target.innerText);
         setActive(false);    
-        if (option === "직접 입력") {
-        setDomain("");
-        }else {
-        setDomain(e.target.innerText);
+        if (option !== "직접 입력") {
+            setDomain(e.target.innerText);
         }
     };
 
@@ -89,8 +89,8 @@ const Find = (props) => {
                 <h1>가입 시 등록한<br/>이메일을 입력해주세요.</h1>
                 <p className="sub_color mt12">입력하신 <span className="sub_point_color">이메일로 임시 비밀번호</span>가 발송됩니다.</p>
             </Content>
-            <Grid padding="0"  style={{ overflow: "revert" }}>
-                <label style={{ fontSize: "12px" }}>아이디(이메일)</label>
+            <Grid padding="0" style={{ overflow: "revert" }}>
+                <label className="small">아이디(이메일)</label>
                 <Grid
                 padding="0"
                 is_flex
@@ -101,9 +101,10 @@ const Find = (props) => {
                         setEmail(e.target.value);
                         }}
                         style={{opacity: option ? "1" : "0.5" }}
+                        placeholder="이메일 주소"
                     ></EmailInput>
-                    <p style={{ fontSize: "14px" }}>@</p>
-                    <Select className={option?active? "active ok" : "ok" : ""}>
+                    <p>@</p>
+                    <Select className={active ? "active" : option ? "ok" : ""}>
                         <img src={drop}></img>
                         <button
                         className="label"
@@ -169,7 +170,7 @@ const Find = (props) => {
                     <EmailInput
                         className="width"
                         onChange={(e) => {
-                        setDomain(e.target.value);
+                            setDomain(e.target.value);
                         }}
                         disabled={option === "직접 입력" ? "" : "disabled"}
                         value={option !== "직접 입력" ? option : domain}

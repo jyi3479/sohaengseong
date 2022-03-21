@@ -5,14 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from "../redux/modules/base";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { userApis } from "../shared/apis";
-//import { history } from "../redux/configureStore";
-import { useHistory } from "react-router";
 import drop from "../image/icons/ic_dropdown@2x.png";
 import deleteIcon from "../image/icon/ic_txt_delete@2x.png";
 import PopModal from "../components/PopModal";
 
 const Signup = (props) => {
-  const history = useHistory();
   const dispatch = useDispatch();
 
   //드롭다운(selectBox)
@@ -20,7 +17,6 @@ const Signup = (props) => {
   const [option, setOption] = React.useState("");
 
   //회원가입 목록
-  const [keypressID, setKeypressID] = React.useState();
   const [keypressNick, setKeypressNick] = React.useState();
   const [email, setEmail] = React.useState("");
   const [domain, setDomain] = React.useState("");
@@ -29,13 +25,10 @@ const Signup = (props) => {
   const [passwordCheck, setpasswordCheck] = React.useState("");
 
   //유효성 검사
-  const [isEmail, setIsEmail] = React.useState("");
   const [isNick, setIsNick] = React.useState("");
   const [isPwd, setIsPwd] = React.useState(false);
   const [samePwd, setSamePwd] = React.useState(false);
 
-
-  console.log(email,domain);
 
   //중복검사
   const _nickCheck = useSelector((state) => state.user.nickCk);
@@ -158,9 +151,7 @@ const Signup = (props) => {
     } else {
       window.alert("모든 조건이 맞는지 확인해주세요.");
     }
-  };
-
-  
+  };  
 
 
   //헤더&푸터 state
@@ -177,7 +168,7 @@ const Signup = (props) => {
     <>
     <Grid padding="24px 20px" margin="48px 0 0" bg="#fff" style={{ overflow: "revert" }}>
       <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
-        <label style={{ fontSize: "12px" }}>아이디(이메일)</label>
+        <label className="small">아이디(이메일)</label>
         <Grid
           padding="0"
           is_flex
@@ -187,10 +178,12 @@ const Signup = (props) => {
             onChange={(e) => {
               setEmail(e.target.value);
             }}
+            placeholder="이메일 주소"
             style={{opacity: option ? "1" : "0.5" }}
+            
           ></EmailInput>
-          <p style={{ fontSize: "14px" }}>@</p>
-          <Select className={option?active? "active ok" : "ok" : ""}>
+          <p>@</p>
+          <Select className={active ? "active" : option ? "ok" : ""}>
             <img src={drop}></img>
             <button
               className="label"

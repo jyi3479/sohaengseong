@@ -1,11 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import MyChallenge from "../components/MyChallenge";
-import MyLevel from "../components/MyLevel";
+import { useDispatch } from "react-redux";
 import { Grid, Button } from "../elements";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import {ActionCreators as userActions} from "../redux/modules/user";
+import MyChallenge from "../components/MyChallenge";
+import MyLevel from "../components/MyLevel";
 
 const MyPage = (props) => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const MyPage = (props) => {
   React.useEffect(() => {
     dispatch(baseAction.setHeader("마이행성"));
   }, []);
+
   return (
     <Grid margin="48px 0px 64px" padding="0px" style={{position:"relative"}}>
       <MyLevel />
@@ -34,14 +35,5 @@ const Container = styled.div`
   padding: 24px 20px 0;
   
 `;
-
-const Logout = styled.button`
-  width:100%;
-  height: 42px;
-  border-radius: 22px;
-  border: solid 1px #a2aab3;
-  background-color: #f4f6fa;
-`;
-
 
 export default MyPage;

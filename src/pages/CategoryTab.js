@@ -49,7 +49,7 @@ const CategoryTab = (props) => {
         setFocus(false);
         setWord(e.target.value);
         keyPress(e.target.value);
-      }      
+      }
       setSearch_list(searchList);
     };
 

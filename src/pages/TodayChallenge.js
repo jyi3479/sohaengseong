@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Grid,Button} from "../elements/index";
-import { history } from "../redux/configureStore";
+import {Grid} from "../elements/index";
 import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from "../redux/modules/base";
 import ChallengeList from "../components/ChallengeList";
@@ -18,6 +17,7 @@ const TodayChallenge = (props) => {
             dispatch(baseAction.setGnb(true));
         }
     });
+    
     return(        
         <Grid margin="48px 0 0">
             <TopBox>
@@ -37,4 +37,4 @@ const  TopBox = styled.div`
     border-radius:8px;
 `;
 
-export default TodayChallenge;
+export default React.memo(TodayChallenge);

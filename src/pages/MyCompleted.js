@@ -25,7 +25,6 @@ const MyCompleted = (props) => {
 
   return (
     <Grid margin="48px 0">
-      {" "}
       <StatusContainer>
         <div>
           <Grid center>

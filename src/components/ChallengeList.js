@@ -43,4 +43,4 @@ const Box = styled.div`
 
 
 
-export default ChallengeList;
+export default React.memo(ChallengeList);

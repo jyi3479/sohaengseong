@@ -6,6 +6,8 @@ import { history } from "../redux/configureStore";
 import * as baseAction from '../redux/modules/base';
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { mypageApis } from "../shared/apis";
+
+//image
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import setIcon from "../image/icon/ic_setting@2x.png";
 
@@ -15,15 +17,13 @@ import Modal from '../components/Modal';
 const MyProfile = (props) => {
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.mypage.myInfo);
-    const userId = localStorage.getItem("userId");    
-    console.log("회원정보",userInfo);
+    const userId = localStorage.getItem("userId"); 
+
     //수정 목록
     const [password, setpassword] = React.useState("");
     const [passwordCheck, setpasswordCheck] = React.useState("");
     const [image, setImage] = React.useState(null);
     const [preview, setPreview] = React.useState(userInfo.profileUrl === null ? defaultImg : userInfo.profileUrl);
-    
-
     
 
     //유효성 검사
@@ -36,7 +36,6 @@ const MyProfile = (props) => {
 
 
     const comfirmModal = () => {
-        console.log("열림");
         setModalType("comfirmModal");
         setModalOpen(true);
     };
@@ -44,7 +43,6 @@ const MyProfile = (props) => {
     const closeModal = () => {
         setModalOpen(false);
     };
-
 
     //비밀번호 정규식
 
@@ -122,6 +120,7 @@ const MyProfile = (props) => {
             setModalOpen(true);
         }).catch((err)=>{
           console.log("프로필 수정에러",err);
+          window.alert(err.response.data.message);
         });
     
     };
@@ -146,11 +145,11 @@ const MyProfile = (props) => {
             <Grid margin="48px 0 0" padding="0">
                 <Grid padding="28px 20px 32px" bg="#fff">
                     <Grid margin="0 auto 40px"  width="90px" padding="0" style={{position: "relative", overflow: "initial"}}>
-                        <Image shape="rectangle" size="90" radius="30px" src={preview} className="edit"></Image>
+                        <Image className="edit" shape="rectangle" size="90" radius="30px" src={preview}></Image>
                         <FileBox>
                             {/* 이미지 업로드 */}                
                             <label htmlFor="file_input" className="upload-box"></label>
-                            <input type="file" id="file_input" ref={fileInput} onChange={selectFile}/>               
+                            <input type="file" id="file_input" ref={fileInput} onChange={selectFile}/>
                         </FileBox>     
                     </Grid>
                     <Grid padding="0" margin="0 0 24px">
@@ -291,7 +290,7 @@ const Fixed = styled.div`
     background-color: #fff;
     bottom:0;
     left:0;
-    padding:12px 20px;
+    padding:11px 20px;
     box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 

@@ -4,7 +4,6 @@ import { history } from "../redux/configureStore";
 import arrow from "../image/icon/ic_arrow@2x.png";
 import deleteIcon from '../image/icon/ic_text_delete@2x.png';
 import searchIcon from '../image/icons/ic_search_b@2x.png';
-import { set } from "lodash";
 
 const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,_ref,_onFocus,_onKeyUp}) => {
 

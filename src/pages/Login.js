@@ -5,7 +5,6 @@ import { history } from "../redux/configureStore";
 
 import { KAKAO_AUTH_URL } from "../shared/OAuth";
 import { ActionCreators as userActions } from "../redux/modules/user";
-import * as baseAction from "../redux/modules/base";
 import { Grid, Input, Button } from "../elements";
 import WarningText from "../components/WarningText";
 
@@ -23,10 +22,8 @@ const Login = (props) => {
       window.alert("아이디 혹은 비밀번호가 공란입니다! 입력해주세요!");
       return;
     }
-
     dispatch(userActions.loginDB(email, password));
   };
-
 
   return (
     <React.Fragment>
@@ -71,16 +68,10 @@ const Login = (props) => {
                 setpassword(e.target.value);
               }}
               style={{opacity:password?"1":"0.5"}}
-            />
-            <WarningText/>
+            />            
+            <WarningText/> {/* alert 문구 */}
           </Grid>        
-          <Button
-            _onClick={() => {
-              login();
-            }}
-          >
-            로그인
-          </Button>
+          <Button _onClick={login}>로그인</Button>
           <Grid padding="0" margin="20px 0 0">
             <Link className="small t_center" href="/signup">회원가입</Link>
             <Link className="small t_center" href="/find">비밀번호 찾기</Link>
@@ -123,6 +114,7 @@ const Kakao = styled.a`
   padding: 13px 0 14px 26px;
   font-weight: 500;
   font-size: 15px;
+  letter-spacing: -0.45px;
   color: #000;
   border-radius: 12px;
   background-color: #fee500;

@@ -18,7 +18,6 @@ const MyEdit = (props) => {
     
     //axios 요청을 줄이기위한 debounce
     const debounce = _.debounce((password) =>{
-        //dispatch(myActions.checkPwdDB(password));
         const pwd = {
             password:password
         };
@@ -52,36 +51,35 @@ const MyEdit = (props) => {
 
     return (     
       <>
-      <Grid padding="48px 20px" margin="48px 0 0" bg="#fff">                 
-        <h1>회원 정보 수정</h1>
-        <p className="small sub_color mt12" style={{lineHeight:"20px"}}>{userInfo?userInfo.nickname:"회원"}님의 회원정보를 안전하게 보호하기 위해<br/>비밀번호를 한 번 더 입력해주세요.</p>
-          
-        <Grid padding="0" margin="64px 0 0" style={{overflow:"initial"}}>
-          <InputWrap>
-            <Input
-              type="password"
-              label="비밀번호"
-              value={pwd}
-              is_submit
-              placeholder="비밀번호를 입력하세요."
-              _onChange={pwdChange}
-              className={  pwd.length === 0 ? "" : isPwd && pwd.length ? "green" : "red" }
-            />
-            <span className={  pwd.length === 0 ? "" : isPwd && pwd.length ? "green" : "red" }>
-              {pwd === null || pwd === "" ? "" : isPwd && pwd.length  ? "" : "비밀번호가 맞지 않습니다."}
-            </span>
-          </InputWrap>
-        </Grid>        
-      </Grid>
-      <Fixed>
-          <Button _disabled={pwd === null || pwd === "" || !isPwd ? "disabled" : ""} 
+        <Grid padding="48px 20px" margin="48px 0 0" bg="#fff">                 
+          <h1>회원 정보 수정</h1>
+          <p className="sub_color mt12" style={{lineHeight:"20px"}}>{userInfo?userInfo.nickname:"회원"}님의 회원정보를 안전하게 보호하기 위해<br/>비밀번호를 한 번 더 입력해주세요.</p>          
+          <Grid padding="0" margin="64px 0 0" style={{overflow:"initial"}}>
+            <InputWrap>
+              <Input
+                type="password"
+                label="비밀번호"
+                value={pwd}
+                is_submit
+                placeholder="비밀번호를 입력하세요."
+                _onChange={pwdChange}
+                className={  pwd.length === 0 ? "" : isPwd && pwd.length ? "green" : "red" }
+              />
+              <span className={  pwd.length === 0 ? "" : isPwd && pwd.length ? "green" : "red" }>
+                {pwd === null || pwd === "" ? "" : isPwd && pwd.length  ? "" : "비밀번호가 맞지 않습니다."}
+              </span>
+            </InputWrap>
+          </Grid>        
+        </Grid>
+        <Fixed>
+            <Button 
+              _disabled={pwd === null || pwd === "" || !isPwd ? "disabled" : ""}
               _onClick={()=>{
                   history.push("/mypage/profile/edit");
               }}
-          >계속하기</Button>
-      </Fixed>
-      </>        
-       
+            >계속하기</Button>
+        </Fixed>
+      </>       
     );
 };
 
@@ -107,7 +105,7 @@ const Fixed = styled.div`
     background-color: #fff;
     bottom:0;
     left:0;
-    padding:12px 20px;
+    padding:11px 20px;
     box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
