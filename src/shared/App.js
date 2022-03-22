@@ -1,9 +1,10 @@
-import React ,{ useEffect,useRef } from "react";
+import React ,{ useEffect } from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+
 
 //css
 import { GlobalStyle } from "../styles/globalStyle";
@@ -13,7 +14,6 @@ import star from "../image/img_star2@2x.png";
 
 //page import
 import MobileFrame from "../components/MobileFrame";
-import ScrollToTop from '../shared/ScrollToTop'
 import { ActionCreators as userActions } from "../redux/modules/user";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -56,7 +56,7 @@ function App() {
       <GlobalStyle />
       {/* 전역 스타일컴포넌트 */}
       <Wrapper>
-        <ConnectedRouter history={history} onUpdate={() => window.scrollTo(0, 0)}>          
+        <ConnectedRouter history={history}>          
           <BackgroundOpacity>
             <div className="titleBox t_center">
               <h1>나를 변화시키는 습관</h1>
@@ -66,7 +66,6 @@ function App() {
             <img src={star} className="star2"></img>
             <img src={star} className="star3"></img>
           </BackgroundOpacity>
-          {/* <Background className="BackgroundPage" /> */}
           <MobileFrame className="MobileFramePage">
             <Switch>
               <Route path="/login" exact component={Login} />
@@ -185,27 +184,6 @@ function App() {
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  background: #2b2b2b;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0; */
-
-  /* .BackgroundPage {    
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -999;
-  } */
-
   .MobileFramePage {
     z-index: 999;
   }

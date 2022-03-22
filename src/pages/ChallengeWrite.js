@@ -1071,18 +1071,17 @@ const TagBox = styled.div`
 `;
 
 const TagItem = styled.span`
+  display: inline-block;
   background: rgba(23, 171, 214, 0.1);
   color: #17abd6;
   border-radius: 10px;
   margin-right: 6px;
   padding: 2px 6px;
-
   span {
     color: #17abd6;
     font-size: 12px;
-    line-height: 18px;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: bottom;
   }
 `;
 
@@ -1094,7 +1093,7 @@ const DeleteButton = styled.span`
   height: 16px;
   vertical-align: sub;
   margin-left: 4px;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   border: none;
 `;
 

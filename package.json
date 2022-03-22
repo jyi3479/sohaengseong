@@ -24,10 +24,12 @@
     "react": "^17.0.2",
     "react-code-input": "^3.10.1",
     "react-dom": "^17.0.2",
+    "react-helmet-async": "^1.2.3",
     "react-icons": "^4.3.1",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.0",
+    "react-share": "^4.4.0",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",
     "redux-logger": "^3.0.6",
@@ -45,7 +47,6 @@
     "eject": "react-scripts eject",
     "deploy": "aws s3 sync ./build s3://sohangsung.co.kr --profile=Administrator",
     "invalidate": "aws cloudfront create-invalidation --profil=Administrator --distribution-id E246A4WHF2LGZK --paths /*"
-
   },
   "eslintConfig": {
     "extends": [

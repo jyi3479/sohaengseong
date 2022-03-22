@@ -33,7 +33,7 @@ const TodayPost = (props) => {
           전체보기
           <img
             src={arrow}
-            style={{ width: "16px", height: "16px", verticalAlign: "top" }}
+            style={{ width: "16px", height: "16px", verticalAlign: "sub" }}
           />
         </p>
       </Grid>

@@ -4,13 +4,14 @@ import './index.css';
 import App from './shared/App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import store from './redux/configureStore';
-import ScrollToTop from './shared/ScrollToTop';
+import { HelmetProvider } from 'react-helmet-async'; //메타태그를 위한 라이브러리
 
 ReactDOM.render(
-  <Provider store={store}>    
-      <App />
+  <Provider store={store}>
+    <HelmetProvider>
+      <App />   
+    </HelmetProvider>    
   </Provider>,
   document.getElementById('root')
 );

@@ -1,16 +1,19 @@
-import { useEffect } from "react";
-    import { withRouter } from "react-router-dom";
+import React from "react";
 
-    const ScrollToTop = ({ children, location: { pathname } }) => {
-      useEffect(() => {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth"
-        });
-      }, [pathname]);
+class ScrollToTop extends React.Component {
+  
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    const { location = {} } = prevProps;
+    const box = document.getElementById("scroll_box");
+    // 컴포넌트 업데이트 시 페이지 이동인지 확인  
+    if (this.props.location.pathname !== location.pathname) {
+      box.scrollTo(0, 0);
+    }
+  }
+  
+  render() {
+    return this.props.children;
+  }
+}
 
-      return children || null;
-    };
-
-    export default withRouter(ScrollToTop);
+export default ScrollToTop;

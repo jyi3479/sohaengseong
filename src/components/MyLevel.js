@@ -70,21 +70,7 @@ const MyLevel = (props) => {
             <Progress my_level={my_level} />
           </MyContainer>
           <MyPlanet>
-            <img
-              src={
-                levelNum === "level1"
-                  ? level_img1
-                  : levelNum === "level2"
-                  ? level_img2
-                  : levelNum === "level3"
-                  ? level_img3
-                  : levelNum === "level4"
-                  ? level_img4
-                  : levelNum === "level5"
-                  ? level_img5
-                  : null
-              }
-            />
+            <img src={my_level.levelIcon}/>
           </MyPlanet>
         </Wrap>
       )}

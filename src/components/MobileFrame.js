@@ -1,8 +1,7 @@
 import React from "react";
 import "../styles/css/MobileFrame.css";
 
-const MobileFrame = ({ children,_ref }) => {
-  
+const MobileFrame = ({ children }) => { 
   return (    
     <div className="WebFullFrame" >
       <div className="MobileFullFrame" >

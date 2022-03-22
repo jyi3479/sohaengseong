@@ -11,26 +11,40 @@ import logo2 from "../image/logo2.png";
 
 const MainHeader = (props) => {
     
+    //스크롤 위치를 담는 상태값
     const [scrollPosition, setScrollPosition] = React.useState(0);
+    const [loading, setLoading] = React.useState(true);
 
+    //스크롤 위치를 업데이트 해주는 변수
     const updateScroll = (scrollY) => {
         setScrollPosition(scrollY);
     };
     
-    React.useEffect(()=>{        
+
+    React.useEffect(()=>{       
+        let mounted = true; 
         const scrollDiv = document.getElementById("scroll");
         const mainDiv = document.getElementById("main_wrap");
 
+        //스크롤이 일어나면 스크롤 위치를 알아내서 업데이트 해준다.
         scrollDiv.addEventListener("scroll", () => {
-            let scrollY = Math.abs(mainDiv.getBoundingClientRect().top);
-            updateScroll(scrollY);
+            if(mounted){
+                let scrollY = Math.abs(mainDiv.getBoundingClientRect().top);
+                updateScroll(scrollY);
+                setLoading(false);
+            }           
         });
-    });
+
+        //페이지 벗어나면 스크롤 액션 실행 안되게 하기
+        return ()=>{
+            mounted = false;
+        };
+    },[]);
 
 
 
-    return(        
-        <Wrap id="Header"  className={scrollPosition > 100 ? "scroll" : ""} >
+    return(
+        <Wrap id="Header"  className={scrollPosition > 50 ? "scroll" : ""} >
             {props.className === "category"? (
                 <button onClick={()=>{
                     history.go(-1);
@@ -65,6 +79,7 @@ const Wrap = styled.div`
     &.scroll {
         background-color: #fff;
         box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.04);
+        transition : all 0.1s;
         h1 { 
             a {
                 margin-top: -2px;

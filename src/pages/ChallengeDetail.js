@@ -1,7 +1,9 @@
-import React from "react";
+import React,{useRef} from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
+import { Helmet } from 'react-helmet-async';
+
 //날짜 라이브러리
 import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -33,8 +35,9 @@ import share from "../image/icons/ic_share@2x.png"
 
 const ChallengeDetail = (props) => {
     dayjs.extend(customParseFormat);
-
-    const dispatch = useDispatch();
+    
+    const dispatch = useDispatch();        
+    const scrollRef = useRef(null);
     const userInfo = parseInt(localStorage.getItem("userId"));
     const challengeId = props.match.params.challengeId;
     const target = useSelector(state => state.challenge.target);
@@ -118,8 +121,10 @@ const ChallengeDetail = (props) => {
         });
     };
 
-    
+
     React.useEffect(() => {
+        scrollRef.current.scrollIntoView({behavior:"smooth"});
+
         //타이틀 값을 받아오기 위해 컴포넌트에서 바로 apis 호출
         challengeApis.getOneChallenge(challengeId)
         .then((res)=>{
@@ -135,14 +140,15 @@ const ChallengeDetail = (props) => {
         return()=>{
             dispatch(baseAction.setHeader(false,""));
             dispatch(baseAction.setGnb(true));
+            
         };
 
     },[]);
 
     return(
-        <>  
+        <div ref={scrollRef}>
         {target&&
-            <Grid padding="0" margin="48px 0 0" >
+            <Grid padding="0" margin="48px 0 0">
                 <Grid padding="0" style={{position:"relative"}}>
                     <ShareBtn></ShareBtn>
                     {imageList.length > 0?
@@ -236,7 +242,12 @@ const ChallengeDetail = (props) => {
                             <li className="sub_color mt4">인증 규정 등 기타 문의 사항은 채팅방을 통해 개설자에게 직접 문의 부탁드립니다.</li>
                         </ul>
                     </Notice>
-                </Grid>                
+                </Grid>
+                {/* 다른 행성도 둘러보기 영역 */}
+                {/* <Grid padding="32px 20px">
+                    <Title>다른 행성도 둘러보기</Title>
+                    
+                </Grid> */}
                 <Fixed>
                     {target.status === "완료" || remaining_day < join_day ? ( //상태값이 완료거나 입장 가능한 기간이 지난 경우
                         //기간 끝남
@@ -295,10 +306,12 @@ const ChallengeDetail = (props) => {
                         <Button type="button" _onClick={pwdCheck}>입장하기</Button>
                     </div>
                 </Modal>
+                {/* <Modal open={modalType === "joinModal"? modalOpen : ""} close={closeModal} header>
+                    
+                </Modal> */}
             </Grid> 
         }
-
-        </>
+        </div>
     );
 };
 const ShareBtn = styled.button` //공유버튼
