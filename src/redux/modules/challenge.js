@@ -14,8 +14,8 @@ const ADD_CHALLENGE = "ADD_CHALLENGE";
 const EDIT_CHALLENGE = "EDIT_CHALLENGE";
 const DELETE_CHALLENGE = "DELETE_CHALLENGE";
 
-const getChallenge = createAction(GET_CHALLENGE, (challenge_list) => ({
-  challenge_list,
+const getChallenge = createAction(GET_CHALLENGE, (challenge_data) => ({
+  challenge_data,
 }));
 export const targetChallenge = createAction(TARGET_CHALLENGE, (target) => ({
   target,
@@ -40,15 +40,33 @@ const initialState = {
   list: [],
   target: null,
   category_list: [],
+  page: 0,
+  has_next: false,
+  is_loading:false,
 };
 
-const getChallengeDB = () => {
+const getChallengeDB = (page) => {
   return function (dispatch, getState, { history }) {
+    const size = 6;
+    console.log(page, size)
     challengeApis
-      .getChallenge()
+      .getChallenge(page)
       .then((res) => {
-        const challenge_list = res.data;
-        dispatch(getChallenge(challenge_list));
+        let is_next = null
+        if(res.data[0].next){
+          is_next = true
+        } else {
+          is_next = false
+        }
+        const challenge_data = 
+        {
+          challenge_list : res.data,
+          page: page + 1,
+          next: is_next,
+        }
+        
+
+        dispatch(getChallenge(challenge_data));
       })
       .catch((err) => {
         console.log("전체 챌린지 조회 오류", err);
@@ -166,7 +184,10 @@ export default handleActions(
   {
     [GET_CHALLENGE]: (state, action) =>
       produce(state, (draft) => {
-        draft.list = action.payload.challenge_list;
+        draft.list.push(...action.payload.challenge_data.challenge_list);
+        draft.page = action.payload.challenge_data.page
+        draft.has_next = action.payload.challenge_data.next
+        draft.is_loading = false
       }),
 
     [ADD_CHALLENGE]: (state, action) =>

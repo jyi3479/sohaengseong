@@ -29,37 +29,38 @@ const MemberPostDetail = (props) => {
       dispatch(baseAction.setGnb(true));
     };
   }, []);
-  
+
   return (
     <>
-    {targetPost && (<Grid margin="48px 0" padding="0">
-      <div>
-        <PostCard {...targetPost} />
-      </div>
-      <Fixed>
-        <Grid padding="0" is_flex>
-          <Button
-            line_btn
-            width="calc(30% - 4px)"
-            _onClick={() => {
-              history.push(`/chatting/${roomId}`);
-            }}
-          >
-            실시간 톡
-          </Button>
-          <Button
-            width="calc(70% - 4px)"
-            _onClick={() => {
-              history.push(`/postwrite/${challengeId}/${roomId}`);
-            }}
-          >
-            인증하기
-          </Button>
+      {targetPost && (
+        <Grid margin="48px 0" padding="0">
+          <div>
+            <PostCard {...targetPost} />
+          </div>
+          <Fixed>
+            <Grid padding="0" is_flex>
+              <Button
+                line_btn
+                width="calc(30% - 4px)"
+                _onClick={() => {
+                  history.push(`/chatting/${roomId}`);
+                }}
+              >
+                실시간 톡
+              </Button>
+              <Button
+                width="calc(70% - 4px)"
+                _onClick={() => {
+                  history.push(`/postwrite/${challengeId}/${roomId}`);
+                }}
+              >
+                인증하기
+              </Button>
+            </Grid>
+          </Fixed>
         </Grid>
-      </Fixed>
-    </Grid>)}
+      )}
     </>
-    
   );
 };
 

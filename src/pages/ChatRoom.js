@@ -107,16 +107,8 @@ const ChatRoom = ({match}) => {
 
   // 렌더링 될 때마다 연결,구독 다른 방으로 옮길 때 연결, 구독 해제
   React.useEffect(() => {
-    if(performance.navigation.type==1){
-      window.alert("새로고침")
-    } else {
-      window.alert("구독")
       wsConnectSubscribe();
-    }
-    
-
   return () => {
-    window.alert("구독 해제")
     wsDisConnectUnsubscribe();
   };
     
