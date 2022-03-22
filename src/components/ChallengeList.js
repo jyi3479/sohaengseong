@@ -24,7 +24,7 @@ const ChallengeList = (props) => {
                         key={el.challengeId}
                         {...el}
                         _onClick={()=>{
-                            history.push(`/challenge/${el.challengeId}`);                            
+                            history.push(`/challenge/${el.challengeId}`);
                         }}
                     ></Card>
                 );

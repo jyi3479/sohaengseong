@@ -10,7 +10,7 @@ const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,_ref,_onFocus,_onKeyU
     return(
         <Wrap id="Header" className="searchHeader">
             <button onClick={()=>{
-                history.go(-1);
+                history.push("/");
             }}><img src={arrow}/></button>
             <div>
                 <input id="search_input" type="text" onFocus={_onFocus} onKeyUp={_onKeyUp} onChange={_onChange} ref={_ref} value={value} placeholder="습관 검색"></input>

@@ -31,7 +31,7 @@ const Main = (props) => {
     return(
         <>
         <MainHeader/>
-        <Container className="bg_color">
+        <Container className="bg_color" id="main_wrap">
             <Grid padding="0 24px">
                 <Banner>
                     <h1>소소하지만 확실한 행복<br/>행동 습관 형성 챌린지</h1>

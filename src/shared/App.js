@@ -1,18 +1,19 @@
-import React ,{ useEffect,useRef } from "react";
+import React ,{ useEffect } from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
+
 //css
 import { GlobalStyle } from "../styles/globalStyle";
+import logo from "../image/logo_xl@2x.png";
 import backgroundImg from "../image/background.png";
 import star from "../image/img_star2@2x.png";
 
 //page import
 import MobileFrame from "../components/MobileFrame";
-import ScrollToTop from '../shared/ScrollToTop'
 import { ActionCreators as userActions } from "../redux/modules/user";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -55,11 +56,16 @@ function App() {
       <GlobalStyle />
       {/* 전역 스타일컴포넌트 */}
       <Wrapper>
-        <ConnectedRouter history={history} onUpdate={() => window.scrollTo(0, 0)}>          
+        <ConnectedRouter history={history}>          
           <BackgroundOpacity>
+            <div className="titleBox t_center">
+              <h1>나를 변화시키는 습관</h1>
+              <img src={logo}></img>
+            </div>
             <img src={star} className="star1"></img>
+            <img src={star} className="star2"></img>
+            <img src={star} className="star3"></img>
           </BackgroundOpacity>
-          {/* <Background className="BackgroundPage" /> */}
           <MobileFrame className="MobileFramePage">
             <Switch>
               <Route path="/login" exact component={Login} />
@@ -178,27 +184,6 @@ function App() {
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  background: #2b2b2b;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  /* .BackgroundPage {    
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -999;
-  } */
-
   .MobileFramePage {
     z-index: 999;
   }
@@ -216,9 +201,75 @@ const BackgroundOpacity = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  .star1 {
+  .titleBox {
     position: absolute;
-    top: 109px;    
+    top:120px;
+    left:150px;
+    z-index: 3;
+    h1 {
+      font-weight: normal;
+      color: #fff;
+    }
+    img {
+      width: 169px;
+    }
+  }
+  .star1 {
+    animation: star1 4s ease-out  infinite;
+    width: 158px;
+    position: absolute;
+  }
+  .star2 {
+    animation: star2 2.5s ease-out  infinite;
+    width: 158px;
+    position: absolute;
+  }
+  .star3 {
+    animation: star3 2.5s ease-out  infinite;
+    width: 158px;
+    position: absolute;
+  }
+  @keyframes star1 {
+    from {
+      opacity: 1;
+      top: 0;
+      left: 40vw;
+      transform: scale(0.8);      
+    }
+    to {
+      opacity: 0;
+      top:100vh;
+      left: -30vw;
+      transform: scale(0);
+    }
+  }
+  @keyframes star2 {
+    from {
+      opacity: 1;
+      top: 0;
+      left: 80vw;
+      transform: scale(1.5);      
+    }
+    to {
+      opacity: 0;
+      top:100vh;
+      left: 0;
+      transform: scale(1);
+    }
+  }
+  @keyframes star3 {
+    from {
+      opacity: 1;
+      top: 0;
+      left: 100vw;
+      transform: scale(0.5);      
+    }
+    to {
+      opacity: 0;
+      top:50vh;
+      left: 60vw;
+      transform: scale(0);
+    }
   }
 `;
 
