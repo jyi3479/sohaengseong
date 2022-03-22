@@ -69,7 +69,7 @@ export const userApis = {
 
 export const challengeApis = {
   //챌린지 전체 조회
-  getChallenge: () => apis.get("/challenge"),
+  getChallenge: (page) => apis.get(`/challenge?page=${page}`),
 
   //카테고리와 일치하는 챌린지 조회
   categoryChallenge: (categoryId) =>
