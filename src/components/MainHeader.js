@@ -5,6 +5,8 @@ import { history } from "../redux/configureStore";
 
 import searchIconW from '../image/icon/ic_ search@2x.png';
 import searchIconB from "../image/icons/ic_search_b@2x.png";
+import noticeIconW from '../image/icon/ic_notice@2x.png'
+import noticeIconB from '../image/icon/ic_notice_b@2x.png'
 import arrow from "../image/icon/ic_arrow_w@2x.png";
 import logo from "../image/logo.png";
 import logo2 from "../image/logo2.png";
@@ -52,9 +54,15 @@ const MainHeader = (props) => {
             ) : (
                 <>
                     <h1><a href="/"></a></h1>
-                    <button onClick={()=>{
-                        history.push("/category/all");
-                    }}><img src={scrollPosition > 100 ? searchIconB : searchIconW}></img></button>
+                    <div>
+                        <button onClick={()=>{
+                            history.push("/notice");
+                        }}><img src={scrollPosition > 100 ? noticeIconB : noticeIconW}></img></button>
+                        <button onClick={()=>{
+                            history.push("/category/all");
+                        }}><img src={scrollPosition > 100 ? searchIconB : searchIconW}></img></button>                       
+                    </div>
+                    
                 </>
             )}  
             
@@ -121,8 +129,8 @@ const Wrap = styled.div`
 
     }
     button {
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
         background-color: transparent;
         border:none;
         padding: 0;
@@ -130,7 +138,9 @@ const Wrap = styled.div`
         img {
             width: 100%;
         }
-       
+       &:first-child {
+           margin-right: 12px;
+       }
     }
 `;
 

@@ -39,6 +39,7 @@ import MyProfile from "../pages/MyProfile";
 import MemberPostWrite from "../pages/MemberPostWrite";
 import MemberPostDetail from "../pages/MemberPostDetail";
 import MemberDetail from "../pages/MemberDetail";
+import Notice from '../pages/Notice';
 
 function App() {
   const dispatch = useDispatch();
@@ -90,6 +91,8 @@ function App() {
                   {/* 회원가입 */}
                   <Route path="/today" exact component={TodayChallenge} />
                   {/* 메인 > 오늘의 소행성 */}
+                  <Route path="/notice" exact component={Notice} />
+                  {/* 알림페이지 */}
                   <Route
                     path="/auth/kakao/callback"
                     component={OAuth2RedirectHandler}

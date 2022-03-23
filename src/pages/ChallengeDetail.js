@@ -292,7 +292,7 @@ const ChallengeDetail = (props) => {
                 <Modal open={modalType === "privateModal"? modalOpen : ""} close={closeModal} header isPrivate>
                     <div className="private_box">
                         <h3>비밀번호를 입력해 주세요.</h3>
-                        <div>                       
+                        <div>
                             <ReactCodeInput className={
                                 isNum === null && checkPrivate === null ? "ReactCodeInput" 
                                 : isNum === false && checkPrivate === false && join === false ? "ReactCodeInput" 
