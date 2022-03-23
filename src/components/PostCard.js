@@ -21,45 +21,44 @@ import edit from "../image/icons/ic_edit@2x.png";
 import more from "../image/icons/ic_more@2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
-
+import InfinityScroll from "../shared/InfiniteScroll";
 
 const PostCard = (props) => {
   moment.locale("ko"); // 모멘트 한글로 바꾸기
   const dispatch = useDispatch();
-// params에서 Id 가져오기
+  // params에서 Id 가져오기
   const challengeId = useParams().challengeId;
   const roomId = useParams().roomId;
 
-
-// 유저와 게시글 작성자 비교
+  // 유저와 게시글 작성자 비교
   const userInfo = useSelector((state) => state.user.user);
-  const is_me = userInfo&&userInfo.nickname === props.nickname;
+  const is_me = userInfo && userInfo.nickname === props.nickname;
 
-// 인증게시글 상세페이지 여부
-  const isDetail = useParams().postId ? true : false; 
+  // 인증게시글 상세페이지 여부
+  const isDetail = useParams().postId ? true : false;
 
-// 댓글 정보
+  // 댓글 정보
   const comments = props.comments;
-  const no_comment = comments&&comments.length === 0;
+  const no_comment = comments && props.commentCnt === 0;
+  console.log(props);
 
-
-// 특정 챌린지 멤버 정보
-  const target = useSelector(state => state.challenge.target);
-  const members = target&&target.members;
+  // 특정 챌린지 멤버 정보
+  const target = useSelector((state) => state.challenge.target);
+  const members = target && target.members;
   // 챌린지 멤버 중 방장의 index 찾기
-  const member_idx = members&&members.findIndex((m) => m.userId === parseInt(target.userId));
+  const member_idx =
+    members && members.findIndex((m) => m.userId === parseInt(target.userId));
   // 방장의 닉네임과 인증 게시글 작성자의 닉네임이 같은지 여부
-  const admin = members&&members[member_idx].nickname === props.nickname;
+  const admin = members && members[member_idx].nickname === props.nickname;
 
-
-// 인증 게시글 삭제
+  // 인증 게시글 삭제
   const deletePost = () => {
     dispatch(memberActions.deletePostDB(props.postId));
     setModalOpen(false);
     history.replace(`/post/${challengeId}/${roomId}`);
   };
 
-// 댓글 작성 및 삭제
+  // 댓글 작성 및 삭제
   const [content, setContent] = React.useState("");
   const addComment = () => {
     dispatch(memberActions.addCommentDB(props.postId, content));
@@ -69,7 +68,6 @@ const PostCard = (props) => {
   const deleteComment = (commentId) => {
     dispatch(memberActions.deleteCommentDB(props.postId, commentId));
   };
-
 
   // 모달 팝업1 (인증 게시글 상세버튼 클릭 시 모달 - 수정/삭제) -------------------------------------------------
   const [modalState, setModalState] = React.useState(false);
@@ -93,190 +91,221 @@ const PostCard = (props) => {
     setModalOpen(false);
   };
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     dispatch(challengeActions.getOneChallengeDB(challengeId));
-  },[]);
+  }, []);
+
+  const getCommentList = () => {
+    dispatch(
+      memberActions.getOnePostDB(challengeId, props.postId, props.page, 5)
+    );
+  };
 
   return (
     <>
-    {userInfo && (
-<>
-        <Wrap className={isDetail? "is_detail" : ""}>
-          {/* PostCard의 윗 부분 */}
-          <Grid is_flex padding="16px 12px 16px 20px">
-            <Grid is_flex width="auto" padding="0px" style={{overflow:"initial"}}>
-              <ProfileBox className={admin? "admin" : ""}>
-                <Image
-                  shape="border"
-                  size="40"
-                  level={props.levelName}
-                  profile={
-                    props.profileImage !== null ? props.profileImage : defaultImg
-                  }
-                ></Image>
-              </ProfileBox>
-              
-              <p style={{ marginLeft: "12px" }}>{props.nickname}</p>
-            </Grid>
-            {is_me && (
-              <MoreBtn onClick={openModal}>
-                <img src={more}></img>
-              </MoreBtn>
-            )}
-          </Grid>
-          {/* 인증 게시글 내용물 클릭하면 상세 페이지로 이동 */}
-          <Grid
-            padding="0px"
-            _onClick={() => {
-              if (!isDetail) {
-                history.push(
-                  `/post/${challengeId}/detail/${props.postId}/${props.roomId}`
-                );
-              }
-            }}
-          >
-            {/* PostCard의 내용 부분 */}
-            <Image shape="rectangle" size={375} src={props.postImage} />
-            <Grid padding="16px 20px">
-              <p className={isDetail? "" : "ellipsis2"} style={{ color: "#333333" }}>{props.content}</p>
-            </Grid>
+      {userInfo && (
+        <>
+          <Wrap className={isDetail ? "is_detail" : ""}>
+            {/* PostCard의 윗 부분 */}
+            <Grid is_flex padding="16px 12px 16px 20px">
+              <Grid
+                is_flex
+                width="auto"
+                padding="0px"
+                style={{ overflow: "initial" }}
+              >
+                <ProfileBox className={admin ? "admin" : ""}>
+                  <Image
+                    shape="border"
+                    size="40"
+                    level={props.levelName}
+                    profile={
+                      props.profileImage !== null
+                        ? props.profileImage
+                        : defaultImg
+                    }
+                  ></Image>
+                </ProfileBox>
 
-            {/* PostCard의 댓글 조회 부분 */}
-            <CommentContainer>
-              <CommentBox>
-                <img src={comment} />
-                <p className="font15">
-                  댓글 <span className="poppins font15">{props.comments? props.comments.length : "0"}</span>개
-                </p>
-              </CommentBox>
-              {/* PostCard의 댓글 입력 창 */}
-              {isDetail && userInfo&& (
-                <CommentWriteBox className="comment_write_box">
-                  <div>
-                    <Image
-                      shape="circle"
-                      size="36"
-                      level={props.levelName}
-                      profile={
-                        userInfo.profileUrl !== null
-                          ? userInfo.profileUrl
-                          : defaultImg
-                      }
-                    ></Image>
-                  </div>
-                  <InputBox>
-                    <input
-                      value={content}                      
-                      onChange={(e) => {
-                        setContent(e.target.value);
-                      }}
-                      placeholder="댓글달기"
-                    />
-                    <button onClick={addComment}>
-                      <h3 className={content?"point_color":"caption_color"}>등록</h3>
-                    </button>
-                  </InputBox>
-                </CommentWriteBox>
+                <p style={{ marginLeft: "12px" }}>{props.nickname}</p>
+              </Grid>
+              {is_me && (
+                <MoreBtn onClick={openModal}>
+                  <img src={more}></img>
+                </MoreBtn>
               )}
-               
-              <Grid padding={no_comment ? "0" : "15px 0 0"}>
-                {comments.map((el, i) => {
-                  return (
-                    <Comment
-                      className="comment"
-                      key={el.commentId}
-                    >
-                      {isDetail && (
-                        <Image
-                          shape="border"
-                          size="36"
-                          level={el.levelName}
-                          profile={
-                            el.profileImage !== null
-                              ? el.profileImage
-                              : defaultImg
-                          }
-                        ></Image>
-                      )}
-                      <div className="comment_box">
-                        <div className="comment_info">
-                          <p className="bold">{el.nickname}</p>
-                          <p className="ellipsis">{el.content}</p>
-                        </div>
-                        <div className="comment_tool">                      
-                          <p className="caption_color small t_right">
-                            {/* 댓글 작성일이 오늘로부터 얼마나 지났는지 보여줌 */}
-                            {moment(el.createdAt, "YYYY.MM.DD kk:mm:ss").fromNow()}
-                          </p>
-
-                          {isDetail && userInfo.nickname === el.nickname && (
-                            <Delete
-                              className="sub_point_color small"
-                              onClick={() => {
-                                deleteComment(el.commentId);
-                              }}
-                            >삭제하기</Delete>
-                          )}
-                        </div>        
-                      </div>              
-                    </Comment>
+            </Grid>
+            {/* 인증 게시글 내용물 클릭하면 상세 페이지로 이동 */}
+            <Grid
+              padding="0px"
+              _onClick={() => {
+                if (!isDetail) {
+                  history.push(
+                    `/post/${challengeId}/detail/${props.postId}/${props.roomId}`
                   );
-                })}
-              </Grid>
-              
-            </CommentContainer>
-          </Grid>
-
-          {/* 인증 게시글 상세 버튼 클릭 시 모달 */}
-          <PostModal state={modalState} _handleModal={closeModal}>
-            <>
-              <Grid width="auto" padding="0px">
-                <ModalBox
-                  onClick={() => {
-                    history.push(
-                      `/postwrite/${challengeId}/${roomId}/${props.postId}`
-                    );
-                  }}
+                }
+              }}
+            >
+              {/* PostCard의 내용 부분 */}
+              <Image shape="rectangle" size={375} src={props.postImage} />
+              <Grid padding="16px 20px">
+                <p
+                  className={isDetail ? "" : "ellipsis2"}
+                  style={{ color: "#333333" }}
                 >
-                  <img src={edit} />
-                  <p>수정하기</p>
-                </ModalBox>
-                <ModalBox
-                  onClick={() => {
-                    openDeleteModal();
-                    closeModal();
-                  }}
-                >
-                  <img src={deleteIcon} />
-                  <p>삭제하기</p>
-                </ModalBox>
-                <ModalBox onClick={closeModal}>
-                  <img src={close} />
-                  <p>취소</p>
-                </ModalBox>
+                  {props.content}
+                </p>
               </Grid>
-            </>
-          </PostModal>
 
-          {/* 인증 게시글 삭제 버튼 클릭 시 모달 */}
-          <Modal
-            open={modalType === "openModal" ? modalOpen : ""}
-            close={closeDeleteModal}
-            double_btn
-            btn_text="삭제"
-            _onClick={() => {
-              deletePost();
-            }}
-          >
-            <p>
-              해당 인증을 삭제하시겠어요? <br />
-              삭제 시 인증 미달성으로 바뀝니다.
-            </p>
-          </Modal>
-        </Wrap>
-    </>
+              {/* PostCard의 댓글 조회 부분 */}
+              <CommentContainer>
+                <CommentBox>
+                  <img src={comment} />
+                  <p className="font15">
+                    댓글{" "}
+                    <span className="poppins font15">
+                      {props.commentCnt ? props.commentCnt : "0"}
+                    </span>
+                    개
+                  </p>
+                </CommentBox>
+                {/* PostCard의 댓글 입력 창 */}
+                {isDetail && userInfo && (
+                  <CommentWriteBox className="comment_write_box">
+                    <div>
+                      <Image
+                        shape="circle"
+                        size="36"
+                        level={props.levelName}
+                        profile={
+                          userInfo.profileUrl !== null
+                            ? userInfo.profileUrl
+                            : defaultImg
+                        }
+                      ></Image>
+                    </div>
+                    <InputBox>
+                      <input
+                        value={content}
+                        onChange={(e) => {
+                          setContent(e.target.value);
+                        }}
+                        placeholder="댓글달기"
+                      />
+                      <button onClick={addComment}>
+                        <h3
+                          className={content ? "point_color" : "caption_color"}
+                        >
+                          등록
+                        </h3>
+                      </button>
+                    </InputBox>
+                  </CommentWriteBox>
+                )}
 
-  )}
+                <Grid padding={no_comment ? "0" : "15px 0 0"}>
+                  <InfinityScroll
+                    callNext={getCommentList}
+                    paging={{ next: props.has_next }}
+                  >
+                    {comments.map((el, i) => {
+                      return (
+                        <Comment className="comment" key={el.commentId}>
+                          {isDetail && (
+                            <Image
+                              shape="border"
+                              size="36"
+                              level={el.levelName}
+                              profile={
+                                el.profileImage !== null
+                                  ? el.profileImage
+                                  : defaultImg
+                              }
+                            ></Image>
+                          )}
+                          <div className="comment_box">
+                            <div className="comment_info">
+                              <p className="bold">{el.nickname}</p>
+                              <p className="ellipsis">{el.content}</p>
+                            </div>
+                            <div className="comment_tool">
+                              <p className="caption_color small t_right">
+                                {/* 댓글 작성일이 오늘로부터 얼마나 지났는지 보여줌 */}
+                                {moment(
+                                  el.createdAt,
+                                  "YYYY.MM.DD kk:mm:ss"
+                                ).fromNow()}
+                              </p>
+
+                              {isDetail && userInfo.nickname === el.nickname && (
+                                <Delete
+                                  className="sub_point_color small"
+                                  onClick={() => {
+                                    deleteComment(el.commentId);
+                                  }}
+                                >
+                                  삭제하기
+                                </Delete>
+                              )}
+                            </div>
+                          </div>
+                        </Comment>
+                      );
+                    })}
+                  </InfinityScroll>
+                </Grid>
+              </CommentContainer>
+            </Grid>
+
+            {/* 인증 게시글 상세 버튼 클릭 시 모달 */}
+            <PostModal state={modalState} _handleModal={closeModal}>
+              <>
+                <Grid width="auto" padding="0px">
+                  <ModalBox
+                    onClick={() => {
+                      history.push(
+                        `/postwrite/${challengeId}/${roomId}/${props.postId}`
+                      );
+                    }}
+                  >
+                    <img src={edit} />
+                    <p>수정하기</p>
+                  </ModalBox>
+                  <ModalBox
+                    onClick={() => {
+                      openDeleteModal();
+                      closeModal();
+                    }}
+                  >
+                    <img src={deleteIcon} />
+                    <p>삭제하기</p>
+                  </ModalBox>
+                  <ModalBox onClick={closeModal}>
+                    <img src={close} />
+                    <p>취소</p>
+                  </ModalBox>
+                </Grid>
+              </>
+            </PostModal>
+
+            {/* 인증 게시글 삭제 버튼 클릭 시 모달 */}
+            <Modal
+              open={modalType === "openModal" ? modalOpen : ""}
+              close={closeDeleteModal}
+              double_btn
+              btn_text="삭제"
+              _onClick={() => {
+                deletePost();
+              }}
+            >
+              <p>
+                해당 인증을 삭제하시겠어요? <br />
+                삭제 시 인증 미달성으로 바뀝니다.
+              </p>
+            </Modal>
+          </Wrap>
+        </>
+      )}
     </>
   );
 };
@@ -288,14 +317,14 @@ const Wrap = styled.div`
   &.is_detail {
     .comment {
       align-items: flex-start;
-      &:nth-child(n+3) {
+      &:nth-child(n + 3) {
         display: flex;
       }
       .comment_box {
         display: inline-block;
         margin-left: 13px;
         width: calc(100% - 50px);
-        .comment_info{
+        .comment_info {
           display: block;
           width: 100%;
           p:last-child {
@@ -310,13 +339,13 @@ const Wrap = styled.div`
           p:first-child {
             display: inline-block;
             margin-right: 8px;
-          }         
+          }
         }
       }
     }
   }
   .comment {
-    &:nth-child(n+3) {
+    &:nth-child(n + 3) {
       display: none;
     }
     .comment_box {
@@ -327,31 +356,30 @@ const Wrap = styled.div`
         display: flex;
         width: calc(100% - 60px);
         p:last-child {
-          margin-left:4px;
+          margin-left: 4px;
           width: calc(100% - 105px);
         }
       }
     }
   }
-
 `;
 
 const ProfileBox = styled.div`
   position: relative;
   &.admin {
     &::after {
-      content: '';
-      width:20px;
+      content: "";
+      width: 20px;
       height: 20px;
       background-image: url(${crown});
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
       position: absolute;
-      bottom:-3px;
+      bottom: -3px;
       right: -5px;
     }
-  }  
+  }
 `;
 
 const CommentContainer = styled.div`
@@ -374,7 +402,7 @@ const CommentBox = styled.div`
     width: 20px;
     height: 20px;
     margin-right: 4px;
-    margin-left: -4px
+    margin-left: -4px;
   }
 `;
 
@@ -389,7 +417,7 @@ const Comment = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0px;
-  margin-bottom:8px;
+  margin-bottom: 8px;
   &:last-child {
     margin-bottom: 0;
   }
@@ -417,13 +445,12 @@ const InputBox = styled.div`
     background: none;
     width: 20%;
     h3 {
-
     }
   }
 `;
 
 const Delete = styled.button`
-  border:none;
+  border: none;
   background-color: transparent;
   cursor: pointer;
 `;

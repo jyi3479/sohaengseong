@@ -24,8 +24,7 @@ import SockJS from "sockjs-client";
 import { useParams } from "react-router-dom";
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
-
-const ChatRoom = ({match}) => {
+const ChatRoom = ({ match }) => {
   const dispatch = useDispatch();
 
   // 소켓 통신 객체
@@ -60,8 +59,8 @@ const ChatRoom = ({match}) => {
 
   // 서버에서 이전 메세지 가져오기
   React.useEffect(() => {
-    dispatch(chatAction.getChatMessagesDB(roomId));
-  }, []);
+    dispatch(chatAction.getChatMessagesDB(roomId, 0, 10));
+  }, [roomId]);
 
   // 웹소켓 연결, 구독
   const wsConnectSubscribe = useCallback(() => {
@@ -107,11 +106,10 @@ const ChatRoom = ({match}) => {
 
   // 렌더링 될 때마다 연결,구독 다른 방으로 옮길 때 연결, 구독 해제
   React.useEffect(() => {
-      wsConnectSubscribe();
-  return () => {
-    wsDisConnectUnsubscribe();
-  };
-    
+    wsConnectSubscribe();
+    return () => {
+      wsDisConnectUnsubscribe();
+    };
   }, [match.params.roomId]);
 
   // 웹소켓이 연결될 때 까지 실행하는 함수
@@ -166,12 +164,8 @@ const ChatRoom = ({match}) => {
 
   return (
     <Grid padding="28px 20px" margin="48px 0">
-      <Grid
-        padding="0"
-        margin="0"
-        style={{ overflowY: "auto" }}
-      >
-        <MessageList />
+      <Grid padding="0" margin="0" style={{ overflowY: "auto" }}>
+        <MessageList roomId={roomId} />
       </Grid>
       <MessageForm sendMessage={sendMessage} />
     </Grid>

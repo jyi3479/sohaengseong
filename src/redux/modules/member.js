@@ -7,11 +7,16 @@ import moment from "moment";
 
 // 인증 게시글
 const GET_POST = "GET_POST";
+const TARGET_POST = "TARGET_POST";
 const ADD_POST = "ADD_POST";
 const EDIT_POST = "EDIT_POST";
 const DELETE_POST = "DELETE_POST";
 
-const getPost = createAction(GET_POST, (postList) => ({ postList }));
+const getPost = createAction(GET_POST, (postData) => ({ postData }));
+const targetPost = createAction(TARGET_POST, (targetPost, commentData) => ({
+  targetPost,
+  commentData,
+}));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 const editPost = createAction(EDIT_POST, (postId, post) => ({ postId, post }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
@@ -34,102 +39,59 @@ const GET_REPORT = "GET_REPORT";
 const getReport = createAction(GET_REPORT, (report) => ({ report }));
 
 const initialState = {
-  postList: [
-    {
-      postId: 0,
-      nickname: "챌린이",
-      profileImage:
-        "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-      content: "오늘 6시 기상 인증!!",
-      postImage:
-        "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MjRfMyAg/MDAxNTU4Njk4NzY1Mjgx.TnYhG_pgAotagR12cQ92jf860VzfBPQKMy-bbEhSph8g.pvKOXCPBC1ShVkprSWAR2ulrLWuilRjkUJjhlqJGyB8g.JPEG.dudb850320/%EB%AA%85%EC%83%81.jpg?type=w800",
-      createdAt: "2022-02-28",
-      comments: [
-        {
-          nickname: "챌르신",
-          profileImage:
-            "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-          commentId: 0,
-          content: "오 대단해요!!!",
-          createdAt: "2022-02-28",
-        },
-        {
-          nickname: "홍길동",
-          profileImage:
-            "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-          commentId: 1,
-          content: "와와아아아~",
-          createdAt: "2022-02-28",
-        },
-      ],
-    },
-    {
-      postId: 1,
-      nickname: "챌르신",
-      profileImage:
-        "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-      content: "오늘 6시 기상 했습니다!!",
-      postImage: null,
-      createdAt: "2022-02-28",
-      comments: [
-        {
-          nickname: "김영희",
-          profileImage:
-            "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-          commentId: 0,
-          content: "오 대단해요!!!",
-          createdAt: "2022-02-28",
-        },
-        {
-          nickname: "챌르신",
-          profileImage:
-            "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-          commentId: 1,
-          content: "와와아아아~",
-          createdAt: "2022-02-28",
-        },
-      ],
-    },
-    {
-      postId: 2,
-      nickname: "챌로",
-      profileImage:
-        "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-      content: "오늘 6시 기상 인증!!",
-      postImage:
-        "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MjRfMyAg/MDAxNTU4Njk4NzY1Mjgx.TnYhG_pgAotagR12cQ92jf860VzfBPQKMy-bbEhSph8g.pvKOXCPBC1ShVkprSWAR2ulrLWuilRjkUJjhlqJGyB8g.JPEG.dudb850320/%EB%AA%85%EC%83%81.jpg?type=w800",
-      createdAt: "2022-02-28",
-      comments: [
-        {
-          nickname: "챌르신",
-          profileImage:
-            "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-          commentId: 0,
-          content: "오 대단해요!!!",
-          createdAt: "2022-02-28",
-        },
-        {
-          nickname: "홍길동",
-          profileImage:
-            "https://jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png",
-          commentId: 1,
-          content: "와와아아아~",
-          createdAt: "2022-02-28",
-        },
-      ],
-    },
-  ],
+  postList: [],
+  target: null,
+  page: 0,
+  has_next: false,
+  is_loading: false,
   report: [],
 };
 
-const getPostDB = (challengeId) => {
+const getOnePostDB = (challengeId, postId, page, size) => {
+  return function (dispatch, getState, { history }) {
+    memberApis
+      .getOnePost(+challengeId, postId, page, size)
+      .then((res) => {
+        console.log("인증게시글 특정 조회 성공", res);
+        let is_next = null;
+        if (res.data.next) {
+          is_next = true;
+        } else {
+          is_next = false;
+        }
+        const commentData = {
+          commentList: res.data.comments,
+          page: page + 1,
+          next: is_next,
+          commentCnt: res.data.commentCnt,
+        };
+        dispatch(targetPost(res.data, commentData));
+      })
+      .catch((err) => {
+        console.log("인증게시글 전체 조회 오류", err);
+      });
+  };
+};
+
+const getPostDB = (challengeId, page, size) => {
   return function (dispatch, getState, { history }) {
     console.log(+challengeId);
     memberApis
-      .getPost(+challengeId)
+      .getPost(+challengeId, page, size)
       .then((res) => {
         console.log("인증게시글 전체 조회 성공", res);
-        dispatch(getPost(res.data));
+        let is_next = null;
+        if (res.data.next) {
+          is_next = true;
+        } else {
+          is_next = false;
+        }
+        const postData = {
+          postList: res.data.postList,
+          page: page + 1,
+          next: is_next,
+        };
+        dispatch(getPost(postData));
       })
       .catch((err) => {
         console.log("인증게시글 전체 조회 오류", err);
@@ -237,7 +199,23 @@ export default handleActions(
     //인증 게시글
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.postList = action.payload.postList;
+        draft.postList.push(...action.payload.postData.postList);
+        draft.page = action.payload.postData.page;
+        draft.has_next = action.payload.postData.next;
+        draft.is_loading = false;
+      }),
+
+    [TARGET_POST]: (state, action) =>
+      produce(state, (draft) => {
+        if (action.payload.commentData.page > 1) {
+          draft.target.comments.push(...action.payload.targetPost.comments);
+        } else {
+          draft.target = action.payload.targetPost;
+        }
+
+        draft.target.page = action.payload.commentData.page;
+        draft.target.has_next = action.payload.commentData.next;
+        draft.is_loading = false;
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -255,21 +233,16 @@ export default handleActions(
     // 댓글
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.postList.findIndex(
-          (p) => p.postId === action.payload.postId
-        );
-        draft.postList[idx].comments.unshift(action.payload.comment);
+        draft.target.comments.unshift(action.payload.comment);
+        draft.target.commentCnt++;
       }),
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        let postIdx = draft.postList.findIndex(
-          (p) => p.postId === action.payload.postId
-        );
-
-        let commentIdx = draft.postList[postIdx].comments.findIndex(
+        let commentIdx = draft.target.comments.findIndex(
           (p) => p.commentId === action.payload.commentId
         );
-        draft.postList[postIdx].comments.splice(commentIdx, 1);
+        draft.target.comments.splice(commentIdx, 1);
+        draft.target.commentCnt--;
       }),
     [GET_REPORT]: (state, action) =>
       produce(state, (draft) => {
@@ -290,6 +263,7 @@ const actionCreators = {
   deleteCommentDB,
   exitChallengeDB,
   getReportDB,
+  getOnePostDB,
 };
 
 export { actionCreators };
