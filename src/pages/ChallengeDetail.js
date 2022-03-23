@@ -2,7 +2,6 @@ import React,{useRef} from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
-import { Helmet } from 'react-helmet-async';
 
 //날짜 라이브러리
 import dayjs from "dayjs";
@@ -80,6 +79,11 @@ const ChallengeDetail = (props) => {
         setModalOpen(true);
     };
 
+    const shareModal = () => {
+        setModalType("shareModal");
+        setModalOpen(true);
+    };
+
     const closeModal = () => {
         console.log("눌림");
         setModalOpen(false);
@@ -150,7 +154,7 @@ const ChallengeDetail = (props) => {
         {target&&
             <Grid padding="0" margin="48px 0 0">
                 <Grid padding="0" style={{position:"relative"}}>
-                    <ShareBtn></ShareBtn>
+                    <ShareBtn onClick={shareModal}></ShareBtn>
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -306,9 +310,9 @@ const ChallengeDetail = (props) => {
                         <Button type="button" _onClick={pwdCheck}>입장하기</Button>
                     </div>
                 </Modal>
-                {/* <Modal open={modalType === "joinModal"? modalOpen : ""} close={closeModal} header>
+                <Modal open={modalType === "joinModal"? modalOpen : ""} close={closeModal} header>
                     
-                </Modal> */}
+                </Modal>
             </Grid> 
         }
         </div>

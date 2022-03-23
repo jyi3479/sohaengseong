@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 
 import { KAKAO_AUTH_URL } from "../shared/OAuth";
@@ -16,6 +16,7 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const [email, setemail] = React.useState("");
   const [password, setpassword] = React.useState("");
+  const warning = useSelector((state) => state.user.setwarning.text);
 
   const login = () => {
     if (email === "" || password === "") {
@@ -50,6 +51,7 @@ const Login = (props) => {
           <Grid padding="0" margin="0 0 12px">
             <Input
               value={email}
+              className={warning === "" ? "": "red" }
               placeholder="이메일을 입력해 주세요."
               is_submit
               _onChange={(e) => {
@@ -60,6 +62,7 @@ const Login = (props) => {
           </Grid>
           <Grid padding="0px" margin="0 0 36px">
             <Input
+              className={warning === "" ? "": "red" }
               value={password}
               placeholder="비밀번호를 입력해 주세요."
               is_submit
