@@ -3,18 +3,37 @@ import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 
+import User from "./modules/user";
+import Challenge from "./modules/challenge";
+import Ranking from "./modules/ranking";
+import Mypage from "./modules/mypage";
+import Member from "./modules/member";
+import Search from "./modules/search";
+import Base from "./modules/base";
+import Chat from "./modules/chat";
+
 export const history = createBrowserHistory();
-const rootReducer = combineReducers({ //우리가 만든 리듀서 뭉치기
-    router: connectRouter(history),
+const rootReducer = combineReducers({
+  //우리가 만든 리듀서 뭉치기
+  user: User,
+  challenge: Challenge,
+  ranking: Ranking,
+  mypage: Mypage,
+  member: Member,
+  search: Search,
+  base: Base,
+  chat: Chat,
+  router: connectRouter(history),
 });
 
-const middlewares = [thunk.withExtraArgument({history: history})]; //내가 사용할 미들웨어 넣기위해 배열형태
+const middlewares = [thunk.withExtraArgument({ history: history })]; //내가 사용할 미들웨어 넣기위해 배열형태
 
 // 지금이 어느 환경인 지 알려줘요. (개발환경, 프로덕션(배포)환경 ...)
 const env = process.env.NODE_ENV;
 
 // 개발환경에서는 로거라는 걸 하나만 더 써볼게요.
-if (env === "development") { //개발환경일 때
+if (env === "development") {
+  //개발환경일 때
   const { logger } = require("redux-logger"); //require : 패키지 가져오는 거
   middlewares.push(logger);
 }
@@ -28,9 +47,7 @@ const composeEnhancers =
     : compose;
 
 //미들웨어 묶기
-const enhancer = composeEnhancers(
-    applyMiddleware(...middlewares)
-);
+const enhancer = composeEnhancers(applyMiddleware(...middlewares));
 
 let store = (initialStore) => createStore(rootReducer, enhancer);
 
