@@ -142,8 +142,13 @@ export default handleActions(
 
     [SET_MESSAGES]: (state, action) =>
       produce(state, (draft) => {
+        if (action.payload.page > 1) {
+          draft.messages.unshift(...action.payload.messages);
+        } else {
+          draft.messages = action.payload.messages;
+        }
         draft.currentChat = action.payload.chatRoomInfo;
-        draft.messages.unshift(...action.payload.messages);
+
         draft.currentChat.page = action.payload.page;
       }),
 

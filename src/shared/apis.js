@@ -134,8 +134,10 @@ export const searchApis = {
   recommend: () => apis.get("/challenge/recommend"),
 
   //검색 결과 조회
-  getSearch: (searchWord) =>
-    apis.get(`/challenge/search?keyword=${searchWord}`),
+  getSearch: (searchWord, page, size) =>
+    apis.get(
+      `/challenge/search?keyword=${searchWord}&page=${page}&size=${size}`
+    ),
 };
 
 export const mainApis = {
