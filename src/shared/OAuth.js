@@ -1,4 +1,4 @@
-const CLIENT_ID = "8ff3bc07db2d56b28fc82cb026ccd135";
+const CLIENT_ID = "51ba1c37eea7f19a389098d248824455";
+// const REDIRECT_URL = "http://sohangsung.co.kr/auth/kakao/callback";
 const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
-export const KAKAO_AUTH_URL =
-  "https://kauth.kakao.com/oauth/authorize?client_id=8ff3bc07db2d56b28fc82cb026ccd135&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code";
+export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=code`;

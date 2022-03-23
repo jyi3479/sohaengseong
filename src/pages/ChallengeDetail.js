@@ -29,6 +29,7 @@ import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
 import share from "../image/icons/ic_share@2x.png"
 import { useState } from "react";
+import KakaoShareButton from "../shared/KakaoShareButton";
 
 
 
@@ -148,7 +149,7 @@ const ChallengeDetail = (props) => {
         {target&&
             <Grid padding="0" margin="48px 0 0" >
                 <Grid padding="0" style={{position:"relative"}}>
-                    <ShareBtn></ShareBtn>
+                    <KakaoShareButton></KakaoShareButton>
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}

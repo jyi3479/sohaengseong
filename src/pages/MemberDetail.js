@@ -172,7 +172,7 @@ const MemberDetail = (props) => {
                       return (
                         //만약에 방을 만든 userId와 멤버의 userId가 같은 경우(방장인 경우) className을 붙여준다.
                         <Member
-                          key={el.userId}
+                          key={i}
                           className={admin.userId === el.userId ? "admin" : ""}
                         >
                           <Image
