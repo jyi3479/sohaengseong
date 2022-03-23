@@ -23,6 +23,7 @@
     "net": "^1.0.2",
     "react": "^17.0.2",
     "react-code-input": "^3.10.1",
+    "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^17.0.2",
     "react-helmet-async": "^1.2.3",
     "react-icons": "^4.3.1",
@@ -45,7 +46,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "aws s3 sync ./build s3://sohangsung.co.kr --profile=Administrator",    
+    "deploy": "aws s3 sync ./build s3://sohangsung.co.kr --profile=Administrator",
     "invalidate": "aws cloudfront create-invalidation --profile=Administrator --distribution-id E246A4WHF2LGZK --paths /*"
   },
   "eslintConfig": {

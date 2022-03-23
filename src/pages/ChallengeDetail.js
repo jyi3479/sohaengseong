@@ -26,6 +26,7 @@ import { challengeApis } from "../shared/apis";
 import { targetChallenge } from "../redux/modules/challenge";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import * as baseAction from '../redux/modules/base';
+import ShareLink from '../components/shared/ShareLink';
 import empty from "../image/ic_empty_s@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
@@ -309,10 +310,8 @@ const ChallengeDetail = (props) => {
                         </div>
                         <Button type="button" _onClick={pwdCheck}>입장하기</Button>
                     </div>
-                </Modal>
-                <Modal open={modalType === "joinModal"? modalOpen : ""} close={closeModal} header>
-                    
-                </Modal>
+                </Modal>                
+                <ShareLink open={modalType === "shareModal"? modalOpen : ""} close={closeModal}/>
             </Grid> 
         }
         </div>
