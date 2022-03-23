@@ -30,10 +30,14 @@ const getMessages = createAction(GET_MESSAGES, (messages) => ({ messages }));
 
 const clearMessages = createAction(CLEAR_MESSAGES, () => ({}));
 
-const setMessages = createAction(SET_MESSAGES, (chatRoomInfo, messages) => ({
-  chatRoomInfo,
-  messages,
-}));
+const setMessages = createAction(
+  SET_MESSAGES,
+  (chatRoomInfo, messages, page) => ({
+    chatRoomInfo,
+    messages,
+    page,
+  })
+);
 
 const isLoading = createAction(IS_LOADING, () => ({}));
 
@@ -49,9 +53,12 @@ const initialState = {
     roomId: null,
     roomName: null,
     category: null,
+    page: 0,
+    next: false,
   },
   // 현재 접속 채팅 메시지
   messages: [],
+
   messageCurPage: null,
   // 메시지 총 페이지
   messageTotalPage: null,
@@ -93,14 +100,14 @@ const getChatListDB = () => {
 };
 
 // DB에 존재하는 채팅방 메시지들 가져오기
-const getChatMessagesDB = (roomId) => {
+const getChatMessagesDB = (roomId, page, size) => {
   return function (dispatch, getState, { history }) {
     chatAPI
-      .getChatMessages(roomId)
+      .getChatMessages(roomId, page, size)
       .then((res) => {
         const chatRoomInfo = res.data;
         const chatMessagesArray = chatRoomInfo.messageList;
-        dispatch(setMessages(chatRoomInfo, chatMessagesArray));
+        dispatch(setMessages(chatRoomInfo, chatMessagesArray, page + 1));
         console.log("채팅방 메시지 조회", res.data);
       })
       .catch((err) => {
@@ -135,8 +142,14 @@ export default handleActions(
 
     [SET_MESSAGES]: (state, action) =>
       produce(state, (draft) => {
+        if (action.payload.page > 1) {
+          draft.messages.unshift(...action.payload.messages);
+        } else {
+          draft.messages = action.payload.messages;
+        }
         draft.currentChat = action.payload.chatRoomInfo;
-        draft.messages = action.payload.messages;
+
+        draft.currentChat.page = action.payload.page;
       }),
 
     [IS_LOADING]: (state, action) =>

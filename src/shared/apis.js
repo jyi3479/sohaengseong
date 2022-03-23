@@ -69,11 +69,12 @@ export const userApis = {
 
 export const challengeApis = {
   //챌린지 전체 조회
-  getChallenge: (page) => apis.get(`/challenge?page=${page}`),
+  getChallenge: (page, size) =>
+    apis.get(`/challenge?page=${page}&size=${size}`),
 
   //카테고리와 일치하는 챌린지 조회
-  categoryChallenge: (categoryId) =>
-    apis.get(`/challenge/category/${categoryId}`),
+  categoryChallenge: (categoryId, page, size) =>
+    apis.get(`/challenge/category/${categoryId}?page=${page}&size=${size}`),
 
   //특정 챌린지 조회
   getOneChallenge: (challengeId) => apis.get(`/challenge/${challengeId}`),
@@ -94,7 +95,14 @@ export const challengeApis = {
 
 export const memberApis = {
   //인증게시글(sns) 전체 조회
-  getPost: (challengeId) => apis.get(`/challenge/${challengeId}/posts`),
+  getPost: (challengeId, page, size) =>
+    apis.get(`/challenge/${challengeId}/posts?page=${page}&size=${size}`),
+
+  //특정 인증게시글(sns) 조회
+  getOnePost: (challengeId, postId, page, size) =>
+    apis.get(
+      `/challenge/${challengeId}/posts/${postId}?page=${page}&size=${size}`
+    ),
 
   //인증게시글 등록
   addPost: (challengeId, post) =>
@@ -126,8 +134,10 @@ export const searchApis = {
   recommend: () => apis.get("/challenge/recommend"),
 
   //검색 결과 조회
-  getSearch: (searchWord) =>
-    apis.get(`/challenge/search?keyword=${searchWord}`),
+  getSearch: (searchWord, page, size) =>
+    apis.get(
+      `/challenge/search?keyword=${searchWord}&page=${page}&size=${size}`
+    ),
 };
 
 export const mainApis = {
@@ -168,7 +178,7 @@ export const chatAPI = {
     return apis.get(`/chat/rooms`);
   },
   //이전 메세지 조회
-  getChatMessages: function (roomId) {
-    return apis.get(`/chat/rooms/${roomId}/messages`);
+  getChatMessages: function (roomId, page, size) {
+    return apis.get(`/chat/rooms/${roomId}/messages?page=${page}&size=${size}`);
   },
 };
