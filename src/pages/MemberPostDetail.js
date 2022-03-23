@@ -16,11 +16,11 @@ const MemberPostDetail = (props) => {
   const postId = +useParams().postId;
   const roomId = useParams().roomId;
 
-  const postList = useSelector((state) => state.member.postList);
-  const targetPost = postList.filter((el) => el.postId === postId)[0];
+  const targetPost = useSelector((state) => state.member.target);
+  // const targetPost = postList.filter((el) => el.postId === postId)[0];
 
   React.useEffect(() => {
-    dispatch(memberAction.getPostDB(challengeId));
+    dispatch(memberAction.getOnePostDB(challengeId, postId, 0, 5));
     // header, footer 부분
     dispatch(baseAction.setHeader("", false));
     dispatch(baseAction.setGnb(false));

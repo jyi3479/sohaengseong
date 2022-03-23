@@ -5,6 +5,7 @@ import { challengeApis } from "../../shared/apis";
 import { mainApis } from "../../shared/apis";
 
 import { actionCreators as chatAction } from "./chat";
+import { set } from "lodash";
 
 const GET_CHALLENGE = "GET_CHALLENGE";
 const TARGET_CHALLENGE = "TARGET_CHALLENGE";
@@ -33,38 +34,36 @@ const deleteChallenge = createAction(DELETE_CHALLENGE, (challengeId) => ({
 const getCategory = createAction(GET_CATEGORY, (category) => ({ category }));
 const getCategoryList = createAction(
   GET_CATEGORY_LIST,
-  (categoryId, category_list) => ({ categoryId, category_list })
+  (categoryId, category_data) => ({ categoryId, category_data })
 );
 
 const initialState = {
   list: [],
   target: null,
-  category_list: [],
   page: 0,
   has_next: false,
-  is_loading:false,
+  is_loading: false,
+  totalCnt: 0,
+  categoryList: new Array(10).fill([]),
 };
 
-const getChallengeDB = (page) => {
+const getChallengeDB = (page, size) => {
   return function (dispatch, getState, { history }) {
-    const size = 6;
-    console.log(page, size)
     challengeApis
-      .getChallenge(page)
+      .getChallenge(page, size)
       .then((res) => {
-        let is_next = null
-        if(res.data[0].next){
-          is_next = true
+        let is_next = null;
+        if (res.data.next) {
+          is_next = true;
         } else {
-          is_next = false
+          is_next = false;
         }
-        const challenge_data = 
-        {
-          challenge_list : res.data,
+        const challenge_data = {
+          challenge_list: res.data.challengeList,
           page: page + 1,
           next: is_next,
-        }
-        
+          totalCnt: res.data.totalCnt,
+        };
 
         dispatch(getChallenge(challenge_data));
       })
@@ -153,15 +152,28 @@ const deleteChallengeDB = (challengeId) => {
   };
 };
 
-const categoryChallengeDB = (categoryId) => {
+const categoryChallengeDB = (categoryId, page, size) => {
   return function (dispatch, getState, { history }) {
     console.log("카테고리", categoryId);
 
     challengeApis
-      .categoryChallenge(categoryId)
+      .categoryChallenge(categoryId, page, size)
       .then((res) => {
         console.log("카테고리 챌린지", res);
-        dispatch(getCategoryList(categoryId, res.data));
+        let is_next = null;
+        if (res.data.next) {
+          is_next = true;
+        } else {
+          is_next = false;
+        }
+        const category_data = {
+          category_list: res.data.challengeList,
+          page: page + 1,
+          next: is_next,
+          totalCnt: res.data.totalCnt,
+        };
+
+        dispatch(getCategoryList(categoryId, category_data));
       })
       .catch((err) => {
         console.log("카테고리 챌린지 오류", err);
@@ -185,9 +197,10 @@ export default handleActions(
     [GET_CHALLENGE]: (state, action) =>
       produce(state, (draft) => {
         draft.list.push(...action.payload.challenge_data.challenge_list);
-        draft.page = action.payload.challenge_data.page
-        draft.has_next = action.payload.challenge_data.next
-        draft.is_loading = false
+        draft.page = action.payload.challenge_data.page;
+        draft.has_next = action.payload.challenge_data.next;
+        draft.totalCnt = action.payload.challenge_data.totalCnt;
+        draft.is_loading = false;
       }),
 
     [ADD_CHALLENGE]: (state, action) =>
@@ -214,8 +227,13 @@ export default handleActions(
     [GET_CATEGORY_LIST]: (state, action) =>
       produce(state, (draft) => {
         const categoryId = action.payload.categoryId;
-        const category_list = action.payload.category_list;
-        draft.category_list[categoryId] = category_list;
+        draft.categoryList[categoryId].push(
+          ...action.payload.category_data.category_list
+        );
+        draft.page = action.payload.category_data.page;
+        draft.has_next = action.payload.category_data.next;
+        draft.totalCnt = action.payload.category_data.totalCnt;
+        draft.is_loading = false;
       }),
   },
   initialState

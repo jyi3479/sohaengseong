@@ -9,16 +9,17 @@ import { Grid } from "../../elements";
 
 import arrow from "../../image/icon/ic_arrow_s@2x.png";
 
-
 const TodayPost = (props) => {
   const dispatch = useDispatch();
-  const postList = useSelector((state) => state.member.postList);
+  const postInfo = useSelector((state) => state.member);
+  const postList = postInfo.postList;
 
   // 인증 게시글 리스트 조회
   useEffect(() => {
-    dispatch(memberAction.getPostDB(props.challengeId));
+    if (!postInfo.page) {
+      dispatch(memberAction.getPostDB(props.challengeId, 0, 4));
+    }
   }, []);
-
 
   return (
     <Grid padding="0px" margin="39px 0 0">
@@ -41,20 +42,19 @@ const TodayPost = (props) => {
         <Container>
           {postList.map((el, i) => {
             return (
-                <ImageBox
-                  key={el.postId}
-                  src={el.postImage}
-                  onClick={() => {
-                    history.push(
-                      `/post/${props.challengeId}/detail/${el.postId}/${props.roomId}`
-                    );
-                  }}
-                >
-                  <Info>
-                    <p>{el.content}</p> <h3 className="mt6">{el.nickname}</h3>
-                  </Info>
-                </ImageBox>
-       
+              <ImageBox
+                key={el.postId}
+                src={el.postImage}
+                onClick={() => {
+                  history.push(
+                    `/post/${props.challengeId}/detail/${el.postId}/${props.roomId}`
+                  );
+                }}
+              >
+                <Info>
+                  <p>{el.content}</p> <h3 className="mt6">{el.nickname}</h3>
+                </Info>
+              </ImageBox>
             );
           })}
         </Container>
@@ -119,6 +119,5 @@ const Info = styled.div`
     color: #ffffff;
   }
 `;
-
 
 export default TodayPost;
