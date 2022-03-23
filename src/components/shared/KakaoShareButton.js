@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import kakaoIcon from '../../image/icon/ic_kakao@2x.png'
 import logo from '../../image/logo_xl@2x.png'
 
-const KakaoShareButton = () => {
+const KakaoShareButton = (props) => {
 
   //렌더링 될 때마다 불러오기
   useEffect(() => {
@@ -15,9 +15,10 @@ const KakaoShareButton = () => {
     // kakao sdk script이 정상적으로 불러와졌으면 window.Kakao로 접근이 가능
     if (window.Kakao) {
       const kakao = window.Kakao;
+      const id = props.id; //챌린지 아이디
 
       //공유 주소
-      const siteUrl = "https://www.sohangsung.co.kr/";
+      const siteUrl = `https://www.sohangsung.co.kr/challenge/${id}`;
 
       // 중복 initialization 방지
       if (!kakao.isInitialized()) {
@@ -32,7 +33,7 @@ const KakaoShareButton = () => {
         content: {
           title: '소행성 : 나를 변화시키는 습관',
           description: '동기부여가 가득한 습관형성 플랫폼 소행성으로 놀러오세요!',
-          imageUrl: logo,
+          imageUrl: "https://roffjrrnf.s3.ap-northeast-2.amazonaws.com/image/5c8e86e3-57f0-4ff6-a542-1dfc1175eb0basteroid.png",
           link: {
             mobileWebUrl: siteUrl,
             webUrl: siteUrl,

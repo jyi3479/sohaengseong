@@ -30,17 +30,16 @@ const ShareLink = (props) => {
     useScript('https://developers.kakao.com/sdk/js/kakao.js');
 
     //모달 팝업 props
-    const { open, close } = props;    
+    const { open, close, id } = props;
 
-    //배포 때는 https://www.sohangsung.co.kr/challenge/${challengeId} 로 주소변경
-    const currentUrl = window.location.href;
+    //배포 때는  로 주소변경
+    const currentUrl = `https://www.sohangsung.co.kr/challenge/${id}`;
 
 
     const onCopy = () => {
         console.log("카피했당!");
     };
 
-    
     return (        
         <>
         {/* 모달이 열릴때 openModal 클래스가 생성된다. dim(뒷배경) 클릭 시에도 모달 닫힘*/}
@@ -55,7 +54,7 @@ const ShareLink = (props) => {
                             </button>
                         </header>
                         <Box>
-                            <KakaoShareButton/>
+                            <KakaoShareButton id={id}/>
                             <FacebookShareButton url={currentUrl}>
                                 <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
                             </FacebookShareButton>

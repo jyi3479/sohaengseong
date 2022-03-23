@@ -126,6 +126,8 @@ const ChallengeDetail = (props) => {
         });
     };
 
+    console.log("디테일페이지",challengeId);
+
 
     React.useEffect(() => {
         scrollRef.current.scrollIntoView({behavior:"smooth"});
@@ -311,7 +313,7 @@ const ChallengeDetail = (props) => {
                         <Button type="button" _onClick={pwdCheck}>입장하기</Button>
                     </div>
                 </Modal>                
-                <ShareLink open={modalType === "shareModal"? modalOpen : ""} close={closeModal}/>
+                <ShareLink open={modalType === "shareModal"? modalOpen : ""} close={closeModal} id={challengeId}/>
             </Grid> 
         }
         </div>
