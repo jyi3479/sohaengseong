@@ -36,7 +36,7 @@ function MessageList(props) {
   // 페이지 입장 후와 메세지가 추가될 때마다 스크롤 이동
   useEffect(() => {
     scrollRef.current.scrollIntoView();
-  }, [messageSortArr]);
+  }, [props.roomId]);
 
   const getMessageList = () => {
     dispatch(chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10));
