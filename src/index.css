@@ -1,43 +1,7 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 /* //notosans => 디폴트 폰트 */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap'); 
 /* //poppins => 포인트 폰트 */
-
-
-/* noto-sans-kr-regular - korean */
-@font-face {
-  font-family: 'Noto Sans KR';
-  font-style: normal;
-  font-weight: 400;
-  src: local(''),
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-regular.woff') format('woff'), /* Modern Browsers */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-regular.svg#NotoSansKR') format('svg'); /* Legacy iOS */
-}
-/* noto-sans-kr-500 - korean */
-@font-face {
-  font-family: 'Noto Sans KR';
-  font-style: normal;
-  font-weight: 500;
-  src: local(''),
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-500.woff2') format('woff2'), /* Super Modern Browsers */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-500.woff') format('woff'), /* Modern Browsers */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-500.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-500.svg#NotoSansKR') format('svg'); /* Legacy iOS */
-}
-/* noto-sans-kr-700 - korean */
-@font-face {
-  font-family: 'Noto Sans KR';
-  font-style: normal;
-  font-weight: bold;
-  src: local(''),
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-700.woff2') format('woff2'), /* Super Modern Browsers */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-700.woff') format('woff'), /* Modern Browsers */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-700.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('../src/styles/fonts/noto-sans-kr-v25-korean-700.svg#NotoSansKR') format('svg'); /* Legacy iOS */
-}
-
 
 *{
   margin: 0;
