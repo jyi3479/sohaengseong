@@ -27,7 +27,8 @@ const CategoryTab = () => {
   const challengeInfo = useSelector((state) => state.challenge);
   const categoryList = challengeInfo.categoryList;
   const recommend_list = useSelector((state) => state.search.recommend); //추천검색어
-  const searchList = useSelector((state) => state.search.list);
+  const searchInfo = useSelector((state) => state.search.list);
+  const searchList = searchInfo.challengeList;
   const allList = challengeInfo.list;
 
   const [page, setPage] = React.useState(challengeInfo.page);
@@ -37,7 +38,7 @@ const CategoryTab = () => {
   const debounce = _.debounce((word) => {
     history.push("/category/all");
     if (word !== "" || word !== " ") {
-      dispatch(searchActions.getSearchDB(word));
+      dispatch(searchActions.getSearchDB(word, 0, 6));
       setSearch_list(searchList);
     }
   }, 600);
@@ -47,7 +48,7 @@ const CategoryTab = () => {
     //추천 검색어 클릭 시
     setFocus(false);
     setWord(e.target.innerText);
-    dispatch(searchActions.getSearchDB(e.target.innerText));
+    dispatch(searchActions.getSearchDB(e.target.innerText, 0, 6));
     setSearch_list(searchList);
   };
 
@@ -67,10 +68,10 @@ const CategoryTab = () => {
     if (!page) {
       if (tabId === "all") {
         //전체 리스트 불러오기
-        dispatch(challengeAction.getChallengeDB(0, 10));
+        dispatch(challengeAction.getChallengeDB(0, 6));
       } else {
         //전체 탭이 아닐경우 카테고리 리스트 불러오기
-        dispatch(challengeAction.categoryChallengeDB(tabId, 0, 10));
+        dispatch(challengeAction.categoryChallengeDB(tabId, 0, 6));
         setFocus(false);
       }
     }
@@ -78,13 +79,15 @@ const CategoryTab = () => {
 
   // 무한스크롤 callNext 함수들
   const getChallengeList = () => {
-    dispatch(challengeAction.getChallengeDB(challengeInfo.page, 10));
+    dispatch(challengeAction.getChallengeDB(challengeInfo.page, 6));
   };
 
   const getCategoryList = () => {
-    dispatch(
-      challengeAction.categoryChallengeDB(tabId, challengeInfo.categoryPage, 10)
-    );
+    dispatch(challengeAction.categoryChallengeDB(tabId, challengeInfo.page, 6));
+  };
+
+  const getSearchList = () => {
+    dispatch(searchActions.getSearchDB(word, searchInfo.page, 6));
   };
 
   return (
@@ -100,7 +103,7 @@ const CategoryTab = () => {
           setFocus(true);
         }}
         _onClick={() => {
-          dispatch(searchActions.getSearchDB(word));
+          dispatch(searchActions.getSearchDB(word, 0, 6));
           history.push("/category/all");
           setSearch_list(searchList);
         }}
@@ -206,23 +209,23 @@ const CategoryTab = () => {
               총
               <b className="poppins">
                 {tabId !== "all"
-                  ? categoryList[tabId]
+                  ? categoryList
                     ? challengeInfo.totalCnt
                     : 0
-                  : search_list
-                  ? searchList.length
+                  : word
+                  ? searchInfo.totalCnt
                   : challengeInfo.totalCnt}
               </b>
               건
             </p>
             <Grid is_flex padding="0">
               {tabId !== "all" ? (
-                categoryList[tabId] && challengeInfo.totalCnt !== 0 ? (
+                categoryList && challengeInfo.totalCnt !== 0 ? (
                   <InfinityScroll
                     callNext={getCategoryList}
                     paging={{ next: challengeInfo.has_next }}
                   >
-                    {categoryList[tabId].map((el, i) => {
+                    {categoryList.map((el, i) => {
                       return (
                         <ChallengeCard
                           key={el.challengeId}
@@ -257,19 +260,24 @@ const CategoryTab = () => {
                 )
               ) : (
                 <>
-                  {search_list ? (
-                    searchList.length > 0 ? (
-                      searchList.map((el, i) => {
-                        return (
-                          <ChallengeCard
-                            key={i}
-                            {...el}
-                            _onClick={() => {
-                              history.push(`/challenge/${el.challengeId}`);
-                            }}
-                          ></ChallengeCard>
-                        );
-                      })
+                  {word ? (
+                    searchInfo.totalCnt > 0 ? (
+                      <InfinityScroll
+                        callNext={getSearchList}
+                        paging={{ next: searchInfo.next }}
+                      >
+                        {searchList.map((el, i) => {
+                          return (
+                            <ChallengeCard
+                              key={i}
+                              {...el}
+                              _onClick={() => {
+                                history.push(`/challenge/${el.challengeId}`);
+                              }}
+                            ></ChallengeCard>
+                          );
+                        })}
+                      </InfinityScroll>
                     ) : (
                       <NotFound className="t_center">
                         <img src={notfound} />

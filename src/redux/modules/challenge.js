@@ -44,7 +44,8 @@ const initialState = {
   has_next: false,
   is_loading: false,
   totalCnt: 0,
-  categoryList: new Array(10).fill([]),
+  // categoryList: new Array(10).fill([]),
+  categoryList: [],
 };
 
 const getChallengeDB = (page, size) => {
@@ -196,7 +197,13 @@ export default handleActions(
   {
     [GET_CHALLENGE]: (state, action) =>
       produce(state, (draft) => {
-        draft.list.push(...action.payload.challenge_data.challenge_list);
+        if (action.payload.challenge_data.page > 1) {
+          draft.list.push(...action.payload.challenge_data.challenge_list);
+        } else {
+          // 처음 요청할 때는 list 초기화 시키기
+          draft.list = action.payload.challenge_data.challenge_list;
+        }
+
         draft.page = action.payload.challenge_data.page;
         draft.has_next = action.payload.challenge_data.next;
         draft.totalCnt = action.payload.challenge_data.totalCnt;
@@ -226,10 +233,14 @@ export default handleActions(
       }),
     [GET_CATEGORY_LIST]: (state, action) =>
       produce(state, (draft) => {
-        const categoryId = action.payload.categoryId;
-        draft.categoryList[categoryId].push(
-          ...action.payload.category_data.category_list
-        );
+        if (action.payload.category_data.page > 1) {
+          draft.categoryList.push(
+            ...action.payload.category_data.category_list
+          );
+        } else {
+          draft.categoryList = action.payload.category_data.category_list;
+        }
+
         draft.page = action.payload.category_data.page;
         draft.has_next = action.payload.category_data.next;
         draft.totalCnt = action.payload.category_data.totalCnt;
