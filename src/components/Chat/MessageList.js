@@ -36,7 +36,7 @@ function MessageList(props) {
   // 페이지 입장 후 스크롤 이동
   useEffect(() => {
     scrollRef.current.scrollIntoView();
-  }, [props.roomId]);
+  }, []);
 
   const getMessageList = () => {
     dispatch(chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10));
@@ -51,6 +51,7 @@ function MessageList(props) {
             paging={{ next: currentChat.next }}
             isChat
           >
+            {" "}
             {messageSortArr.map((el, idx) => {
               return (
                 <div key={idx}>
@@ -69,9 +70,9 @@ function MessageList(props) {
               );
             })}
           </InfinityScroll>
-          <div ref={scrollRef} />
         </>
       )}
+      <div ref={scrollRef}></div>
     </>
   );
 }

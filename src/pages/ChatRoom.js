@@ -164,7 +164,7 @@ const ChatRoom = ({ match }) => {
   return (
     <Grid padding="28px 20px" margin="48px 0">
       <Grid padding="0" margin="0" style={{ overflowY: "auto" }}>
-        <MessageList roomId={roomId} sendMessage={sendMessage} />
+        <MessageList roomId={roomId} />
       </Grid>
       <MessageForm sendMessage={sendMessage} />
     </Grid>
