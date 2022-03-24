@@ -24,9 +24,7 @@ const PostList = (props) => {
   };
 
   useEffect(() => {
-    if (!postInfo.page) {
-      dispatch(memberAction.getPostDB(challengeId, 0, 2));
-    }
+    dispatch(memberAction.getPostDB(challengeId, 0, 2));
   }, []);
 
   return (
