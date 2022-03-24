@@ -165,16 +165,16 @@ const ChatRoom = ({ match }) => {
 
   return (
     <>
-      <ScrollBar height="900px">
-        <Grid padding="28px 20px" margin="48px 0">
-          <Grid padding="0" margin="0" style={{ overflowY: "auto" }}>
+      <Grid padding="0" margin="48px 0">
+        <ScrollBar height="calc(100vh - 108px)">
+          <Grid padding="28px 20px" margin="0" style={{ overflowY: "auto" }}>
             <MessageList roomId={roomId} sendMessage={sendMessage} />
           </Grid>
+        </ScrollBar>
+        <div ref={messageRef}></div>
+      </Grid>
 
-          <div ref={messageRef}></div>
-        </Grid>
-        <MessageForm sendMessage={sendMessage} />
-      </ScrollBar>
+      <MessageForm sendMessage={sendMessage} />
     </>
   );
 };
