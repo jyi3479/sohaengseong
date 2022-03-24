@@ -80,6 +80,7 @@ const Fixed = styled.div`
   left: 0;
   padding: 12px 20px;
   box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
+  z-index: 5;
 `;
 
 export default MemberMain;
