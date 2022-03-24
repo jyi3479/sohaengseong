@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 import arrow from "../image/icon/ic_arrow@2x.png";
 import searchIconB from "../image/icons/ic_search_b@2x.png";
+import noticeIconB from '../image/icon/ic_notice_b@2x.png'
 
 const Header = (props) => {
   const text = useSelector((state) => state.base.header.text);
@@ -41,6 +42,9 @@ const Header = (props) => {
               <span>{currentMember}</span>
             ) : null}
           </div>
+          <button onClick={()=>{
+              history.push("/category/all");
+          }}><img src={noticeIconB}></img></button>
           <button
             className="search_btn"
             style={{ display: search ? "block" : "none" }}
@@ -50,13 +54,7 @@ const Header = (props) => {
           >
             <img src={searchIconB} />
           </button>
-          <div
-            style={{
-              width: "28px",
-              height: "28px",
-              display: search ? "none" : "block",
-            }}
-          ></div>
+          
         </>
       )}
     </Wrap>
