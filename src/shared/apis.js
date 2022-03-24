@@ -13,7 +13,6 @@ const imageApis = axios.create({
   headers: {
     "Content-type": "multipart/form-data",
     accept: "application/json",
-    //authorization: `Bearer ${token}`,
   },
 });
 
