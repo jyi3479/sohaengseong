@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as memberAction } from "../../redux/modules/member";
 
 import { Grid } from "../../elements";
+//스크롤바 커스텀
+import ScrollBar from "../../components/shared/ScrollBar";
 
 import arrow from "../../image/icon/ic_arrow_s@2x.png";
 
@@ -20,7 +22,7 @@ const TodayPost = (props) => {
   }, []);
 
   return (
-    <Grid padding="0px" margin="39px 0 0">
+    <Grid padding="0px" margin="39px 0 20px">
       <Grid is_flex padding="0" margin="19px 0px">
         <h2>실시간 인증</h2>
         <p
@@ -37,6 +39,7 @@ const TodayPost = (props) => {
         </p>
       </Grid>
       <Grid padding="0px" margin="13px 0 0">
+        <ScrollBar width="500px" direction="ltr">        
         <Container>
           {postList.map((el, i) => {
             return (
@@ -56,6 +59,7 @@ const TodayPost = (props) => {
             );
           })}
         </Container>
+        </ScrollBar>
       </Grid>
     </Grid>
   );
@@ -63,9 +67,7 @@ const TodayPost = (props) => {
 
 const Container = styled.div`
   white-space: nowrap;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 `;
 
 const ImageBox = styled.div`
