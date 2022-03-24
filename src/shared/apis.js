@@ -13,14 +13,13 @@ const imageApis = axios.create({
   headers: {
     "Content-type": "multipart/form-data",
     accept: "application/json",
-    authorization: `Bearer ${token}`,
+    //authorization: `Bearer ${token}`,
   },
 });
 
 apis.interceptors.request.use(function (config) {
   const token = getCookie("token");
-  config.headers["Content-Type"] =
-    "application/json;charset=UTF-8; charset=UTF-8";
+  config.headers["Content-Type"] = "application/json;charset=UTF-8; charset=UTF-8";
   config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
