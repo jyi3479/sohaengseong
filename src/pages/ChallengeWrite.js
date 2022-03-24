@@ -12,7 +12,11 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
 
-import { Grid, Input, Button, Image } from "../elements";
+
+//스크롤바 커스텀 라이브러리
+import { Scrollbars } from 'react-custom-scrollbars-2';
+
+import { Grid, Input, Button, Image} from "../elements";
 import Modal from "../components/Modal";
 
 import plus from "../image/icon/ic_plus_g@2x.png";
@@ -488,6 +492,7 @@ const ChallengeWrite = (props) => {
           <WholeBox
             className={tagFocus ? "active" : hashArr.length ? "ok" : ""}
           >
+            
             <TagBox>
               {hashArr.map((tagItem, index) => {
                 return (
@@ -856,6 +861,7 @@ const ButtonContainer = styled.div`
   left: 0;
   padding: 11px 20px;
   box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
+  z-index: 3;
 `;
 
 const Select = styled.div`

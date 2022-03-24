@@ -36,7 +36,7 @@ import share from "../image/icons/ic_share@2x.png"
 const ChallengeDetail = (props) => {
     dayjs.extend(customParseFormat);
     
-    const dispatch = useDispatch();        
+    const dispatch = useDispatch();
     const scrollRef = useRef(null);
     const userInfo = parseInt(localStorage.getItem("userId"));
     const challengeId = props.match.params.challengeId;
@@ -66,10 +66,16 @@ const ChallengeDetail = (props) => {
     //모달 팝업 -----------------------------------------
     const [modalType, setModalType] = React.useState("");
     const [modalOpen, setModalOpen] = React.useState(false);
+    const [copyShow, seyCopyShow] = React.useState(false);
     const [checkPrivate, setCheckPrivate] = React.useState(false);//비밀방 비밀번호 맞는지 확인
     const [isNum,setIsNum] = React.useState(false);//비밀방 비밀번호 숫자체크
     const [join, setJoin] = React.useState(false); //입장하기 클릭여부
     const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
+
+    //클립보드에 복사완료 됐는지 
+    const copy = useSelector(state => state.base.copy);
+
+    console.log("카피됐나?",copy,copyShow);
    
     const joinModal = () => {
         if(!target.isPrivate){
@@ -86,7 +92,6 @@ const ChallengeDetail = (props) => {
     };
 
     const closeModal = () => {
-        console.log("눌림");
         setModalOpen(false);
         setPrivatePwd("");
     };
@@ -126,11 +131,18 @@ const ChallengeDetail = (props) => {
         });
     };
 
-    console.log("디테일페이지",challengeId);
-
 
     React.useEffect(() => {
-        scrollRef.current.scrollIntoView({behavior:"smooth"});
+        scrollRef.current.scrollIntoView();
+
+        //클립보드에 주소를 잘 복사했다면
+        if(copy){
+            seyCopyShow(true); //성공알림 띄워줌
+            setTimeout(() => {
+                seyCopyShow(false);
+                dispatch(baseAction.setCopy(false));//끄고나서 초기값으로 다시 바꾸기
+            }, 2000);
+        }
 
         //타이틀 값을 받아오기 위해 컴포넌트에서 바로 apis 호출
         challengeApis.getOneChallenge(challengeId)
@@ -138,7 +150,7 @@ const ChallengeDetail = (props) => {
             const target = res.data;
             dispatch(targetChallenge(target));
             //헤더&푸터 state
-            dispatch(baseAction.setHeader(target.title,true));
+            dispatch(baseAction.setHeader(target.title,true,true));
         }).catch((err)=>{
             console.log("특정 챌린지 조회 오류",err);
         });
@@ -146,11 +158,10 @@ const ChallengeDetail = (props) => {
         dispatch(baseAction.setGnb(false));
         return()=>{
             dispatch(baseAction.setHeader(false,""));
-            dispatch(baseAction.setGnb(true));
-            
+            dispatch(baseAction.setGnb(true));            
         };
 
-    },[]);
+    },[copy]);
 
     return(
         <div ref={scrollRef}>
@@ -255,7 +266,13 @@ const ChallengeDetail = (props) => {
                     <Title>다른 행성도 둘러보기</Title>
                     
                 </Grid> */}
-                <Fixed>
+                {copyShow? 
+                    <CopyDone >
+                        <p className="small">클립보드에 복사되었어요.</p>
+                    </CopyDone>
+                    : null
+                }                    
+                <Fixed>                    
                     {target.status === "완료" || remaining_day < join_day ? ( //상태값이 완료거나 입장 가능한 기간이 지난 경우
                         //기간 끝남
                         <Button _disabled
@@ -292,7 +309,7 @@ const ChallengeDetail = (props) => {
                 <Modal open={modalType === "privateModal"? modalOpen : ""} close={closeModal} header isPrivate>
                     <div className="private_box">
                         <h3>비밀번호를 입력해 주세요.</h3>
-                        <div>                       
+                        <div>
                             <ReactCodeInput className={
                                 isNum === null && checkPrivate === null ? "ReactCodeInput" 
                                 : isNum === false && checkPrivate === false && join === false ? "ReactCodeInput" 
@@ -416,7 +433,6 @@ const Member = styled.div`
         }
     }
 `;
-
 const Notice = styled.div`
     margin: 26px 0 24px;
     padding: 16px;
@@ -432,13 +448,37 @@ const Notice = styled.div`
     }
 `;
 
+const CopyDone = styled.div`
+    position: fixed;
+    width: 100%;
+    bottom:64px;
+    left:0;     
+    height: 40px;
+    padding: 11px 24px;
+    background-color: rgba(3, 1, 2, 0.8);
+    animation: show_done 0.5s alternate;
+    p {
+        color: #fff;
+    }    
+    @keyframes show_done {
+        from {
+            opacity: 0;
+            bottom:0;
+        }
+        to {
+            opacity: 1;
+            bottom:64px;
+        }
+    }
+`;
+
 const Fixed = styled.div`
     width: 100%;
     position: fixed;
     background-color: #fff;
     bottom:0;
     left:0;
-    padding:12px 20px;
+    padding:11px 20px;
     box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 

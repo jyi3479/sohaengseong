@@ -17,16 +17,17 @@ const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);
   const is_login = useSelector((state) => state.user.user);
 
+
   const [params, setParams] = React.useState(window.location.pathname);
   const [modalOpen, setModalOpen] = React.useState(false);
-
+  
   const closeModal = () => {
     setModalOpen(false);
   };
 
+
   const gnbClick = (e, gnbname) => {
     if (is_login === null && gnbname !== "home") {
-      console.log("로그인안함");
       setModalOpen(true);
     } else {
       if (gnbname === "home") {
@@ -44,6 +45,7 @@ const Footer = (props) => {
       }
     }
   };
+
 
   if (!hide) {
     return null;
@@ -118,3 +120,4 @@ const Wrap = styled.div`
 `;
 
 export default Footer;
+

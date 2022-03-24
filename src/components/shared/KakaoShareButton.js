@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import kakaoIcon from '../../image/icon/ic_kakao@2x.png'
-import logo from '../../image/logo_xl@2x.png'
+import kakaoIcon from '../../image/icon/share/btn_share_kakao@2x.png'
 
 const KakaoShareButton = (props) => {
 
@@ -33,7 +32,7 @@ const KakaoShareButton = (props) => {
         content: {
           title: '소행성 : 나를 변화시키는 습관',
           description: '동기부여가 가득한 습관형성 플랫폼 소행성으로 놀러오세요!',
-          imageUrl: "https://roffjrrnf.s3.ap-northeast-2.amazonaws.com/image/5c8e86e3-57f0-4ff6-a542-1dfc1175eb0basteroid.png",
+          imageUrl: "https://roffjrrnf.s3.ap-northeast-2.amazonaws.com/image/e16c44c5-8b12-4175-a69a-c5e964071b7cKakaoTalk_Photo_2022-03-24-09-01-20.png",
           link: {
             mobileWebUrl: siteUrl,
             webUrl: siteUrl,
@@ -64,8 +63,9 @@ const KakaoShareButton = (props) => {
 const KaKaoWrap = styled.div`
   button {
     background-color: #fee500;
+    border:none;
     img {
-      width: 30px;
+      width: 100%;
     }
   }
 `;

@@ -179,6 +179,7 @@ export const GlobalStyle = createGlobalStyle`
     .mt4 { margin-top: 4px };
     .mt6 { margin-top: 6px };
     .mt12 {margin-top: 12px }
+    .mt16 {margin-top: 16px }
 
     //swiper —————————————————————
     .swiper-pagination { //스와이퍼 슬라이드 페이지네이션 커스텀

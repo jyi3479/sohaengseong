@@ -37,6 +37,7 @@ const getCategoryList = createAction(
   (categoryId, category_data) => ({ categoryId, category_data })
 );
 
+
 const initialState = {
   list: [],
   target: null,
