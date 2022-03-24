@@ -16,9 +16,7 @@ const TodayPost = (props) => {
 
   // 인증 게시글 리스트 조회
   useEffect(() => {
-    if (!postInfo.page) {
-      dispatch(memberAction.getPostDB(props.challengeId, 0, 4));
-    }
+    dispatch(memberAction.getPostDB(props.challengeId, 0, 4));
   }, []);
 
   return (
