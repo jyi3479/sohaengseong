@@ -7,9 +7,10 @@ const SET_GNB = "SET_GNB";
 
 export const setHeader = createAction(
   SET_HEADER,
-  (text, search_btn, currentMember) => ({
+  (text, search_btn, notice, currentMember) => ({
     text,
     search_btn,
+    notice,
     currentMember,
   })
 );
@@ -19,6 +20,7 @@ const initialState = {
   header: {
     text: "",
     search_btn: false,
+    notice:false,
     currentMember: 1,
   },
   gnb: true,
@@ -30,6 +32,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.header.text = action.payload.text;
         draft.header.search_btn = action.payload.search_btn;
+        draft.header.notice = action.payload.notice;
         draft.header.currentMember = action.payload.currentMember;
       }),
     [SET_GNB]: (state, action) =>

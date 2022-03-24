@@ -83,10 +83,10 @@ const Signup = (props) => {
 
   const onChangePwd = (e) => {
     setSamePwd(false);
-    const pwdRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/;
+    const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/;
     const pwdcurrent = e.target.value;
     let PwdRegex = pwdRegex.test(e.target.value);
+    
     setpassword(pwdcurrent);
 
     if (!PwdRegex) {
@@ -108,7 +108,6 @@ const Signup = (props) => {
     setSamePwd(false);
     const pwdcurrent2 = e.target.value;
     setpasswordCheck(pwdcurrent2);
-    //console.log(pwdcurrent2);
     if (pwdcurrent2 === password) {
       setSamePwd(true);
     } else {

@@ -12,13 +12,14 @@ import active_chat from "../image/icon/navi/ic_chat_sel@2x.png";
 import my from "../image/icon/navi/ic_profile@2x.png";
 import active_my from "../image/icon/navi/ic_profile_sel@2x.png";
 import LoginModal from "./shared/LoginModal";
+import { set } from "lodash";
 
 
 const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);
   const is_login = useSelector((state) => state.user.user);
-  const params = window.location.pathname;
-
+  
+  const [param,setParam] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
 
   
@@ -44,6 +45,11 @@ const Footer = (props) => {
     }   
   };
 
+  React.useEffect(()=>{
+    const params = window.location.pathname;
+    setParam(params);
+  });
+
 
   if(!hide){
       return null;
@@ -51,17 +57,19 @@ const Footer = (props) => {
   return(
     <>
       <Wrap>
-        <div onClick={(e)=>{gnbClick(e,"home")}}>
-            <img src={params === "/"? active_home : home}></img>
+        <div onClick={()=>{
+          history.push("/");
+        }}>
+            <img src={param === "/"? active_home : home}></img>
         </div>        
         <div onClick={(e)=>{gnbClick(e,"write")}}>
-            <img src={params === "/challengewrite" ? active_create :create}></img>
+            <img src={param === "/challengewrite" ? active_create :create}></img>
         </div>            
         <div onClick={(e)=>{gnbClick(e,"chat")}}>
-            <img src={params.includes("/chatting") ? active_chat : chat}></img>
+            <img src={param.includes("/chatting") ? active_chat : chat}></img>
         </div>
         <div onClick={(e)=>{gnbClick(e,"my")}}>
-            <img src={params.includes("/mypage")? active_my : my}></img>
+            <img src={param.includes("/mypage")? active_my : my}></img>
         </div>          
       </Wrap>
       <LoginModal open={modalOpen} close={closeModal} btnClick={()=>{history.push("/login")}}></LoginModal>
@@ -94,3 +102,4 @@ const Wrap = styled.div`
 `;
 
 export default Footer;
+
