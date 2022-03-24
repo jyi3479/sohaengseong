@@ -4,6 +4,7 @@ import axios from "axios";
 
 const SET_HEADER = "SET_HEADER";
 const SET_GNB = "SET_GNB";
+const SET_COPY = "SET_COPY";
 
 export const setHeader = createAction(
   SET_HEADER,
@@ -15,6 +16,7 @@ export const setHeader = createAction(
   })
 );
 export const setGnb = createAction(SET_GNB, (state) => ({ state }));
+export const setCopy = createAction(SET_COPY, (copy) => ({copy}));
 
 const initialState = {
   header: {
@@ -24,6 +26,7 @@ const initialState = {
     currentMember: 1,
   },
   gnb: true,
+  copy:false,
 };
 
 export default handleActions(
@@ -38,6 +41,10 @@ export default handleActions(
     [SET_GNB]: (state, action) =>
       produce(state, (draft) => {
         draft.gnb = action.payload.state;
+      }),
+    [SET_COPY]: (state, action) =>
+      produce(state, (draft) => {
+        draft.copy = action.payload.copy;
       }),
   },
   initialState

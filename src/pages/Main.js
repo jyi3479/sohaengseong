@@ -245,7 +245,7 @@ const TitleBox = styled.div`
       position: absolute;
       width: 16px;
       height: 16px;
-      top: 2px;
+      top: 3px;
       right: 0;
       content: "";
       background-image: url(${arrow});
