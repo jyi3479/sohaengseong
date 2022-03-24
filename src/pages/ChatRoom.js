@@ -44,6 +44,7 @@ const ChatRoom = ({ match }) => {
       baseAction.setHeader(
         currentChat.roomName,
         true,
+        false,
         currentChat.currentMember
       )
     );

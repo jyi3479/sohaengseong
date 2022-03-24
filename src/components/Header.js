@@ -6,24 +6,41 @@ import { useSelector } from "react-redux";
 
 import arrow from "../image/icon/ic_arrow@2x.png";
 import searchIconB from "../image/icons/ic_search_b@2x.png";
+import noticeIconB from '../image/icon/ic_notice_b@2x.png'
 
 const Header = (props) => {
   const text = useSelector((state) => state.base.header.text);
   const search = useSelector((state) => state.base.header.search_btn);
+  const notice = useSelector((state) => state.base.header.notice);
   const currentMember = useSelector((state) => state.base.header.currentMember);
   const params = window.location.pathname;
+
+  console.log(notice);
 
   return (
     <Wrap
       id="Header"
       {...props}
-      className={"detailHeader " + (params.includes("/post/") ? "left" : "")}
-      style={{ justifyContent: params === "/mypage" ? "center" : "" }}
     >
       {params === "/mypage" ? (
         <>
           <div className="title">
             <h2>{text}</h2>
+          </div>
+          <div className="btns">
+            <button 
+              style={{ display: notice ? "block" : "none" }}
+              onClick={()=>{
+                history.push("/category/all");
+              }}
+            ><img src={noticeIconB}></img></button>
+            <button
+              className="search_btn"
+              style={{ display: search ? "block" : "none" }}
+              onClick={() => {
+                history.push("/category/all");
+              }}
+            ><img src={searchIconB} /></button>
           </div>
         </>
       ) : (
@@ -41,22 +58,22 @@ const Header = (props) => {
               <span>{currentMember}</span>
             ) : null}
           </div>
-          <button
-            className="search_btn"
-            style={{ display: search ? "block" : "none" }}
-            onClick={() => {
-              history.push("/category/all");
-            }}
-          >
-            <img src={searchIconB} />
-          </button>
-          <div
-            style={{
-              width: "28px",
-              height: "28px",
-              display: search ? "none" : "block",
-            }}
-          ></div>
+          <div className="btns">
+            <button 
+              style={{ display: notice ? "block" : "none" }}
+              onClick={()=>{
+                history.push("/category/all");
+              }}
+            ><img src={noticeIconB}></img></button>
+            <button
+              className="search_btn"
+              style={{ display: search ? "block" : "none" }}
+              onClick={() => {
+                history.push("/category/all");
+              }}
+            ><img src={searchIconB} /></button>
+          </div>
+          
         </>
       )}
     </Wrap>
@@ -70,7 +87,7 @@ Header.defaultProps = {
 
 const Wrap = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
   height: 48px;
@@ -78,7 +95,7 @@ const Wrap = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  padding: 11px 20px;
+  padding: 8px 16px;
   box-sizing: border-box;
   border-bottom: 1px solid #e4e5e6;
   z-index: 10;
@@ -86,7 +103,7 @@ const Wrap = styled.div`
     display: flex;
     align-items: center;
     > h2 {
-      max-width: 230px;
+      max-width: 160px;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
@@ -98,56 +115,29 @@ const Wrap = styled.div`
       margin-left: 4px;
     }
   }
-
-  > h1 {
-    > a {
-      color: white;
-      outline: none;
-      text-decoration: none;
+  .btns {
+    display: flex;
+    position: absolute;
+    right: 16px;
+    button {
+      &:last-child { margin-left:12px; }
     }
-    font-size: 18px;
-    margin: 0;
+  }
+  >button {
+    position: absolute;
+    left: 16px;
   }
   button {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     background-color: transparent;
     border: none;
     padding: 0;
-    cursor: pointer;
-    img {
+    font-size: 25px;
+    > img {
       width: 100%;
-    }
-  }
-
-  &.detailHeader {
-    display: flex;
-    text-align: center;
-    background-color: white;
-    justify-content: space-between;
-    align-items: center;
-    &.left {
-      justify-content: flex-start;
-      .title {
-        margin-left: 24px;
-      }
-    }
-    > button {
-      width: 32px;
-      height: 32px;
-      background-color: transparent;
-      border: none;
-      padding: 0;
-      font-size: 25px;
-      &.search_btn {
-        width: 28px;
-        height: 28px;
-        > img {
-          width: 100%;
-        }
-      }
-    }
-  }
+    }    
+  }  
 `;
 
 export default Header;

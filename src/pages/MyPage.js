@@ -15,7 +15,7 @@ const MyPage = (props) => {
   };
 
   React.useEffect(() => {
-    dispatch(baseAction.setHeader("마이행성"));
+    dispatch(baseAction.setHeader("마이행성", false,true));
   }, []);
 
   return (
