@@ -14,10 +14,11 @@ export const GlobalStyle = createGlobalStyle`
         outline: none;
     }
 
-    input { //아이폰에서 자동으로 들어가는 input 속성 없애기
+    input,textarea { //아이폰에서 자동으로 들어가는 input 속성 없애기
         -webkit-appearance: none;
         -webkit-border-radius: 0;
     }
+
 
     //checkBox ---------------------------------------------------
     .style_checkbox {//input checkbox custom
