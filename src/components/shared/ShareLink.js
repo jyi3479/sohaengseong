@@ -70,15 +70,15 @@ const ShareLink = (props) => {
                                 </div>
                                 <div className="shares">
                                     <TwitterShareButton url={currentUrl}>
-                                        <img src={Line} className="shareImg" />
+                                        <img src={Twitter} className="shareImg" />
                                     </TwitterShareButton>
                                     <p className="small">트위터</p>  
                                 </div>
                                 <div className="shares">
                                     <LineShareButton url={currentUrl}>
-                                        <img src={Twitter} className="shareImg"/>
+                                        <img src={Line} className="shareImg"/>
                                     </LineShareButton>     
-                                    <p className="small">라인</p>  
+                                    <p className="small">라인</p>
                                 </div>                       
                             </Box>       
                             <CopyToClipboard onCopy={onCopy} text={currentUrl} >
