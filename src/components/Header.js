@@ -31,7 +31,7 @@ const Header = (props) => {
             <button 
               style={{ display: notice ? "block" : "none" }}
               onClick={()=>{
-                history.push("/category/all");
+                history.push("/notice");
               }}
             ><img src={noticeIconB}></img></button>
             <button
@@ -62,7 +62,7 @@ const Header = (props) => {
             <button 
               style={{ display: notice ? "block" : "none" }}
               onClick={()=>{
-                history.push("/category/all");
+                history.push("/notice");
               }}
             ><img src={noticeIconB}></img></button>
             <button
