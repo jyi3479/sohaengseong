@@ -108,7 +108,7 @@ const ChatRoom = ({ match }) => {
     return () => {
       wsDisConnectUnsubscribe();
     };
-  }, [match.params.roomId]);
+  }, [roomId]);
 
   // 웹소켓이 연결될 때 까지 실행하는 함수
   const waitForConnection = (waitWs, callback) => {
@@ -163,7 +163,7 @@ const ChatRoom = ({ match }) => {
   return (
     <Grid padding="28px 20px" margin="48px 0">
       <Grid padding="0" margin="0" style={{ overflowY: "auto" }}>
-        <MessageList roomId={roomId} />
+        <MessageList roomId={roomId} sendMessage={sendMessage} />
       </Grid>
       <MessageForm sendMessage={sendMessage} />
     </Grid>

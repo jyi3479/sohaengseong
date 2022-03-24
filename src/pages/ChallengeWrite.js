@@ -12,7 +12,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
 
-import { Grid, Input, Button, Image} from "../elements";
+import { Grid, Input, Button, Image } from "../elements";
 import Modal from "../components/Modal";
 
 import plus from "../image/icon/ic_plus_g@2x.png";
@@ -35,7 +35,7 @@ const ChallengeWrite = (props) => {
   );
 
   React.useEffect(() => {
-      // Header 적용 (수정/작성 분기)
+    // Header 적용 (수정/작성 분기)
     dispatch(baseAction.setHeader(isEdit ? "행성 수리하기" : "행성 만들기"));
     dispatch(baseAction.setGnb(false));
 
@@ -53,8 +53,8 @@ const ChallengeWrite = (props) => {
     };
   }, []);
 
-// state 관리 부분 ------------------------------------------------------------------------
-  
+  // state 관리 부분 ------------------------------------------------------------------------
+
   const [title, setTitle] = React.useState(isEdit ? target.title : "");
   const [content, setContent] = React.useState(isEdit ? target.content : "");
   const [category, setCategory] = React.useState(isEdit ? target.category : "");
@@ -89,7 +89,6 @@ const ChallengeWrite = (props) => {
   );
   const [password, setPassword] = React.useState(isEdit ? target.password : "");
 
-
   // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘 -----------------------------------------------------
   const selectClick = () => {
     setActive(!active);
@@ -103,14 +102,13 @@ const ChallengeWrite = (props) => {
   const changeHandler = (checked, id) => {
     if (checked) {
       // checked가 true이면 해당 id값(private/public)이 state에 저장된다.(체크된 박스가 어떤 박스인지 알도록)
-      setCheckedInputs(id); 
+      setCheckedInputs(id);
     } else {
       setCheckedInputs(null);
     }
   };
 
-
-// 태그 관련 함수 ----------------------------------------------------------------------------------------
+  // 태그 관련 함수 ----------------------------------------------------------------------------------------
   // 엔터 시 태그 제출
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && e.key === "Enter") {
@@ -127,9 +125,9 @@ const ChallengeWrite = (props) => {
   // 엔터 및 키워드 클릭 시 실행 함수 (태그 추가 함수)
   const submitTagItem = (keyword) => {
     // 기존에 입력된 태그 배열
-    let updatedTaglist = [...hashArr]; 
+    let updatedTaglist = [...hashArr];
     // 키워드 클릭 시 keyword 추가, 직접 입력 시 onChange로 업데이트 되는 hashtag state 추가
-    updatedTaglist.push(keyword ? keyword : hashtag); 
+    updatedTaglist.push(keyword ? keyword : hashtag);
     // 태그 배열 state 업데이트
     setHashArr(updatedTaglist);
     // 태그 input 창 초기화
@@ -147,7 +145,6 @@ const ChallengeWrite = (props) => {
     setHashArr(filteredTaglist);
   };
 
-
   // 이미지 업로드 부분 ----------------------------------------------------------------------------
   const fileInput = React.useRef();
   const selectFile = (e) => {
@@ -159,12 +156,11 @@ const ChallengeWrite = (props) => {
     let file; // 임시 변수
     let filesLength;
 
-    if(isEdit){
-      filesLength = 3-compareImage.length // 이미지 3장 제한
-    } else{
+    if (isEdit) {
+      filesLength = 3 - compareImage.length; // 이미지 3장 제한
+    } else {
       filesLength = fileArr.length > 3 ? 3 : fileArr.length; // 이미지 3장 제한
     }
-    
 
     // 다중 선택된 이미지 file 객체들을 반복문을 돌리며 preview와 image 배열에 추가하기
     for (let i = 0; i < filesLength; i++) {
@@ -193,18 +189,17 @@ const ChallengeWrite = (props) => {
     setPreview([...previewArr]);
 
     // 수정일 때, 기존 이미지 배열과 새로운 이미지 배열 모두 고려해야 함
-    let compareArr=[];
+    let compareArr = [];
     let imageArr = [];
-    if(index<compareImage.length){
+    if (index < compareImage.length) {
       // 1) 삭제 이미지가 기존 이미지 배열 안에 있을 때, compareImage에서 지우기
-     compareArr = compareImage.filter((el, idx) => idx !== index);
-     setCompareImage([...compareArr]);
-    } else{
+      compareArr = compareImage.filter((el, idx) => idx !== index);
+      setCompareImage([...compareArr]);
+    } else {
       // 2) 삭제 이미지가 새로운 이미지 배열 안에 있을 때, image에서 지우기
-      imageArr = image.filter((el, idx) => idx !== (index-compareImage.length));
+      imageArr = image.filter((el, idx) => idx !== index - compareImage.length);
       setImage([...imageArr]);
     }
-      
   };
 
   // 날짜 형식 맞춰주는 함수
@@ -238,7 +233,7 @@ const ChallengeWrite = (props) => {
 
   // 인증 게시글 추가하기 --------------------------------------------------------------------
   const addChallenge = () => {
-  // 예외처리
+    // 예외처리
     if (category === "") {
       window.alert("카테고리를 선택해주세요.");
       return;
@@ -279,7 +274,7 @@ const ChallengeWrite = (props) => {
       }
     }
 
-  // 서버에 보내기 위한 작업
+    // 서버에 보내기 위한 작업
 
     let formData = new FormData();
     // 보낼 데이터 묶음 (이미지 제외)
@@ -307,11 +302,9 @@ const ChallengeWrite = (props) => {
     dispatch(challengeAction.addChallengeDB(formData));
   };
 
-
-
   // 인증 게시글 수정하기 ------------------------------------------------------------------------------
   const editChallenge = () => {
-  // 예외처리
+    // 예외처리
     if (category === "") {
       window.alert("카테고리를 선택해주세요.");
       return;
@@ -324,7 +317,7 @@ const ChallengeWrite = (props) => {
       return;
     }
 
-  // 서버에 보내기 위한 작업
+    // 서버에 보내기 위한 작업
     // 폼데이터 생성
     let formData = new FormData();
     // 보낼 데이터 묶음 (새로 업로드된 이미지 제외, 기존에 등록된 이미지 url 포함)
@@ -563,7 +556,8 @@ const ChallengeWrite = (props) => {
               onChange={(newValue) => {
                 setValue(newValue);
 
-                const range = (newValue[1] - newValue[0]) / (1000 * 60 * 60 * 24);
+                const range =
+                  (newValue[1] - newValue[0]) / (1000 * 60 * 60 * 24);
                 if (newValue[1] && range < 14) {
                   window.alert("2주 이상 선택해주세요!");
                   setValue([null, null]);

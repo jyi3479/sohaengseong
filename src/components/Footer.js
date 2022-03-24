@@ -13,58 +13,82 @@ import my from "../image/icon/navi/ic_profile@2x.png";
 import active_my from "../image/icon/navi/ic_profile_sel@2x.png";
 import LoginModal from "./shared/LoginModal";
 
-
 const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);
   const is_login = useSelector((state) => state.user.user);
-  const params = window.location.pathname;
 
+  const [params, setParams] = React.useState(window.location.pathname);
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  
-
   const closeModal = () => {
-      setModalOpen(false);
+    setModalOpen(false);
   };
 
-  const gnbClick = (e,gnbname) => {
-    if(is_login === null && gnbname !== "home"){
+  const gnbClick = (e, gnbname) => {
+    if (is_login === null && gnbname !== "home") {
       console.log("로그인안함");
       setModalOpen(true);
-    }else {
-      if(gnbname === "home"){
+    } else {
+      if (gnbname === "home") {
+        setParams("/");
         history.push("/");
-      }else if(gnbname === "write"){
+      } else if (gnbname === "write") {
+        setParams("/challengewrite");
         history.push("/challengewrite");
-      }else if(gnbname === "chat"){
+      } else if (gnbname === "chat") {
+        setParams("/chatting");
         history.push("/chatting");
-      }else if(gnbname === "my"){
+      } else if (gnbname === "my") {
+        setParams("/mypage");
         history.push("/mypage");
       }
-    }   
+    }
   };
 
-
-  if(!hide){
-      return null;
+  if (!hide) {
+    return null;
   }
-  return(
+  return (
     <>
       <Wrap>
-        <div onClick={(e)=>{gnbClick(e,"home")}}>
-            <img src={params === "/"? active_home : home}></img>
-        </div>        
-        <div onClick={(e)=>{gnbClick(e,"write")}}>
-            <img src={params === "/challengewrite" ? active_create :create}></img>
-        </div>            
-        <div onClick={(e)=>{gnbClick(e,"chat")}}>
-            <img src={params.includes("/chatting") ? active_chat : chat}></img>
+        <div
+          onClick={(e) => {
+            gnbClick(e, "home");
+          }}
+        >
+          <img src={params === "/" ? active_home : home}></img>
         </div>
-        <div onClick={(e)=>{gnbClick(e,"my")}}>
-            <img src={params.includes("/mypage")? active_my : my}></img>
-        </div>          
+        <div
+          onClick={(e) => {
+            gnbClick(e, "write");
+          }}
+        >
+          <img
+            src={params === "/challengewrite" ? active_create : create}
+          ></img>
+        </div>
+        <div
+          onClick={(e) => {
+            gnbClick(e, "chat");
+          }}
+        >
+          <img src={params === "/chatting" ? active_chat : chat}></img>
+        </div>
+        <div
+          onClick={(e) => {
+            gnbClick(e, "my");
+          }}
+        >
+          <img src={params === "/mypage" ? active_my : my}></img>
+        </div>
       </Wrap>
-      <LoginModal open={modalOpen} close={closeModal} btnClick={()=>{history.push("/login")}}></LoginModal>
+      <LoginModal
+        open={modalOpen}
+        close={closeModal}
+        btnClick={() => {
+          history.push("/login");
+        }}
+      ></LoginModal>
     </>
   );
 };
