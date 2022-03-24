@@ -1,20 +1,18 @@
 import axios from "axios";
 import { getCookie } from "./cookie";
+const token = getCookie("token");
 const server_port = process.env.REACT_APP_SERVER_PORT;
 
 export const apis = axios.create({
   baseURL: "https://byungmin.shop", //서버 주소
-  // baseURL: "http://15.164.245.252:8080", //소켓용 서버
 });
-const token = getCookie("token");
+
 const imageApis = axios.create({
   baseURL: "https://byungmin.shop",
-  // baseURL: "http://15.164.245.252:8080", //소켓용 서버
 
   headers: {
     "Content-type": "multipart/form-data",
     accept: "application/json",
-    authorization: `Bearer ${token}`,
   },
 });
 
@@ -28,7 +26,6 @@ apis.interceptors.request.use(function (config) {
 
 imageApis.interceptors.request.use(function (config) {
   const token = getCookie("token");
-  // config.headers["Content-Type"] = "multipart/form-data";
   config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
