@@ -138,7 +138,7 @@ const ChallengeDetail = (props) => {
             const target = res.data;
             dispatch(targetChallenge(target));
             //헤더&푸터 state
-            dispatch(baseAction.setHeader(target.title,true));
+            dispatch(baseAction.setHeader(target.title,true,true));
         }).catch((err)=>{
             console.log("특정 챌린지 조회 오류",err);
         });
@@ -146,8 +146,7 @@ const ChallengeDetail = (props) => {
         dispatch(baseAction.setGnb(false));
         return()=>{
             dispatch(baseAction.setHeader(false,""));
-            dispatch(baseAction.setGnb(true));
-            
+            dispatch(baseAction.setGnb(true));            
         };
 
     },[]);
@@ -292,7 +291,7 @@ const ChallengeDetail = (props) => {
                 <Modal open={modalType === "privateModal"? modalOpen : ""} close={closeModal} header isPrivate>
                     <div className="private_box">
                         <h3>비밀번호를 입력해 주세요.</h3>
-                        <div>                       
+                        <div>
                             <ReactCodeInput className={
                                 isNum === null && checkPrivate === null ? "ReactCodeInput" 
                                 : isNum === false && checkPrivate === false && join === false ? "ReactCodeInput" 
