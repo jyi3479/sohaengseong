@@ -21,14 +21,12 @@ import { history } from "../redux/configureStore";
 // 소켓 통신
 import StompJs from "stompjs";
 import SockJS from "sockjs-client";
-import { useParams } from "react-router-dom";
-const server_port = process.env.REACT_APP_SERVER_PORT;
 
 const ChatRoom = ({ match }) => {
   const dispatch = useDispatch();
 
   // 소켓 통신 객체
-  const sock = new SockJS(`${server_port}/chatting`);
+  const sock = new SockJS("https://byungmin.shop/chatting");
   const client = StompJs.over(sock);
 
   // 방 제목 가져오기

@@ -25,7 +25,6 @@ const PostWrite = (props) => {
   const postList = useSelector((state) => state.member.postList);
   const targetPost = postList.filter((el) => el.postId === postId)[0];
 
-
   const isEdit = postId ? true : false; // 인증 게시글 수정 여부
   const [content, setContent] = React.useState(
     isEdit ? targetPost.content : ""
@@ -35,9 +34,7 @@ const PostWrite = (props) => {
     isEdit ? targetPost.postImage : ""
   ); // filereader 후 미리보기 데이터 담는 곳
   const [isLevelUp, setIsLevelup] = React.useState(false); // 레벨업 여부
-  const [nextLevel, setNextLevel] = React.useState("")
-
-
+  const [nextLevel, setNextLevel] = React.useState("");
 
   // 이미지 업로드 부분
   const fileInput = React.useRef();
@@ -62,7 +59,6 @@ const PostWrite = (props) => {
     setImage(null);
   };
 
-
   // 인증 게시글 추가하기
   const addPost = () => {
     // 예외처리
@@ -85,12 +81,14 @@ const PostWrite = (props) => {
       .addPost(challengeId, formData)
       .then((res) => {
         console.log("인증 게시글 작성", res);
+        // 리덕스로 관리되고 있는 페이지 state를 0으로 다시 초기화하여 새롭게 페이징 처리된 데이터 불러오기
+        dispatch(memberAction.addPost());
         // 인증 완료 모달 띄우기
         setModalType("okModal");
         setModalOpen(true);
         // 레벨업 여부 확인하기
         if (res.data.levelUp) {
-          setNextLevel(res.data.levelName)
+          setNextLevel(res.data.levelName);
           setIsLevelup(true); // true일 경우 레벨업 모달 띄워줌
         }
       })
@@ -99,7 +97,6 @@ const PostWrite = (props) => {
       });
     setPreview(""); // 작성 후 미리보기,이미지 state는 빈값으로 바꿔주기
   };
-
 
   // 인증 게시글 수정하기
   const editPost = () => {
@@ -131,7 +128,6 @@ const PostWrite = (props) => {
     setPreview("");
   };
 
-
   // header, footer 부분
   React.useEffect(() => {
     dispatch(baseAction.setHeader(isEdit ? "수정하기" : "인증하기", false));
@@ -147,7 +143,6 @@ const PostWrite = (props) => {
     };
   }, []);
 
-
   // 모달 팝업 -------------------------------------
   const [modalType, setModalType] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -159,7 +154,6 @@ const PostWrite = (props) => {
   const closeModal = () => {
     setModalOpen(false);
   };
-
 
   return (
     <>

@@ -199,7 +199,11 @@ export default handleActions(
     //인증 게시글
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.postList.push(...action.payload.postData.postList);
+        if (action.payload.postData.page > 1) {
+          draft.postList.push(...action.payload.postData.postList);
+        } else {
+          draft.postList = action.payload.postData.postList;
+        }
         draft.page = action.payload.postData.page;
         draft.has_next = action.payload.postData.next;
         draft.is_loading = false;
@@ -219,7 +223,8 @@ export default handleActions(
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.postList.unshift(action.payload.post);
+        // 서버에서 새롭게 페이징 처리된 첫 페이지 데이터 받아오기 위해
+        draft.page = 0;
       }),
 
     [DELETE_POST]: (state, action) =>
@@ -228,6 +233,8 @@ export default handleActions(
           (p) => p.postId === action.payload.postId
         );
         draft.postList.splice(idx, 1);
+        // 서버에서 새롭게 페이징 처리된 첫 페이지 데이터 받아오기 위해
+        draft.page = 0;
       }),
 
     // 댓글
