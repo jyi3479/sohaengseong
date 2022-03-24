@@ -86,6 +86,10 @@ const CategoryTab = () => {
     dispatch(challengeAction.categoryChallengeDB(tabId, challengeInfo.page, 6));
   };
 
+  const getSearchList = () => {
+    dispatch(searchActions.getSearchDB(word, searchInfo.page, 6));
+  };
+
   return (
     <>
       <SearchHeader
@@ -256,19 +260,24 @@ const CategoryTab = () => {
                 )
               ) : (
                 <>
-                  {searchList ? (
+                  {word ? (
                     searchInfo.totalCnt > 0 ? (
-                      searchList.map((el, i) => {
-                        return (
-                          <ChallengeCard
-                            key={i}
-                            {...el}
-                            _onClick={() => {
-                              history.push(`/challenge/${el.challengeId}`);
-                            }}
-                          ></ChallengeCard>
-                        );
-                      })
+                      <InfinityScroll
+                        callNext={getSearchList}
+                        paging={{ next: searchInfo.next }}
+                      >
+                        {searchList.map((el, i) => {
+                          return (
+                            <ChallengeCard
+                              key={i}
+                              {...el}
+                              _onClick={() => {
+                                history.push(`/challenge/${el.challengeId}`);
+                              }}
+                            ></ChallengeCard>
+                          );
+                        })}
+                      </InfinityScroll>
                     ) : (
                       <NotFound className="t_center">
                         <img src={notfound} />
