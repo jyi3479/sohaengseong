@@ -22,7 +22,7 @@ import { history } from "../redux/configureStore";
 import StompJs from "stompjs";
 import SockJS from "sockjs-client";
 import { useParams } from "react-router-dom";
-const server_port = process.env.REACT_APP_SERVER_PORT;
+const server_port = "https://byungmin.shop";
 
 const ChatRoom = ({ match }) => {
   const dispatch = useDispatch();
