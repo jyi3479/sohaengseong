@@ -17,10 +17,9 @@ const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);
   const is_login = useSelector((state) => state.user.user);
 
-
   const [params, setParams] = React.useState(window.location.pathname);
   const [modalOpen, setModalOpen] = React.useState(false);
-  
+
   const closeModal = () => {
     setModalOpen(false);
   };

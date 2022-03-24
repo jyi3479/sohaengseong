@@ -13,8 +13,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
 
 
-//스크롤바 커스텀 라이브러리
-import { Scrollbars } from 'react-custom-scrollbars-2';
+//스크롤바 커스텀
+import ScrollBar from "../components/shared/ScrollBar";
 
 import { Grid, Input, Button, Image} from "../elements";
 import Modal from "../components/Modal";
@@ -489,10 +489,11 @@ const ChallengeWrite = (props) => {
             <span className="sub_color font14">(선택)</span>
           </p>
           {/* 태그 입력 부분 */}
+
+          <ScrollBar width="500px" direction="ltr">
           <WholeBox
             className={tagFocus ? "active" : hashArr.length ? "ok" : ""}
-          >
-            
+          >            
             <TagBox>
               {hashArr.map((tagItem, index) => {
                 return (
@@ -518,6 +519,7 @@ const ChallengeWrite = (props) => {
               onBlur={() => setTagFocus(false)}
             />
           </WholeBox>
+          </ScrollBar >
           {/* 추천키워드 부분 */}
           <Grid margin="12px 0 0" padding="0px">
             <span
@@ -1034,10 +1036,8 @@ const WholeBox = styled.div`
   color: rgb(52, 58, 64);
   font-size: 12px;
   display: flex;
-  flex-wrap: nowrap;
   border-bottom: solid 1px rgba(124, 130, 136, 0.5);
   padding: 8px 0;
-  overflow-y: hidden;
 
   input {
     width: 100vw;
