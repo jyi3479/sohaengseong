@@ -15,8 +15,6 @@ const Header = (props) => {
   const currentMember = useSelector((state) => state.base.header.currentMember);
   const params = window.location.pathname;
 
-  console.log(notice);
-
   return (
     <Wrap
       id="Header"
