@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
@@ -38,18 +38,21 @@ import MyProfile from "../pages/MyProfile";
 import MemberPostWrite from "../pages/MemberPostWrite";
 import MemberPostDetail from "../pages/MemberPostDetail";
 import MemberDetail from "../pages/MemberDetail";
-import Notice from '../pages/Notice';
+import Notice from "../pages/Notice";
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   const token = getCookie("token");
+  const router = useSelector((state) => state.router.location.pathname);
+  const scrollRef = useRef();
 
   useEffect(() => {
     if (token && user === null) {
       dispatch(userActions.loginCheckDB());
     }
-  }, []);
+    scrollRef.current.scrollIntoView();
+  }, [router]);
 
   return (
     <>
@@ -67,6 +70,7 @@ function App() {
             <img src={star} className="star3"></img>
           </BackgroundOpacity>
           <MobileFrame className="MobileFramePage">
+            <div ref={scrollRef} />
             <Switch>
               <Route path="/login" exact component={Login} />
               {/* 로그인 */}

@@ -21,6 +21,7 @@ import { history } from "../redux/configureStore";
 // 소켓 통신
 import StompJs from "stompjs";
 import SockJS from "sockjs-client";
+import ScrollBar from "../components/shared/ScrollBar";
 
 const ChatRoom = ({ match }) => {
   const dispatch = useDispatch();
@@ -163,13 +164,18 @@ const ChatRoom = ({ match }) => {
   };
 
   return (
-    <Grid padding="28px 20px" margin="48px 0">
-      <Grid padding="0" margin="0" style={{ overflowY: "auto" }}>
-        <MessageList roomId={roomId} sendMessage={sendMessage} />
-      </Grid>
-      <div ref={messageRef}></div>
-      <MessageForm sendMessage={sendMessage} />
-    </Grid>
+    <>
+      <ScrollBar height="900px">
+        <Grid padding="28px 20px" margin="48px 0">
+          <Grid padding="0" margin="0" style={{ overflowY: "auto" }}>
+            <MessageList roomId={roomId} sendMessage={sendMessage} />
+          </Grid>
+
+          <div ref={messageRef}></div>
+        </Grid>
+        <MessageForm sendMessage={sendMessage} />
+      </ScrollBar>
+    </>
   );
 };
 
