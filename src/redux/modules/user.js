@@ -66,16 +66,10 @@ const loginDB = (email, password) => {
       })
       .catch((code, message) => {
         console.log("로그인오류입니다!", code, message);
-        dispatch(
-          setWarning(
-            true,
-            "이메일 또는 비밀번호를 다시 확인해주세요."
-          )
-        );
+        dispatch(setWarning(true, "이메일 또는 비밀번호를 다시 확인해주세요."));
       });
   };
 };
-
 
 //닉네임 중복체크
 const nicknameCheck = (nickname) => {
@@ -129,13 +123,15 @@ const emailCheckResend = (email) => {
   };
 };
 
-
 //로그인유저확인
 const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
     userApis
       .useInfo()
       .then((res) => {
+        if (!localStorage.getItem("userId")) {
+          localStorage.setItem("userId", res.data.userId);
+        }
         dispatch(
           setUser({
             //유저정보를 다시 세팅
@@ -160,11 +156,28 @@ const loginBykakao = (code) => {
       .then((res) => {
         console.log(res);
         const ACCESS_TOKEN = res.data.token;
-
-        localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
-        // setCookie("token", ACCESS_TOKEN); // 쿠키로 저장하면 메인갔을 때 쿠키값이 사라짐..
+        setCookie("token", ACCESS_TOKEN);
         history.push("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
-        // history.go(0);
+        // 바로 유저정보 저장하기
+        userApis
+          .useInfo()
+          .then((res) => {
+            if (!localStorage.getItem("userId")) {
+              localStorage.setItem("userId", res.data.userId);
+            }
+            dispatch(
+              setUser({
+                //유저정보를 다시 세팅
+                userId: res.data.userId,
+                email: res.data.email,
+                nickname: res.data.nickname,
+                profileUrl: res.data.profileUrl,
+                count: res.data.dailyCount,
+                level: res.data.levelName,
+              })
+            );
+          })
+          .catch((error) => console.log("유저정보저장오류", error));
       })
       .catch((err) => {
         console.log("소셜로그인 에러", err);
