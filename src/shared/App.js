@@ -1,10 +1,9 @@
-import React ,{ useEffect } from "react";
+import React, { useEffect } from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-
 
 //css
 import { GlobalStyle } from "../styles/globalStyle";
@@ -29,7 +28,7 @@ import ChallengeWrite from "../pages/ChallengeWrite";
 import CategoryMain from "../pages/CategoryMain";
 import Find from "../pages/Find";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
-import { getCookie } from "./cookie";
+import { getCookie, setCookie } from "./cookie";
 import ChatRoom from "../pages/ChatRoom";
 import ChatList from "../pages/ChatList";
 import MyCompleted from "../pages/MyCompleted";
@@ -57,7 +56,7 @@ function App() {
       <GlobalStyle />
       {/* 전역 스타일컴포넌트 */}
       <Wrapper>
-        <ConnectedRouter history={history}>          
+        <ConnectedRouter history={history}>
           <BackgroundOpacity>
             <div className="titleBox t_center">
               <h1>나를 변화시키는 습관</h1>
@@ -206,8 +205,8 @@ const BackgroundOpacity = styled.div`
   left: 0;
   .titleBox {
     position: absolute;
-    top:120px;
-    left:150px;
+    top: 120px;
+    left: 150px;
     z-index: 3;
     h1 {
       font-weight: normal;
@@ -218,17 +217,17 @@ const BackgroundOpacity = styled.div`
     }
   }
   .star1 {
-    animation: star1 4s ease-out  infinite;
+    animation: star1 4s ease-out infinite;
     width: 158px;
     position: absolute;
   }
   .star2 {
-    animation: star2 2.5s ease-out  infinite;
+    animation: star2 2.5s ease-out infinite;
     width: 158px;
     position: absolute;
   }
   .star3 {
-    animation: star3 2.5s ease-out  infinite;
+    animation: star3 2.5s ease-out infinite;
     width: 158px;
     position: absolute;
   }
@@ -237,11 +236,11 @@ const BackgroundOpacity = styled.div`
       opacity: 1;
       top: 0;
       left: 40vw;
-      transform: scale(0.8);      
+      transform: scale(0.8);
     }
     to {
       opacity: 0;
-      top:100vh;
+      top: 100vh;
       left: -30vw;
       transform: scale(0);
     }
@@ -251,11 +250,11 @@ const BackgroundOpacity = styled.div`
       opacity: 1;
       top: 0;
       left: 80vw;
-      transform: scale(1.5);      
+      transform: scale(1.5);
     }
     to {
       opacity: 0;
-      top:100vh;
+      top: 100vh;
       left: 0;
       transform: scale(1);
     }
@@ -265,11 +264,11 @@ const BackgroundOpacity = styled.div`
       opacity: 1;
       top: 0;
       left: 100vw;
-      transform: scale(0.5);      
+      transform: scale(0.5);
     }
     to {
       opacity: 0;
-      top:50vh;
+      top: 50vh;
       left: 60vw;
       transform: scale(0);
     }
