@@ -33,7 +33,7 @@ const ChatRoom = ({ match }) => {
 
   // 방 제목 가져오기
   const currentChat = useSelector((state) => state.chat.currentChat);
-  const roomId = useParams().roomId;
+  const roomId = match.params.roomId;
 
   // 토큰
   const token = getCookie("token");
@@ -165,7 +165,7 @@ const ChatRoom = ({ match }) => {
   return (
     <Grid padding="28px 20px" margin="48px 0">
       <Grid padding="0" margin="0" style={{ overflowY: "auto" }}>
-        <MessageList roomId={roomId} />
+        <MessageList roomId={roomId} sendMessage={sendMessage} />
       </Grid>
       <MessageForm sendMessage={sendMessage} />
     </Grid>

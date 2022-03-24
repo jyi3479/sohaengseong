@@ -21,7 +21,6 @@ const initialState = {
     totalCnt: 0,
   },
   recommend: [],
-  has_next: false,
   is_loading: false,
 };
 

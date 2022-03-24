@@ -33,7 +33,7 @@ function MessageList(props) {
 
   // 스크롤할 div useRef로 접근
   const scrollRef = useRef();
-  // 페이지 입장 후와 메세지가 추가될 때마다 스크롤 이동
+  // 페이지 입장 후 스크롤 이동
   useEffect(() => {
     scrollRef.current.scrollIntoView();
   }, [props.roomId]);

@@ -20,13 +20,11 @@ const ChallengeList = (props) => {
   };
 
   React.useEffect(() => {
-    if (!challengeInfo.page) {
-      if (params === "/") {
-        // 메인페이지에서는 5개만 보여주기 (첫 페이지만 호출하기)
-        dispatch(challengeAction.getChallengeDB(0, 5));
-      } else {
-        dispatch(challengeAction.getChallengeDB(0, 6));
-      }
+    if (params === "/") {
+      // 메인페이지에서는 5개만 보여주기 (첫 페이지만 호출하기)
+      dispatch(challengeAction.getChallengeDB(0, 5));
+    } else {
+      dispatch(challengeAction.getChallengeDB(0, 6));
     }
   }, []);
 
