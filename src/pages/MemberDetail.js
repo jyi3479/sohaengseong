@@ -81,11 +81,10 @@ const MemberDetail = (props) => {
     challengeApis
       .getOneChallenge(challengeId)
       .then((res) => {
-        console.log("한개", res);
         const target = res.data;
         dispatch(targetChallenge(target));
         //헤더&푸터 state
-        dispatch(baseAction.setHeader("행성 정보", false));
+        dispatch(baseAction.setHeader("행성 정보", true));
       })
       .catch((err) => {
         console.log("특정 챌린지 조회 오류", err);

@@ -20,7 +20,7 @@ const MemberMain = (props) => {
   // header, footer 부분
   React.useEffect(() => {
     dispatch(challengeAction.getOneChallengeDB(challengeId));
-    dispatch(baseAction.setHeader("", true));
+    dispatch(baseAction.setHeader("", true,true));
     dispatch(baseAction.setGnb(false));
     return () => {
       dispatch(baseAction.setHeader(""));

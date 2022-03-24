@@ -138,7 +138,7 @@ const ChallengeDetail = (props) => {
             const target = res.data;
             dispatch(targetChallenge(target));
             //헤더&푸터 state
-            dispatch(baseAction.setHeader(target.title,true));
+            dispatch(baseAction.setHeader(target.title,true,true));
         }).catch((err)=>{
             console.log("특정 챌린지 조회 오류",err);
         });
@@ -146,8 +146,7 @@ const ChallengeDetail = (props) => {
         dispatch(baseAction.setGnb(false));
         return()=>{
             dispatch(baseAction.setHeader(false,""));
-            dispatch(baseAction.setGnb(true));
-            
+            dispatch(baseAction.setGnb(true));            
         };
 
     },[]);
