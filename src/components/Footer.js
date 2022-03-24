@@ -12,17 +12,17 @@ import active_chat from "../image/icon/navi/ic_chat_sel@2x.png";
 import my from "../image/icon/navi/ic_profile@2x.png";
 import active_my from "../image/icon/navi/ic_profile_sel@2x.png";
 import LoginModal from "./shared/LoginModal";
-import { set } from "lodash";
 
 
 const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);
   const is_login = useSelector((state) => state.user.user);
-  
+  const params = window.location.pathname;
+
   const [param,setParam] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  
+  console.log("주소확인",params);
 
   const closeModal = () => {
       setModalOpen(false);
@@ -30,7 +30,6 @@ const Footer = (props) => {
 
   const gnbClick = (e,gnbname) => {
     if(is_login === null && gnbname !== "home"){
-      console.log("로그인안함");
       setModalOpen(true);
     }else {
       if(gnbname === "home"){
@@ -42,13 +41,12 @@ const Footer = (props) => {
       }else if(gnbname === "my"){
         history.push("/mypage");
       }
-    }   
+    }
   };
 
-  React.useEffect(()=>{
-    const params = window.location.pathname;
+  React.useEffect(()=>{    
     setParam(params);
-  });
+  },[params]);
 
 
   if(!hide){

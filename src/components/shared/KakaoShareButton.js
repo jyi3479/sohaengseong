@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import kakaoIcon from '../../image/icon/ic_kakao@2x.png'
-import logo from '../../image/logo_xl@2x.png'
+import kakaoIcon from '../../image/icon/share/btn_share_kakao@2x.png'
 
 const KakaoShareButton = (props) => {
 
@@ -64,8 +63,9 @@ const KakaoShareButton = (props) => {
 const KaKaoWrap = styled.div`
   button {
     background-color: #fee500;
+    border:none;
     img {
-      width: 30px;
+      width: 100%;
     }
   }
 `;
