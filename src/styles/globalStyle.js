@@ -209,7 +209,6 @@ export const GlobalStyle = createGlobalStyle`
     .simplebar-scrollbar::before {        
         background: #a2aab3 !important;
         border-radius: 8px;
-        opacity: 1;
     }
 
     
