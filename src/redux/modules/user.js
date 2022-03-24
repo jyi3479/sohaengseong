@@ -157,7 +157,7 @@ const loginBykakao = (code) => {
         console.log(res);
         const ACCESS_TOKEN = res.data.token;
         setCookie("token", ACCESS_TOKEN);
-        history.push("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+        history.push("/"); // 토큰 받았고 로그인됐으니 화면 전환시켜줌(메인으로)
         // 바로 유저정보 저장하기
         userApis
           .useInfo()
