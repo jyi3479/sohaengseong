@@ -22,8 +22,6 @@ const Footer = (props) => {
   const [param,setParam] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  console.log("주소확인",params);
-
   const closeModal = () => {
       setModalOpen(false);
   };
