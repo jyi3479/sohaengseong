@@ -27,6 +27,21 @@ const Header = (props) => {
           <div className="title">
             <h2>{text}</h2>
           </div>
+          <div className="btns">
+            <button 
+              style={{ display: notice ? "block" : "none" }}
+              onClick={()=>{
+                history.push("/category/all");
+              }}
+            ><img src={noticeIconB}></img></button>
+            <button
+              className="search_btn"
+              style={{ display: search ? "block" : "none" }}
+              onClick={() => {
+                history.push("/category/all");
+              }}
+            ><img src={searchIconB} /></button>
+          </div>
         </>
       ) : (
         <>
@@ -105,7 +120,7 @@ const Wrap = styled.div`
     position: absolute;
     right: 16px;
     button {
-      &:first-child { margin-right:12px; }
+      &:last-child { margin-left:12px; }
     }
   }
   >button {
