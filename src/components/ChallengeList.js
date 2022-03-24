@@ -9,6 +9,7 @@ import Card from "./Card";
 import InfinityScroll from "../shared/InfiniteScroll";
 
 const ChallengeList = (props) => {
+  const params = window.location.pathname;
   const dispatch = useDispatch();
   const challengeInfo = useSelector((state) => state.challenge);
   const challenge_list = challengeInfo.list;
@@ -19,30 +20,51 @@ const ChallengeList = (props) => {
   };
 
   React.useEffect(() => {
-    if (!challengeInfo.page) {
+    if (params === "/") {
+      // 메인페이지에서는 5개만 보여주기 (첫 페이지만 호출하기)
+      dispatch(challengeAction.getChallengeDB(0, 5));
+    } else {
       dispatch(challengeAction.getChallengeDB(0, 6));
     }
   }, []);
 
   return (
-    <InfinityScroll
-      callNext={getChallengeList}
-      paging={{ next: challengeInfo.has_next }}
-    >
-      <Box className={props.className}>
-        {challenge_list.map((el, i) => {
-          return (
-            <Card
-              key={el.challengeId}
-              {...el}
-              _onClick={() => {
-                history.push(`/challenge/${el.challengeId}`);
-              }}
-            ></Card>
-          );
-        })}
-      </Box>
-    </InfinityScroll>
+    <>
+      {params === "/" ? (
+        <Box className={props.className}>
+          {challenge_list.map((el, i) => {
+            return (
+              <Card
+                key={el.challengeId}
+                {...el}
+                _onClick={() => {
+                  history.push(`/challenge/${el.challengeId}`);
+                }}
+              ></Card>
+            );
+          })}
+        </Box>
+      ) : (
+        <InfinityScroll
+          callNext={getChallengeList}
+          paging={{ next: challengeInfo.has_next }}
+        >
+          <Box className={props.className}>
+            {challenge_list.map((el, i) => {
+              return (
+                <Card
+                  key={el.challengeId}
+                  {...el}
+                  _onClick={() => {
+                    history.push(`/challenge/${el.challengeId}`);
+                  }}
+                ></Card>
+              );
+            })}
+          </Box>
+        </InfinityScroll>
+      )}
+    </>
   );
 };
 

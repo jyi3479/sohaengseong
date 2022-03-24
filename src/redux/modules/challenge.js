@@ -200,6 +200,7 @@ export default handleActions(
         if (action.payload.challenge_data.page > 1) {
           draft.list.push(...action.payload.challenge_data.challenge_list);
         } else {
+          // 처음 요청할 때는 list 초기화 시키기
           draft.list = action.payload.challenge_data.challenge_list;
         }
 
