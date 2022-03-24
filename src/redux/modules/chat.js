@@ -91,7 +91,6 @@ const getChatListDB = () => {
       .getChatList()
       .then((res) => {
         dispatch(getChat(res.data));
-        console.log("채팅방 목록 조회", res.data);
       })
       .catch((err) => {
         console.log("채팅방 목록 조회 오류", err);
@@ -108,7 +107,6 @@ const getChatMessagesDB = (roomId, page, size) => {
         const chatRoomInfo = res.data;
         const chatMessagesArray = chatRoomInfo.messageList;
         dispatch(setMessages(chatRoomInfo, chatMessagesArray, page + 1));
-        console.log("채팅방 메시지 조회", res.data);
       })
       .catch((err) => {
         console.log("채팅방 메시지 조회 오류", err);

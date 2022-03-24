@@ -52,7 +52,6 @@ const getOnePostDB = (challengeId, postId, page, size) => {
     memberApis
       .getOnePost(+challengeId, postId, page, size)
       .then((res) => {
-        console.log("인증게시글 특정 조회 성공", res);
         let is_next = null;
         if (res.data.next) {
           is_next = true;
@@ -75,11 +74,9 @@ const getOnePostDB = (challengeId, postId, page, size) => {
 
 const getPostDB = (challengeId, page, size) => {
   return function (dispatch, getState, { history }) {
-    console.log(+challengeId);
     memberApis
       .getPost(+challengeId, page, size)
       .then((res) => {
-        console.log("인증게시글 전체 조회 성공", res);
         let is_next = null;
         if (res.data.next) {
           is_next = true;
@@ -115,11 +112,9 @@ const addPostDB = (challengeId, post) => {
 
 const deletePostDB = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log(+postId);
     memberApis
       .deletePost(+postId)
       .then((res) => {
-        console.log("인증 게시글 삭제", res);
         dispatch(deletePost(+postId));
       })
       .catch((err) => {
@@ -137,7 +132,6 @@ const addCommentDB = (postId, content) => {
         content: content,
       })
       .then((res) => {
-        console.log("댓글 작성", res);
         const comment = {
           levelName: userInfo.level,
           nickname: userInfo.nickname,
@@ -159,7 +153,6 @@ const deleteCommentDB = (postId, commentId) => {
     memberApis
       .deleteComment(+commentId)
       .then((res) => {
-        console.log("댓글 삭제", res);
         dispatch(deleteComment(postId, commentId));
       })
       .catch((err) => {
@@ -173,7 +166,6 @@ const exitChallengeDB = (challengeId) => {
     memberApis
       .exitChallenge(challengeId)
       .then((res) => {
-        console.log("챌린지 나가기", res);
         history.replace("/");
       })
       .catch((err) => console.log("챌린지 나가기 오류", err));
@@ -185,7 +177,6 @@ const getReportDB = (challengeId, startDate) => {
     memberApis
       .getReport(challengeId, startDate)
       .then((res) => {
-        console.log("리포트 조회", res);
         dispatch(getReport(res.data));
       })
       .catch((err) => {

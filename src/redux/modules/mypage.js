@@ -21,7 +21,6 @@ const getMyInfoDB = (userId) => {
     mypageApis
       .getMyInfo(userId)
       .then((res) => {
-        console.log("마이페이지 유저 정보 조회 성공", res);
         dispatch(getMyInfo(res.data));
       })
       .catch((err) => {
@@ -35,7 +34,6 @@ const getMyChallengeDB = (userId) => {
     mypageApis
       .getMyChallenge(userId)
       .then((res) => {
-        console.log("마이페이지 챌린지 조회 성공", res);
         const list = res.data;
         dispatch(getMyChallenge(list));
       })
