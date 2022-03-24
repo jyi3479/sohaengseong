@@ -26,7 +26,6 @@ const initialState = {
 
 const getSearchDB = (word, page, size) => {
   return function (dispatch, getState, { history }) {
-    console.log("검색어", word);
     searchApis
       .getSearch(word, page, size)
       .then((res) => {

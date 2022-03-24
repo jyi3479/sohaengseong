@@ -82,7 +82,6 @@ const getOneChallengeDB = (challengeId) => {
       .then((res) => {
         const target = res.data;
         dispatch(targetChallenge(target));
-        console.log("특정 챌린지 조회", res.data);
       })
       .catch((err) => {
         console.log("특정 챌린지 조회 오류", err);
@@ -95,7 +94,6 @@ const joinChallengeDB = (challengeId) => {
     challengeApis
       .joinChallenge(challengeId)
       .then((res) => {
-        console.log("챌린지 참여하기", res);
         history.push(`/member/${challengeId}`);
       })
       .catch((err) => {
@@ -115,7 +113,6 @@ const addChallengeDB = (challenge) => {
         dispatch(
           chatAction.createRoomDB({ challengeId: res.data.challengeId })
         );
-        console.log("챌린지 등록", res);
         history.replace("/today");
       })
       .catch((err) => {
@@ -129,7 +126,6 @@ const editChallengeDB = (challengeId, challenge) => {
     challengeApis
       .editChallenge(challengeId, challenge)
       .then((res) => {
-        console.log("챌린지 수정", res);
         history.replace(`/member/detail/${challengeId}`);
       })
       .catch((err) => {
@@ -140,11 +136,9 @@ const editChallengeDB = (challengeId, challenge) => {
 
 const deleteChallengeDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
-    console.log("챌린지 삭제", challengeId);
     challengeApis
       .deleteChallenge(challengeId)
       .then((res) => {
-        console.log("챌린지 삭제", res);
         history.replace("/");
       })
       .catch((err) => {
@@ -156,12 +150,10 @@ const deleteChallengeDB = (challengeId) => {
 
 const categoryChallengeDB = (categoryId, page, size) => {
   return function (dispatch, getState, { history }) {
-    console.log("카테고리", categoryId);
 
     challengeApis
       .categoryChallenge(categoryId, page, size)
       .then((res) => {
-        console.log("카테고리 챌린지", res);
         let is_next = null;
         if (res.data.next) {
           is_next = true;

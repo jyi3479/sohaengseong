@@ -74,11 +74,9 @@ const loginDB = (email, password) => {
 //닉네임 중복체크
 const nicknameCheck = (nickname) => {
   return function (dispatch, getState, { history }) {
-    console.log(nickname);
     userApis
       .nicknameCheck(nickname)
       .then((res) => {
-        console.log(res.data);
         dispatch(nickCheck(res.data));
       })
       .catch((err) => {
@@ -90,8 +88,6 @@ const nicknameCheck = (nickname) => {
 //인증 메일 확인
 const emailCheckToken = () => {
   return function (dispatch, getState, { history }) {
-    console.log(emailCheckToken);
-
     userApis
       .emailCheckToken()
       .then((res) => {
@@ -109,11 +105,9 @@ const emailCheckResend = (email) => {
     const mail = {
       email: email,
     };
-    console.log(mail);
     userApis
       .emailCheckResend(mail)
       .then((res) => {
-        console.log(res);
         alert("인증메일이 재전송되었습니다");
       })
       .catch((code, message) => {
@@ -154,7 +148,6 @@ const loginBykakao = (code) => {
     userApis
       .loginByKakao(code)
       .then((res) => {
-        console.log(res);
         const ACCESS_TOKEN = res.data.token;
         setCookie("token", ACCESS_TOKEN);
         history.push("/"); // 토큰 받았고 로그인됐으니 화면 전환시켜줌(메인으로)
@@ -189,7 +182,6 @@ const loginBykakao = (code) => {
 //로그아웃 get
 const logOutAction = () => {
   return function (dispatch, getState, { history }) {
-    console.log("로그아웃 눌림");
     deleteCookie("token"); // 쿠키에서 토큰 삭제
     localStorage.removeItem("userId");
     dispatch(logOut());

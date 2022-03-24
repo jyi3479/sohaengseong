@@ -18,7 +18,6 @@ const getRankingDB = () => {
     return function (dispatch, getState, {history}) {
         mainApis.ranking()
         .then((res)=>{
-            console.log("랭킹불러오기",res);
             dispatch(getRank(res.data));
         }).catch((err)=>{
             console.log("랭킹불러오기 실패",err);
