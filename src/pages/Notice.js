@@ -26,9 +26,9 @@ const Notice = (props) => {
         <>
             <Grid margin="48px 0 0" padding="9px 0 20px">
                 <p className="small sub_color" style={{padding:"0 20px"}}>* 알림 내역은 최대 7일간 보관 후 자동 삭제됩니다.</p>
-                <NoticeList>
+                {/* <NoticeList>
                     <NoticeCard/>
-                </NoticeList>
+                </NoticeList> */}
                 <NotFound className="t_center">
                     <img src={Notfound}/>
                     <h2 className="mt16" style={{color:"#000"}}>검색 결과가 없습니다.</h2>

@@ -59,7 +59,7 @@ const ChatRoom = ({ match }) => {
   // 서버에서 이전 메세지 가져오기
   React.useEffect(() => {
     dispatch(chatAction.getChatMessagesDB(roomId, 0, 10));
-  }, [roomId]);
+  }, []);
 
   // 웹소켓 연결, 구독
   const wsConnectSubscribe = useCallback(() => {
@@ -126,6 +126,7 @@ const ChatRoom = ({ match }) => {
       0.1 // 밀리초 간격으로 실행
     );
   };
+  const messageRef = useRef();
 
   // 메시지 보내기
   const sendMessage = (message) => {
@@ -146,7 +147,6 @@ const ChatRoom = ({ match }) => {
       if (message === "") {
         return;
       }
-
       waitForConnection(client, () => {
         client.send(
           "/pub/chat/message",
@@ -155,6 +155,7 @@ const ChatRoom = ({ match }) => {
           },
           JSON.stringify(data)
         );
+        messageRef.current.scrollIntoView();
       });
     } catch (error) {
       console.log(error);
@@ -166,6 +167,7 @@ const ChatRoom = ({ match }) => {
       <Grid padding="0" margin="0" style={{ overflowY: "auto" }}>
         <MessageList roomId={roomId} sendMessage={sendMessage} />
       </Grid>
+      <div ref={messageRef}></div>
       <MessageForm sendMessage={sendMessage} />
     </Grid>
   );

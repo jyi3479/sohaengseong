@@ -17,35 +17,32 @@ const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);
   const is_login = useSelector((state) => state.user.user);
 
-
   const [params, setParams] = React.useState(window.location.pathname);
   const [modalOpen, setModalOpen] = React.useState(false);
-  
+
   const closeModal = () => {
     setModalOpen(false);
   };
-
 
   const gnbClick = (e, gnbname) => {
     if (is_login === null && gnbname !== "home") {
       setModalOpen(true);
     } else {
       if (gnbname === "home") {
-        setParams("/");
         history.push("/");
+        setParams("/");
       } else if (gnbname === "write") {
-        setParams("/challengewrite");
         history.push("/challengewrite");
+        setParams("/challengewrite");
       } else if (gnbname === "chat") {
-        setParams("/chatting");
         history.push("/chatting");
+        setParams("/chatting");
       } else if (gnbname === "my") {
-        setParams("/mypage");
         history.push("/mypage");
+        setParams("/mypage");
       }
     }
   };
-
 
   if (!hide) {
     return null;
@@ -120,4 +117,3 @@ const Wrap = styled.div`
 `;
 
 export default Footer;
-

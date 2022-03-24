@@ -9,9 +9,13 @@ import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as searchActions } from "../redux/modules/search";
 import _ from "lodash";
 
+//스크롤바 커스텀
+import ScrollBar from "../components/shared/ScrollBar";
+
 //img import
 import notfound from "../image/icon/ic_empty_l@2x.png";
 import InfinityScroll from "../shared/InfiniteScroll";
+
 
 const CategoryTab = () => {
   const dispatch = useDispatch();
@@ -110,8 +114,10 @@ const CategoryTab = () => {
       />
 
       <Grid padding="0">
-        <Wrap>
+        <Wrap>                 
           <TabWrap className="tab_wrap">
+          <ScrollBar width="500px" direction="ltr">
+          <div style={{ display: "flex", whiteSpace: "nowrap"}}>     
             <Tab
               type="button"
               className={tabId === "all" ? "active" : ""}
@@ -203,7 +209,11 @@ const CategoryTab = () => {
             >
               친환경
             </Tab>
+            </div>
+            </ScrollBar>
           </TabWrap>
+          
+          
           <Grid padding="0" margin="87px 0 0">
             <p className="count poppins">
               총
@@ -350,21 +360,10 @@ const TabWrap = styled.div`
   left: 0;
   top: 48px;
   padding: 12px 20px 0;
-  white-space: nowrap;
   overflow: auto;
   background-color: #fff;
   border-bottom: 1px solid #e4e5e6;
   z-index: 5;
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 8px;
-    background: #f4f6fa;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #a2aab3;
-    border-radius: 6px;
-  }
 `;
 
 const Tab = styled.button`

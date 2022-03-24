@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { Grid } from "../../elements";
 import close from "../../image/icons/ic_delete_m.png";
 
+//스크롤바 커스텀
+import ScrollBar from "../../components/shared/ScrollBar";
+
 const Container = styled.div`
   position: absolute;
   width: 100%;
@@ -40,7 +43,7 @@ const ModalBlock = styled.div`
   border-radius: 8px;
   background-color: #fff;
   width: 316px;
-  min-height: 35rem;
+  min-height: 400px;
   animation: modal-show 0.5s;
   @keyframes modal-show {
     from {
@@ -81,8 +84,9 @@ const MemberModal = ({ state, _handleModal, children, ...rest }) => {
           <h3 className="mt4">멤버 리스트</h3>
           <Close onClick={_handleModal} />
         </Grid>
-
-        <Contents>{children}</Contents>
+        <ScrollBar height="341px">
+          <Contents>{children}</Contents>
+        </ScrollBar>        
       </ModalBlock>
     </Container>
   ) : (

@@ -199,4 +199,19 @@ export const GlobalStyle = createGlobalStyle`
     }
 
 
+    //scrollbar custom ------------------------
+
+    .simplebar-track.simplebar-vertical , .simplebar-track.simplebar-horizontal {
+        background-color:#f4f6fa;
+        border-radius: 8px;
+    }
+
+    .simplebar-scrollbar::before {        
+        background: #a2aab3 !important;
+        border-radius: 8px;
+        opacity: 1;
+    }
+
+    
+
 `;

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // 리덕스 접근
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,8 @@ function MessageList(props) {
   // redux에 저장한 이전 메세지 가져오기
   const currentChat = useSelector((state) => state.chat.currentChat);
   const messages = useSelector((state) => state.chat.messages);
+
+  const [scrollId, setScrollId] = useState();
 
   // 날짜별로 분류하기
   //1) 받아온 데이터 중 존재하는 날짜값만 가져오기
@@ -33,13 +35,24 @@ function MessageList(props) {
 
   // 스크롤할 div useRef로 접근
   const scrollRef = useRef();
+  const infinityRef = useRef();
   // 페이지 입장 후 스크롤 이동
   useEffect(() => {
-    scrollRef.current.scrollIntoView();
-  }, [props.roomId]);
+    if (currentChat.page > 1) {
+      console.log(
+        currentChat.messageList[currentChat.messageList.length - 1].id
+      );
+      setScrollId(
+        currentChat.messageList[currentChat.messageList.length - 1].id
+      );
+      infinityRef.current?.scrollIntoView();
+    } else {
+      scrollRef.current.scrollIntoView();
+    }
+  }, [messageSortArr]);
 
   const getMessageList = () => {
-    dispatch(chatAction.getChatMessagesDB(props.roomId, currentChat.page, 5));
+    dispatch(chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10));
   };
 
   return (
@@ -64,7 +77,16 @@ function MessageList(props) {
 
                   <MessageBox className="chat-window card">
                     {el.messageArr.map((message, index) => {
-                      return <MessageItem key={index} {...message} />;
+                      if (scrollId && scrollId === message.id) {
+                        return (
+                          <div key={index} ref={infinityRef}>
+                            {" "}
+                            <MessageItem {...message} />
+                          </div>
+                        );
+                      } else {
+                        return <MessageItem key={index} {...message} />;
+                      }
                     })}
                   </MessageBox>
                 </div>
