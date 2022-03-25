@@ -28,17 +28,7 @@ const InfinityScroll = ({
     };
   }, [paging]);
 
-  // 스크롤할 div useRef로 접근
-  const scrollRef = useRef();
-  // 채팅 무한스크롤 시 스크롤
-  useEffect(() => {
-    // if (isChat) {
-    //   console.log(isFirst);
-    //   if (isFirst !== 1) {
-    //     scrollRef.current.scrollIntoView();
-    //   }
-    // }
-  }, [callNext]);
+
 
   return (
     <>
@@ -53,7 +43,7 @@ const InfinityScroll = ({
       )}
       {isChat && (
         <>
-          <div ref={scrollRef}> </div>
+
 
           {children}
         </>

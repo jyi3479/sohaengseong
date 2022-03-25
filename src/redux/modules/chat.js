@@ -16,8 +16,6 @@ const CLEAR_MESSAGES = "CLEAR_MESSAGES";
 const SET_MESSAGES = "SET_MESSAGES";
 // 로딩을 다루는 액션
 const IS_LOADING = "IS_LOADING";
-// 로딩 완료 액션
-const IS_LOADED = "IS_LOADED";
 // 입장한 채팅방 정보를 없애기
 const CLEAR_CURRENTCHAT = "CLEAR_CURRENTCHAT";
 
@@ -39,9 +37,8 @@ const setMessages = createAction(
   })
 );
 
-const isLoading = createAction(IS_LOADING, () => ({}));
+const isLoading = createAction(IS_LOADING, (loading) => ({loading}));
 
-const isLoaded = createAction(IS_LOADED, () => ({}));
 
 const clearCurrentChat = createAction(CLEAR_CURRENTCHAT, () => ({}));
 
@@ -136,6 +133,9 @@ export default handleActions(
     [CLEAR_MESSAGES]: (state, action) =>
       produce(state, (draft) => {
         draft.messages = [];
+        draft.currentChat.page = 0;
+        draft.currentChat.roomId = null;
+        draft.currentChat.roomName = null;
       }),
 
     [SET_MESSAGES]: (state, action) =>
@@ -148,16 +148,14 @@ export default handleActions(
         draft.currentChat = action.payload.chatRoomInfo;
 
         draft.currentChat.page = action.payload.page;
+        draft.loading = false;
       }),
 
     [IS_LOADING]: (state, action) =>
       produce(state, (draft) => {
-        draft.loading = false;
+        draft.loading = action.payload.loading;
       }),
-    [IS_LOADED]: (state, action) =>
-      produce(state, (draft) => {
-        draft.loading = true;
-      }),
+ 
     [CLEAR_CURRENTCHAT]: (state, action) =>
       produce(state, (draft) => {
         draft.currentChat.roomId = null;
@@ -175,7 +173,6 @@ const actionCreators = {
   getMessages,
   clearMessages,
   isLoading,
-  isLoaded,
   clearCurrentChat,
   getChat,
 };

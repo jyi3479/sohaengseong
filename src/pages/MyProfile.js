@@ -187,7 +187,15 @@ const MyProfile = (props) => {
 
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap>
-                <Input
+              {userInfo.kakao?( <Input
+                  type="password"
+                  label="새 비밀번호"
+                  value={password}
+                  is_submit
+                  placeholder="카카오 사용자입니다."
+                  disabled
+                
+                />):( <Input
                   type="password"
                   label="새 비밀번호"
                   value={password}
@@ -201,7 +209,8 @@ const MyProfile = (props) => {
                       ? "green"
                       : "red"
                   }
-                />
+                />)}
+               
                 <span
                   className={
                     password.length === 0
@@ -222,7 +231,15 @@ const MyProfile = (props) => {
 
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap>
-                <Input
+              {userInfo.kakao?( <Input
+                  type="password"
+                  label="비밀번호 확인"
+                  value={passwordCheck}
+                  is_submit
+                  placeholder="카카오 사용자입니다."
+                  disabled
+                
+                />):(  <Input
                   type="password"
                   label="비밀번호 확인"
                   value={passwordCheck}
@@ -236,7 +253,8 @@ const MyProfile = (props) => {
                       ? "green"
                       : "red"
                   }
-                />
+                />)}
+               
                 <span
                   className={
                     passwordCheck.length === 0
