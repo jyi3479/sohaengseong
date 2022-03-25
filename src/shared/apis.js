@@ -2,7 +2,6 @@ import axios from "axios";
 import { getCookie } from "./cookie";
 
 const token = getCookie("token");
-const server_port = process.env.REACT_APP_SERVER_PORT;
 
 export const apis = axios.create({
   baseURL: "https://byungmin.shop", //서버 주소
