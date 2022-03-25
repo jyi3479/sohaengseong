@@ -71,7 +71,7 @@ function MessageList(props) {
                 <div key={idx}>
                   {el.date && (
                     <p className="caption sub_color t_center">
-                      {moment(el.date).format("YYYY년 MM월 DD일")}
+                      {moment(el.date, "YYYY.MM.DD").format("YYYY년 MM월 DD일")}
                     </p>
                   )}
 
