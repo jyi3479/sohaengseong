@@ -16,7 +16,6 @@ import ScrollBar from "../components/shared/ScrollBar";
 import notfound from "../image/icon/ic_empty_l@2x.png";
 import InfinityScroll from "../shared/InfiniteScroll";
 
-
 const CategoryTab = () => {
   const dispatch = useDispatch();
   const location = window.location.pathname;
@@ -69,17 +68,20 @@ const CategoryTab = () => {
   React.useEffect(() => {
     setPage(0);
     dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
+    console.log(Boolean(" "));
     if (!page) {
       if (tabId === "all") {
-        //전체 리스트 불러오기
-        dispatch(challengeAction.getChallengeDB(0, 6));
+        if (!word) {
+          //전체 리스트 불러오기
+          dispatch(challengeAction.getChallengeDB(0, 6));
+        }
       } else {
         //전체 탭이 아닐경우 카테고리 리스트 불러오기
         dispatch(challengeAction.categoryChallengeDB(tabId, 0, 6));
         setFocus(false);
       }
     }
-  }, [tabId]);
+  }, [tabId, word]);
 
   // 무한스크롤 callNext 함수들
   const getChallengeList = () => {
@@ -114,106 +116,105 @@ const CategoryTab = () => {
       />
 
       <Grid padding="0">
-        <Wrap>                 
+        <Wrap>
           <TabWrap className="tab_wrap">
-          <ScrollBar width="500px" direction="ltr">
-          <div style={{ display: "flex", whiteSpace: "nowrap"}}>     
-            <Tab
-              type="button"
-              className={tabId === "all" ? "active" : ""}
-              onClick={() => {
-                setSearch_list("");
-                history.push(`/category/all`);
-              }}
-            >
-              전체
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "1" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/1`);
-              }}
-            >
-              일상 루틴
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "2" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/2`);
-              }}
-            >
-              운동
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "3" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/3`);
-              }}
-            >
-              스터디
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "4" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/4`);
-              }}
-            >
-              식습관
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "5" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/5`);
-              }}
-            >
-              힐링
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "6" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/6`);
-              }}
-            >
-              취미
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "7" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/7`);
-              }}
-            >
-              셀프케어
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "8" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/8`);
-              }}
-            >
-              펫
-            </Tab>
-            <Tab
-              type="button"
-              className={tabId === "9" ? "active" : ""}
-              onClick={() => {
-                history.push(`/category/9`);
-              }}
-            >
-              친환경
-            </Tab>
-            </div>
+            <ScrollBar width="500px" direction="ltr">
+              <div style={{ display: "flex", whiteSpace: "nowrap" }}>
+                <Tab
+                  type="button"
+                  className={tabId === "all" ? "active" : ""}
+                  onClick={() => {
+                    setSearch_list("");
+                    history.push(`/category/all`);
+                  }}
+                >
+                  전체
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "1" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/1`);
+                  }}
+                >
+                  일상 루틴
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "2" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/2`);
+                  }}
+                >
+                  운동
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "3" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/3`);
+                  }}
+                >
+                  스터디
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "4" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/4`);
+                  }}
+                >
+                  식습관
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "5" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/5`);
+                  }}
+                >
+                  힐링
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "6" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/6`);
+                  }}
+                >
+                  취미
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "7" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/7`);
+                  }}
+                >
+                  셀프케어
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "8" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/8`);
+                  }}
+                >
+                  펫
+                </Tab>
+                <Tab
+                  type="button"
+                  className={tabId === "9" ? "active" : ""}
+                  onClick={() => {
+                    history.push(`/category/9`);
+                  }}
+                >
+                  친환경
+                </Tab>
+              </div>
             </ScrollBar>
           </TabWrap>
-          
-          
+
           <Grid padding="0" margin="87px 0 0">
             <p className="count poppins">
               총
