@@ -49,6 +49,9 @@ export const userApis = {
   //로그인 유저 확인
   useInfo: () => apis.get("/auth/user-info"),
 
+  //알림
+  getNotice: () => apis.get("/notice"),
+
   //인증 메일 확인
   emailCheckToken: () => apis.get("/auth/check-email-token"),
 
