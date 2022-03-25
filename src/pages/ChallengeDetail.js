@@ -348,7 +348,7 @@ const ShareBtn = styled.button` //공유버튼
     background-repeat: no-repeat;
     background-size:cover;
     background-position: center;
-    z-index: 10;
+    z-index: 100;
 `;
 
 const TitleBox = styled.div`

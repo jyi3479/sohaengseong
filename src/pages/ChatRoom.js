@@ -109,6 +109,7 @@ const ChatRoom = ({ match }) => {
     wsConnectSubscribe();
     return () => {
       wsDisConnectUnsubscribe();
+      dispatch(chatAction.clearMessages());
     };
   }, [roomId]);
 

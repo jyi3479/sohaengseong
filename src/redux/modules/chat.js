@@ -136,6 +136,9 @@ export default handleActions(
     [CLEAR_MESSAGES]: (state, action) =>
       produce(state, (draft) => {
         draft.messages = [];
+        draft.currentChat.page = 0;
+        draft.currentChat.roomId = null;
+        draft.currentChat.roomName = null;
       }),
 
     [SET_MESSAGES]: (state, action) =>
