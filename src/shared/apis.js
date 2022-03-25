@@ -1,8 +1,6 @@
 import axios from "axios";
 import { getCookie } from "./cookie";
 
-const token = getCookie("token");
-
 export const apis = axios.create({
   baseURL: "https://byungmin.shop", //서버 주소
 });
