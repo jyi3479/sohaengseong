@@ -38,7 +38,7 @@ const ShareLink = (props) => {
 
 
     const onCopy = () => {
-        console.log("카피했당!");
+        //console.log("카피했당!");
         dispatch(setCopy(true));
     };
 
