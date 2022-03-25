@@ -61,7 +61,12 @@ const MyLevel = (props) => {
               <Button
                 small_btn
                 onClick={() => {
-                  history.push("/mypage/profile");
+                  if(my_level.kakao){
+                    history.push("/mypage/profile/edit");
+                  } else {
+                    history.push("/mypage/profile");
+                  }
+                
                 }}
               >
                 편집

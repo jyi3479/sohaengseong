@@ -14,8 +14,10 @@ function MessageList(props) {
   // redux에 저장한 이전 메세지 가져오기
   const currentChat = useSelector((state) => state.chat.currentChat);
   const messages = useSelector((state) => state.chat.messages);
+  const loading = useSelector((state) => state.chat.loading);
 
   const [scrollId, setScrollId] = useState();
+  const [isNext, setIsNext] = useState(false);
 
   // 날짜별로 분류하기
   //1) 받아온 데이터 중 존재하는 날짜값만 가져오기
@@ -38,7 +40,7 @@ function MessageList(props) {
   const infinityRef = useRef();
   // 페이지 입장 후 스크롤 이동
   useEffect(() => {
-    if (currentChat.page > 1) {
+    if (currentChat.next) {
       console.log(
         currentChat.messageList[currentChat.messageList.length - 1].id
       );
@@ -46,13 +48,20 @@ function MessageList(props) {
         currentChat.messageList[currentChat.messageList.length - 1].id
       );
       infinityRef.current?.scrollIntoView();
-    } else {
-      scrollRef.current.scrollIntoView();
     }
   }, [messageSortArr]);
 
+  useEffect(() => {
+    scrollRef.current.scrollIntoView();
+  }, []);
+
   const getMessageList = () => {
-    dispatch(chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10));
+    if (!loading) {
+      dispatch(
+        chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10)
+      );
+      dispatch(chatAction.isLoading(true));
+    }
   };
 
   return (

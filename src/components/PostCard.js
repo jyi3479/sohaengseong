@@ -40,7 +40,6 @@ const PostCard = (props) => {
   // 댓글 정보
   const comments = props.comments;
   const no_comment = comments && props.commentCnt === 0;
-  console.log(props);
 
   // 특정 챌린지 멤버 정보
   const target = useSelector((state) => state.challenge.target);

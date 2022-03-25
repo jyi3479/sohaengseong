@@ -18,9 +18,8 @@ import InfinityScroll from "../shared/InfiniteScroll";
 
 const CategoryTab = () => {
   const dispatch = useDispatch();
-  const location = window.location.pathname;
+  const location = useSelector((state) => state.router.location.pathname);
   const tabId = location.split("/")[2];
-  // const tabId = match.params.categoryId;
 
   const [word, setWord] = React.useState("");
   const [search_list, setSearch_list] = React.useState("");
