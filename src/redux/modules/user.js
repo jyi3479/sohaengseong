@@ -10,6 +10,7 @@ const LOGOUT = "LOGOUT";
 const SET_USER = "SET_USER";
 const NICK_CHECK = "NICK_CHECK";
 const SET_WARNING = "SET_WARNING";
+const SET_NOTICE = "GET_NOTICE";
 
 const logIn = createAction(LOGIN, (is_login) => ({ is_login }));
 const logOut = createAction(LOGOUT, (user) => ({ user }));
@@ -24,6 +25,7 @@ const setWarning = createAction(SET_WARNING, (detail, text) => ({
   detail,
   text,
 }));
+const setNotice =  createAction(SET_NOTICE, (notice) => ({notice}));
 
 const initialState = {
   user: null,
@@ -33,6 +35,7 @@ const initialState = {
     detail: false,
     text: "",
   },
+  notice:[],
 };
 
 //로그인
@@ -189,6 +192,19 @@ const logOutAction = () => {
   };
 };
 
+//알림
+const getNoticeDB = () => {
+  return function (dispatch, getState, { history }) {
+    userApis.getNotice()
+    .then((res) => {
+        console.log("알림",res);
+        dispatch(setNotice(res.data));
+    }).catch((err)=>{
+        console.log("알림 에러",err);
+    })
+  };
+};
+
 export default handleActions(
   {
     [SET_USER]: (state, action) =>
@@ -210,6 +226,10 @@ export default handleActions(
         draft.setwarning.detail = action.payload.detail;
         draft.setwarning.text = action.payload.text;
       }),
+    [SET_NOTICE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.notice = action.payload.notice;
+      }),
   },
   initialState
 );
@@ -223,6 +243,7 @@ const ActionCreators = {
   emailCheckToken,
   loginBykakao,
   emailCheckResend,
+  getNoticeDB,
 };
 
 export { ActionCreators };
