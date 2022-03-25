@@ -61,12 +61,11 @@ const MyLevel = (props) => {
               <Button
                 small_btn
                 onClick={() => {
-                  if(my_level.kakao){
+                  if (my_level.kakao) {
                     history.push("/mypage/profile/edit");
                   } else {
                     history.push("/mypage/profile");
                   }
-                
                 }}
               >
                 편집
@@ -75,7 +74,7 @@ const MyLevel = (props) => {
             <Progress my_level={my_level} />
           </MyContainer>
           <MyPlanet>
-            <img src={my_level.levelIcon}/>
+            <img src={my_level.levelIcon} />
           </MyPlanet>
         </Wrap>
       )}

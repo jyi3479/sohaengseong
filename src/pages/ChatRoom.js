@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useMemo } from "react";
+import React, { useRef, useCallback, useMemo, useState } from "react";
 import * as baseAction from "../redux/modules/base";
 
 // Components
@@ -39,6 +39,8 @@ const ChatRoom = ({ match }) => {
 
   const userId = +localStorage.getItem("userId");
 
+  const [isMy, setIsMy] = useState(false);
+
   // 헤더&푸터 state (채팅방 바뀔 때마다 헤더 바뀌도록)
   React.useEffect(() => {
     dispatch(
@@ -60,12 +62,11 @@ const ChatRoom = ({ match }) => {
   // 서버에서 이전 메세지 가져오기
   React.useEffect(() => {
     dispatch(chatAction.getChatMessagesDB(roomId, 0, 10));
-    dispatch(chatAction.isLoading(true))
+    dispatch(chatAction.isLoading(true));
     // messageRef.current.scrollIntoView();
   }, []);
 
-    // 페이지 입장 후 스크롤 이동
-
+  // 페이지 입장 후 스크롤 이동
 
   // 웹소켓 연결, 구독
   const wsConnectSubscribe = useCallback(() => {
@@ -155,7 +156,7 @@ const ChatRoom = ({ match }) => {
         return;
       }
       waitForConnection(client, () => {
-        messageRef.current.scrollIntoView({behavior:"smooth"});
+        // messageRef.current.scrollIntoView({ behavior: "smooth" });
         client.send(
           "/pub/chat/message",
           {
@@ -163,25 +164,29 @@ const ChatRoom = ({ match }) => {
           },
           JSON.stringify(data)
         );
-       
+        setIsMy(true);
       });
     } catch (error) {
       console.log(error);
     }
   };
 
-
   return (
     <>
       <Grid padding="0" margin="48px 0">
         <ScrollBar height="calc(100vh - 108px)">
           <Grid padding="28px 20px" margin="0" style={{ overflowY: "auto" }}>
-            <MessageList roomId={roomId} sendMessage={sendMessage} />
+            <MessageList
+              roomId={roomId}
+              sendMessage={sendMessage}
+              setIsMy={setIsMy}
+              isMy={isMy}
+            />
           </Grid>
+          <div ref={messageRef}></div>
         </ScrollBar>
-      
       </Grid>
-      <div ref={messageRef}></div>
+
       <MessageForm sendMessage={sendMessage} />
     </>
   );
