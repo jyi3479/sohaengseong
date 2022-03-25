@@ -74,8 +74,6 @@ const ChallengeDetail = (props) => {
 
     //클립보드에 복사완료 됐는지 
     const copy = useSelector(state => state.base.copy);
-
-    console.log("카피됐나?",copy,copyShow);
    
     const joinModal = () => {
         if(!target.isPrivate){
