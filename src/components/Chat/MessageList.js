@@ -38,22 +38,6 @@ function MessageList(props) {
   // 스크롤할 div useRef로 접근
   const scrollRef = useRef();
   const infinityRef = useRef();
-  // 페이지 입장 후 스크롤 이동
-  useEffect(() => {
-    if (currentChat.next) {
-      console.log(
-        currentChat.messageList[currentChat.messageList.length - 1].id
-      );
-      setScrollId(
-        currentChat.messageList[currentChat.messageList.length - 1].id
-      );
-      infinityRef.current?.scrollIntoView();
-    }
-  }, [messageSortArr]);
-
-  useEffect(() => {
-    scrollRef.current.scrollIntoView();
-  }, []);
 
   const getMessageList = () => {
     if (!loading) {
@@ -61,8 +45,25 @@ function MessageList(props) {
         chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10)
       );
       dispatch(chatAction.isLoading(true));
+      props.setIsMy(false);
     }
   };
+  // 페이지 입장 후 스크롤 이동
+  useEffect(() => {
+    console.log(currentChat.page > 1 && !props.isMy);
+    if (currentChat.page > 1 && !props.isMy) {
+      setScrollId(
+        currentChat.messageList[currentChat.messageList.length - 1].id
+      );
+      infinityRef.current?.scrollIntoView();
+    } else {
+      scrollRef.current.scrollIntoView();
+    }
+  }, [getMessageList]);
+
+  // useEffect(() => {
+  //   scrollRef.current.scrollIntoView();
+  // }, []);
 
   return (
     <>
@@ -72,7 +73,6 @@ function MessageList(props) {
             callNext={getMessageList}
             paging={{ next: currentChat.next }}
             isChat
-            isFirst={currentChat.page}
           >
             {" "}
             {messageSortArr.map((el, idx) => {
@@ -104,6 +104,7 @@ function MessageList(props) {
           </InfinityScroll>
         </>
       )}
+
       <div ref={scrollRef}> </div>
     </>
   );
