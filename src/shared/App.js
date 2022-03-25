@@ -39,6 +39,7 @@ import MemberPostWrite from "../pages/MemberPostWrite";
 import MemberPostDetail from "../pages/MemberPostDetail";
 import MemberDetail from "../pages/MemberDetail";
 import Notice from "../pages/Notice";
+import SignComplete from "../pages/SignComplete";
 
 function App() {
   const dispatch = useDispatch();
@@ -74,6 +75,8 @@ function App() {
             <Switch>
               <Route path="/login" exact component={Login} />
               {/* 로그인 */}
+              <Route path="/signup/complete" exact component={SignComplete} />
+                {/* 회원가입 완료 - 인증메일 확인용 */}
               <Route path="/" exact component={Main} />
               {/* 메인 */}
               <Route path="/category" exact component={CategoryMain} />
@@ -92,6 +95,7 @@ function App() {
                   <Footer />
                   <Route path="/signup" exact component={Signup} />
                   {/* 회원가입 */}
+                           
                   <Route path="/today" exact component={TodayChallenge} />
                   {/* 메인 > 오늘의 소행성 */}
                   <Route path="/notice" exact component={Notice} />

@@ -54,7 +54,7 @@ const MyLevel = (props) => {
                 <Grid padding="0px 0px 0px 9px" width="calc(100% - 54px)">
                   <p>{my_level.nickname}</p>
                   <p className="sub_color caption caption_color">
-                    Level {levelNum}
+                    {levelNum}
                   </p>
                 </Grid>
               </div>

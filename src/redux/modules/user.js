@@ -197,7 +197,6 @@ const getNoticeDB = () => {
   return function (dispatch, getState, { history }) {
     userApis.getNotice()
     .then((res) => {
-        console.log("알림",res);
         dispatch(setNotice(res.data));
     }).catch((err)=>{
         console.log("알림 에러",err);
