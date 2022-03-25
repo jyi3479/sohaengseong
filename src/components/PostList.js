@@ -10,6 +10,8 @@ import { Grid, Button } from "../elements";
 import PostCard from "./PostCard";
 import InfinityScroll from "../shared/InfiniteScroll";
 
+import Notfound from "../image/icon/ic_empty_l@2x.png";
+
 const PostList = (props) => {
   const dispatch = useDispatch();
   const challengeId = useParams().challengeId;
@@ -29,14 +31,25 @@ const PostList = (props) => {
 
   return (
     <Grid padding="24px 20px 32px" border="1px #dddddd">
-      <InfinityScroll
-        callNext={getPostList}
-        paging={{ next: postInfo.has_next }}
-      >
-        {post_list.map((el, i) => {
-          return <PostCard key={i} roomId={roomId} {...el}></PostCard>;
-        })}
-      </InfinityScroll>
+
+      {post_list&&post_list.length !== 0? (
+          <InfinityScroll
+            callNext={getPostList}
+            paging={{ next: postInfo.has_next }}
+          >
+            {post_list.map((el, i) => {
+              return <PostCard key={i} roomId={roomId} {...el}></PostCard>;
+            })}
+          </InfinityScroll>
+        
+      ):(        
+        <NotFound className="t_center">
+            <img src={Notfound}/>
+            <h2 className="mt16" style={{color:"#000"}}>게시글이 없습니다.</h2>
+        </NotFound>       
+      )}
+      
+
       {target?.status === "진행중" && (
         <Fixed>
           <Grid padding="0" is_flex>
@@ -64,6 +77,13 @@ const PostList = (props) => {
   );
 };
 
+const NotFound = styled.div`
+    margin-top: 20vh;
+    img {
+        width: 100px;
+    }
+`;
+
 const Fixed = styled.div`
   width: 100%;
   position: fixed;
@@ -72,6 +92,8 @@ const Fixed = styled.div`
   left: 0;
   padding: 12px 20px;
   box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
+  z-index: 5;
 `;
+
 
 export default PostList;
