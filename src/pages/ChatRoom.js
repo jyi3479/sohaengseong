@@ -40,7 +40,7 @@ const ChatRoom = ({ match }) => {
   const userId = +localStorage.getItem("userId");
 
   const [isMe, setIsMe] = useState(false);
-  const [isNew, setIsNew] = useState(false)
+  const [isNew, setIsNew] = useState(false);
 
   // 헤더&푸터 state (채팅방 바뀔 때마다 헤더 바뀌도록)
   React.useEffect(() => {
@@ -77,18 +77,19 @@ const ChatRoom = ({ match }) => {
           authorization: token,
         },
         async () => {
+          enterMessage();
           client.subscribe(
             `/sub/chat/rooms/${roomId}`,
             (data) => {
               const newMessage = JSON.parse(data.body);
-        
-              if(newMessage.user.userId!==userId ){
-                setIsNew(true)
-              } else{
-                setIsNew(false)
+
+              if (newMessage.user.userId !== userId) {
+                setIsNew(true);
+              } else {
+                setIsNew(false);
               }
-                // 메세지 추가하는 부분 (reducer에서 push)
-                dispatch(chatAction.getMessages(newMessage));
+              // 메세지 추가하는 부분 (reducer에서 push)
+              dispatch(chatAction.getMessages(newMessage));
             },
             {
               authorization: token,
@@ -104,6 +105,7 @@ const ChatRoom = ({ match }) => {
   // 연결해제, 구독해제
   const wsDisConnectUnsubscribe = React.useCallback(() => {
     try {
+      exitMessage();
       client.disconnect(
         () => {
           client.unsubscribe("sub-0");
@@ -115,7 +117,7 @@ const ChatRoom = ({ match }) => {
     } catch (error) {
       console.error(error);
     }
-  }, [client]);
+  }, [dispatch, userId, client]);
 
   // 렌더링 될 때마다 연결,구독 다른 방으로 옮길 때 연결, 구독 해제
   React.useEffect(() => {
@@ -140,6 +142,59 @@ const ChatRoom = ({ match }) => {
       },
       0.1 // 밀리초 간격으로 실행
     );
+  };
+
+  const enterMessage = () => {
+    try {
+      // token이 없으면 로그인 페이지로 이동
+      if (!token) {
+        alert("토큰이 없습니다. 다시 로그인 해주세요.");
+        history.replace("/");
+      }
+      // send할 데이터
+      const data = {
+        type: "ENTER",
+        userId: userId,
+        roomId: roomId,
+      };
+
+      waitForConnection(client, () => {
+        client.send(
+          "/pub/chat/message",
+          {
+            authorization: token,
+          },
+          JSON.stringify(data)
+        );
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const exitMessage = () => {
+    try {
+      // token이 없으면 로그인 페이지로 이동
+      if (!token) {
+        alert("토큰이 없습니다. 다시 로그인 해주세요.");
+        history.replace("/");
+      }
+      // send할 데이터
+      const data = {
+        type: "QUIT",
+        userId: userId,
+        roomId: roomId,
+      };
+      client.send(
+        "/pub/chat/message",
+        {
+          authorization: token,
+        },
+        JSON.stringify(data)
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // 메시지 보내기

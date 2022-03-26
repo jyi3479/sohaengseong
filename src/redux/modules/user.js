@@ -25,7 +25,7 @@ const setWarning = createAction(SET_WARNING, (detail, text) => ({
   detail,
   text,
 }));
-const setNotice =  createAction(SET_NOTICE, (notice) => ({notice}));
+const setNotice = createAction(SET_NOTICE, (notice) => ({ notice }));
 
 const initialState = {
   user: null,
@@ -35,7 +35,7 @@ const initialState = {
     detail: false,
     text: "",
   },
-  notice:[],
+  notice: [],
 };
 
 //로그인
@@ -44,28 +44,32 @@ const loginDB = (email, password) => {
     userApis
       .login(email, password)
       .then((res) => {
-        //console.log("로그인",res);
-        setCookie("token", res.data.token);
+        if (res.data.emailVerified) {
+          console.log("로그인", res);
+          setCookie("token", res.data.token);
 
-        userApis
-          .useInfo()
-          .then((res) => {
-            // 다른 페이지 새로고침 시에 userId를 바로 사용할 수 있도록 저장
-            localStorage.setItem("userId", res.data.userId);
-            dispatch(
-              setUser({
-                //유저정보를 다시 세팅
-                userId: res.data.userId,
-                email: res.data.email,
-                nickname: res.data.nickname,
-                profileUrl: res.data.profileUrl,
-                count: res.data.dailyCount,
-                level: res.data.levelName,
-              })
-            );
-          })
-          .catch((error) => console.log("유저정보저장오류", error));
-        history.push("/");
+          userApis
+            .useInfo()
+            .then((res) => {
+              // 다른 페이지 새로고침 시에 userId를 바로 사용할 수 있도록 저장
+              localStorage.setItem("userId", res.data.userId);
+              dispatch(
+                setUser({
+                  //유저정보를 다시 세팅
+                  userId: res.data.userId,
+                  email: res.data.email,
+                  nickname: res.data.nickname,
+                  profileUrl: res.data.profileUrl,
+                  count: res.data.dailyCount,
+                  level: res.data.levelName,
+                })
+              );
+            })
+            .catch((error) => console.log("유저정보저장오류", error));
+          history.push("/");
+        } else {
+          dispatch(setWarning(true, "이메일 인증을 해주세요."));
+        }
       })
       .catch((code, message) => {
         console.log("로그인오류입니다!", code, message);
@@ -195,12 +199,14 @@ const logOutAction = () => {
 //알림
 const getNoticeDB = () => {
   return function (dispatch, getState, { history }) {
-    userApis.getNotice()
-    .then((res) => {
+    userApis
+      .getNotice()
+      .then((res) => {
         dispatch(setNotice(res.data));
-    }).catch((err)=>{
-        console.log("알림 에러",err);
-    })
+      })
+      .catch((err) => {
+        console.log("알림 에러", err);
+      });
   };
 };
 

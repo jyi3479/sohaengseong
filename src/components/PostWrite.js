@@ -93,7 +93,7 @@ const PostWrite = (props) => {
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
-        window.alert("인증 게시글 작성 오류")
+        window.alert(err.response.data.message);
       });
     setPreview(""); // 작성 후 미리보기,이미지 state는 빈값으로 바꿔주기
   };
@@ -124,7 +124,7 @@ const PostWrite = (props) => {
       })
       .catch((err) => {
         console.log("인증 게시글 수정 오류", err);
-        window.alert("인증 게시글 수정 오류")
+        window.alert("인증 게시글 수정 오류");
       });
     setPreview("");
   };
