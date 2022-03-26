@@ -23,7 +23,6 @@ const MyEdit = (props) => {
         };
         mypageApis.checkPwd(pwd)
         .then((res) => {
-            console.log("비번확인",res.data);
             setIsPwd(true);
         })
         .catch((err) => {
