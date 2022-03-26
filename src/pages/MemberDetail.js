@@ -181,7 +181,7 @@ const MemberDetail = (props) => {
             </ContentBox>
             <ContentBox>
               <h3>소개글</h3>
-              <pre className="caption small" style={{width:"calc(100% - 90px)"}}>{target.content}</pre>
+              <pre className="caption small" style={{width:"calc(100% - 90px)",whiteSpace: "pre-wrap"}}>{target.content}</pre>
             </ContentBox>
             <ContentBox>
               <h3>공개 여부</h3>
