@@ -119,6 +119,7 @@ const deletePostDB = (postId) => {
       })
       .catch((err) => {
         console.log("인증 게시글 삭제 오류", err);
+        window.alert("인증 게시글 삭제 오류")
       });
   };
 };
@@ -144,6 +145,7 @@ const addCommentDB = (postId, content) => {
       })
       .catch((err) => {
         console.log("댓글 작성 오류", err);
+        window.alert("댓글 작성 오류")
       });
   };
 };
@@ -157,6 +159,7 @@ const deleteCommentDB = (postId, commentId) => {
       })
       .catch((err) => {
         console.log("댓글 삭제 오류", err);
+        window.alert("댓글 삭제 오류")
       });
   };
 };
@@ -168,7 +171,10 @@ const exitChallengeDB = (challengeId) => {
       .then((res) => {
         history.replace("/");
       })
-      .catch((err) => console.log("챌린지 나가기 오류", err));
+      .catch((err) => {
+      console.log("챌린지 나가기 오류", err);
+      window.alert("챌린지 나가기 오류")
+    });
   };
 };
 

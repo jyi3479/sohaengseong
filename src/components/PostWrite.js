@@ -45,7 +45,7 @@ const PostWrite = (props) => {
     reader.readAsDataURL(file);
     // 읽기가 끝나면 발생하는 이벤트 핸들러.
     reader.onloadend = () => {
-      //console.log(reader.result); // 파일 컨텐츠(내용물)
+      // 파일 컨텐츠(내용물)
       setPreview(reader.result);
     };
     if (file) {
@@ -80,7 +80,6 @@ const PostWrite = (props) => {
     memberApis
       .addPost(challengeId, formData)
       .then((res) => {
-        console.log("인증 게시글 작성", res);
         // 리덕스로 관리되고 있는 페이지 state를 0으로 다시 초기화하여 새롭게 페이징 처리된 데이터 불러오기
         dispatch(memberAction.addPost());
         // 인증 완료 모달 띄우기
@@ -94,6 +93,7 @@ const PostWrite = (props) => {
       })
       .catch((err) => {
         console.log("인증 게시글 작성 오류", err);
+        window.alert("인증 게시글 작성 오류")
       });
     setPreview(""); // 작성 후 미리보기,이미지 state는 빈값으로 바꿔주기
   };
@@ -124,6 +124,7 @@ const PostWrite = (props) => {
       })
       .catch((err) => {
         console.log("인증 게시글 수정 오류", err);
+        window.alert("인증 게시글 수정 오류")
       });
     setPreview("");
   };
