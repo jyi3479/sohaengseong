@@ -26,14 +26,7 @@ const Header = (props) => {
     } else {      
       history.push("/notice");
     }
-  };  
-
-  React.useEffect(()=>{
-    
-    console.log(is_login);
-
-    
-  },[]);
+  };
 
   const closeModal = () => {
     setModalOpen(false);
