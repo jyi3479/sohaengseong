@@ -45,7 +45,6 @@ const initialState = {
   has_next: false,
   is_loading: false,
   totalCnt: 0,
-  // categoryList: new Array(10).fill([]),
   categoryList: [],
 };
 
@@ -117,6 +116,7 @@ const addChallengeDB = (challenge) => {
       })
       .catch((err) => {
         console.log("챌린지 등록 오류", err);
+        window.alert("챌린지 등록 오류");
       });
   };
 };
@@ -130,6 +130,7 @@ const editChallengeDB = (challengeId, challenge) => {
       })
       .catch((err) => {
         console.log("챌린지 수정 오류", err);
+        window.alert("챌린지 수정 오류");
       });
   };
 };
@@ -142,7 +143,7 @@ const deleteChallengeDB = (challengeId) => {
         history.replace("/");
       })
       .catch((err) => {
-        window.alert("챌린지 삭제 오류입니다!");
+        window.alert("챌린지 삭제 오류");
         console.log("챌린지 삭제 오류", err);
       });
   };

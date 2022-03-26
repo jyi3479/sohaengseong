@@ -17,7 +17,6 @@ function MessageList(props) {
   const loading = useSelector((state) => state.chat.loading);
 
   const [scrollId, setScrollId] = useState();
-  const [isNext, setIsNext] = useState(false);
 
   // 날짜별로 분류하기
   //1) 받아온 데이터 중 존재하는 날짜값만 가져오기
@@ -51,7 +50,6 @@ function MessageList(props) {
   };
   // 페이지 입장 후 스크롤 이동
   useEffect(() => {
-    console.log(props.isNew);
     if (currentChat.page > 1 && !props.isMe) {
       if(!props.isNew){
       setScrollId(
@@ -66,9 +64,6 @@ function MessageList(props) {
     }
   }, [getMessageList]);
 
-  // useEffect(() => {
-  //   scrollRef.current.scrollIntoView();
-  // }, []);
 
   return (
     <>

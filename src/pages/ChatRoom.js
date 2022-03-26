@@ -141,7 +141,6 @@ const ChatRoom = ({ match }) => {
       0.1 // 밀리초 간격으로 실행
     );
   };
-  const messageRef = useRef();
 
   // 메시지 보내기
   const sendMessage = (message) => {
@@ -163,7 +162,6 @@ const ChatRoom = ({ match }) => {
         return;
       }
       waitForConnection(client, () => {
-        // messageRef.current.scrollIntoView({ behavior: "smooth" });
         client.send(
           "/pub/chat/message",
           {
@@ -192,7 +190,6 @@ const ChatRoom = ({ match }) => {
               isNew={isNew}
             />
           </Grid>
-          <div ref={messageRef}></div>
         </ScrollBar>
       </Grid>
 

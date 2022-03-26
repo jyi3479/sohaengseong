@@ -40,7 +40,6 @@ const MemberDetail = (props) => {
 
   const exitChallenge = () => {
     dispatch(memberAction.exitChallengeDB(challengeId));
-    console.log("챌린지 나가기");
   };
 
   const deleteChallenge = () => {
@@ -53,17 +52,14 @@ const MemberDetail = (props) => {
 
   const deleteModal = () => {
     setModalType("deleteModal");
-    console.log("챌린지 삭제");
     setModalOpen(true);
   };
   const exitModal = () => {
     setModalType("exitModal");
-    console.log("챌린지 나가기");
     setModalOpen(true);
   };
 
   const closeModal = () => {
-    console.log("눌림");
     setModalOpen(false);
   };
 
