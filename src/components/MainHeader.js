@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 import { history } from "../redux/configureStore";
+import { useSelector } from "react-redux";
+
+import LoginModal from "./shared/LoginModal";
 
 import searchIconW from '../image/icon/ic_ search@2x.png';
 import searchIconB from "../image/icons/ic_search_b@2x.png";
@@ -16,12 +19,18 @@ const MainHeader = (props) => {
     //스크롤 위치를 담는 상태값
     const [scrollPosition, setScrollPosition] = React.useState(0);
     const [loading, setLoading] = React.useState(true);
+    const [modalOpen, setModalOpen] = React.useState(false);  
+    const is_login = useSelector((state) => state.user.user);
+    const params = window.location.pathname;
 
     //스크롤 위치를 업데이트 해주는 변수
     const updateScroll = (scrollY) => {
         setScrollPosition(scrollY);
     };
     
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
     React.useEffect(()=>{       
         let mounted = true; 
@@ -37,15 +46,25 @@ const MainHeader = (props) => {
             }           
         });
 
+        console.log(is_login);
+
         //페이지 벗어나면 스크롤 액션 실행 안되게 하기
         return ()=>{
             mounted = false;
         };
-    },[]);
+    },[]);   
+    
 
-
+    const noticeClick = (e) => {
+        if (is_login === null) {
+        setModalOpen(true);
+        } else {      
+        history.push("/notice");
+        }
+    };    
 
     return(
+        <>        
         <Wrap id="Header"  className={scrollPosition > 50 ? "scroll" : ""} >
             {props.className === "category"? (
                 <button onClick={()=>{
@@ -56,7 +75,7 @@ const MainHeader = (props) => {
                     <h1><a href="/"></a></h1>
                     <div>
                         <button onClick={()=>{
-                            history.push("/notice");
+                            noticeClick()
                         }}><img src={scrollPosition > 100 ? noticeIconB : noticeIconW}></img></button>
                         <button onClick={()=>{
                             history.push("/category/all");
@@ -64,9 +83,16 @@ const MainHeader = (props) => {
                     </div>
                     
                 </>
-            )}  
-            
+            )}
         </Wrap>
+        <LoginModal
+            open={modalOpen}
+            close={closeModal}
+            btnClick={() => {
+                history.push("/login");
+            }}
+        ></LoginModal>
+        </>
     );    
 };
 

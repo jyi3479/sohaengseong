@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector } from "react-redux";
 
+import LoginModal from "./shared/LoginModal";
 import arrow from "../image/icon/ic_arrow@2x.png";
 import searchIconB from "../image/icons/ic_search_b@2x.png";
 import noticeIconB from '../image/icon/ic_notice_b@2x.png'
@@ -13,9 +14,33 @@ const Header = (props) => {
   const search = useSelector((state) => state.base.header.search_btn);
   const notice = useSelector((state) => state.base.header.notice);
   const currentMember = useSelector((state) => state.base.header.currentMember);
+  const is_login = useSelector((state) => state.user.user);
   const params = window.location.pathname;
 
+  
+  const [modalOpen, setModalOpen] = React.useState(false);  
+
+  const noticeClick = (e) => {
+    if (is_login === null) {
+      setModalOpen(true);
+    } else {      
+      history.push("/notice");
+    }
+  };  
+
+  React.useEffect(()=>{
+    
+    console.log(is_login);
+
+    
+  },[]);
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
+    <>
     <Wrap
       id="Header"
       {...props}
@@ -64,7 +89,7 @@ const Header = (props) => {
             <button 
               style={{ display: notice ? "block" : "none" }}
               onClick={()=>{
-                history.push("/notice");
+                noticeClick()
               }}
             ><img src={noticeIconB}></img></button>
             <button
@@ -79,6 +104,14 @@ const Header = (props) => {
         </>
       )}
     </Wrap>
+    <LoginModal
+      open={modalOpen}
+      close={closeModal}
+      btnClick={() => {
+        history.push("/login");
+      }}
+    ></LoginModal>
+    </>
   );
 };
 
