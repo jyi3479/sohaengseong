@@ -39,7 +39,8 @@ const ChatRoom = ({ match }) => {
 
   const userId = +localStorage.getItem("userId");
 
-  const [isMy, setIsMy] = useState(false);
+  const [isMe, setIsMe] = useState(false);
+  const [isNew, setIsNew] = useState(false)
 
   // 헤더&푸터 state (채팅방 바뀔 때마다 헤더 바뀌도록)
   React.useEffect(() => {
@@ -80,8 +81,14 @@ const ChatRoom = ({ match }) => {
             `/sub/chat/rooms/${roomId}`,
             (data) => {
               const newMessage = JSON.parse(data.body);
-              // 메세지 추가하는 부분 (reducer에서 push)
-              dispatch(chatAction.getMessages(newMessage));
+        
+              if(newMessage.user.userId!==userId ){
+                setIsNew(true)
+              } else{
+                setIsNew(false)
+              }
+                // 메세지 추가하는 부분 (reducer에서 push)
+                dispatch(chatAction.getMessages(newMessage));
             },
             {
               authorization: token,
@@ -134,7 +141,6 @@ const ChatRoom = ({ match }) => {
       0.1 // 밀리초 간격으로 실행
     );
   };
-  const messageRef = useRef();
 
   // 메시지 보내기
   const sendMessage = (message) => {
@@ -156,7 +162,6 @@ const ChatRoom = ({ match }) => {
         return;
       }
       waitForConnection(client, () => {
-        // messageRef.current.scrollIntoView({ behavior: "smooth" });
         client.send(
           "/pub/chat/message",
           {
@@ -164,7 +169,7 @@ const ChatRoom = ({ match }) => {
           },
           JSON.stringify(data)
         );
-        setIsMy(true);
+        setIsMe(true);
       });
     } catch (error) {
       console.log(error);
@@ -179,11 +184,12 @@ const ChatRoom = ({ match }) => {
             <MessageList
               roomId={roomId}
               sendMessage={sendMessage}
-              setIsMy={setIsMy}
-              isMy={isMy}
+              setIsMe={setIsMe}
+              isMe={isMe}
+              setIsNew={setIsNew}
+              isNew={isNew}
             />
           </Grid>
-          <div ref={messageRef}></div>
         </ScrollBar>
       </Grid>
 

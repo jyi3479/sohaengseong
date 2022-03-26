@@ -17,7 +17,7 @@ const MemberPostDetail = (props) => {
   const roomId = useParams().roomId;
 
   const targetPost = useSelector((state) => state.member.target);
-  // const targetPost = postList.filter((el) => el.postId === postId)[0];
+
 
   React.useEffect(() => {
     dispatch(memberAction.getOnePostDB(challengeId, postId, 0, 5));

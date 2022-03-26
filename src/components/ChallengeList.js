@@ -15,7 +15,6 @@ const ChallengeList = (props) => {
   const challenge_list = challengeInfo.list;
 
   const getChallengeList = () => {
-    console.log(challengeInfo.page);
     dispatch(challengeAction.getChallengeDB(challengeInfo.page, 6));
   };
 

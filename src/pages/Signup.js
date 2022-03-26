@@ -136,7 +136,6 @@ const Signup = (props) => {
       userApis
         .signup(signup)
         .then((res) => {
-          console.log(res.data, "회원가입");
           if(res.data.result === "true"){
             setModalOpen(true);
           }
