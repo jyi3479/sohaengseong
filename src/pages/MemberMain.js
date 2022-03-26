@@ -6,6 +6,7 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
+import { actionCreators as chatAction } from "../redux/modules/chat";
 
 import { Grid, Button } from "../elements";
 import ChallengeInfo from "../components/Member/ChallengeInfo";
@@ -47,6 +48,7 @@ const MemberMain = (props) => {
                       style={{ color: "#030102", border: "1px solid #666" }}
                       _onClick={() => {
                         history.push(`/chatting/${target.roomId}`);
+                        dispatch(chatAction.moveChat(true));
                       }}
                     >
                       실시간 톡

@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as memberAction } from "../redux/modules/member";
+import { actionCreators as chatAction } from "../redux/modules/chat";
 
 import { Grid, Button } from "../elements";
 import PostCard from "./PostCard";
@@ -58,6 +59,7 @@ const PostList = (props) => {
               line_btn
               _onClick={() => {
                 history.push(`/chatting/${roomId}`);
+                dispatch(chatAction.moveChat(true));
               }}
             >
               실시간 톡
@@ -66,6 +68,7 @@ const PostList = (props) => {
               width="calc(70% - 4px)"
               _onClick={() => {
                 history.push(`/postwrite/${challengeId}/${roomId}`);
+                
               }}
             >
               인증하기
