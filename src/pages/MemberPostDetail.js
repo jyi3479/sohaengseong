@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as memberAction } from "../redux/modules/member";
+import { actionCreators as chatAction } from "../redux/modules/chat";
 
 import PostCard from "../components/PostCard";
 import { Grid, Button } from "../elements";
@@ -44,6 +45,7 @@ const MemberPostDetail = (props) => {
                 width="calc(30% - 4px)"
                 _onClick={() => {
                   history.push(`/chatting/${roomId}`);
+                  dispatch(chatAction.moveChat(true));
                 }}
               >
                 실시간 톡
