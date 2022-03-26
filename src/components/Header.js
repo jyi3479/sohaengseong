@@ -45,7 +45,11 @@ const Header = (props) => {
         <>
           <button
             onClick={() => {
-              history.goBack();
+              if (params.includes("/challenge")) {
+                history.push("/");
+              } else {
+                history.goBack();
+              }
             }}
           >
             <img src={arrow} />
