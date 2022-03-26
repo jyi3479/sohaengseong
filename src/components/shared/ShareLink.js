@@ -33,12 +33,10 @@ const ShareLink = (props) => {
     //모달 팝업 props
     const { open, close, id } = props;
 
-    //배포 때는  로 주소변경
-    const currentUrl = `https://www.sohangsung.co.kr/challenge/${id}`;
+    const currentUrl = `https://sohangsung.co.kr/challenge/${id}`;
 
 
     const onCopy = () => {
-        //console.log("카피했당!");
         dispatch(setCopy(true));
     };
 

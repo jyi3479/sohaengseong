@@ -12,6 +12,18 @@ import _ from "lodash";
 //스크롤바 커스텀
 import ScrollBar from "../components/shared/ScrollBar";
 
+
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/scrollbar";
+
+// import required modules
+import { FreeMode, Scrollbar, Mousewheel } from "swiper";
+
+
 //img import
 import notfound from "../image/icon/ic_empty_l@2x.png";
 import InfinityScroll from "../shared/InfiniteScroll";
@@ -117,8 +129,16 @@ const CategoryTab = () => {
       <Grid padding="0">
         <Wrap>
           <TabWrap className="tab_wrap">
-            <ScrollBar width="500px" direction="ltr">
-              <div style={{ display: "flex", whiteSpace: "nowrap", paddingBottom:"5px" }}>
+            <Swiper
+              direction={"horizontal"}
+              slidesPerView={"auto"}
+              freeMode={true}
+              scrollbar={false}
+              mousewheel={true}
+              modules={[FreeMode, Scrollbar, Mousewheel]}
+              className="mySwiper"
+            >
+              <SwiperSlide style={{width:"max-content"}}>                
                 <Tab
                   type="button"
                   className={tabId === "all" ? "active" : ""}
@@ -210,8 +230,8 @@ const CategoryTab = () => {
                 >
                   친환경
                 </Tab>
-              </div>
-            </ScrollBar>
+              </SwiperSlide>
+            </Swiper>
           </TabWrap>
 
           <Grid padding="0" margin="87px 0 0">
