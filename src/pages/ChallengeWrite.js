@@ -153,7 +153,7 @@ const ChallengeWrite = (props) => {
   const fileInput = React.useRef();
   const selectFile = (e) => {
     const fileArr = fileInput.current.files;
-    console.log(fileArr);
+
     let fileURLs = []; // preview 담을 배열
     let files = []; // image 담을 배열
 
@@ -350,11 +350,9 @@ const ChallengeWrite = (props) => {
   const [modalOpen, setModalOpen] = React.useState(false);
   const openModal = () => {
     setModalType("openModal");
-    console.log("챌린지 개설");
     setModalOpen(true);
   };
   const closeModal = () => {
-    console.log("눌림");
     setModalOpen(false);
   };
 
