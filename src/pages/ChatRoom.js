@@ -32,6 +32,7 @@ const ChatRoom = ({ match }) => {
 
   // 방 제목 가져오기
   const currentChat = useSelector((state) => state.chat.currentChat);
+  const isEnter = useSelector((state) => state.chat.isEnter);
   const roomId = match.params.roomId;
 
   // 토큰
@@ -77,7 +78,10 @@ const ChatRoom = ({ match }) => {
           authorization: token,
         },
         async () => {
-          enterMessage();
+          if (isEnter) {
+            enterMessage();
+            dispatch(chatAction.moveChat(false));
+          }
           client.subscribe(
             `/sub/chat/rooms/${roomId}`,
             (data) => {

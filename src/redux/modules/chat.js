@@ -22,7 +22,7 @@ const CLEAR_CURRENTCHAT = "CLEAR_CURRENTCHAT";
 const getChat = createAction(GET_CHAT, (chatInfo) => ({
   chatInfo,
 }));
-const moveChat = createAction(MOVE_CHAT, (currentChat) => ({ currentChat }));
+const moveChat = createAction(MOVE_CHAT, (isChat) => ({ isChat }));
 
 const getMessages = createAction(GET_MESSAGES, (messages) => ({ messages }));
 
@@ -37,12 +37,12 @@ const setMessages = createAction(
   })
 );
 
-const isLoading = createAction(IS_LOADING, (loading) => ({loading}));
-
+const isLoading = createAction(IS_LOADING, (loading) => ({ loading }));
 
 const clearCurrentChat = createAction(CLEAR_CURRENTCHAT, () => ({}));
 
 const initialState = {
+  isEnter: false,
   // 채팅 리스트를 받는 배열
   chatInfo: [],
   // 현재 접속 채팅 방
@@ -117,10 +117,9 @@ export default handleActions(
       produce(state, (draft) => {
         draft.chatInfo = action.payload.chatInfo;
       }),
-    //roomId 받는 곳?
     [MOVE_CHAT]: (state, action) =>
       produce(state, (draft) => {
-        draft.currentChat = action.payload.currentChat;
+        draft.isEnter = action.payload.isChat;
       }),
 
     [GET_MESSAGES]: (state, action) =>
@@ -136,6 +135,7 @@ export default handleActions(
         draft.currentChat.page = 0;
         draft.currentChat.roomId = null;
         draft.currentChat.roomName = null;
+        draft.isEnter = false;
       }),
 
     [SET_MESSAGES]: (state, action) =>
@@ -155,7 +155,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.loading = action.payload.loading;
       }),
- 
+
     [CLEAR_CURRENTCHAT]: (state, action) =>
       produce(state, (draft) => {
         draft.currentChat.roomId = null;
