@@ -119,7 +119,6 @@ const PostWrite = (props) => {
     memberApis
       .editPost(postId, formData)
       .then((res) => {
-        console.log("인증 게시글 수정", res);
         history.replace(`/post/${challengeId}/${roomId}`); // 인증 게시글 리스트 페이지 이동
       })
       .catch((err) => {

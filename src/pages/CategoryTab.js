@@ -67,7 +67,6 @@ const CategoryTab = () => {
   React.useEffect(() => {
     setPage(0);
     dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
-    console.log(Boolean(" "));
     if (!page) {
       if (tabId === "all") {
         if (!word) {
