@@ -87,7 +87,7 @@ const ChatRoom = ({ match }) => {
             (data) => {
               const newMessage = JSON.parse(data.body);
 
-              if (newMessage.user.userId !== userId) {
+              if (newMessage.user.userId !== userId && newMessage.type==="TALK") {
                 setIsNew(true);
               } else {
                 setIsNew(false);
