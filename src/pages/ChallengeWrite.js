@@ -731,7 +731,6 @@ const ChallengeWrite = (props) => {
                       id="private"
                       onChange={(e) => {
                         changeHandler(e.currentTarget.checked, "private");
-                        console.log(e.currentTarget.checked);
                       }}
                       checked={checkedInputs === "private" ? true : false}
                     />
