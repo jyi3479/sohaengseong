@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import * as baseAction from "../redux/modules/base";
 import { ActionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as mypageAction } from "../redux/modules/mypage";
 import { mypageApis } from "../shared/apis";
 
 //image
@@ -23,9 +24,7 @@ const MyProfile = (props) => {
   const [password, setpassword] = React.useState("");
   const [passwordCheck, setpasswordCheck] = React.useState("");
   const [image, setImage] = React.useState(null);
-  const [preview, setPreview] = React.useState(
-    userInfo.profileUrl === null ? defaultImg : userInfo.profileUrl
-  );
+  const [preview, setPreview] = React.useState(null);
 
   //유효성 검사
   const [isPwd, setIsPwd] = React.useState(false);
@@ -129,9 +128,9 @@ const MyProfile = (props) => {
       });
   };
 
-  React.useEffect(() => {
+   React.useEffect(() => {
     //유저 정보 불러오기
-    dispatch(userActions.loginCheckDB());
+    dispatch(mypageAction.getMyInfoDB(userId));
 
     //헤더&푸터 state
     dispatch(baseAction.setHeader("회원정보 수정"));
@@ -158,7 +157,7 @@ const MyProfile = (props) => {
                 shape="rectangle"
                 size="90"
                 radius="30px"
-                src={preview}
+                src={preview?preview:(userInfo.profileUrl?(userInfo.profileUrl):defaultImg)}
               ></Image>
               <FileBox>
                 {/* 이미지 업로드 */}

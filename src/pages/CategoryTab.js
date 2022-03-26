@@ -118,7 +118,7 @@ const CategoryTab = () => {
         <Wrap>
           <TabWrap className="tab_wrap">
             <ScrollBar width="500px" direction="ltr">
-              <div style={{ display: "flex", whiteSpace: "nowrap" }}>
+              <div style={{ display: "flex", whiteSpace: "nowrap", paddingBottom:"5px" }}>
                 <Tab
                   type="button"
                   className={tabId === "all" ? "active" : ""}
@@ -127,7 +127,7 @@ const CategoryTab = () => {
                     history.push(`/category/all`);
                   }}
                 >
-                  전체
+                 전체
                 </Tab>
                 <Tab
                   type="button"
