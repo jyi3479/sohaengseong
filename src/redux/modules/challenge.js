@@ -105,7 +105,6 @@ const joinChallengeDB = (challengeId) => {
 
 const addChallengeDB = (challenge) => {
   return function (dispatch, getState, { history }) {
-    console.log(challenge);
     challengeApis
       .addChallenge(challenge)
       .then((res) => {
