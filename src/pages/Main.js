@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 
 //날짜 라이브러리
@@ -16,6 +17,8 @@ import ChallengeList from "../components/ChallengeList";
 import plus from "../image/icon/ic_plus_l@2x.png";
 import bgImg from "../image/main_bg.png";
 import arrow from "../image/icon/ic_arrow_s@2x.png";
+import feedbackIcon from "../image/icon/ic_feedback_b@2x.png";
+import popIcon from "../image/icon/ic_popup_b@2x.png";
 
 //카테고리이미지 (순서대로 앞 3번째까지만 노출)
 import category_01 from "../image/icon/category/ic_category_daily_l@2x.png";
@@ -152,6 +155,10 @@ const Main = (props) => {
           </Grid>
         </Wrap>
       </Container>
+      <FeedBack>
+        <img src={popIcon}/>
+        <a href="https://forms.gle/kw8zpnphdhfQ7NwQ6" target="_blank"/>
+      </FeedBack>
       <Footer />
     </>
   );
@@ -252,6 +259,37 @@ const TitleBox = styled.div`
       background-size: 16px;
     }
   }
+`;
+
+const FeedBack = styled.div`
+  position: fixed;
+  right: 0;
+  bottom: 60px;
+  padding-right: 15px;
+  a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-image: url(${feedbackIcon});
+    background-size: cover;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  img {
+    visibility: hidden;
+    height: 40px;
+    transition: 0.2s;
+    width: 0;
+  }
+  &:hover {
+    img {
+      visibility: inherit;
+  
+      width: 201px;
+      display: inline-block;
+    }
+  }
+  
 `;
 
 export default Main;
