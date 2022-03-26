@@ -2,14 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const InfinityScroll = ({
-  children,
-  callNext,
-  paging,
-  type,
-  isChat,
-  isFirst,
-}) => {
+const InfinityScroll = ({ children, callNext, paging, type, isChat }) => {
   const spinnerRef = useRef(null);
   const handleObserver = new IntersectionObserver(([{ isIntersecting }]) => {
     if (isIntersecting) {
@@ -28,8 +21,6 @@ const InfinityScroll = ({
     };
   }, [paging]);
 
-
-
   return (
     <>
       {!isChat && children}
@@ -41,13 +32,7 @@ const InfinityScroll = ({
           />
         </Spinner>
       )}
-      {isChat && (
-        <>
-
-
-          {children}
-        </>
-      )}
+      {isChat && <>{children}</>}
     </>
   );
 };
