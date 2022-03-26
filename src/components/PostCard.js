@@ -313,7 +313,9 @@ const Wrap = styled.div`
   background-color: #fff;
   border-radius: 8px;
   margin-bottom: 12px;
+  cursor: pointer;
   &.is_detail {
+    cursor: auto;
     .comment {
       align-items: flex-start;
       &:nth-child(n + 3) {

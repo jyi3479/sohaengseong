@@ -165,8 +165,7 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <Grid padding="0" style={{position:"relative"}}>
-                    <ShareBtn onClick={shareModal}></ShareBtn>
+                <Grid padding="0" style={{position:"relative"}}>                    
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -186,6 +185,7 @@ const ChallengeDetail = (props) => {
                         //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
                         : <Image shape="rectangle" padding="250px" src={empty}></Image>
                     }
+                    <ShareBtn onClick={shareModal}></ShareBtn>
                 </Grid>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
                     <TitleBox>
@@ -336,16 +336,17 @@ const ChallengeDetail = (props) => {
 };
 const ShareBtn = styled.button` //공유버튼
     position: absolute;
-    width: 28px;
-    height: 28px;
+    width: 35px;
+    height: 35px;
     right: 20px;
     top: 20px;
-    background-color: transparent;
+    background-color: rgba(0,0,0,0.3);
     border: none;
     background-image: url(${share});
     background-repeat: no-repeat;
-    background-size:cover;
+    background-size:28px;
     background-position: center;
+    border-radius: 50%;
     z-index: 100;
 `;
 
