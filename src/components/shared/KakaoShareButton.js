@@ -17,7 +17,7 @@ const KakaoShareButton = (props) => {
       const id = props.id; //챌린지 아이디
 
       //공유 주소
-      const siteUrl = `https://www.sohangsung.co.kr/challenge/${id}`;
+      const siteUrl = `https://sohangsung.co.kr/challenge/${id}`;
 
       // 중복 initialization 방지
       if (!kakao.isInitialized()) {

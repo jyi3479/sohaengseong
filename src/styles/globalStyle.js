@@ -17,7 +17,6 @@ export const GlobalStyle = createGlobalStyle`
     input,textarea { //아이폰에서 자동으로 들어가는 input 속성 없애기
         -webkit-appearance: none;
         -webkit-border-radius: 0;
-        background-color: #fff !important;
     }
     input:selected, input:-internal-autofill-selected {
         background-color: #fff !important;

@@ -5,7 +5,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 99;
+    z-index: 105;
   }
   .modal .dim {
     width: 100%;
@@ -13,7 +13,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(3, 1, 2, 0.6);
-    z-index: 1;
+    z-index: 99;
   }
 
   .modal button {
@@ -35,7 +35,7 @@
     /* 팝업이 열릴때 스르륵 열리는 효과 */
     animation: modal-show 0.3s;
     overflow: hidden;
-    z-index: 2;
+    z-index: 105;
   }
   .fullmodal.modal > section {
     width: 100%;
