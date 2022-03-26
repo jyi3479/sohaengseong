@@ -44,21 +44,22 @@ function MessageList(props) {
         chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10)
       );
       dispatch(chatAction.isLoading(true));
-      props.setIsMe(false);
-      props.setIsNew(false)
+      props.setIsTalk(false);
+      props.setIsMsg(false)
     }
   };
   // 페이지 입장 후 스크롤 이동
   useEffect(() => {
-    if (currentChat.page > 1 && !props.isMe && !props.isNew) {
+    if (currentChat.page > 1 && !props.isTalk && !props.isMsg) {
       setScrollId(
         currentChat.messageList[currentChat.messageList.length - 1].id
       );
       infinityRef.current?.scrollIntoView();
 
     } else {
-
+if(!props.isMsg){
       scrollRef.current.scrollIntoView();
+}
 
     }
   }, [getMessageList]);
