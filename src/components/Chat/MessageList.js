@@ -45,19 +45,24 @@ function MessageList(props) {
         chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10)
       );
       dispatch(chatAction.isLoading(true));
-      props.setIsMy(false);
+      props.setIsMe(false);
+      props.setIsNew(false)
     }
   };
   // 페이지 입장 후 스크롤 이동
   useEffect(() => {
-    console.log(currentChat.page > 1 && !props.isMy);
-    if (currentChat.page > 1 && !props.isMy) {
+    console.log(props.isNew);
+    if (currentChat.page > 1 && !props.isMe) {
+      if(!props.isNew){
       setScrollId(
         currentChat.messageList[currentChat.messageList.length - 1].id
       );
       infinityRef.current?.scrollIntoView();
+      }
     } else {
+      if(!props.isNew){
       scrollRef.current.scrollIntoView();
+      }
     }
   }, [getMessageList]);
 
