@@ -99,6 +99,7 @@ const TitleBox = styled.div`
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    line-height: 1.2;
   }
   p {    
     margin:2px 0 8px;
