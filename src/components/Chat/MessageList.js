@@ -50,17 +50,16 @@ function MessageList(props) {
   };
   // 페이지 입장 후 스크롤 이동
   useEffect(() => {
-    if (currentChat.page > 1 && !props.isMe) {
-      if(!props.isNew){
+    if (currentChat.page > 1 && !props.isMe && !props.isNew) {
       setScrollId(
         currentChat.messageList[currentChat.messageList.length - 1].id
       );
       infinityRef.current?.scrollIntoView();
-      }
+
     } else {
-      if(!props.isNew){
+
       scrollRef.current.scrollIntoView();
-      }
+
     }
   }, [getMessageList]);
 
