@@ -80,7 +80,7 @@ const Login = (props) => {
             <Link className="small t_center" href="/find">비밀번호 찾기</Link>
           </Grid>
         </Box>
-        <Kakao className="t_center" href={KAKAO_AUTH_URL} target="_blank">
+        <Kakao className="t_center" href={KAKAO_AUTH_URL}>
           카카오로 시작하기
         </Kakao>
       </Grid>
