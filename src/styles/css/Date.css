@@ -3,17 +3,17 @@
 } */
 
 .MuiInputAdornment-root {
-    margin: 0 0 2px 6px;
+  margin: 0 0 2px 6px;
 }
 
 .MuiInputAdornment-root > button > svg {
-    display: none;
+  display: none;
 }
 
-.MuiInputAdornment-root > button >span {
-    width:16px;
-    height:16px;
-    background-image: url("../../image/icons/ic_dropdown@2x.png");
-    background-size: cover;
+.MuiInputAdornment-root > button > span {
+  width: 16px;
+  height: 16px;
+  background-image: url("../../image/icons/ic_dropdown@2x.png");
+  background-size: cover;
+  z-index: 10;
 }
-

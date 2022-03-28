@@ -28,12 +28,6 @@ const Header = (props) => {
     }
   };  
 
-  React.useEffect(()=>{
-    
-    console.log(is_login);
-
-    
-  },[]);
 
   const closeModal = () => {
     setModalOpen(false);

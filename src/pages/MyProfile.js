@@ -86,15 +86,19 @@ const MyProfile = (props) => {
   const selectFile = (e) => {
     const reader = new FileReader();
     const file = fileInput.current.files[0];
-
-    reader.readAsDataURL(file); //파일 내용 읽어오기
-    // onloadend: 읽기가 끝나면 발생하는 이벤트 핸들러
-    reader.onloadend = () => {
-      // reader.result는 파일의 컨텐츠(내용물)입니다!
-      setPreview(reader.result);
-    };
-    if (file) {
-      setImage(file);
+    const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
+    if (file.size > maxSize) {
+      alert("파일 사이즈가 20MB를 넘습니다.");
+    } else {
+      reader.readAsDataURL(file); //파일 내용 읽어오기
+      // onloadend: 읽기가 끝나면 발생하는 이벤트 핸들러
+      reader.onloadend = () => {
+        // reader.result는 파일의 컨텐츠(내용물)입니다!
+        setPreview(reader.result);
+      };
+      if (file) {
+        setImage(file);
+      }
     }
   };
 
@@ -128,7 +132,7 @@ const MyProfile = (props) => {
       });
   };
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     //유저 정보 불러오기
     dispatch(mypageAction.getMyInfoDB(userId));
 
@@ -147,7 +151,7 @@ const MyProfile = (props) => {
         <Grid margin="48px 0 0" padding="0">
           <Grid padding="28px 20px 32px" bg="#fff">
             <Grid
-              margin="0 auto 40px"
+              margin="0 auto 60px"
               width="90px"
               padding="0"
               style={{ position: "relative", overflow: "initial" }}
@@ -157,7 +161,13 @@ const MyProfile = (props) => {
                 shape="rectangle"
                 size="90"
                 radius="30px"
-                src={preview?preview:(userInfo.profileUrl?(userInfo.profileUrl):defaultImg)}
+                src={
+                  preview
+                    ? preview
+                    : userInfo.profileUrl
+                    ? userInfo.profileUrl
+                    : defaultImg
+                }
               ></Image>
               <FileBox>
                 {/* 이미지 업로드 */}
@@ -169,7 +179,11 @@ const MyProfile = (props) => {
                   onChange={selectFile}
                 />
               </FileBox>
+              <Warning className="caption sub_color">
+                ※ 최대 20MB 등록 가능
+              </Warning>
             </Grid>
+
             <Grid padding="0" margin="0 0 24px">
               <InputWrap disabled>
                 <label className="caption_color">아이디(이메일)</label>
@@ -186,30 +200,33 @@ const MyProfile = (props) => {
 
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap>
-              {userInfo.kakao?( <Input
-                  type="password"
-                  label="새 비밀번호"
-                  value={password}
-                  is_submit
-                  placeholder="카카오 사용자입니다."
-                  disabled
-                
-                />):( <Input
-                  type="password"
-                  label="새 비밀번호"
-                  value={password}
-                  is_submit
-                  placeholder="비밀번호를 입력하세요."
-                  _onChange={onChangePwd}
-                  className={
-                    password.length === 0
-                      ? ""
-                      : isPwd && password.length
-                      ? "green"
-                      : "red"
-                  }
-                />)}
-               
+                {userInfo.kakao ? (
+                  <Input
+                    type="password"
+                    label="새 비밀번호"
+                    value={password}
+                    is_submit
+                    placeholder="카카오 사용자입니다."
+                    disabled
+                  />
+                ) : (
+                  <Input
+                    type="password"
+                    label="새 비밀번호"
+                    value={password}
+                    is_submit
+                    placeholder="비밀번호를 입력하세요."
+                    _onChange={onChangePwd}
+                    className={
+                      password.length === 0
+                        ? ""
+                        : isPwd && password.length
+                        ? "green"
+                        : "red"
+                    }
+                  />
+                )}
+
                 <span
                   className={
                     password.length === 0
@@ -230,30 +247,33 @@ const MyProfile = (props) => {
 
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap>
-              {userInfo.kakao?( <Input
-                  type="password"
-                  label="비밀번호 확인"
-                  value={passwordCheck}
-                  is_submit
-                  placeholder="카카오 사용자입니다."
-                  disabled
-                
-                />):(  <Input
-                  type="password"
-                  label="비밀번호 확인"
-                  value={passwordCheck}
-                  is_submit
-                  placeholder="비밀번호를 재입력하세요."
-                  _onChange={checkPwd}
-                  className={
-                    passwordCheck.length === 0
-                      ? ""
-                      : samePwd && passwordCheck.length
-                      ? "green"
-                      : "red"
-                  }
-                />)}
-               
+                {userInfo.kakao ? (
+                  <Input
+                    type="password"
+                    label="비밀번호 확인"
+                    value={passwordCheck}
+                    is_submit
+                    placeholder="카카오 사용자입니다."
+                    disabled
+                  />
+                ) : (
+                  <Input
+                    type="password"
+                    label="비밀번호 확인"
+                    value={passwordCheck}
+                    is_submit
+                    placeholder="비밀번호를 재입력하세요."
+                    _onChange={checkPwd}
+                    className={
+                      passwordCheck.length === 0
+                        ? ""
+                        : samePwd && passwordCheck.length
+                        ? "green"
+                        : "red"
+                    }
+                  />
+                )}
+
                 <span
                   className={
                     passwordCheck.length === 0
@@ -357,6 +377,14 @@ const FileBox = styled.div`
     overflow: hidden;
     border: 0;
   }
+`;
+
+const Warning = styled.p`
+  position: absolute;
+  text-align: center;
+  width: 120px;
+  left: -12px;
+  margin-top: 13px;
 `;
 
 const Fixed = styled.div`
