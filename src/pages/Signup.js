@@ -167,9 +167,11 @@ const Signup = (props) => {
     <Grid padding="24px 20px" margin="48px 0 0" bg="#fff" style={{ overflow: "revert" }}>
       <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
         <label className="small">아이디(이메일)</label>
+        <p className="small sub_color">입력하신 이메일로 본인 인증 메일이 발송됩니다.</p>
         <Grid
           padding="0"
           is_flex
+          margin="7px 0 0"
           style={{ overflow: "revert" }}
         >
           <EmailInput
