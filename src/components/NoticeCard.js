@@ -48,8 +48,12 @@ const NoticeCard = (props) => {
             {props.status === "MORNING_CALL"? (
                 <Card className={props.read? "" : "new"} onClick={()=>{history.push(`/post/${props.challengeId}/${props.roomId}`)}}>
                     <img src={Mark}/>
-                    <div className="text_box">                        
-                        <p>현재 진행중인 "<span className="ellipsis">{props.title}</span>" 소행성 인증이 아직 안되었네요! 지금 바로 인증해주세요.</p>
+                    <div className="text_box">
+                        {props.challengeCnt === 0 ? (                            
+                            <p>현재 진행중인 "<span className="ellipsis">{props.title}</span>" 소행성 인증이 아직 안되었네요! 지금 바로 인증해주세요.</p>
+                        ):(
+                            <p>현재 진행중인 "<span className="ellipsis">{props.title}</span>" 외 {props.challengeCnt}개 소행성 인증이 아직 안되었네요! 지금 바로 인증해주세요.</p>
+                        )}
                         <p className="date small caption_color">
                             {/* 알림이 오늘로부터 얼마나 지났는지 보여줌 */}
                             {moment(

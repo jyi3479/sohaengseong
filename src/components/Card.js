@@ -8,6 +8,7 @@ import defaultImg from "../image/ic_empty_s@2x.png";
 import fail from "../image/icon/ic_fail@2x.png";
 import success from "../image/icon/ic_success@2x.png";
 
+
 const Card = (props) => {
   const tagList = props.tagName;
   const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;
@@ -91,6 +92,7 @@ const ImageBox = styled.div`
     }
   }
 `;
+
 
 const TitleBox = styled.div`
   h3{

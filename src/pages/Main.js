@@ -64,7 +64,7 @@ const Main = (props) => {
                   <Button
                     bg="#17abd6"
                     _onClick={() => {
-                      history.push("/mypage");
+                      history.push("/daily");
                     }}
                   >
                     인증하기

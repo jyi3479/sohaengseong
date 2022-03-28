@@ -815,6 +815,8 @@ const ChallengeWrite = (props) => {
             개설자도 함께 습관 형성에 참여해야하며, 시작 이후 개설자는 중도
             포기가 불가능합니다.
           </li>
+          <li className="sub_color mt4"> 규정에 맞지 않는 게시글은 관리자에 의해 삭제될 수 있습니다.
+          </li>
         </ul>
       </Notice>
       <ButtonContainer>
