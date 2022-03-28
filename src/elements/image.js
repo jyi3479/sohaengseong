@@ -115,4 +115,5 @@ const CircleWrap = styled.div`
 `;
 
 
+
 export default Image;
