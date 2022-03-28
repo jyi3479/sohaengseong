@@ -57,7 +57,6 @@ const Login = (props) => {
               _onChange={(e) => {
                 setemail(e.target.value);
               }}
-              style={{opacity:email?"1":"0.5"}}
             />
           </Grid>
           <Grid padding="0px" margin="0 0 36px">
@@ -70,7 +69,6 @@ const Login = (props) => {
               _onChange={(e) => {
                 setpassword(e.target.value);
               }}
-              style={{opacity:password?"1":"0.5"}}
             />            
             <WarningText/> {/* alert 문구 */}
           </Grid>        

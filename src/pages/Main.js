@@ -126,7 +126,7 @@ const Main = (props) => {
               </CategoryWrap>
               <Ranking>
                 <TitleBox>
-                  <h2>입주민 실시간 랭킹</h2>
+                  <h2>입주민 오늘의 랭킹</h2>
                   <p className="sub_color">다른 입주민들 보며 동기부여하기</p>
                 </TitleBox>
                 {/* 랭킹 */}
