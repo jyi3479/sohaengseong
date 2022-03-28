@@ -46,7 +46,6 @@ const MainHeader = (props) => {
             }           
         });
 
-        console.log(is_login);
 
         //페이지 벗어나면 스크롤 액션 실행 안되게 하기
         return ()=>{

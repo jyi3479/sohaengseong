@@ -40,8 +40,8 @@ const ChatRoom = ({ match }) => {
 
   const userId = +localStorage.getItem("userId");
 
-  const [isMe, setIsMe] = useState(false);
-  const [isNew, setIsNew] = useState(false);
+  const [isTalk, setIsTalk] = useState(false);
+  const [isMsg, setIsMsg] = useState(false);
 
   // 헤더&푸터 state (채팅방 바뀔 때마다 헤더 바뀌도록)
   React.useEffect(() => {
@@ -87,11 +87,16 @@ const ChatRoom = ({ match }) => {
             (data) => {
               const newMessage = JSON.parse(data.body);
 
-              if (newMessage.user.userId !== userId && newMessage.type==="TALK") {
-                setIsNew(true);
+              if (newMessage.type==="TALK") {
+                setIsTalk(true);
+                setIsMsg(false);
               } else {
-                setIsNew(false);
+                if(newMessage.user.userId !== userId){
+                setIsMsg(true);
+                }
               }
+
+              
               // 메세지 추가하는 부분 (reducer에서 push)
               dispatch(chatAction.getMessages(newMessage));
             },
@@ -228,7 +233,6 @@ const ChatRoom = ({ match }) => {
           },
           JSON.stringify(data)
         );
-        setIsMe(true);
       });
     } catch (error) {
       console.log(error);
@@ -243,10 +247,10 @@ const ChatRoom = ({ match }) => {
             <MessageList
               roomId={roomId}
               sendMessage={sendMessage}
-              setIsMe={setIsMe}
-              isMe={isMe}
-              setIsNew={setIsNew}
-              isNew={isNew}
+              setIsTalk={setIsTalk}
+              isTalk={isTalk}
+              setIsMsg={setIsMsg}
+              isMsg={isMsg}
             />
           </Grid>
         </ScrollBar>
