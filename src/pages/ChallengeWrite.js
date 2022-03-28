@@ -12,11 +12,10 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
 
-
 //스크롤바 커스텀
 import ScrollBar from "../components/shared/ScrollBar";
 
-import { Grid, Input, Button, Image} from "../elements";
+import { Grid, Input, Button, Image } from "../elements";
 import Modal from "../components/Modal";
 
 import plus from "../image/icon/ic_plus_g@2x.png";
@@ -153,12 +152,14 @@ const ChallengeWrite = (props) => {
   const fileInput = React.useRef();
   const selectFile = (e) => {
     const fileArr = fileInput.current.files;
-
+    console.log(fileArr[0].size);
     let fileURLs = []; // preview 담을 배열
     let files = []; // image 담을 배열
 
     let file; // 임시 변수
     let filesLength;
+
+    const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
 
     if (isEdit) {
       filesLength = 3 - compareImage.length; // 이미지 3장 제한
@@ -169,19 +170,24 @@ const ChallengeWrite = (props) => {
     // 다중 선택된 이미지 file 객체들을 반복문을 돌리며 preview와 image 배열에 추가하기
     for (let i = 0; i < filesLength; i++) {
       file = fileArr[i];
-      let reader = new FileReader();
-      // 파일 내용을 읽어온다.
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        // 읽기가 끝나면 발생하는 이벤트 핸들러.
-        fileURLs[i] = reader.result;
-        // 미리보기 state에 저장
-        setPreview([...preview, ...fileURLs]);
-      };
-      // 이미지 state에 저장
-      if (file) {
-        files[i] = fileArr[i];
-        setImage([...image, ...files]);
+      console.log(file.size, maxSize);
+      if (file.size > maxSize) {
+        alert("파일 사이즈가 20MB를 넘습니다.");
+      } else {
+        let reader = new FileReader();
+        // 파일 내용을 읽어온다.
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          // 읽기가 끝나면 발생하는 이벤트 핸들러.
+          fileURLs.push(reader.result);
+          // 미리보기 state에 저장
+          setPreview([...preview, ...fileURLs]);
+        };
+        // 이미지 state에 저장
+        if (file) {
+          files.push(fileArr[i]);
+          setImage([...image, ...files]);
+        }
       }
     }
     e.target.value = ""; // 같은 파일 upload를 위한 처리
@@ -489,35 +495,35 @@ const ChallengeWrite = (props) => {
           {/* 태그 입력 부분 */}
 
           <ScrollBar width="500px" direction="ltr">
-          <WholeBox
-            className={tagFocus ? "active" : hashArr.length ? "ok" : ""}
-          >            
-            <TagBox>
-              {hashArr.map((tagItem, index) => {
-                return (
-                  <TagItem key={index}>
-                    <span>{tagItem}</span>
-                    <DeleteButton onClick={deleteTagItem}></DeleteButton>
-                  </TagItem>
-                );
-              })}
-            </TagBox>
-            <input
-              type="text"
-              placeholder={
-                hashArr.length > 0
-                  ? ""
-                  : "습관을 설명할 수 있는 단어를 적습니다."
-              }
-              value={hashtag}
-              onChange={(e) => setHashtag(e.target.value)}
-              maxLength="6"
-              onKeyPress={onKeyPress}
-              onFocus={() => setTagFocus(true)}
-              onBlur={() => setTagFocus(false)}
-            />
-          </WholeBox>
-          </ScrollBar >
+            <WholeBox
+              className={tagFocus ? "active" : hashArr.length ? "ok" : ""}
+            >
+              <TagBox>
+                {hashArr.map((tagItem, index) => {
+                  return (
+                    <TagItem key={index}>
+                      <span>{tagItem}</span>
+                      <DeleteButton onClick={deleteTagItem}></DeleteButton>
+                    </TagItem>
+                  );
+                })}
+              </TagBox>
+              <input
+                type="text"
+                placeholder={
+                  hashArr.length > 0
+                    ? ""
+                    : "습관을 설명할 수 있는 단어를 적습니다."
+                }
+                value={hashtag}
+                onChange={(e) => setHashtag(e.target.value)}
+                maxLength="6"
+                onKeyPress={onKeyPress}
+                onFocus={() => setTagFocus(true)}
+                onBlur={() => setTagFocus(false)}
+              />
+            </WholeBox>
+          </ScrollBar>
           {/* 추천키워드 부분 */}
           <Grid margin="12px 0 0" padding="0px">
             <span
@@ -630,7 +636,7 @@ const ChallengeWrite = (props) => {
             <span className="sub_color font14">(최대 3건)</span>
           </p>
           <p className="small sub_color">
-            첫번째 이미지가 대표 이미지로 등록됩니다.
+            첫번째 이미지가 대표 이미지로 등록됩니다. (최대 20MB)
           </p>
           <div
             sytle={{

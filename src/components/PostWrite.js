@@ -41,15 +41,20 @@ const PostWrite = (props) => {
   const selectFile = (e) => {
     const reader = new FileReader();
     const file = fileInput.current.files[0];
-    // 파일 내용을 읽어온다.
-    reader.readAsDataURL(file);
-    // 읽기가 끝나면 발생하는 이벤트 핸들러.
-    reader.onloadend = () => {
-      // 파일 컨텐츠(내용물)
-      setPreview(reader.result);
-    };
-    if (file) {
-      setImage(file);
+    const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
+    if (file.size > maxSize) {
+      alert("파일 사이즈가 20MB를 넘습니다.");
+    } else {
+      // 파일 내용을 읽어온다.
+      reader.readAsDataURL(file);
+      // 읽기가 끝나면 발생하는 이벤트 핸들러.
+      reader.onloadend = () => {
+        // 파일 컨텐츠(내용물)
+        setPreview(reader.result);
+      };
+      if (file) {
+        setImage(file);
+      }
     }
     e.target.value = ""; // 같은 파일 upload를 위한 처리
   };
@@ -191,7 +196,7 @@ const PostWrite = (props) => {
           <Notice>
             <p className="bold sub_color">유의사항</p>
             <ul>
-              <li className="sub_color">인증 사진은 필수입니다.</li>
+              <li className="sub_color">인증 사진은 필수입니다. (최대 20MB)</li>
               <li className="sub_color mt4">
                 타인을 불쾌하게 하는 사진을 업로드 시 관리자의 권한에 따라
                 삭제될 수 있습니다.{" "}
