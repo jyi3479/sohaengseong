@@ -17,6 +17,7 @@ import ChallengeList from "../components/ChallengeList";
 import plus from "../image/icon/ic_plus_l@2x.png";
 import bgImg from "../image/main_bg.png";
 import arrow from "../image/icon/ic_arrow_s@2x.png";
+import arrow_w from "../image/icon/arrow_ws@2x.png";
 import feedbackIcon from "../image/icon/ic_feedback_b@2x.png";
 import popIcon from "../image/icon/ic_popup_b@2x.png";
 
@@ -36,12 +37,14 @@ const Main = (props) => {
       <Container className="bg_color" id="main_wrap">
         <Grid padding="0 24px">
           <Banner>
-            <h1>
-              소소하지만 확실한 행복
-              <br />
-              행동 습관 형성 챌린지
-            </h1>
-            <p>나를 변화시키는 습관</p>
+            <h1>작은 것부터 하나씩<br/>나를 바꾸는 습관 챌린지</h1>
+            <p>이루고 싶은 목표가 있으신가요?<br/>토비가 함께 도와드릴게요!</p>
+            <button className="small mt16" onClick={()=>{
+                history.push({                                
+                  pathname: "/category/all",
+                  state: {notfocus: true},                                  
+              })
+              }}>시작하기</button>
           </Banner>
         </Grid>
         <Wrap>
@@ -173,12 +176,24 @@ const Container = styled.div`
 const Banner = styled.div`
   width: 100%;
   height: 235px;
-  padding: 14px 0;
+  padding: 32px 0;
   * {
     color: #fff;
   }
   h1 {
     margin-bottom: 6px;
+  }
+  button {
+    width: 74px;
+    height: 28px;
+    border-radius: 22px;
+    border: solid 1px #a2aab3;
+    background-image: url(${arrow_w});
+    background-size: 16px;
+    background-position: right 4px top 5px;
+    background-color: transparent;
+    color: #fff;
+    padding: 5px 17px 5px 10px;
   }
 `;
 

@@ -177,7 +177,7 @@ const ChallengeDetail = (props) => {
                             >
                             {imageList.map((el,i)=>{
                                 return(
-                                    <SwiperSlide key={i}><Image shape="rectangle" padding="250px" src={el?el:defaultImg}></Image></SwiperSlide>
+                                    <SwiperSlide key={i}><Image shape="rectangle" padding="250px" src={el?el:empty}></Image></SwiperSlide>
                                 );
                             })}
                         </Swiper>
