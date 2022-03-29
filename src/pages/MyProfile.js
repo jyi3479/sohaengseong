@@ -16,11 +16,8 @@ import setIcon from "../image/icon/ic_setting@2x.png";
 //모달팝업
 import Modal from "../components/Modal";
 
-
 //heic 이미지 파일을 jpeg로 변환하는 라이브러리
-import heic2any from "heic2any"
-
-
+import heic2any from "heic2any";
 
 const MyProfile = (props) => {
   const dispatch = useDispatch();
@@ -32,6 +29,7 @@ const MyProfile = (props) => {
   const [passwordCheck, setpasswordCheck] = React.useState("");
   const [image, setImage] = React.useState(null);
   const [preview, setPreview] = React.useState(null);
+  const [isWarning, setIsWarning] = React.useState(false);
 
   // 닉네임
   const [keypressNick, setKeypressNick] = React.useState();
@@ -46,7 +44,7 @@ const MyProfile = (props) => {
   const [samePwd, setSamePwd] = React.useState(false);
 
   const nicknameCheck = () => {
-    // 닉네임 중복체크    
+    // 닉네임 중복체크
     userApis
       .nicknameCheck(nickname)
       .then((res) => {
@@ -132,26 +130,34 @@ const MyProfile = (props) => {
     let file = fileInput.current.files[0];
     const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
     if (file.size > maxSize) {
-      alert("파일 사이즈가 20MB를 넘습니다.");
+      setIsWarning(true);
     } else {
-      if(file.name.split('.')[1] === 'heic' || file.name.split('.')[1] === 'HEIC'){
-        let blob = fileInput.current.files[0]; 
-        // blob에다가 변환 시키고 싶은 file값을 value로 놓는다. 
-        // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다. 
-        heic2any({blob : blob, toType : "image/jpeg"}) 
-        .then(function (resultBlob) { 
-          //file에 새로운 파일 데이터를 씌웁니다. 
-          file = new File([resultBlob], file.name.split('.')[0]+".jpg",{type:"image/jpeg", lastModified:new Date().getTime()}); 
-          reader.readAsDataURL(file); 
-          reader.onloadend = () => { 
-            setPreview(reader.result);
-          }
-          if (file) {
-            setImage(file);
-          }
-        }).catch(function (err){ 
-          console.log("이미지 변환 오류",err); 
-        }) 
+      setIsWarning(false);
+      if (
+        file.name.split(".")[1] === "heic" ||
+        file.name.split(".")[1] === "HEIC"
+      ) {
+        let blob = fileInput.current.files[0];
+        // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.
+        // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
+        heic2any({ blob: blob, toType: "image/jpeg" })
+          .then(function (resultBlob) {
+            //file에 새로운 파일 데이터를 씌웁니다.
+            file = new File([resultBlob], file.name.split(".")[0] + ".jpg", {
+              type: "image/jpeg",
+              lastModified: new Date().getTime(),
+            });
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+              setPreview(reader.result);
+            };
+            if (file) {
+              setImage(file);
+            }
+          })
+          .catch(function (err) {
+            console.log("이미지 변환 오류", err);
+          });
       }
       reader.readAsDataURL(file); //파일 내용 읽어오기
       // onloadend: 읽기가 끝나면 발생하는 이벤트 핸들러
@@ -208,9 +214,6 @@ const MyProfile = (props) => {
     };
   }, []);
 
-
-  console.log(isNick,_nickCheck,keypressNick);
-
   return (
     <>
       {userInfo && (
@@ -245,9 +248,15 @@ const MyProfile = (props) => {
                   onChange={selectFile}
                 />
               </FileBox>
-              <Warning className="caption sub_color">
-                ※ 최대 20MB 등록 가능
-              </Warning>
+              <WarningBox>
+                <p className="caption sub_color">※ 최대 20MB</p>
+                {isWarning && (
+                  <p className="fail_color caption">
+                    첨부 가능한 용량을 초과합니다. 20MB 이하의 파일을
+                    올려주세요.
+                  </p>
+                )}
+              </WarningBox>
             </Grid>
 
             <Grid padding="0" margin="0 0 24px">
@@ -426,9 +435,14 @@ const MyProfile = (props) => {
           <Fixed>
             <Button
               _onClick={comfirmModal}
-              disabled={(password === "" && !preview && (userInfo.nickname === nickname || nickname === "")) ||
+              disabled={
+                (password === "" &&
+                  !preview &&
+                  (userInfo.nickname === nickname || nickname === "")) ||
                 (password && (!isPwd || !samePwd)) ||
-                (nickname && userInfo.nickname !== nickname && (_nickCheck !== "true" || !isCheck || !keypressNick))
+                (nickname &&
+                  userInfo.nickname !== nickname &&
+                  (_nickCheck !== "true" || !isCheck || !keypressNick))
                   ? "disabeld"
                   : ""
               }
@@ -515,12 +529,16 @@ const FileBox = styled.div`
   }
 `;
 
-const Warning = styled.p`
+const WarningBox = styled.div`
   position: absolute;
   text-align: center;
-  width: 120px;
-  left: -12px;
+  width: 320px;
+  left: -120px;
   margin-top: 13px;
+
+  p:first-child {
+    margin-bottom: 4px;
+  }
 `;
 
 const Fixed = styled.div`

@@ -16,7 +16,7 @@ import deleteIcon from "../image/icon/ic_delete_m.png";
 import confirmIcon from "../image/img_good@2x.png";
 
 //heic 이미지 파일을 jpeg로 변환하는 라이브러리
-import heic2any from "heic2any"
+import heic2any from "heic2any";
 
 const PostWrite = (props) => {
   const dispatch = useDispatch();
@@ -36,6 +36,8 @@ const PostWrite = (props) => {
   const [preview, setPreview] = React.useState(
     isEdit ? targetPost.postImage : ""
   ); // filereader 후 미리보기 데이터 담는 곳
+  const [isWarning, setIsWarning] = React.useState(false);
+
   const [isLevelUp, setIsLevelup] = React.useState(false); // 레벨업 여부
   const [nextLevel, setNextLevel] = React.useState("");
 
@@ -46,28 +48,36 @@ const PostWrite = (props) => {
     let file = fileInput.current.files[0];
     const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
     if (file.size > maxSize) {
-      alert("파일 사이즈가 20MB를 넘습니다.");
+      setIsWarning(true);
     } else {
-      if(file.name.split('.')[1] === 'heic' || file.name.split('.')[1] === 'HEIC'){
-        let blob = fileInput.current.files[0]; 
-        // blob에다가 변환 시키고 싶은 file값을 value로 놓는다. 
-        // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다. 
-        heic2any({blob : blob, toType : "image/jpeg"}) 
-        .then(function (resultBlob) { 
-          //file에 새로운 파일 데이터를 씌웁니다. 
-          file = new File([resultBlob], file.name.split('.')[0]+".jpg",{type:"image/jpeg", lastModified:new Date().getTime()}); 
-          console.log("변환확인",file);
-          reader.readAsDataURL(file); 
-          reader.onloadend = () => { 
-            setPreview(reader.result);
-          }
-          if (file) {
-            setImage(file);
-            console.log("이미지확인2",file);
-          }
-        }).catch(function (err){ 
-          console.log("이미지 변환 오류",err); 
-        }) 
+      setIsWarning(false);
+      if (
+        file.name.split(".")[1] === "heic" ||
+        file.name.split(".")[1] === "HEIC"
+      ) {
+        let blob = fileInput.current.files[0];
+        // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.
+        // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
+        heic2any({ blob: blob, toType: "image/jpeg" })
+          .then(function (resultBlob) {
+            //file에 새로운 파일 데이터를 씌웁니다.
+            file = new File([resultBlob], file.name.split(".")[0] + ".jpg", {
+              type: "image/jpeg",
+              lastModified: new Date().getTime(),
+            });
+            console.log("변환확인", file);
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+              setPreview(reader.result);
+            };
+            if (file) {
+              setImage(file);
+              console.log("이미지확인2", file);
+            }
+          })
+          .catch(function (err) {
+            console.log("이미지 변환 오류", err);
+          });
       }
       // 파일 내용을 읽어온다.
       reader.readAsDataURL(file);
@@ -192,21 +202,31 @@ const PostWrite = (props) => {
             <h3>{userInfo.nickname}님, 오늘의 인증을 남겨주세요!</h3>
 
             {/* 이미지 업로드 부분 */}
-            <ImageLabel
-              className="input-file-button"
-              htmlFor="input-file"
-              src={preview ? preview : ""}
-              default={plus}
-            >
-              <button onClick={() => deleteImage()}></button>
-            </ImageLabel>
-            <input
-              id="input-file"
-              type="file"
-              onChange={selectFile}
-              ref={fileInput}
-              style={{ display: "none" }}
-            />
+            <div style={{ position: "relative" }}>
+              <ImageLabel
+                className="input-file-button"
+                htmlFor="input-file"
+                src={preview ? preview : ""}
+                default={plus}
+              >
+                <button onClick={() => deleteImage()}></button>
+              </ImageLabel>
+              <input
+                id="input-file"
+                type="file"
+                onChange={selectFile}
+                ref={fileInput}
+                style={{ display: "none" }}
+              />
+              {isWarning && (
+                <p
+                  className="fail_color caption"
+                  style={{ position: "absolute", bottom: "-1px" }}
+                >
+                  첨부 가능한 용량을 초과합니다. 20MB 이하의 파일을 올려주세요.
+                </p>
+              )}
+            </div>
 
             {/* PostWrite의 작성 input */}
             <Input
