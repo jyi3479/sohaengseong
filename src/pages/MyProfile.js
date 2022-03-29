@@ -189,7 +189,6 @@ const MyProfile = (props) => {
     mypageApis
       .editMyInfo(userId, formData)
       .then((res) => {
-        console.log("프로필 수정", res);
         //변경된 유저 정보 세팅하기
         dispatch(userActions.loginCheckDB());
         setModalType("comfirmModal2");
