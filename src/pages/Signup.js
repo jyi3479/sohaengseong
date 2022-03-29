@@ -63,6 +63,13 @@ const Signup = (props) => {
     setDomain("");
   };
 
+  //이메일 한글막기
+  const onChangeMail = (e) => {
+    //좌우 방향키, 백스페이스, 딜리트, 탭키에 대한 예외
+    if(e.keyCode == 8 || e.keyCode == 9 || e.keyCode == 37 || e.keyCode == 39 || e.keyCode == 46 ) return;
+    e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');    
+  };
+
   //닉네임 정규식
 
   const onChangeNick = (e) => {
@@ -175,13 +182,13 @@ const Signup = (props) => {
           style={{ overflow: "revert" }}
         >
           <EmailInput
-            onChange={(e) => {
+            onChange={(e)=>{
               setEmail(e.target.value);
             }}
+            onKeyUp={onChangeMail}
             placeholder="이메일 주소"
-            style={{opacity: option ? "1" : "0.5" }}
-            
-          ></EmailInput>
+            style={{opacity: option ? "1" : "0.5", imeMode:"disabled"}}
+            ></EmailInput>
           <p>@</p>
           <Select className={active ? "active" : option ? "ok" : ""}>
             <img src={drop}></img>
@@ -257,7 +264,6 @@ const Signup = (props) => {
           ></EmailInput>
           <button onClick={deleteValue}></button>
         </SelfInput>
-        
       </Grid>
 
       <Grid padding="0" margin="0 0 28px" style={{ overflow: "revert" }}>
