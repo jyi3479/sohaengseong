@@ -164,7 +164,8 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <Grid padding="0" style={{position:"relative"}}>                    
+                <Grid padding="0" style={{position:"relative"}}> 
+                    <div style={{zIndex:"10"}}>                   
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -184,6 +185,7 @@ const ChallengeDetail = (props) => {
                         //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
                         : <Image shape="rectangle" padding="250px" src={empty}></Image>
                     }
+                    </div>
                     <ShareBtn onClick={shareModal}></ShareBtn>
                 </Grid>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
