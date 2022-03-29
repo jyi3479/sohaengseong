@@ -404,10 +404,6 @@ const ContentBox = styled.div`
             margin-left: 10px;
         }
     }
-    p {
-        font-size: 14px;
-        color:#333;    
-    }
 
 `;
 const Member = styled.div`  
