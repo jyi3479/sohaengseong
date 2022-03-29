@@ -29,6 +29,7 @@ const Header = (props) => {
   };  
 
 
+
   const closeModal = () => {
     setModalOpen(false);
   };
