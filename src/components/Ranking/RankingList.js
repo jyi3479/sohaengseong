@@ -11,11 +11,12 @@ import RankingCard from "./RankingCard";
 const RankingList = () => {
     const dispatch = useDispatch();
     const ranking = useSelector(state => state.ranking.list);  
-    const userInfo = useSelector(state => state.user.user);  
-
+    const userInfo = useSelector(state => state.user.user);
 
     React.useEffect(()=>{
-        dispatch(actionCreators.getRankingDB());
+        if(userInfo !== null){
+            dispatch(actionCreators.getRankingDB());
+        }
     },[]);  
 
     return(

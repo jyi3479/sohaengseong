@@ -49,15 +49,14 @@ const ChallengeDetail = (props) => {
     const imageList = target&&target.challengeImage;
 
     //날짜 포맷 변경 뒤 날짜 간격 계산하기
-    const startDate = target&&`${target.startDate.split(" ")[0].split("-")[0]}`;
-    const endDate = target&&`${target.endDate.split(" ")[0].split("-")[0]}`;
+    const startDate = target&&`${target.startDate.split(" ")[0]}`;
+    const endDate = target&&`${target.endDate.split(" ")[0]}`;
     const today = dayjs();
     const date1 = dayjs(startDate,"YYYY-MM-DD",'ko');
     const date2 = dayjs(endDate,"YYYY-MM-DD",'ko');
     const days = Number(date2.diff(date1, "day"))+1;
     const join_day = +today.diff(date1, "day")+1;
     const remaining_day = Math.ceil(days*0.8);
-    
 
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
@@ -138,7 +137,7 @@ const ChallengeDetail = (props) => {
             seyCopyShow(true); //성공알림 띄워줌
             setTimeout(() => {
                 seyCopyShow(false);
-                dispatch(baseAction.setCopy(false));//끄고나서 초기값으로 다시 바꾸기
+                dispatch(baseAction.setCopy(false));//팝업 닫히고 나서 초기값으로 다시 바꾸기
             }, 2000);
         }
 

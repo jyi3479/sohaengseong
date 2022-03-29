@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import React from "react";
 import styled from "styled-components";
 
@@ -14,6 +15,9 @@ import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
 
 //스크롤바 커스텀
 import ScrollBar from "../components/shared/ScrollBar";
+
+//heic 이미지 파일을 jpeg로 변환하는 라이브러리
+import heic2any from "heic2any"
 
 import { Grid, Input, Button, Image } from "../elements";
 import Modal from "../components/Modal";
@@ -151,8 +155,7 @@ const ChallengeWrite = (props) => {
   // 이미지 업로드 부분 ----------------------------------------------------------------------------
   const fileInput = React.useRef();
   const selectFile = (e) => {
-    const fileArr = fileInput.current.files;
-    console.log(fileArr[0].size);
+    let fileArr = fileInput.current.files;
     let fileURLs = []; // preview 담을 배열
     let files = []; // image 담을 배열
 
@@ -170,24 +173,48 @@ const ChallengeWrite = (props) => {
     // 다중 선택된 이미지 file 객체들을 반복문을 돌리며 preview와 image 배열에 추가하기
     for (let i = 0; i < filesLength; i++) {
       file = fileArr[i];
-      console.log(file.size, maxSize);
       if (file.size > maxSize) {
         alert("파일 사이즈가 20MB를 넘습니다.");
       } else {
         let reader = new FileReader();
-        // 파일 내용을 읽어온다.
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          // 읽기가 끝나면 발생하는 이벤트 핸들러.
-          fileURLs.push(reader.result);
-          // 미리보기 state에 저장
-          setPreview([...preview, ...fileURLs]);
-        };
-        // 이미지 state에 저장
-        if (file) {
-          files.push(fileArr[i]);
-          setImage([...image, ...files]);
-        }
+        if(file.name.split('.')[1] === 'heic' || file.name.split('.')[1] === 'HEIC'){
+          let blob = fileArr[i];
+          // blob에다가 변환 시키고 싶은 file값을 value로 놓는다. 
+          // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다. 
+          heic2any({blob : blob, toType : "image/jpeg"})
+          .then(function (resultBlob){
+            //file에 새로운 파일 데이터를 씌웁니다. 
+            file = new File([resultBlob], file.name.split('.')[0]+".jpg",{type:"image/jpeg", lastModified:new Date().getTime()}); 
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              // 읽기가 끝나면 발생하는 이벤트 핸들러.
+              fileURLs.push(reader.result);
+              // 미리보기 state에 저장
+              setPreview([...preview, ...fileURLs]);
+            };
+            // 이미지 state에 저장
+            if (file) {
+              files.push(file);
+              setImage([...image, ...files]);
+            }
+          }).catch(function (err){ 
+            console.log("이미지 변환 오류",err); 
+          })
+        }else {
+          // 파일 내용을 읽어온다.
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            // 읽기가 끝나면 발생하는 이벤트 핸들러.
+            fileURLs.push(reader.result);
+            // 미리보기 state에 저장
+            setPreview([...preview, ...fileURLs]);
+          };
+          // 이미지 state에 저장
+          if (file) {
+            files.push(fileArr[i]);
+            setImage([...image, ...files]);
+          }
+        }        
       }
     }
     e.target.value = ""; // 같은 파일 upload를 위한 처리
@@ -676,7 +703,7 @@ const ChallengeWrite = (props) => {
             ref={fileInput}
             // disabled={is_uploading}
             multiple // 다중 업로드 가능
-            accept="image/*" // 이미지에 해당하는 모든 파일 허용 (JPG,JPEG,GIF,PNG 제한?)
+            //accept="image/*" // 이미지에 해당하는 모든 파일 허용 (JPG,JPEG,GIF,PNG 제한?)
             style={{ display: "none" }}
           />
         </InputBox>
@@ -721,7 +748,6 @@ const ChallengeWrite = (props) => {
                       id="public"
                       onChange={(e) => {
                         changeHandler(e.currentTarget.checked, "public");
-                        console.log(e.currentTarget.checked);
                       }}
                       checked={checkedInputs === "public" ? true : false}
                     />
@@ -788,6 +814,8 @@ const ChallengeWrite = (props) => {
           <li className="sub_color mt4">
             개설자도 함께 습관 형성에 참여해야하며, 시작 이후 개설자는 중도
             포기가 불가능합니다.
+          </li>
+          <li className="sub_color mt4"> 규정에 맞지 않는 게시글은 관리자에 의해 삭제될 수 있습니다.
           </li>
         </ul>
       </Notice>

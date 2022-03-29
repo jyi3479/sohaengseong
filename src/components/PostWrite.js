@@ -15,6 +15,9 @@ import plus from "../image/icons/ic_plus_xl@2x.png";
 import deleteIcon from "../image/icon/ic_delete_m.png";
 import confirmIcon from "../image/img_good@2x.png";
 
+//heic 이미지 파일을 jpeg로 변환하는 라이브러리
+import heic2any from "heic2any"
+
 const PostWrite = (props) => {
   const dispatch = useDispatch();
   const challengeId = +useParams().challengeId;
@@ -40,11 +43,32 @@ const PostWrite = (props) => {
   const fileInput = React.useRef();
   const selectFile = (e) => {
     const reader = new FileReader();
-    const file = fileInput.current.files[0];
+    let file = fileInput.current.files[0];
     const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
     if (file.size > maxSize) {
       alert("파일 사이즈가 20MB를 넘습니다.");
     } else {
+      if(file.name.split('.')[1] === 'heic' || file.name.split('.')[1] === 'HEIC'){
+        let blob = fileInput.current.files[0]; 
+        // blob에다가 변환 시키고 싶은 file값을 value로 놓는다. 
+        // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다. 
+        heic2any({blob : blob, toType : "image/jpeg"}) 
+        .then(function (resultBlob) { 
+          //file에 새로운 파일 데이터를 씌웁니다. 
+          file = new File([resultBlob], file.name.split('.')[0]+".jpg",{type:"image/jpeg", lastModified:new Date().getTime()}); 
+          console.log("변환확인",file);
+          reader.readAsDataURL(file); 
+          reader.onloadend = () => { 
+            setPreview(reader.result);
+          }
+          if (file) {
+            setImage(file);
+            console.log("이미지확인2",file);
+          }
+        }).catch(function (err){ 
+          console.log("이미지 변환 오류",err); 
+        }) 
+      }
       // 파일 내용을 읽어온다.
       reader.readAsDataURL(file);
       // 읽기가 끝나면 발생하는 이벤트 핸들러.
