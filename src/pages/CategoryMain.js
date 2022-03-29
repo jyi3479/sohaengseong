@@ -23,7 +23,7 @@ const CategoryMain = (props) => {
         <MainHeader className="category"/>
         <Grid style={{background:"linear-gradient(133deg, #221F63, #0F0D29)"}} padding="48px 0 64px" height="100vh">
             <Banner>
-                <h1>찾으시는 습관 주제의 행성을<br/>선택하세요.</h1>
+                <h1>이루고 싶은 목표의 주제가<br/>무엇인가요?</h1>
             </Banner>
             <Grid padding="0 20px" height="100%">
                 <CategoryPlanet>

@@ -164,8 +164,8 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <Grid padding="0" style={{position:"relative"}}>     
-                    <div style={{zIndex:"10"}}>
+                <Grid padding="0" style={{position:"relative"}}> 
+                    <div style={{zIndex:"10"}}>                   
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -178,7 +178,7 @@ const ChallengeDetail = (props) => {
                             >
                             {imageList.map((el,i)=>{
                                 return(
-                                    <SwiperSlide key={i}><Image shape="rectangle" padding="250px" src={el?el:defaultImg}></Image></SwiperSlide>
+                                    <SwiperSlide key={i}><Image shape="rectangle" padding="250px" src={el?el:empty}></Image></SwiperSlide>
                                 );
                             })}
                         </Swiper>
