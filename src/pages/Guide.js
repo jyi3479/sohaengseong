@@ -116,7 +116,7 @@ const Guide = (props) => {
         </Section>
         <Section className="t_center">
             <p className="poppins sub_color">STEP.4</p>
-            <h2>나와 함께 성장하는<br/><span className="point_color">귀염둥이 토비.</span></h2>
+            <h2>나와 함께 성장하는<br/><span className="point_color">귀염둥이 토비</span></h2>
             <SlideBox>
               <img src={slide_6_1}></img>
             </SlideBox>

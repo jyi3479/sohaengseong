@@ -29,19 +29,19 @@ import { FreeMode, Scrollbar, Mousewheel } from "swiper";
 import notfound from "../image/icon/ic_empty_l@2x.png";
 import InfinityScroll from "../shared/InfiniteScroll";
 
-const CategoryTab = () => {
+const CategoryTab = (props) => {
   const dispatch = useDispatch();
   const location = useSelector((state) => state.router.location.pathname);
   const tabId = location.split("/")[2];
 
   //메인에서 시작하기 눌러서 이동했을 경우 추천검색어를 안띄우기 위함
-  const history_location = useLocation();
-  const notfocus = history_location.state.notfocus; 
+  // const history_location = useLocation();
+  // const notfocus = history_location.state.notfocus;
 
   const [word, setWord] = React.useState("");
   const [search_list, setSearch_list] = React.useState("");
   const [active, setActive] = React.useState(true);
-  const [focus, setFocus] = React.useState(notfocus?false:true);
+  const [focus, setFocus] = React.useState(true);
 
   const challengeInfo = useSelector((state) => state.challenge);
   const categoryList = challengeInfo.categoryList;
