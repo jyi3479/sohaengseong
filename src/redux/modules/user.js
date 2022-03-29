@@ -248,6 +248,7 @@ const ActionCreators = {
   loginBykakao,
   emailCheckResend,
   getNoticeDB,
+  nickCheck
 };
 
 export { ActionCreators };

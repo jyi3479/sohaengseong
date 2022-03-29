@@ -7,6 +7,7 @@ import * as baseAction from "../redux/modules/base";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as mypageAction } from "../redux/modules/mypage";
 import { mypageApis } from "../shared/apis";
+import { userApis } from "../shared/apis";
 
 //image
 import defaultImg from "../image/img_profile_defalt @2x.png";
@@ -14,6 +15,12 @@ import setIcon from "../image/icon/ic_setting@2x.png";
 
 //모달팝업
 import Modal from "../components/Modal";
+
+
+//heic 이미지 파일을 jpeg로 변환하는 라이브러리
+import heic2any from "heic2any"
+
+
 
 const MyProfile = (props) => {
   const dispatch = useDispatch();
@@ -26,9 +33,46 @@ const MyProfile = (props) => {
   const [image, setImage] = React.useState(null);
   const [preview, setPreview] = React.useState(null);
 
+  // 닉네임
+  const [keypressNick, setKeypressNick] = React.useState();
+  const [nickname, setnickname] = React.useState(userInfo.nickname);
+  const [isNick, setIsNick] = React.useState("");
+  //중복검사
+  const _nickCheck = useSelector((state) => state.user.nickCk);
+  const [isCheck, setIsCheck] = React.useState(false); // 중복검사를 한 번이라도 눌렀는지 여부
+
   //유효성 검사
   const [isPwd, setIsPwd] = React.useState(false);
   const [samePwd, setSamePwd] = React.useState(false);
+
+  const nicknameCheck = () => {
+    // 닉네임 중복체크    
+    userApis
+      .nicknameCheck(nickname)
+      .then((res) => {
+        dispatch(userActions.nickCheck(res.data));
+        setKeypressNick(res.data.result);
+      })
+      .catch((err) => {
+        console.log("닉네임 중복확인 에러", err);
+        dispatch(userActions.nickCheck(err.response.data));
+      });
+    setIsCheck(true);
+  };
+
+  //닉네임 정규식
+  const onChangeNick = (e) => {
+    setnickname(e.target.value);
+    let userNickRegex = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{2,8}$/;
+    let NickRegex = userNickRegex.test(e.target.value);
+
+    setKeypressNick(false);
+    if (!NickRegex) {
+      setIsNick(false);
+    } else {
+      setIsNick(true);
+    }
+  };
 
   //모달팝업
   const [modalType, setModalType] = React.useState("");
@@ -85,16 +129,39 @@ const MyProfile = (props) => {
 
   const selectFile = (e) => {
     const reader = new FileReader();
-    const file = fileInput.current.files[0];
-
-    reader.readAsDataURL(file); //파일 내용 읽어오기
-    // onloadend: 읽기가 끝나면 발생하는 이벤트 핸들러
-    reader.onloadend = () => {
-      // reader.result는 파일의 컨텐츠(내용물)입니다!
-      setPreview(reader.result);
-    };
-    if (file) {
-      setImage(file);
+    let file = fileInput.current.files[0];
+    const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
+    if (file.size > maxSize) {
+      alert("파일 사이즈가 20MB를 넘습니다.");
+    } else {
+      if(file.name.split('.')[1] === 'heic' || file.name.split('.')[1] === 'HEIC'){
+        let blob = fileInput.current.files[0]; 
+        // blob에다가 변환 시키고 싶은 file값을 value로 놓는다. 
+        // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다. 
+        heic2any({blob : blob, toType : "image/jpeg"}) 
+        .then(function (resultBlob) { 
+          //file에 새로운 파일 데이터를 씌웁니다. 
+          file = new File([resultBlob], file.name.split('.')[0]+".jpg",{type:"image/jpeg", lastModified:new Date().getTime()}); 
+          reader.readAsDataURL(file); 
+          reader.onloadend = () => { 
+            setPreview(reader.result);
+          }
+          if (file) {
+            setImage(file);
+          }
+        }).catch(function (err){ 
+          console.log("이미지 변환 오류",err); 
+        }) 
+      }
+      reader.readAsDataURL(file); //파일 내용 읽어오기
+      // onloadend: 읽기가 끝나면 발생하는 이벤트 핸들러
+      reader.onloadend = () => {
+        // reader.result는 파일의 컨텐츠(내용물)입니다!
+        setPreview(reader.result);
+      };
+      if (file) {
+        setImage(file);
+      }
     }
   };
 
@@ -106,8 +173,8 @@ const MyProfile = (props) => {
     const data = {
       password: password,
       passwordCheck: passwordCheck,
+      nickname: nickname === userInfo.nickname ? "" : nickname,
     };
-
     formData.append(
       "profile",
       new Blob([JSON.stringify(data)], { type: "application/json" })
@@ -128,7 +195,7 @@ const MyProfile = (props) => {
       });
   };
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     //유저 정보 불러오기
     dispatch(mypageAction.getMyInfoDB(userId));
 
@@ -141,13 +208,16 @@ const MyProfile = (props) => {
     };
   }, []);
 
+
+  console.log(isNick,_nickCheck,keypressNick);
+
   return (
     <>
       {userInfo && (
         <Grid margin="48px 0 0" padding="0">
           <Grid padding="28px 20px 32px" bg="#fff">
             <Grid
-              margin="0 auto 40px"
+              margin="0 auto 60px"
               width="90px"
               padding="0"
               style={{ position: "relative", overflow: "initial" }}
@@ -157,7 +227,13 @@ const MyProfile = (props) => {
                 shape="rectangle"
                 size="90"
                 radius="30px"
-                src={preview?preview:(userInfo.profileUrl?(userInfo.profileUrl):defaultImg)}
+                src={
+                  preview
+                    ? preview
+                    : userInfo.profileUrl
+                    ? userInfo.profileUrl
+                    : defaultImg
+                }
               ></Image>
               <FileBox>
                 {/* 이미지 업로드 */}
@@ -169,7 +245,11 @@ const MyProfile = (props) => {
                   onChange={selectFile}
                 />
               </FileBox>
+              <Warning className="caption sub_color">
+                ※ 최대 20MB 등록 가능
+              </Warning>
             </Grid>
+
             <Grid padding="0" margin="0 0 24px">
               <InputWrap disabled>
                 <label className="caption_color">아이디(이메일)</label>
@@ -179,37 +259,105 @@ const MyProfile = (props) => {
 
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap disabled>
-                <label className="caption_color">닉네임</label>
-                <Input value={userInfo.nickname} is_submit disabled />
+                <Input
+                  double
+                  label="닉네임"
+                  value={nickname}
+                  is_submit
+                  placeholder="닉네임을 입력하세요."
+                  btnClick={nicknameCheck}
+                  btn_disabled={
+                    ((isNick === true && _nickCheck === null) ||
+                      keypressNick === false) &&
+                    userInfo.nickname !== nickname
+                      ? ""
+                      : isNick === true &&
+                        _nickCheck === undefined &&
+                        userInfo.nickname !== nickname
+                      ? ""
+                      : "disabled"
+                  }
+                  _onChange={onChangeNick}
+                  className={
+                    (isNick === "" && _nickCheck === null) ||
+                    userInfo.nickname === nickname
+                      ? ""
+                      : isNick === false && _nickCheck === null
+                      ? ""
+                      : isNick === false && _nickCheck === "true"
+                      ? ""
+                      : (isNick === true && _nickCheck === null) ||
+                        keypressNick === false
+                      ? "red"
+                      : isNick === true && _nickCheck === undefined
+                      ? "red"
+                      : "green"
+                  }
+                />
+                <span
+                  className={
+                    (isNick === "" && _nickCheck === null) ||
+                    userInfo.nickname === nickname
+                      ? ""
+                      : isNick === false && _nickCheck === null
+                      ? ""
+                      : isNick === false && _nickCheck === "true"
+                      ? ""
+                      : (isNick === true && _nickCheck === null) ||
+                        keypressNick === false
+                      ? "red"
+                      : isNick === true && _nickCheck === undefined
+                      ? "red"
+                      : "green"
+                  }
+                >
+                  {isNick === null ||
+                  (isNick === "" && _nickCheck === null) ||
+                  userInfo.nickname === nickname
+                    ? ""
+                    : isNick === false && _nickCheck === null
+                    ? "2-8자의 닉네임을 입력하세요."
+                    : isNick === false && _nickCheck === "true"
+                    ? "2-8자의 닉네임을 입력하세요."
+                    : (isNick === true && _nickCheck === null) ||
+                      keypressNick === false
+                    ? "중복확인을 해주세요"
+                    : isNick === true && _nickCheck === undefined
+                    ? "이미 존재하는 닉네임입니다."
+                    : "사용 가능한 닉네임입니다"}
+                </span>
               </InputWrap>
             </Grid>
 
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap>
-              {userInfo.kakao?( <Input
-                  type="password"
-                  label="새 비밀번호"
-                  value={password}
-                  is_submit
-                  placeholder="카카오 사용자입니다."
-                  disabled
-                
-                />):( <Input
-                  type="password"
-                  label="새 비밀번호"
-                  value={password}
-                  is_submit
-                  placeholder="비밀번호를 입력하세요."
-                  _onChange={onChangePwd}
-                  className={
-                    password.length === 0
-                      ? ""
-                      : isPwd && password.length
-                      ? "green"
-                      : "red"
-                  }
-                />)}
-               
+                {userInfo.kakao ? (
+                  <Input
+                    type="password"
+                    label="새 비밀번호"
+                    value={password}
+                    is_submit
+                    placeholder="카카오 사용자입니다."
+                    disabled
+                  />
+                ) : (
+                  <Input
+                    type="password"
+                    label="새 비밀번호"
+                    value={password}
+                    is_submit
+                    placeholder="비밀번호를 입력하세요."
+                    _onChange={onChangePwd}
+                    className={
+                      password.length === 0
+                        ? ""
+                        : isPwd && password.length
+                        ? "green"
+                        : "red"
+                    }
+                  />
+                )}
+
                 <span
                   className={
                     password.length === 0
@@ -230,30 +378,33 @@ const MyProfile = (props) => {
 
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap>
-              {userInfo.kakao?( <Input
-                  type="password"
-                  label="비밀번호 확인"
-                  value={passwordCheck}
-                  is_submit
-                  placeholder="카카오 사용자입니다."
-                  disabled
-                
-                />):(  <Input
-                  type="password"
-                  label="비밀번호 확인"
-                  value={passwordCheck}
-                  is_submit
-                  placeholder="비밀번호를 재입력하세요."
-                  _onChange={checkPwd}
-                  className={
-                    passwordCheck.length === 0
-                      ? ""
-                      : samePwd && passwordCheck.length
-                      ? "green"
-                      : "red"
-                  }
-                />)}
-               
+                {userInfo.kakao ? (
+                  <Input
+                    type="password"
+                    label="비밀번호 확인"
+                    value={passwordCheck}
+                    is_submit
+                    placeholder="카카오 사용자입니다."
+                    disabled
+                  />
+                ) : (
+                  <Input
+                    type="password"
+                    label="비밀번호 확인"
+                    value={passwordCheck}
+                    is_submit
+                    placeholder="비밀번호를 재입력하세요."
+                    _onChange={checkPwd}
+                    className={
+                      passwordCheck.length === 0
+                        ? ""
+                        : samePwd && passwordCheck.length
+                        ? "green"
+                        : "red"
+                    }
+                  />
+                )}
+
                 <span
                   className={
                     passwordCheck.length === 0
@@ -275,7 +426,12 @@ const MyProfile = (props) => {
           <Fixed>
             <Button
               _onClick={comfirmModal}
-              disabled={password === "" && preview === "" ? "disabeld" : ""}
+              disabled={(password === "" && !preview && (userInfo.nickname === nickname || nickname === "")) ||
+                (password && (!isPwd || !samePwd)) ||
+                (nickname && userInfo.nickname !== nickname && (_nickCheck !== "true" || !isCheck || !keypressNick))
+                  ? "disabeld"
+                  : ""
+              }
             >
               수정하기
             </Button>
@@ -357,6 +513,14 @@ const FileBox = styled.div`
     overflow: hidden;
     border: 0;
   }
+`;
+
+const Warning = styled.p`
+  position: absolute;
+  text-align: center;
+  width: 120px;
+  left: -12px;
+  margin-top: 13px;
 `;
 
 const Fixed = styled.div`

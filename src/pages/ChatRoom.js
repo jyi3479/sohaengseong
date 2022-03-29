@@ -27,12 +27,12 @@ const ChatRoom = ({ match }) => {
   const dispatch = useDispatch();
 
   // 소켓 통신 객체
+  //const sock = new SockJS("https://byungmin.shop/chatting");
   const sock = new SockJS("https://sohangsung.shop/chatting");
   const client = StompJs.over(sock);
 
   // 방 제목 가져오기
   const currentChat = useSelector((state) => state.chat.currentChat);
-  const isEnter = useSelector((state) => state.chat.isEnter);
   const roomId = match.params.roomId;
 
   // 토큰
@@ -78,25 +78,21 @@ const ChatRoom = ({ match }) => {
           authorization: token,
         },
         async () => {
-          if (isEnter) {
-            enterMessage();
-            dispatch(chatAction.moveChat(false));
-          }
+          enterMessage();
           client.subscribe(
             `/sub/chat/rooms/${roomId}`,
             (data) => {
               const newMessage = JSON.parse(data.body);
 
-              if (newMessage.type==="TALK") {
+              if (newMessage.type === "TALK") {
                 setIsTalk(true);
                 setIsMsg(false);
               } else {
-                if(newMessage.user.userId !== userId){
-                setIsMsg(true);
+                if (newMessage.user.userId !== userId) {
+                  setIsMsg(true);
                 }
               }
 
-              
               // 메세지 추가하는 부분 (reducer에서 push)
               dispatch(chatAction.getMessages(newMessage));
             },
@@ -131,11 +127,23 @@ const ChatRoom = ({ match }) => {
   // 렌더링 될 때마다 연결,구독 다른 방으로 옮길 때 연결, 구독 해제
   React.useEffect(() => {
     wsConnectSubscribe();
+
+    // 브라우저 종료 및 새로고침
+    window.addEventListener("beforeunload", (event) => {
+      wsDisConnectUnsubscribe();
+    });
+
+    // 모바일 탭 전환 시
+    window.addEventListener("visibilitychange", () => {
+      wsDisConnectUnsubscribe();
+      history.push("/");
+    });
+
     return () => {
       wsDisConnectUnsubscribe();
       dispatch(chatAction.clearMessages());
     };
-  }, [roomId]);
+  }, []);
 
   // 웹소켓이 연결될 때 까지 실행하는 함수
   const waitForConnection = (waitWs, callback) => {
@@ -168,13 +176,15 @@ const ChatRoom = ({ match }) => {
       };
 
       waitForConnection(client, () => {
-        client.send(
-          "/pub/chat/message",
-          {
-            authorization: token,
-          },
-          JSON.stringify(data)
-        );
+        if (client.subscriptions["sub-0"]) {
+          client.send(
+            "/pub/chat/message",
+            {
+              authorization: token,
+            },
+            JSON.stringify(data)
+          );
+        }
       });
     } catch (error) {
       console.log(error);

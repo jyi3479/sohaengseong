@@ -11,6 +11,8 @@ import logo from "../image/logo_xl@2x.png";
 import backgroundImg from "../image/background.png";
 import star from "../image/img_star2@2x.png";
 
+import { getCookie } from "./cookie";
+
 //page import
 import MobileFrame from "../components/MobileFrame";
 import { ActionCreators as userActions } from "../redux/modules/user";
@@ -19,6 +21,7 @@ import Footer from "../components/Footer";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Main from "../pages/Main";
+import DailyCertify from "../pages/DailyCertify";
 import ChallengeDetail from "../pages/ChallengeDetail";
 import CategoryTab from "../pages/CategoryTab";
 import MyPage from "../pages/MyPage";
@@ -28,7 +31,6 @@ import ChallengeWrite from "../pages/ChallengeWrite";
 import CategoryMain from "../pages/CategoryMain";
 import Find from "../pages/Find";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandeler";
-import { getCookie, setCookie } from "./cookie";
 import ChatRoom from "../pages/ChatRoom";
 import ChatList from "../pages/ChatList";
 import MyCompleted from "../pages/MyCompleted";
@@ -94,10 +96,11 @@ function App() {
                   <Header />
                   <Footer />
                   <Route path="/signup" exact component={Signup} />
-                  {/* 회원가입 */}
-                           
+                  {/* 회원가입 */}                           
                   <Route path="/today" exact component={TodayChallenge} />
                   {/* 메인 > 오늘의 소행성 */}
+                  <Route path="/daily" exact component={DailyCertify} />
+                  {/* 메인 > 오늘의 인증 */}
                   <Route path="/notice" exact component={Notice} />
                   {/* 알림페이지 */}
                   <Route

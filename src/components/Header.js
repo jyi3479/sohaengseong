@@ -26,7 +26,9 @@ const Header = (props) => {
     } else {      
       history.push("/notice");
     }
-  };
+  };  
+
+
 
   const closeModal = () => {
     setModalOpen(false);
