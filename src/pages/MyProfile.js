@@ -7,6 +7,7 @@ import * as baseAction from "../redux/modules/base";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as mypageAction } from "../redux/modules/mypage";
 import { mypageApis } from "../shared/apis";
+import { userApis } from "../shared/apis";
 
 //image
 import defaultImg from "../image/img_profile_defalt @2x.png";
@@ -45,9 +46,17 @@ const MyProfile = (props) => {
   const [samePwd, setSamePwd] = React.useState(false);
 
   const nicknameCheck = () => {
-    // 닉네임 중복체크
-    setKeypressNick(_nickCheck);
-    dispatch(userActions.nicknameCheck(nickname));
+    // 닉네임 중복체크    
+    userApis
+      .nicknameCheck(nickname)
+      .then((res) => {
+        dispatch(userActions.nickCheck(res.data));
+        setKeypressNick(res.data.result);
+      })
+      .catch((err) => {
+        console.log("닉네임 중복확인 에러", err);
+        dispatch(userActions.nickCheck(err.response.data));
+      });
     setIsCheck(true);
   };
 
@@ -198,6 +207,9 @@ const MyProfile = (props) => {
       dispatch(baseAction.setGnb(true));
     };
   }, []);
+
+
+  console.log(isNick,_nickCheck,keypressNick);
 
   return (
     <>
@@ -414,14 +426,9 @@ const MyProfile = (props) => {
           <Fixed>
             <Button
               _onClick={comfirmModal}
-              disabled={
-                (password === "" &&
-                  !preview &&
-                  (userInfo.nickname === nickname || nickname === "")) ||
+              disabled={(password === "" && !preview && (userInfo.nickname === nickname || nickname === "")) ||
                 (password && (!isPwd || !samePwd)) ||
-                (nickname &&
-                  userInfo.nickname !== nickname &&
-                  (_nickCheck !== "true" || !isCheck || !keypressNick))
+                (nickname && userInfo.nickname !== nickname && (_nickCheck !== "true" || !isCheck || !keypressNick))
                   ? "disabeld"
                   : ""
               }
