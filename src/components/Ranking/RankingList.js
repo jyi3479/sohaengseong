@@ -13,11 +13,12 @@ const RankingList = () => {
     const ranking = useSelector(state => state.ranking.list);
     const userInfo = useSelector(state => state.user.user);
 
-    React.useEffect(()=>{
-        if(userInfo !== null){
-            dispatch(actionCreators.getRankingDB());
+    React.useEffect(() => {
+        if (userInfo !== null) {
+          dispatch(actionCreators.getRankingDB());
         }
     },[userInfo]);
+
 
     return(
         <Wrap>                 

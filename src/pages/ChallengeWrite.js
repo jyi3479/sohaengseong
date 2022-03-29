@@ -17,7 +17,7 @@ import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
 import ScrollBar from "../components/shared/ScrollBar";
 
 //heic 이미지 파일을 jpeg로 변환하는 라이브러리
-import heic2any from "heic2any"
+import heic2any from "heic2any";
 
 import { Grid, Input, Button, Image } from "../elements";
 import Modal from "../components/Modal";
@@ -78,6 +78,7 @@ const ChallengeWrite = (props) => {
   const [preview, setPreview] = React.useState(
     isEdit ? target.challengeImage : []
   );
+  const [isWarning, setIsWarning] = React.useState(false);
 
   //해시태그 부분
   const [hashtag, setHashtag] = React.useState(""); //onChange로 관리할 문자열
@@ -164,6 +165,8 @@ const ChallengeWrite = (props) => {
 
     const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
 
+    setIsWarning(false); // 업로드 마다 용량 초과 파일 있는지 확인을 위해, 초기화
+
     if (isEdit) {
       filesLength = 3 - compareImage.length; // 이미지 3장 제한
     } else {
@@ -174,33 +177,41 @@ const ChallengeWrite = (props) => {
     for (let i = 0; i < filesLength; i++) {
       file = fileArr[i];
       if (file.size > maxSize) {
-        alert("파일 사이즈가 20MB를 넘습니다.");
+        console.log("파일 사이즈가 20MB를 넘습니다.");
+        setIsWarning(true); // 용량 초과 파일 하나라도 있으면 true
       } else {
         let reader = new FileReader();
-        if(file.name.split('.')[1] === 'heic' || file.name.split('.')[1] === 'HEIC'){
+        if (
+          file.name.split(".")[1] === "heic" ||
+          file.name.split(".")[1] === "HEIC"
+        ) {
           let blob = fileArr[i];
-          // blob에다가 변환 시키고 싶은 file값을 value로 놓는다. 
-          // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다. 
-          heic2any({blob : blob, toType : "image/jpeg"})
-          .then(function (resultBlob){
-            //file에 새로운 파일 데이터를 씌웁니다. 
-            file = new File([resultBlob], file.name.split('.')[0]+".jpg",{type:"image/jpeg", lastModified:new Date().getTime()}); 
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-              // 읽기가 끝나면 발생하는 이벤트 핸들러.
-              fileURLs.push(reader.result);
-              // 미리보기 state에 저장
-              setPreview([...preview, ...fileURLs]);
-            };
-            // 이미지 state에 저장
-            if (file) {
-              files.push(file);
-              setImage([...image, ...files]);
-            }
-          }).catch(function (err){ 
-            console.log("이미지 변환 오류",err); 
-          })
-        }else {
+          // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.
+          // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
+          heic2any({ blob: blob, toType: "image/jpeg" })
+            .then(function (resultBlob) {
+              //file에 새로운 파일 데이터를 씌웁니다.
+              file = new File([resultBlob], file.name.split(".")[0] + ".jpg", {
+                type: "image/jpeg",
+                lastModified: new Date().getTime(),
+              });
+              reader.readAsDataURL(file);
+              reader.onload = () => {
+                // 읽기가 끝나면 발생하는 이벤트 핸들러.
+                fileURLs.push(reader.result);
+                // 미리보기 state에 저장
+                setPreview([...preview, ...fileURLs]);
+              };
+              // 이미지 state에 저장
+              if (file) {
+                files.push(file);
+                setImage([...image, ...files]);
+              }
+            })
+            .catch(function (err) {
+              console.log("이미지 변환 오류", err);
+            });
+        } else {
           // 파일 내용을 읽어온다.
           reader.readAsDataURL(file);
           reader.onload = () => {
@@ -214,7 +225,7 @@ const ChallengeWrite = (props) => {
             files.push(fileArr[i]);
             setImage([...image, ...files]);
           }
-        }        
+        }
       }
     }
     e.target.value = ""; // 같은 파일 upload를 위한 처리
@@ -271,17 +282,6 @@ const ChallengeWrite = (props) => {
   // 인증 게시글 추가하기 --------------------------------------------------------------------
   const addChallenge = () => {
     // 예외처리
-    if (category === "") {
-      window.alert("카테고리를 선택해주세요.");
-      return;
-    }
-    if (title === "") {
-      window.alert("타이틀을 적어주세요.");
-    }
-    if (content === "") {
-      window.alert("내용을 적어주세요.");
-      return;
-    }
     if (parseInt(maxMember)) {
       // 숫자만 추출해서 유효성 검사하기
       if (parseInt(maxMember) > 30) {
@@ -295,11 +295,6 @@ const ChallengeWrite = (props) => {
       // 문자만 입력했을 때
       window.alert("모집 인원 수를 입력해주세요.");
       return;
-    }
-
-    // 기간 선택 유효성 검사
-    if (value.includes(null)) {
-      window.alert("기간을 선택해주세요.");
     }
 
     // 비밀번호 유효성 검사(숫자 4자리 정규식 적용)
@@ -341,19 +336,6 @@ const ChallengeWrite = (props) => {
 
   // 인증 게시글 수정하기 ------------------------------------------------------------------------------
   const editChallenge = () => {
-    // 예외처리
-    if (category === "") {
-      window.alert("카테고리를 선택해주세요.");
-      return;
-    }
-    if (title === "") {
-      window.alert("타이틀을 적어주세요.");
-    }
-    if (content === "") {
-      window.alert("내용을 적어주세요.");
-      return;
-    }
-
     // 서버에 보내기 위한 작업
     // 폼데이터 생성
     let formData = new FormData();
@@ -666,10 +648,8 @@ const ChallengeWrite = (props) => {
             첫번째 이미지가 대표 이미지로 등록됩니다. (최대 20MB)
           </p>
           <div
-            sytle={{
-              display: "flex",
-              whiteSpace: "nowrap",
-              overflowX: "scroll",
+            style={{
+              position: "relative",
             }}
           >
             {preview.map((el, idx) => {
@@ -693,6 +673,14 @@ const ChallengeWrite = (props) => {
                   }}
                 ></img>
               </ImageLabel>
+            )}
+            {isWarning && (
+              <p
+                className="fail_color caption"
+                style={{ position: "absolute" }}
+              >
+                첨부 가능한 용량을 초과합니다. 20MB 이하의 파일을 올려주세요.
+              </p>
             )}
           </div>
 
@@ -815,7 +803,9 @@ const ChallengeWrite = (props) => {
             개설자도 함께 습관 형성에 참여해야하며, 시작 이후 개설자는 중도
             포기가 불가능합니다.
           </li>
-          <li className="sub_color mt4"> 규정에 맞지 않는 게시글은 관리자에 의해 삭제될 수 있습니다.
+          <li className="sub_color mt4">
+            {" "}
+            규정에 맞지 않는 게시글은 관리자에 의해 삭제될 수 있습니다.
           </li>
         </ul>
       </Notice>
@@ -828,7 +818,7 @@ const ChallengeWrite = (props) => {
               content === "" ||
               category === "" ||
               maxMember === "" ||
-              startDate === ""
+              value.includes(null)
                 ? "disabled"
                 : ""
             }
@@ -843,7 +833,7 @@ const ChallengeWrite = (props) => {
               content === "" ||
               category === "" ||
               maxMember === "" ||
-              startDate === ""
+              value.includes(null)
                 ? "disabled"
                 : ""
             }
