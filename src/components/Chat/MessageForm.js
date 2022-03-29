@@ -54,8 +54,9 @@ function MessageForm(props) {
           onKeyPress={onEnterPress}
           ref={textArea}
         />
-        <button
-          type="button"
+        <input
+          type="submit"
+          value=" "
           className="send_btn"
           style={{
             backgroundColor: messageText
@@ -66,7 +67,7 @@ function MessageForm(props) {
             sendMessage(msg.defaultValue);
             setMessageText("");
           }}
-        ></button>
+        />
       </MessgeInput>
     </Wrap>
   );

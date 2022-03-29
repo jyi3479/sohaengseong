@@ -32,9 +32,38 @@ const MyProfile = (props) => {
   const [image, setImage] = React.useState(null);
   const [preview, setPreview] = React.useState(null);
 
+  // 닉네임
+  const [keypressNick, setKeypressNick] = React.useState();
+  const [nickname, setnickname] = React.useState(userInfo.nickname);
+  const [isNick, setIsNick] = React.useState("");
+  //중복검사
+  const _nickCheck = useSelector((state) => state.user.nickCk);
+  const [isCheck, setIsCheck] = React.useState(false); // 중복검사를 한 번이라도 눌렀는지 여부
+
   //유효성 검사
   const [isPwd, setIsPwd] = React.useState(false);
   const [samePwd, setSamePwd] = React.useState(false);
+
+  const nicknameCheck = () => {
+    // 닉네임 중복체크
+    setKeypressNick(_nickCheck);
+    dispatch(userActions.nicknameCheck(nickname));
+    setIsCheck(true);
+  };
+
+  //닉네임 정규식
+  const onChangeNick = (e) => {
+    setnickname(e.target.value);
+    let userNickRegex = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{2,8}$/;
+    let NickRegex = userNickRegex.test(e.target.value);
+
+    setKeypressNick(false);
+    if (!NickRegex) {
+      setIsNick(false);
+    } else {
+      setIsNick(true);
+    }
+  };
 
   //모달팝업
   const [modalType, setModalType] = React.useState("");
@@ -115,7 +144,6 @@ const MyProfile = (props) => {
           console.log("이미지 변환 오류",err); 
         }) 
       }
-
       reader.readAsDataURL(file); //파일 내용 읽어오기
       // onloadend: 읽기가 끝나면 발생하는 이벤트 핸들러
       reader.onloadend = () => {
@@ -136,8 +164,8 @@ const MyProfile = (props) => {
     const data = {
       password: password,
       passwordCheck: passwordCheck,
+      nickname: nickname === userInfo.nickname ? "" : nickname,
     };
-
     formData.append(
       "profile",
       new Blob([JSON.stringify(data)], { type: "application/json" })
@@ -219,8 +247,73 @@ const MyProfile = (props) => {
 
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap disabled>
-                <label className="caption_color">닉네임</label>
-                <Input value={userInfo.nickname} is_submit disabled />
+                <Input
+                  double
+                  label="닉네임"
+                  value={nickname}
+                  is_submit
+                  placeholder="닉네임을 입력하세요."
+                  btnClick={nicknameCheck}
+                  btn_disabled={
+                    ((isNick === true && _nickCheck === null) ||
+                      keypressNick === false) &&
+                    userInfo.nickname !== nickname
+                      ? ""
+                      : isNick === true &&
+                        _nickCheck === undefined &&
+                        userInfo.nickname !== nickname
+                      ? ""
+                      : "disabled"
+                  }
+                  _onChange={onChangeNick}
+                  className={
+                    (isNick === "" && _nickCheck === null) ||
+                    userInfo.nickname === nickname
+                      ? ""
+                      : isNick === false && _nickCheck === null
+                      ? ""
+                      : isNick === false && _nickCheck === "true"
+                      ? ""
+                      : (isNick === true && _nickCheck === null) ||
+                        keypressNick === false
+                      ? "red"
+                      : isNick === true && _nickCheck === undefined
+                      ? "red"
+                      : "green"
+                  }
+                />
+                <span
+                  className={
+                    (isNick === "" && _nickCheck === null) ||
+                    userInfo.nickname === nickname
+                      ? ""
+                      : isNick === false && _nickCheck === null
+                      ? ""
+                      : isNick === false && _nickCheck === "true"
+                      ? ""
+                      : (isNick === true && _nickCheck === null) ||
+                        keypressNick === false
+                      ? "red"
+                      : isNick === true && _nickCheck === undefined
+                      ? "red"
+                      : "green"
+                  }
+                >
+                  {isNick === null ||
+                  (isNick === "" && _nickCheck === null) ||
+                  userInfo.nickname === nickname
+                    ? ""
+                    : isNick === false && _nickCheck === null
+                    ? "2-8자의 닉네임을 입력하세요."
+                    : isNick === false && _nickCheck === "true"
+                    ? "2-8자의 닉네임을 입력하세요."
+                    : (isNick === true && _nickCheck === null) ||
+                      keypressNick === false
+                    ? "중복확인을 해주세요"
+                    : isNick === true && _nickCheck === undefined
+                    ? "이미 존재하는 닉네임입니다."
+                    : "사용 가능한 닉네임입니다"}
+                </span>
               </InputWrap>
             </Grid>
 
@@ -321,7 +414,17 @@ const MyProfile = (props) => {
           <Fixed>
             <Button
               _onClick={comfirmModal}
-              disabled={password === "" && preview === "" ? "disabeld" : ""}
+              disabled={
+                (password === "" &&
+                  !preview &&
+                  (userInfo.nickname === nickname || nickname === "")) ||
+                (password && (!isPwd || !samePwd)) ||
+                (nickname &&
+                  userInfo.nickname !== nickname &&
+                  (_nickCheck !== "true" || !isCheck || !keypressNick))
+                  ? "disabeld"
+                  : ""
+              }
             >
               수정하기
             </Button>
