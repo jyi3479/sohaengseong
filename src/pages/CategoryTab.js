@@ -29,19 +29,19 @@ import { FreeMode, Scrollbar, Mousewheel } from "swiper";
 import notfound from "../image/icon/ic_empty_l@2x.png";
 import InfinityScroll from "../shared/InfiniteScroll";
 
-const CategoryTab = () => {
+const CategoryTab = (props) => {
   const dispatch = useDispatch();
   const location = useSelector((state) => state.router.location.pathname);
   const tabId = location.split("/")[2];
 
   //메인에서 시작하기 눌러서 이동했을 경우 추천검색어를 안띄우기 위함
-  const history_location = useLocation();
-  const notfocus = history_location.state.notfocus; 
+  // const history_location = useLocation();
+  // const notfocus = history_location.state.notfocus;
 
   const [word, setWord] = React.useState("");
   const [search_list, setSearch_list] = React.useState("");
   const [active, setActive] = React.useState(true);
-  const [focus, setFocus] = React.useState(notfocus?false:true);
+  const [focus, setFocus] = React.useState(true);
 
   const challengeInfo = useSelector((state) => state.challenge);
   const categoryList = challengeInfo.categoryList;
@@ -84,16 +84,20 @@ const CategoryTab = () => {
   React.useEffect(() => {
     setPage(0);
     dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
-    if (!page) {
+    if (!page ) {
       if (tabId === "all") {
         if (!word) {
           //전체 리스트 불러오기
           dispatch(challengeAction.getChallengeDB(0, 6));
         }
       } else {
+        // tabId가 없는 카테고리 리스트 페이지에서 불필요한 get 요청 없애기 위해
+        if(tabId !== undefined){
         //전체 탭이 아닐경우 카테고리 리스트 불러오기
         dispatch(challengeAction.categoryChallengeDB(tabId, 0, 6));
         setFocus(false);
+        }
+
       }
     }
   }, [tabId, word]);

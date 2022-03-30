@@ -18,6 +18,8 @@ import Modal from "../components/Modal";
 
 //heic 이미지 파일을 jpeg로 변환하는 라이브러리
 import heic2any from "heic2any";
+// 이미지 압축 라이브러리
+import imageCompression from "browser-image-compression";
 
 const MyProfile = (props) => {
   const dispatch = useDispatch();
@@ -125,9 +127,19 @@ const MyProfile = (props) => {
   //프로필 사진 수정
   const fileInput = React.useRef();
 
-  const selectFile = (e) => {
+  const selectFile = async (e) => {
     const reader = new FileReader();
-    let file = fileInput.current.files[0];
+    let file;
+    // 이미지 resize 옵션 설정 (최대 width을 400px로 지정)
+    const options = {
+      maxSizeMB: 2,
+      maxWidthOrHeight: 200,
+    };
+    if(fileInput.current.files[0].name.split(".")[1] === "gif" || fileInput.current.files[0].name.split(".")[1] === "GIF"){
+      file = fileInput.current.files[0]
+    }else{
+      file = await imageCompression(fileInput.current.files[0], options);
+    }
     const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
     if (file.size > maxSize) {
       setIsWarning(true);

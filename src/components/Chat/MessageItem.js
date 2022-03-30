@@ -22,6 +22,10 @@ function MessageItem(props) {
   if (message.type === "ENTER") {
     return <EnterWrap className="t_center">{message.message}</EnterWrap>;
   }
+  // 사용자 퇴장 메시지
+  if (message.type === "QUIT") {
+    return <QuitWrap className="t_center">{message.message}</QuitWrap>;
+  }
   // 메시지의 유저 id 정보와 현재 유저 id가 같으면 본인 메시지
   if (userId === message.user.userId) {
     return (
@@ -43,10 +47,6 @@ function MessageItem(props) {
         </Bubble>
       </Item>
     );
-  }
-  // 사용자 퇴장 메시지
-  if (message.type === "QUIT") {
-    return <QuitWrap className="t_center">{message.message}</QuitWrap>;
   } else {
     return (
       <>
