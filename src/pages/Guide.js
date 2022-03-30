@@ -152,6 +152,7 @@ const SlideBox = styled.div`
     overflow: initial;
     padding-bottom:12px;
     .swiper-pagination {
+      bottom: -10px;
       background-color: transparent;
     }
     .swiper-pagination-bullet {
