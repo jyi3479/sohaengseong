@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 
 //날짜 라이브러리
