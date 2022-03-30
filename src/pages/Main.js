@@ -13,6 +13,7 @@ import MainHeader from "../components/MainHeader";
 import Footer from "../components/Footer";
 import RankingList from "../components/Ranking/RankingList";
 import ChallengeList from "../components/ChallengeList";
+import Banner from "../components/Banner";
 
 import plus from "../image/icon/ic_plus_l@2x.png";
 import bgImg from "../image/main_bg.png";
@@ -26,6 +27,7 @@ import category_01 from "../image/icon/category/ic_category_daily_l@2x.png";
 import category_02 from "../image/icon/category/ic_category_health_l@2x.png";
 import category_03 from "../image/icon/category/ic_category_study_l@2x.png";
 
+
 const Main = (props) => {
   dayjs.extend(customParseFormat); //날짜 포맷 맞추기 (파폭, 모바일 등에도 맞도록)
 
@@ -36,7 +38,7 @@ const Main = (props) => {
       <MainHeader />
       <Container className="bg_color" id="main_wrap">
         <Grid padding="0 24px">
-          <Banner>
+          <Hero>
             <h1>작은 것부터 하나씩<br/>나를 바꾸는 습관 챌린지</h1>
             <p>이루고 싶은 목표가 있으신가요?<br/>토비가 함께 도와드릴게요!</p>
             <button className="small mt16" onClick={()=>{
@@ -45,7 +47,7 @@ const Main = (props) => {
                   //state: {notfocus: true},
               })
               }}>시작하기</button>
-          </Banner>
+          </Hero>
         </Grid>
         <Wrap>
           <Grid style={{ overflow: "hidden" }}>
@@ -138,6 +140,7 @@ const Main = (props) => {
                   집계기준 : {yesterday} 24:00 누적 경험치
                 </p>
               </Ranking>
+              <Banner/>
               <div>
                 <TitleBox>
                   <Grid is_flex padding="0">
@@ -173,7 +176,7 @@ const Container = styled.div`
   background-size: contain;
 `;
 
-const Banner = styled.div`
+const Hero = styled.div`
   width: 100%;
   height: 235px;
   padding: 32px 0;
