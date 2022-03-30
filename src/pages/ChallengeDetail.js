@@ -164,10 +164,7 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <SlideBox>
-                    <div style={{zIndex:"100 !important"}}>
-                        <ShareBtn onClick={shareModal}></ShareBtn>     
-                    </div>                           
+                <SlideBox>                                            
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -180,8 +177,8 @@ const ChallengeDetail = (props) => {
                             >
                             {imageList.map((el,i)=>{
                                 return(
-                                    <SwiperSlide key={i}>
-                                        <Image shape="rectangle" padding="250px" src={el?el:empty}></Image>                                       
+                                    <SwiperSlide key={i} style={{backgroundImage:`url(${el?el:empty})`}}>
+                                        {/* <Image shape="rectangle" padding="250px" src={el?el:empty}></Image>                                        */}
                                     </SwiperSlide>
                                 );
                             })}
@@ -189,6 +186,9 @@ const ChallengeDetail = (props) => {
                         //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
                         :<Image shape="rectangle" padding="250px" src={empty}></Image>
                     }
+                    <div style={{zIndex:"100 !important"}}>
+                        <ShareBtn onClick={shareModal}></ShareBtn>     
+                    </div>
                 </SlideBox>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
                     <TitleBox>
@@ -340,8 +340,14 @@ const ChallengeDetail = (props) => {
 
 const SlideBox = styled.div`
     position: relative;
-    .mySwiper {
+    .mySwiper {        
+        width: 100%;
+        height: 250px;
         z-index: 5;
+        .swiper-slide {
+            background-size: cover;
+            background-position: center;
+        }
     }
 `;
 
