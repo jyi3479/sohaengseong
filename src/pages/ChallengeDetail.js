@@ -177,14 +177,22 @@ const ChallengeDetail = (props) => {
                             >
                             {imageList.map((el,i)=>{
                                 return(
-                                    <SwiperSlide key={i}><Image shape="rectangle" padding="250px" src={el?el:empty}></Image></SwiperSlide>
+                                    <SwiperSlide key={i}>
+                                        <Image shape="rectangle" padding="250px" src={el?el:empty}></Image>                                       
+                                    </SwiperSlide>
                                 );
                             })}
+                             <ShareBtn onClick={shareModal}></ShareBtn>
                         </Swiper>
                         //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
-                        : <Image shape="rectangle" padding="250px" src={empty}></Image>
+                        : (
+                            <>
+                                <ShareBtn onClick={shareModal}></ShareBtn>
+                                <Image shape="rectangle" padding="250px" src={empty}></Image>
+                            </>
+                        )
                     }
-                    <ShareBtn onClick={shareModal}></ShareBtn>
+                    
                 </SlideBox>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
                     <TitleBox>
@@ -336,13 +344,7 @@ const ChallengeDetail = (props) => {
 
 const SlideBox = styled.div`
     position: relative;
-    .mySwiper {
-        position: initial;
-        z-index: 1;
-    }
 `;
-
-
 
 const ShareBtn = styled.button` //공유버튼
     position: absolute;
