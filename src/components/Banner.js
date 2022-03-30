@@ -32,9 +32,9 @@ const Banner = () => {
                 className="mySwiper"
                 >
                 
-                <SwiperSlide className="pointer_slide" onClick={()=>{history.push("/guide/intro")}}><img src={banner1}/></SwiperSlide>
-                <SwiperSlide className="pointer_slide" onClick={() => window.open('https://forms.gle/5gkoWJ2Xb8HU1gsb8', '_blank')}><img src={banner2}/></SwiperSlide>
-                <SwiperSlide><img src={banner3}/></SwiperSlide>
+                <SwiperSlide className="pointer_slide slide1" onClick={()=>{history.push("/guide/intro")}}></SwiperSlide>
+                <SwiperSlide className="pointer_slide slide2" onClick={() => window.open('https://forms.gle/5gkoWJ2Xb8HU1gsb8', '_blank')}></SwiperSlide>
+                <SwiperSlide className="slide3"></SwiperSlide>
             </Swiper>            
         </BannerBox>
     );
@@ -48,9 +48,26 @@ const BannerBox = styled.div`
     border-radius: 10px;
     overflow: hidden;
     .mySwiper {
-        height: 100%;
+        height: 185px;
+        border-radius: 10px;
+        overflow: hidden;
         .pointer_slide {
             cursor: pointer;
+        }
+        .slide1 {
+            background-image: url(${banner1});
+            background-size: cover;
+            background-position: center;
+        }
+        .slide2 {
+            background-image: url(${banner2});
+            background-size: cover;
+            background-position: center;
+        }
+        .slide3 {
+            background-image: url(${banner3});
+            background-size: cover;
+            background-position: center;
         }
     }
     .swiper-pagination {
