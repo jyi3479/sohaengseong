@@ -164,7 +164,10 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <SlideBox>                    
+                <SlideBox>
+                    <div style={{zIndex:"100 !important"}}>
+                        <ShareBtn onClick={shareModal}></ShareBtn>     
+                    </div>                           
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -182,16 +185,9 @@ const ChallengeDetail = (props) => {
                                     </SwiperSlide>
                                 );
                             })}
-                            <ShareBtn className="sharebtn" onClick={shareModal}></ShareBtn>
                         </Swiper>
                         //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
-
-                        : (
-                            <>
-                            <ShareBtn onClick={shareModal}></ShareBtn>
-                            <Image shape="rectangle" padding="250px" src={empty}></Image>
-                            </>
-                        )        
+                        :<Image shape="rectangle" padding="250px" src={empty}></Image>
                     }
                 </SlideBox>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
@@ -346,13 +342,11 @@ const SlideBox = styled.div`
     position: relative;
     .mySwiper {
         z-index: 5;
-        .sharebtn {
-            z-index: 100 !important;
-        }
     }
 `;
 
 const ShareBtn = styled.button` //공유버튼
+    display: block;
     position: absolute;
     width: 35px;
     height: 35px;
@@ -365,7 +359,7 @@ const ShareBtn = styled.button` //공유버튼
     background-size:28px;
     background-position: center;
     border-radius: 50%;
-    z-index: 100;
+    z-index: 100 !important;
 `;
 
 const TitleBox = styled.div`

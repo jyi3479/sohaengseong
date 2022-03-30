@@ -24,14 +24,3 @@
 .MuiInputAdornment-root > button > svg {
   display: none;
 }
-
-/* .MuiInputAdornment-root > button > span {
-  display: inline-block;
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  margin-top: 1px;
-  background-image: url("../../image/icons/ic_dropdown@2x.png");
-  background-size: cover;
-  z-index: 100 !important;
-} */
