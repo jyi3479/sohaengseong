@@ -76,9 +76,11 @@ const MainHeader = (props) => {
                         <button onClick={()=>{
                             noticeClick()
                         }}><img src={scrollPosition > 100 ? noticeIconB : noticeIconW}></img></button>
-                        <button onClick={()=>{
-                            history.push("/category/all");
-                        }}><img src={scrollPosition > 100 ? searchIconB : searchIconW}></img></button>                       
+                        <button 
+                            onClick={()=>{
+                                history.push("/category/all");
+                            }}                            
+                        ><img src={scrollPosition > 100 ? searchIconB : searchIconW}></img></button>                       
                     </div>
                     
                 </>
