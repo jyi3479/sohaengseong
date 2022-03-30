@@ -58,8 +58,6 @@ const ChallengeDetail = (props) => {
     const join_day = +today.diff(date1, "day")+1;
     const remaining_day = Math.ceil(days*0.2);
 
-    console.log("확인",join_day,remaining_day);
-
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
     };
@@ -166,8 +164,7 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <Grid padding="0" style={{position:"relative"}}> 
-                    <div style={{zIndex:"10"}}>                   
+                <SlideBox>                    
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -187,9 +184,8 @@ const ChallengeDetail = (props) => {
                         //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
                         : <Image shape="rectangle" padding="250px" src={empty}></Image>
                     }
-                    </div>
                     <ShareBtn onClick={shareModal}></ShareBtn>
-                </Grid>
+                </SlideBox>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
                     <TitleBox>
                         <h1>{target.title}</h1>
@@ -337,6 +333,17 @@ const ChallengeDetail = (props) => {
         </div>
     );
 };
+
+const SlideBox = styled.div`
+    position: relative;
+    .mySwiper {
+        position: initial;
+        z-index: 1;
+    }
+`;
+
+
+
 const ShareBtn = styled.button` //공유버튼
     position: absolute;
     width: 35px;

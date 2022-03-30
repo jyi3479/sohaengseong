@@ -38,6 +38,9 @@ const CategoryTab = (props) => {
   // const history_location = useLocation();
   // const notfocus = history_location.state.notfocus;
 
+  //console.log(window.history.state);
+
+
   const [word, setWord] = React.useState("");
   const [search_list, setSearch_list] = React.useState("");
   const [active, setActive] = React.useState(true);
