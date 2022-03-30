@@ -38,9 +38,6 @@ const CategoryTab = (props) => {
   // const history_location = useLocation();
   // const notfocus = history_location.state.notfocus;
 
-  //console.log(window.history.state);
-
-
   const [word, setWord] = React.useState("");
   const [search_list, setSearch_list] = React.useState("");
   const [active, setActive] = React.useState(true);
@@ -87,16 +84,20 @@ const CategoryTab = (props) => {
   React.useEffect(() => {
     setPage(0);
     dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
-    if (!page) {
+    if (!page ) {
       if (tabId === "all") {
         if (!word) {
           //전체 리스트 불러오기
           dispatch(challengeAction.getChallengeDB(0, 6));
         }
       } else {
+        // tabId가 없는 카테고리 리스트 페이지에서 불필요한 get 요청 없애기 위해
+        if(tabId !== undefined){
         //전체 탭이 아닐경우 카테고리 리스트 불러오기
         dispatch(challengeAction.categoryChallengeDB(tabId, 0, 6));
         setFocus(false);
+        }
+
       }
     }
   }, [tabId, word]);
