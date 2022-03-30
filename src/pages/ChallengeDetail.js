@@ -164,8 +164,10 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <SlideBox>        
-                    <ShareBtn onClick={shareModal}></ShareBtn>            
+                <SlideBox>
+                    <div style={{zIndex:"100 !important"}}>
+                        <ShareBtn onClick={shareModal}></ShareBtn>     
+                    </div>                           
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -357,7 +359,7 @@ const ShareBtn = styled.button` //공유버튼
     background-size:28px;
     background-position: center;
     border-radius: 50%;
-    z-index: 104 !important;
+    z-index: 100 !important;
 `;
 
 const TitleBox = styled.div`
