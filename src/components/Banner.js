@@ -35,7 +35,7 @@ const Banner = () => {
                 <SwiperSlide className="pointer_slide slide1" onClick={()=>{history.push("/guide/intro")}}></SwiperSlide>
                 <SwiperSlide className="pointer_slide slide2" onClick={() => window.open('https://forms.gle/5gkoWJ2Xb8HU1gsb8', '_blank')}></SwiperSlide>
                 <SwiperSlide className="slide3"></SwiperSlide>
-            </Swiper>            
+            </Swiper>
         </BannerBox>
     );
 };
