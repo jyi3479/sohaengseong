@@ -20,10 +20,10 @@ const Banner = () => {
             <Swiper
                 spaceBetween={0}
                 slidesPerView={1}
-                // autoplay={{
-                //     delay: 3000,
-                //     disableOnInteraction: false,
-                // }}
+                autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                }}
                 loop={true}
                 pagination={{
                     type : 'fraction', //페이지네이션 타입
