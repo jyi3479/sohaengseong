@@ -32,8 +32,8 @@ const Banner = () => {
                 className="mySwiper"
                 >
                 
-                <SwiperSlide onClick={()=>{history.push("/guide/intro")}}><img src={banner1}/></SwiperSlide>
-                <SwiperSlide onClick={() => window.open('https://forms.gle/5gkoWJ2Xb8HU1gsb8', '_blank')}><img src={banner2}/></SwiperSlide>
+                <SwiperSlide className="pointer_slide" onClick={()=>{history.push("/guide/intro")}}><img src={banner1}/></SwiperSlide>
+                <SwiperSlide className="pointer_slide" onClick={() => window.open('https://forms.gle/5gkoWJ2Xb8HU1gsb8', '_blank')}><img src={banner2}/></SwiperSlide>
                 <SwiperSlide><img src={banner3}/></SwiperSlide>
             </Swiper>            
         </BannerBox>
@@ -49,7 +49,7 @@ const BannerBox = styled.div`
     overflow: hidden;
     .mySwiper {
         height: 100%;
-        .swiper-slide:nth-child(-n+2) {
+        .pointer_slide {
             cursor: pointer;
         }
     }
