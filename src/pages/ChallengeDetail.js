@@ -58,8 +58,6 @@ const ChallengeDetail = (props) => {
     const join_day = +today.diff(date1, "day")+1;
     const remaining_day = Math.ceil(days*0.2);
 
-    console.log("확인",join_day,remaining_day);
-
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
     };
