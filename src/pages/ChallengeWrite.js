@@ -18,6 +18,8 @@ import ScrollBar from "../components/shared/ScrollBar";
 
 //heic 이미지 파일을 jpeg로 변환하는 라이브러리
 import heic2any from "heic2any";
+// 이미지 압축 라이브러리
+import imageCompression from "browser-image-compression";
 
 import { Grid, Input, Button, Image } from "../elements";
 import Modal from "../components/Modal";
@@ -155,7 +157,13 @@ const ChallengeWrite = (props) => {
 
   // 이미지 업로드 부분 ----------------------------------------------------------------------------
   const fileInput = React.useRef();
-  const selectFile = (e) => {
+  const selectFile = async (e) => {
+     // 이미지 resize 옵션 설정 (최대 width을 400px로 지정)
+     const options = {
+      maxSizeMB: 2,
+      maxWidthOrHeight: 800,
+    };
+
     let fileArr = fileInput.current.files;
     let fileURLs = []; // preview 담을 배열
     let files = []; // image 담을 배열
@@ -175,7 +183,13 @@ const ChallengeWrite = (props) => {
 
     // 다중 선택된 이미지 file 객체들을 반복문을 돌리며 preview와 image 배열에 추가하기
     for (let i = 0; i < filesLength; i++) {
-      file = fileArr[i];
+      // file = fileArr[i];
+      if(fileInput.current.files[0].name.split(".")[1] === "gif" || fileInput.current.files[0].name.split(".")[1] === "GIF"){
+        file = fileInput.current.files[0]
+      }else{
+        file = await imageCompression(fileArr[i], options);
+      }
+
       if (file.size > maxSize) {
         console.log("파일 사이즈가 20MB를 넘습니다.");
         setIsWarning(true); // 용량 초과 파일 하나라도 있으면 true
