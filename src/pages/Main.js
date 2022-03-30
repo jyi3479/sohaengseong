@@ -283,6 +283,7 @@ const FeedBack = styled.div`
   right: 0;
   bottom: 60px;
   padding-right: 15px;
+  z-index: 11;
   a {
     display: inline-block;
     width: 40px;

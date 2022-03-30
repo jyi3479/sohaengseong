@@ -94,6 +94,7 @@ const CustomDay = (props) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
+        className="myDate"
         displayStaticWrapperAs="desktop"
         label="Week picker"
         value={value}

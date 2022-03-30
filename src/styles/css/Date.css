@@ -2,15 +2,30 @@
     margin-left: 75px; // dialog 위치 너무 바깥에 있음
 } */
 
+
+.MuiBox-root {
+  position: relative;
+}
+
+.MuiBox-root>p {
+  padding-right: 23px;
+  background-image: url("../../image/icons/ic_dropdown@2x.png");
+  background-size: 16px;
+  background-position: right;
+}
+
 .MuiInputAdornment-root {
-  margin: 0 0 2px 6px;
+  /* margin: 0 0 2px 6px; */
+  position: absolute;
+  width: 20px;
+  left: 175px;
 }
 
 .MuiInputAdornment-root > button > svg {
   display: none;
 }
 
-.MuiInputAdornment-root > button > span {
+/* .MuiInputAdornment-root > button > span {
   display: inline-block;
   position: absolute;
   width: 16px;
@@ -18,5 +33,5 @@
   margin-top: 1px;
   background-image: url("../../image/icons/ic_dropdown@2x.png");
   background-size: cover;
-  z-index: 10;
-}
+  z-index: 100 !important;
+} */
