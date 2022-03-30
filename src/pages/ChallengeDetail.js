@@ -56,7 +56,7 @@ const ChallengeDetail = (props) => {
     const date2 = dayjs(endDate,"YYYY-MM-DD",'ko');
     const days = Number(date2.diff(date1, "day"))+1;
     const join_day = +today.diff(date1, "day")+1;
-    const remaining_day = Math.ceil(days*0.8);
+    const remaining_day = Math.ceil(days*0.2);
 
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
@@ -164,8 +164,7 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <Grid padding="0" style={{position:"relative"}}> 
-                    <div style={{zIndex:"10"}}>                   
+                <SlideBox>                                            
                     {imageList.length > 0?
                         <Swiper
                             spaceBetween={0}
@@ -178,16 +177,19 @@ const ChallengeDetail = (props) => {
                             >
                             {imageList.map((el,i)=>{
                                 return(
-                                    <SwiperSlide key={i}><Image shape="rectangle" padding="250px" src={el?el:empty}></Image></SwiperSlide>
+                                    <SwiperSlide key={i} style={{backgroundImage:`url(${el?el:empty})`}}>
+                                        {/* <Image shape="rectangle" padding="250px" src={el?el:empty}></Image>                                        */}
+                                    </SwiperSlide>
                                 );
                             })}
                         </Swiper>
                         //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
-                        : <Image shape="rectangle" padding="250px" src={empty}></Image>
+                        :<Image shape="rectangle" padding="250px" src={empty}></Image>
                     }
+                    <div style={{zIndex:"100 !important"}}>
+                        <ShareBtn onClick={shareModal}></ShareBtn>     
                     </div>
-                    <ShareBtn onClick={shareModal}></ShareBtn>
-                </Grid>
+                </SlideBox>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
                     <TitleBox>
                         <h1>{target.title}</h1>
@@ -335,7 +337,22 @@ const ChallengeDetail = (props) => {
         </div>
     );
 };
+
+const SlideBox = styled.div`
+    position: relative;
+    .mySwiper {        
+        width: 100%;
+        height: 250px;
+        z-index: 5;
+        .swiper-slide {
+            background-size: cover;
+            background-position: center;
+        }
+    }
+`;
+
 const ShareBtn = styled.button` //공유버튼
+    display: block;
     position: absolute;
     width: 35px;
     height: 35px;
@@ -348,7 +365,7 @@ const ShareBtn = styled.button` //공유버튼
     background-size:28px;
     background-position: center;
     border-radius: 50%;
-    z-index: 100;
+    z-index: 100 !important;
 `;
 
 const TitleBox = styled.div`
@@ -403,10 +420,6 @@ const ContentBox = styled.div`
         h3 {
             margin-left: 10px;
         }
-    }
-    p {
-        font-size: 14px;
-        color:#333;    
     }
 
 `;

@@ -42,6 +42,9 @@ import MemberPostDetail from "../pages/MemberPostDetail";
 import MemberDetail from "../pages/MemberDetail";
 import Notice from "../pages/Notice";
 import SignComplete from "../pages/SignComplete";
+import Intro from "../pages/Intro";
+import Guide from "../pages/Guide";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -74,7 +77,7 @@ function App() {
           </BackgroundOpacity>
           <MobileFrame className="MobileFramePage">
             <div ref={scrollRef} />
-            <Switch>
+            <Switch>              
               <Route path="/login" exact component={Login} />
               {/* 로그인 */}
               <Route path="/signup/complete" exact component={SignComplete} />
@@ -95,6 +98,10 @@ function App() {
                 <Wrap>
                   <Header />
                   <Footer />
+                  <Route path="/guide/intro" exact component={Intro} />
+                  {/* 가이드 - 인트로 */}
+                  <Route path="/guide/main" exact component={Guide} />
+                  {/* 가이드 */}
                   <Route path="/signup" exact component={Signup} />
                   {/* 회원가입 */}                           
                   <Route path="/today" exact component={TodayChallenge} />
