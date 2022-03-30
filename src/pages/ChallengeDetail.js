@@ -186,9 +186,9 @@ const ChallengeDetail = (props) => {
                         //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
                         :<Image shape="rectangle" padding="250px" src={empty}></Image>
                     }
-                    <div style={{zIndex:"100 !important"}}>
+                    <ShareBtnBox>
                         <ShareBtn onClick={shareModal}></ShareBtn>     
-                    </div>
+                    </ShareBtnBox>
                 </SlideBox>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
                     <TitleBox>
@@ -349,6 +349,10 @@ const SlideBox = styled.div`
             background-position: center;
         }
     }
+`;
+
+const ShareBtnBox = styled.div`
+    z-index: 100 !important;
 `;
 
 const ShareBtn = styled.button` //공유버튼
