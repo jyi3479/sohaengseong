@@ -56,7 +56,9 @@ const ChallengeDetail = (props) => {
     const date2 = dayjs(endDate,"YYYY-MM-DD",'ko');
     const days = Number(date2.diff(date1, "day"))+1;
     const join_day = +today.diff(date1, "day")+1;
-    const remaining_day = Math.ceil(days*0.8);
+    const remaining_day = Math.ceil(days*0.2);
+
+    console.log("확인",join_day,remaining_day);
 
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
@@ -403,10 +405,6 @@ const ContentBox = styled.div`
         h3 {
             margin-left: 10px;
         }
-    }
-    p {
-        font-size: 14px;
-        color:#333;    
     }
 
 `;

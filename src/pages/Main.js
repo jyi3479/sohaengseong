@@ -42,7 +42,7 @@ const Main = (props) => {
             <button className="small mt16" onClick={()=>{
                 history.push({                                
                   pathname: "/category/all",
-                  //state: {notfocus: true},                                  
+                  //state: {notfocus: true},
               })
               }}>시작하기</button>
           </Banner>
