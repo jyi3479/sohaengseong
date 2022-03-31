@@ -188,7 +188,7 @@ const StatusContainer = styled.div`
 
 const MyReport = styled.div`
   position: relative;
-  margin: 26px 0 40px;
+  margin: 26px 0 28px;
   padding: 17px 20px;
   background-color: #fcfcfc;
   background-image: url(${arrow});
