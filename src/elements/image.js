@@ -16,14 +16,16 @@ const Image = (props) => {
     ranking:ranking,
   };
 
+  console.log(level);
+
   if(shape === "border" ){
     //랭킹 프로필 이미지
     return <CircleWrap {...styles} style={{
-      backgroundImage:level === "levelName_1" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #a0a515 0%,  #636610 100%)"
-      : level === "level2_name" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #e6cb35, #b09d35)"
-      : level === "level3_name" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #f7d382, #f5b92f)"
-      : level === "level4_name" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fdc884, #f58524)"
-      : level === "level5_name" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fd8a8a, #b12f21)" :null
+      backgroundImage:level === "Level1" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #a0a515 0%,  #636610 100%)"
+      : level === "Level2" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #e6cb35, #b09d35)"
+      : level === "Level3" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #f7d382, #f5b92f)"
+      : level === "Level4" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fdc884, #f58524)"
+      : level === "Level5" ? "linear-gradient(#fff, #fff), linear-gradient(to bottom, #fd8a8a, #b12f21)" :null
     }}><div></div></CircleWrap>
   }
 
