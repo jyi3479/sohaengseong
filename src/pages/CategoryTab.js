@@ -50,8 +50,7 @@ const CategoryTab = (props) => {
   const searchList = searchInfo.challengeList;
   const allList = challengeInfo.list;
 
-  const [page, setPage] = React.useState(challengeInfo.page);
-  const [totalCnt, setTotalCnt] = React.useState(challengeInfo.totalCnt);
+ 
 
   //검색 axios 요청을 줄이기위한 debounce
   const debounce = _.debounce((word) => {
@@ -82,15 +81,18 @@ const CategoryTab = (props) => {
   };
 
   React.useEffect(() => {
-    setPage(0);
-    dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
-    if (!page ) {
+
+ 
       if (tabId === "all") {
         if (!word) {
+          dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
           //전체 리스트 불러오기
           dispatch(challengeAction.getChallengeDB(0, 6));
         }
       } else {
+        if(focus){
+          dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
+        }
         // tabId가 없는 카테고리 리스트 페이지에서 불필요한 get 요청 없애기 위해
         if(tabId !== undefined){
         //전체 탭이 아닐경우 카테고리 리스트 불러오기
@@ -99,7 +101,7 @@ const CategoryTab = (props) => {
         }
 
       }
-    }
+
   }, [tabId, word]);
 
   // 무한스크롤 callNext 함수들
@@ -126,6 +128,8 @@ const CategoryTab = (props) => {
         }}
         _onFocus={(e) => {
           setFocus(true);
+          
+
         }}
         _onClick={() => {
           dispatch(searchActions.getSearchDB(word, 0, 6));

@@ -32,7 +32,8 @@ const Signup = (props) => {
 
   //중복검사
   const _nickCheck = useSelector((state) => state.user.nickCk);
-
+  const [err,setErr] = React.useState(false); // 닉네임 중복검사 에러
+  const [errMsg,setErrMsg] = React.useState(""); // 닉네임 중복검사 에러메시지
   
   //회원가입 완료 팝업
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -71,14 +72,16 @@ const Signup = (props) => {
   };
 
   //닉네임 정규식
-
   const onChangeNick = (e) => {
     setnickname(e.target.value);
-    let userNickRegex = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{2,8}$/;
+    setErr(false);
+    dispatch(userActions.nickCheck("false"));
+    setErrMsg("");
+
+    let userNickRegex = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,7}$/;
     let NickRegex = userNickRegex.test(e.target.value);
 
     setKeypressNick(false);
-
     if (!NickRegex) {
       setIsNick(false);
     } else {
@@ -123,10 +126,22 @@ const Signup = (props) => {
   };
 
   const nicknameCheck = () => {
+    setErr(false);
+    setErrMsg("");
     // 닉네임 중복체크
-    setKeypressNick(_nickCheck);
-    dispatch(userActions.nicknameCheck(nickname));
+    userApis
+      .nicknameCheck(nickname)
+      .then((res) => {
+        dispatch(userActions.nickCheck(res.data));
+        setKeypressNick(res.data.result);
+      })
+      .catch((err) => {
+        console.log("닉네임 중복확인 에러", err);
+        setErr(true);
+        setErrMsg(err.response.data.message);
+      });
   };
+
   
 
   const signup = () => {
@@ -277,48 +292,31 @@ const Signup = (props) => {
             btnClick={nicknameCheck}
             btn_disabled={
               (isNick === true && _nickCheck === null) || keypressNick === false ? ""
-              : isNick === true && _nickCheck === undefined
-              ? ""
+              : isNick === true && _nickCheck === undefined ? ""
               : "disabled"
             }
             _onChange={onChangeNick}
-            className={
-              isNick === "" && _nickCheck === null
-                ? ""
-                : isNick === false && _nickCheck === null
-                ? ""
-                : isNick === false && _nickCheck === "true"
-                ? ""
-                : (isNick === true && _nickCheck === null) ||
-                  keypressNick === false
-                ? "red"
+            className={ isNick === null || (isNick === false && nickname === "") ? ""
+                : isNick === false && _nickCheck === null ? ""
+                : isNick === false && _nickCheck === "true" ? ""
+                : (isNick === true && _nickCheck === null) || keypressNick === false ? "red"
                 : isNick === true && _nickCheck === undefined ? "red" : "green"
             }
           />
           <span
             className={
-              isNick === "" && _nickCheck === null
-                ? ""
-                : isNick === false && _nickCheck === null
-                ? ""
-                : isNick === false && _nickCheck === "true"
-                ? ""
-                : (isNick === true && _nickCheck === null) ||
-                  keypressNick === false
-                ? "red"
-                : isNick === true && _nickCheck === undefined
-                ? "red"
-                : "green"
+              isNick === null || (isNick === false && nickname === "") ? ""
+                : isNick === false && _nickCheck === null ? ""
+                : isNick === false && _nickCheck === "true" ? ""
+                :(isNick === true && _nickCheck === null) || keypressNick === false ? "red"
+                : isNick === true && _nickCheck === undefined ? "red" : "green"
             }
           >
-            {isNick === null || (isNick === "" && _nickCheck === null)? ""
-              : isNick === false && _nickCheck === null ? "2-8자의 닉네임을 입력하세요."
-              : isNick === false && _nickCheck === "true"? "2-8자의 닉네임을 입력하세요."
-              : (isNick === true && _nickCheck === null) || keypressNick === false
-? "중복확인을 해주세요"
-              : isNick === true && _nickCheck === undefined
-              ? "이미 존재하는 닉네임입니다."
-              : "사용 가능한 닉네임입니다"}
+            {isNick === null || (isNick === false && nickname === "") ? ""
+              : isNick === false && _nickCheck === undefined ? "2-8자의 닉네임을 입력하세요."
+              : isNick === false && _nickCheck === "true" ? "2-8자의 닉네임을 입력하세요."
+              : (isNick === true && _nickCheck === undefined && !err && errMsg === "" ) && keypressNick === false ? "중복확인을 해주세요"
+              : (isNick === true && _nickCheck === undefined && err) && keypressNick === false ? errMsg : "사용 가능한 닉네임입니다"}
           </span>
         </InputWrap>
       </Grid>
