@@ -130,7 +130,6 @@ const ChallengeDetail = (props) => {
 
 
     React.useEffect(() => {
-        scrollRef.current.scrollIntoView();
 
         //클립보드에 주소를 잘 복사했다면
         if(copy){
@@ -161,7 +160,7 @@ const ChallengeDetail = (props) => {
     },[copy]);
 
     return(
-        <div ref={scrollRef}>
+        <>
         {target&&
             <Grid padding="0" margin="48px 0 0">
                 <SlideBox>                    
@@ -330,7 +329,7 @@ const ChallengeDetail = (props) => {
                 <ShareLink open={modalType === "shareModal"? modalOpen : ""} close={closeModal} id={challengeId}/>
             </Grid> 
         }
-        </div>
+        </>
     );
 };
 
