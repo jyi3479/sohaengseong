@@ -142,7 +142,6 @@ const Signup = (props) => {
       });
   };
 
-  console.log("isNick",isNick,"_nickCheck",_nickCheck,"err",err,"errMsg",errMsg,"keypressNick",keypressNick);
   
 
   const signup = () => {
