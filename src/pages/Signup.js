@@ -312,7 +312,7 @@ const Signup = (props) => {
                 : isNick === true && _nickCheck === undefined ? "red" : "green"
             }
           >
-            {isNick === null || (isNick === false && nickname === "") ? ""
+            {isNick === null || isNick === "" || (isNick === false && nickname === "") ? ""
               : isNick === false && _nickCheck === undefined ? "2-8자의 닉네임을 입력하세요."
               : isNick === false && _nickCheck === "true" ? "2-8자의 닉네임을 입력하세요."
               : (isNick === true && _nickCheck === undefined && !err && errMsg === "" ) && keypressNick === false ? "중복확인을 해주세요"
