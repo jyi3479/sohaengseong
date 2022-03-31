@@ -164,31 +164,29 @@ const ChallengeDetail = (props) => {
         <div ref={scrollRef}>
         {target&&
             <Grid padding="0" margin="48px 0 0">
-                <SlideBox>                                            
-                    {imageList.length > 0?
-                        <Swiper
-                            spaceBetween={0}
-                            slidesPerView={1}
-                            pagination={{
-                                type : 'fraction', //페이지네이션 타입
-                            }}
-                            modules={[Pagination]}
-                            className="mySwiper"
-                            >
-                            {imageList.map((el,i)=>{
-                                return(
-                                    <SwiperSlide key={i} style={{backgroundImage:`url(${el?el:empty})`}}>
-                                        {/* <Image shape="rectangle" padding="250px" src={el?el:empty}></Image>                                        */}
-                                    </SwiperSlide>
-                                );
-                            })}
-                        </Swiper>
-                        //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
-                        :<Image shape="rectangle" padding="250px" src={empty}></Image>
-                    }
-                    <ShareBtnBox>
-                        <ShareBtn onClick={shareModal}></ShareBtn>     
-                    </ShareBtnBox>
+                <SlideBox>
+                    <div>
+                        {imageList.length > 0?
+                            <Swiper
+                                spaceBetween={0}
+                                slidesPerView={1}
+                                pagination={{
+                                    type : 'fraction', //페이지네이션 타입
+                                }}
+                                modules={[Pagination]}
+                                className="mySwiper"
+                                >
+                                {imageList.map((el,i)=>{
+                                    return(
+                                        <SwiperSlide key={i} style={{backgroundImage:`url(${el?el:empty})`}}></SwiperSlide>
+                                    );
+                                })}
+                            </Swiper>
+                            //이미지 리스트에 이미지가 없다면 디폴트 이미지 노출
+                            :<Image shape="rectangle" padding="250px" src={empty}></Image>
+                        }   
+                    </div>
+                    <ShareBtn onClick={shareModal}></ShareBtn>
                 </SlideBox>
                 <Grid bg="#fff" margin="0 0 10px" padding="20px">
                     <TitleBox>
@@ -340,6 +338,7 @@ const ChallengeDetail = (props) => {
 
 const SlideBox = styled.div`
     position: relative;
+    z-index: 99;
     .mySwiper {        
         width: 100%;
         height: 250px;
@@ -349,6 +348,10 @@ const SlideBox = styled.div`
             background-position: center;
         }
     }
+    >div {
+        position: relative;
+        z-index: 10;
+    }
 `;
 
 const ShareBtnBox = styled.div`
@@ -356,7 +359,6 @@ const ShareBtnBox = styled.div`
 `;
 
 const ShareBtn = styled.button` //공유버튼
-    display: block;
     position: absolute;
     width: 35px;
     height: 35px;
