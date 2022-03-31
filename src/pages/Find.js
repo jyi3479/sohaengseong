@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import {useHistory} from "react-router";
+import { useDispatch } from "react-redux";
 import {ActionCreators as userActions} from "../redux/modules/user";
 import { userApis } from "../shared/apis";
 import * as baseAction from '../redux/modules/base';
@@ -14,7 +13,6 @@ import PopModal from "../components/PopModal";
 
 const Find = (props) => {
     const dispatch = useDispatch();
-    const history = useHistory();
     const [active,setActive] = React.useState(false);    
     const [email,setEmail] = React.useState("");
     const [option,setOption] = React.useState("");
@@ -53,8 +51,8 @@ const Find = (props) => {
     //이메일 한글막기
     const onChangeMail = (e) => {
         //좌우 방향키, 백스페이스, 딜리트, 탭키에 대한 예외
-        if(e.keyCode == 8 || e.keyCode == 9 || e.keyCode == 37 || e.keyCode == 39 || e.keyCode == 46 ) return;
-        e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');    
+        if(e.keyCode === 8 || e.keyCode === 9 || e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 46 ) return;
+        e.target.value = e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');    
     };
 
     const findPwd = () => {

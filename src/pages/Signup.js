@@ -67,8 +67,8 @@ const Signup = (props) => {
   //이메일 한글막기
   const onChangeMail = (e) => {
     //좌우 방향키, 백스페이스, 딜리트, 탭키에 대한 예외
-    if(e.keyCode == 8 || e.keyCode == 9 || e.keyCode == 37 || e.keyCode == 39 || e.keyCode == 46 ) return;
-    e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');    
+    if(e.keyCode === 8 || e.keyCode === 9 || e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 46 ) return;
+    e.target.value = e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');    
   };
 
   //닉네임 정규식
