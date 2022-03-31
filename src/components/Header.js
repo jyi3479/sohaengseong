@@ -65,8 +65,8 @@ const Header = (props) => {
         <>
           <button
             onClick={() => {
-              if (params.includes("/challenge")) {
-                history.push("/");
+              if (history.length<=1) {
+                history.replace("/");
               } else {
                 history.goBack();
               }
