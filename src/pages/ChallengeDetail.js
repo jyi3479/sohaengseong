@@ -354,6 +354,10 @@ const SlideBox = styled.div`
     }
 `;
 
+const ShareBtnBox = styled.div`
+    z-index: 100 !important;
+`;
+
 const ShareBtn = styled.button` //공유버튼
     position: absolute;
     width: 35px;
