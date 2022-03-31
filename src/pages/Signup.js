@@ -184,8 +184,6 @@ const Signup = (props) => {
     };
   }, []);
 
-  console.log(isNick,_nickCheck);
-
   return (
     <>
     <Grid padding="24px 20px" margin="48px 0 0" bg="#fff" style={{ overflow: "revert" }}>
