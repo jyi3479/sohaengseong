@@ -14,6 +14,7 @@ const GET_CATEGORY_LIST = "GET_CATEGORY_LIST";
 const ADD_CHALLENGE = "ADD_CHALLENGE";
 const EDIT_CHALLENGE = "EDIT_CHALLENGE";
 const DELETE_CHALLENGE = "DELETE_CHALLENGE";
+const GET_RECOMMEND_LIST = "GET_RECOMMEND_LIST"
 
 const getChallenge = createAction(GET_CHALLENGE, (challenge_data) => ({
   challenge_data,
@@ -36,6 +37,7 @@ const getCategoryList = createAction(
   GET_CATEGORY_LIST,
   (categoryId, category_data) => ({ categoryId, category_data })
 );
+const getRecommendList = createAction(GET_RECOMMEND_LIST, (recommendList)=>({recommendList}))
 
 
 const initialState = {
@@ -46,6 +48,7 @@ const initialState = {
   is_loading: false,
   totalCnt: 0,
   categoryList: [],
+  recommendList: [],
 };
 
 const getChallengeDB = (page, size) => {
@@ -186,6 +189,15 @@ const getCategoryDB = () => {
     });
 };
 
+const getRecommendDB = (challengeId) => {
+  return function (dispatch, getState, { history }) {
+
+  challengeApis.recommendChallenge(challengeId).then((res)=>{
+    dispatch(getRecommendList(res.data))
+  }).catch((err)=>console.log(err))
+}
+}
+
 export default handleActions(
   {
     [GET_CHALLENGE]: (state, action) =>
@@ -239,6 +251,9 @@ export default handleActions(
         draft.totalCnt = action.payload.category_data.totalCnt;
         draft.is_loading = false;
       }),
+    [GET_RECOMMEND_LIST]: (state, action) => produce(state, (draft)=>{
+      draft.recommendList = action.payload.recommendList
+    })
   },
   initialState
 );
@@ -256,6 +271,7 @@ const actionCreators = {
   deleteChallengeDB,
   categoryChallengeDB,
   getCategoryDB,
+  getRecommendDB
 };
 
 export { actionCreators };

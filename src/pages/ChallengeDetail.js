@@ -31,6 +31,7 @@ import empty from "../image/ic_empty_s@2x.png";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import crown from "../image/icons/ic_crown@2x.png";
 import share from "../image/icons/ic_share@2x.png"
+import RecommendList from "../components/Challenge/RecommendList";
 
 
 const ChallengeDetail = (props) => {
@@ -263,10 +264,7 @@ const ChallengeDetail = (props) => {
                     </Notice>
                 </Grid>
                 {/* 다른 행성도 둘러보기 영역 */}
-                {/* <Grid padding="32px 20px">
-                    <Title>다른 행성도 둘러보기</Title>
-                    
-                </Grid> */}
+               <RecommendList/>
                 {copyShow? 
                     <CopyDone >
                         <p className="small">클립보드에 복사되었어요.</p>
