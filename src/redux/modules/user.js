@@ -77,20 +77,6 @@ const loginDB = (email, password) => {
   };
 };
 
-//닉네임 중복체크
-const nicknameCheck = (nickname) => {
-  return function (dispatch, getState, { history }) {
-    userApis
-      .nicknameCheck(nickname)
-      .then((res) => {
-        dispatch(nickCheck(res.data));
-      })
-      .catch((err) => {
-        console.log("닉네임 중복확인 에러", err);
-        dispatch(nickCheck(err.response.data));
-      });
-  };
-};
 //인증 메일 확인
 const emailCheckToken = () => {
   return function (dispatch, getState, { history }) {
@@ -242,7 +228,6 @@ const ActionCreators = {
   //액션 생성자 내보내기
   loginDB,
   loginCheckDB,
-  nicknameCheck,
   logOutAction,
   emailCheckToken,
   loginBykakao,

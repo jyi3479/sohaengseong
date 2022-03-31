@@ -16,7 +16,6 @@ const Image = (props) => {
     ranking:ranking,
   };
 
-  console.log(level);
 
   if(shape === "border" ){
     //랭킹 프로필 이미지
