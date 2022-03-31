@@ -716,21 +716,27 @@ const ChallengeWrite = (props) => {
               <p style={{ fontSize: "16px" }}>방 공개 여부</p>
               <Grid is_flex width="auto">
                 <Grid width="auto">
-                  <input
-                    type="checkbox"
-                    id="public"
-                    checked={checkedInputs === "public" ? true : false}
-                    disabled
-                  />
+                  <label htmlFor="public" className="style_checkbox">
+                    <input
+                      type="checkbox"
+                      id="public"
+                      checked={checkedInputs === "public" ? true : false}
+                      disabled
+                    />
+                    <label htmlFor="public"></label>
+                  </label>
                   <label htmlFor="public">공개</label>
                 </Grid>
                 <Grid width="auto">
-                  <input
-                    type="checkbox"
-                    id="private"
-                    checked={checkedInputs === "private" ? true : false}
-                    disabled
-                  />
+                  <label className="style_checkbox">
+                    <input
+                      type="checkbox"
+                      id="private"
+                      checked={checkedInputs === "private" ? true : false}
+                      disabled
+                    />
+                    <label htmlFor="private"></label>
+                  </label>
                   <label htmlFor="private">비밀</label>
                 </Grid>
               </Grid>
@@ -847,6 +853,7 @@ const ChallengeWrite = (props) => {
               content === "" ||
               category === "" ||
               maxMember === "" ||
+              checkedInputs === null ||
               value.includes(null)
                 ? "disabled"
                 : ""
