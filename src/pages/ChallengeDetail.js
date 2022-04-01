@@ -38,7 +38,6 @@ const ChallengeDetail = (props) => {
     dayjs.extend(customParseFormat);
     
     const dispatch = useDispatch();
-    const scrollRef = useRef(null);
     const userInfo = parseInt(localStorage.getItem("userId"));
     const challengeId = props.match.params.challengeId;
     const target = useSelector(state => state.challenge.target);

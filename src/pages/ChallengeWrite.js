@@ -381,17 +381,48 @@ const ChallengeWrite = (props) => {
   // 모달 팝업 ---------------------------------
   const [modalType, setModalType] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
+  const [toast,setToast] = React.useState(false);
+
   const openModal = () => {
-    setModalType("openModal");
-    setModalOpen(true);
+    if(!isEdit){
+       //필수항목이 모두 입력되었을 때만 모달 팝업 show
+      if(title !== "" && content !== "" && category !== "" && maxMember !== "" && checkedInputs !== null && !value.includes(null)){
+        setToast(false);
+        setModalType("openModal");
+        setModalOpen(true);
+      }else { //필수항목 중 하나라도 입력이 되지않았다면 토스트 메시지 띄우기
+        if(category === ""){
+          document.getElementById('category').focus(); //입력 안된 항목으로 스크롤 포커스
+        }else if(title === ""){
+          document.getElementById('title').focus();
+        }else if(content === ""){
+          document.getElementById('content').focus();
+        }else if(value.includes(null)){
+          document.getElementById('date').focus();
+        }else if(maxMember === "" ){
+          document.getElementById('members').focus();
+        }else if(checkedInputs === null){
+          document.getElementById('room').scrollIntoView();
+        }
+
+        setToast(true);
+        setTimeout(() => { //2초 후에 토스트메시지 사라지게 설정
+          setToast(false);
+        }, 2000);
+      }
+    }else{
+      setModalType("openModal");
+      setModalOpen(true);
+    }    
   };
+
   const closeModal = () => {
     setModalOpen(false);
   };
 
   return (
     <Grid margin="48px 0px 64px" padding="0" bg="#f4f6fa">
-      <InputContainer>
+      <InputContainer id="category">
         <label>어떤 주제로 진행하나요?</label>
         <Grid
           padding="0"
@@ -487,6 +518,7 @@ const ChallengeWrite = (props) => {
         </Grid>
 
         <Input
+          id="title"
           label="함께 실천할 습관을 적어주세요."
           subLabel="상대방에게 불쾌감을 줄 수 있는 단어는 사용하지 않습니다."
           placeholder="예) 일어나자마자 물 한잔 마시기"
@@ -501,6 +533,7 @@ const ChallengeWrite = (props) => {
 
         <InputBox>
           <Input
+            id="content"
             label="챌린지에 관한 내용을 입력해주세요."
             placeholder="설명, 인증 방법, 규칙 등을 자유롭게 적습니다."
             textarea
@@ -585,9 +618,9 @@ const ChallengeWrite = (props) => {
               기간을 선택해주세요.
             </p>
             <p className="small sub_color">
-              클릭 시 기간을 다시 설정할 수 있습니다.
+              시작날짜와 종료날짜를 선택하여 기간을 설정할 수 있습니다.
             </p>
-            <MobileDateRangePicker
+            <MobileDateRangePicker              
               calendars={1}
               value={value}
               minDate={new Date()} // 오늘 이전 날짜 선택 못 함
@@ -609,6 +642,7 @@ const ChallengeWrite = (props) => {
                   {isEdit ? (
                     <DateBox className="ok">
                       <input
+                        id="date"
                         style={{ color: "#a2aab3", cursor: "default" }}
                         value={
                           startDate.split(" ")[0] +
@@ -625,6 +659,7 @@ const ChallengeWrite = (props) => {
                       }
                     >
                       <input
+                        id="date"
                         ref={startProps.inputRef}
                         {...startProps.inputProps}
                         placeholder="예) 2022.03.06 - 2022.03.19"
@@ -652,6 +687,7 @@ const ChallengeWrite = (props) => {
         <InputBox>
           {isEdit ? (
             <Input
+              id="members"
               label="제한 인원을 작성해주세요"
               placeholder="최대 30명"
               value={maxMember}
@@ -660,6 +696,7 @@ const ChallengeWrite = (props) => {
             />
           ) : (
             <Input
+              id="members"
               label="제한 인원을 작성해주세요"
               placeholder="최대 30명"
               value={maxMember}
@@ -728,11 +765,11 @@ const ChallengeWrite = (props) => {
           />
         </InputBox>
         {/* 비밀방 여부 */}
-        <InputBox>
+        <InputBox id="rooms">
           {isEdit ? (
-            <Grid is_flex padding="0px">
+            <Grid is_flex padding="0px" style={{justifyContent: "flex-start"}}>
               <p style={{ fontSize: "16px" }}>방 공개 여부</p>
-              <Grid is_flex width="auto">
+              <Grid is_flex width="auto" padding="0">
                 <Grid width="auto">
                   <label htmlFor="public" className="style_checkbox">
                     <input
@@ -743,7 +780,7 @@ const ChallengeWrite = (props) => {
                     />
                     <label htmlFor="public"></label>
                   </label>
-                  <label htmlFor="public">공개</label>
+                  <label htmlFor="public" className="font14">공개</label>
                 </Grid>
                 <Grid width="auto">
                   <label className="style_checkbox">
@@ -755,16 +792,17 @@ const ChallengeWrite = (props) => {
                     />
                     <label htmlFor="private"></label>
                   </label>
-                  <label htmlFor="private">비밀</label>
+                  <label htmlFor="private" className="font14">비밀</label>
                 </Grid>
               </Grid>
             </Grid>
           ) : (
-            <Grid is_flex padding="0px">
+            <Grid is_flex padding="0px" style={{justifyContent: "flex-start"}}>
               <p style={{ fontSize: "16px" }}>방 공개 여부</p>
               <Grid
                 is_flex
                 width="auto"
+                padding="0"
                 style={{ justifyContent: "flex-start" }}
               >
                 <Grid width="auto" padding="0" margin="0 0 0 20px">
@@ -780,7 +818,7 @@ const ChallengeWrite = (props) => {
                     <label htmlFor="public"></label>
                   </label>
 
-                  <label htmlFor="public">공개</label>
+                  <label htmlFor="public" className="font14">공개</label>
                 </Grid>
                 <Grid width="auto" padding="0" margin="0 0 0 20px">
                   <label className="style_checkbox">
@@ -794,7 +832,7 @@ const ChallengeWrite = (props) => {
                     />
                     <label htmlFor="private"></label>
                   </label>
-                  <label htmlFor="private">비밀</label>
+                  <label htmlFor="private" className="font14">비밀</label>
                 </Grid>
               </Grid>
             </Grid>
@@ -847,14 +885,14 @@ const ChallengeWrite = (props) => {
           </li>
         </ul>
       </Notice>
-      <ButtonContainer>
+      <ButtonContainer>        
         {isEdit ? (
           <Button
             _onClick={openModal}
             disabled={
-              title === "" || content === "" || category === ""
-                ? "disabled"
-                : ""
+              title !== "" || content !== "" || category !== ""
+                ? ""
+                : "disabled"
             }
           >
             수정하기
@@ -863,20 +901,33 @@ const ChallengeWrite = (props) => {
           <Button
             _onClick={openModal}
             disabled={
-              title === "" ||
-              content === "" ||
-              category === "" ||
-              maxMember === "" ||
-              checkedInputs === null ||
-              value.includes(null)
-                ? "disabled"
-                : ""
+              title !== "" ||
+              content !== "" ||
+              category !== "" ||
+              maxMember !== "" ||
+              checkedInputs !== null ||
+              !value.includes(null)
+                ? ""
+                : "disabled"
             }
           >
             개설하기
           </Button>
         )}
       </ButtonContainer>
+      <Toast className={toast? "show" : ""}>
+        <p className="small">
+          {
+            category === "" ? "카테고리를 선택해주세요." 
+            : title === "" ? "챌린지 제목을 적어주세요." 
+            : content === "" ? "함께 실천할 습관을 적어주세요." 
+            : maxMember === "" ? "제한 인원을 작성해주세요." 
+            : checkedInputs === null ? "방 공개 여부를 선택해주세요."
+            : value.includes(null) ? "기간을 선택해주세요."
+            : null
+          }
+        </p>
+      </Toast>
       <Modal
         open={modalType === "openModal" ? modalOpen : ""}
         close={closeModal}
@@ -920,6 +971,27 @@ const ButtonContainer = styled.div`
   padding: 11px 20px;
   box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
   z-index: 3;
+`;
+
+//토스트 메시지 
+const Toast = styled.div`
+    position: fixed;
+    width: 100%;
+    bottom:64px;
+    left:0;     
+    height: 40px;
+    padding: 11px 24px;
+    background-color: rgba(3, 1, 2, 0.8);
+    bottom:24px;
+    transition: 0.4s;
+    z-index: 2;
+    p {
+        color: #fff;
+    }
+    &.show {
+      opacity: 1;
+      bottom:64px;
+    }
 `;
 
 const Select = styled.div`
