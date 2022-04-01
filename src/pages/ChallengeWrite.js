@@ -89,8 +89,10 @@ const ChallengeWrite = (props) => {
 
   // 날짜 선택 부분
   const [value, setValue] = React.useState([null, null]);
-  const [startDate, setStartDate] = React.useState(null);
-  const [endDate, setEndDate] = React.useState(null);
+  const [startDate, setStartDate] = React.useState(
+    isEdit ? target.startDate : null
+  );
+  const [endDate, setEndDate] = React.useState(isEdit ? target.endDate : null);
   const [dateFocus, setDateFocus] = React.useState(false); // 날짜 선택 입력창 활성화 여부
 
   // 방 공개 여부
@@ -146,7 +148,6 @@ const ChallengeWrite = (props) => {
 
   // 입력된 태그 삭제 함수
   const deleteTagItem = (e) => {
-    console.log(e.target.parentElement)
     // 지우려는 태그 내용 가져오기
     const deleteTagItem = e.target.parentElement.firstChild.innerText;
     // 지우려는 태그 내용과 다른 태그들만 걸러서 hashArr 업데이트 하기
@@ -159,8 +160,8 @@ const ChallengeWrite = (props) => {
   // 이미지 업로드 부분 ----------------------------------------------------------------------------
   const fileInput = React.useRef();
   const selectFile = async (e) => {
-     // 이미지 resize 옵션 설정 (최대 width을 400px로 지정)
-     const options = {
+    // 이미지 resize 옵션 설정 (최대 width을 400px로 지정)
+    const options = {
       maxSizeMB: 2,
       maxWidthOrHeight: 800,
     };
@@ -185,12 +186,14 @@ const ChallengeWrite = (props) => {
     // 다중 선택된 이미지 file 객체들을 반복문을 돌리며 preview와 image 배열에 추가하기
     for (let i = 0; i < filesLength; i++) {
       // file = fileArr[i];
-      if(fileInput.current.files[0].name.split(".")[1] === "gif" || fileInput.current.files[0].name.split(".")[1] === "GIF"){
-        file = fileInput.current.files[0]
-      }else{
+      if (
+        fileArr[i].name.split(".")[1] === "gif" ||
+        fileArr[i].name.split(".")[1] === "GIF"
+      ) {
+        file = fileArr[i];
+      } else {
         file = await imageCompression(fileArr[i], options);
       }
-
       if (file.size > maxSize) {
         console.log("파일 사이즈가 20MB를 넘습니다.");
         setIsWarning(true); // 용량 초과 파일 하나라도 있으면 true
@@ -200,7 +203,7 @@ const ChallengeWrite = (props) => {
           file.name.split(".")[1] === "heic" ||
           file.name.split(".")[1] === "HEIC"
         ) {
-          let blob = fileArr[i];
+          let blob = file;
           // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.
           // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
           heic2any({ blob: blob, toType: "image/jpeg" })
@@ -237,15 +240,15 @@ const ChallengeWrite = (props) => {
           };
           // 이미지 state에 저장
           if (file) {
-            files.push(fileArr[i]);
+            files.push(file);
             setImage([...image, ...files]);
           }
         }
       }
     }
+
     e.target.value = ""; // 같은 파일 upload를 위한 처리
   };
-
   // 업로드한 이미지 삭제 함수
   const deleteImage = (index) => {
     const previewArr = preview.filter((el, idx) => idx !== index);
@@ -603,28 +606,42 @@ const ChallengeWrite = (props) => {
               }}
               renderInput={(startProps, endProps, inputRef) => (
                 <React.Fragment>
-                  <DateBox
-                    className={
-                      dateFocus ? "active" : !value.includes(null) ? "ok" : ""
-                    }
-                  >
-                    <input
-                      ref={startProps.inputRef}
-                      {...startProps.inputProps}
-                      placeholder="예) 2022.03.06 - 2022.03.19"
-                      value={
-                        startDate || endDate
-                          ? (startDate
-                              ? dateFormat(startDate).split(" ")[0]
-                              : "") +
-                            " - " +
-                            (endDate ? dateFormat(endDate).split(" ")[0] : "")
-                          : ""
+                  {isEdit ? (
+                    <DateBox className="ok">
+                      <input
+                        style={{ color: "#a2aab3", cursor: "default" }}
+                        value={
+                          startDate.split(" ")[0] +
+                          " - " +
+                          endDate.split(" ")[0]
+                        }
+                        disabled
+                      />
+                    </DateBox>
+                  ) : (
+                    <DateBox
+                      className={
+                        dateFocus ? "active" : !value.includes(null) ? "ok" : ""
                       }
-                      onFocus={() => setDateFocus(true)}
-                      onBlur={() => setDateFocus(false)}
-                    ></input>
-                  </DateBox>
+                    >
+                      <input
+                        ref={startProps.inputRef}
+                        {...startProps.inputProps}
+                        placeholder="예) 2022.03.06 - 2022.03.19"
+                        value={
+                          startDate || endDate
+                            ? (startDate
+                                ? dateFormat(startDate).split(" ")[0]
+                                : "") +
+                              " - " +
+                              (endDate ? dateFormat(endDate).split(" ")[0] : "")
+                            : ""
+                        }
+                        onFocus={() => setDateFocus(true)}
+                        onBlur={() => setDateFocus(false)}
+                      />
+                    </DateBox>
+                  )}
                 </React.Fragment>
               )}
             />
@@ -835,11 +852,7 @@ const ChallengeWrite = (props) => {
           <Button
             _onClick={openModal}
             disabled={
-              title === "" ||
-              content === "" ||
-              category === "" ||
-              maxMember === "" ||
-              value.includes(null)
+              title === "" || content === "" || category === ""
                 ? "disabled"
                 : ""
             }
