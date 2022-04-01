@@ -8,19 +8,21 @@ import { Grid } from "../../elements";
 import ChallengeCard from "../ChallengeCard";
 import { history } from "../../redux/configureStore";
 import ScrollBar from "../shared/ScrollBar";
+import { getCookie } from "../../shared/cookie";
+
 
 const RecommendList = (props) => {
   const dispatch = useDispatch();
   const challengeId = useParams().challengeId;
   const recommendList = useSelector((state) => state.challenge.recommendList);
-  const is_login = useSelector((state) => state.user.user);
+  const token = getCookie("token");
   React.useEffect(() => {
-    if (is_login !== null) {
+    if (token) {
       dispatch(challengeAction.getRecommendDB(challengeId));
     }
   }, []);
 
-  if (recommendList.length && is_login !== null) {
+  if (recommendList.length && token) {
     return (
       <>
         <Grid padding="32px 20px">
