@@ -484,6 +484,7 @@ const Fixed = styled.div`
     left:0;
     padding:11px 20px;
     box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
+    z-index: 2;
 `;
 
 
