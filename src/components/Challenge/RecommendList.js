@@ -16,10 +16,12 @@ const RecommendList = (props) => {
   const is_login = useSelector((state) => state.user.user);
 
   React.useEffect(() => {
-    dispatch(challengeAction.getRecommendDB(challengeId));
+    if(is_login !== null){
+      dispatch(challengeAction.getRecommendDB(challengeId));
+    }    
   }, []);
 
-  if(recommendList.length && is_login !== null){
+  if(recommendList.length){
     return (
       <>
         <Grid padding="32px 20px">
