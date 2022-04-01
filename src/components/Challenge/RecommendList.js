@@ -13,11 +13,12 @@ const RecommendList = (props) => {
   const dispatch = useDispatch();
   const challengeId = useParams().challengeId;
   const recommendList = useSelector((state) => state.challenge.recommendList);
+  const is_login = useSelector((state) => state.user.user);
   React.useEffect(() => {
     dispatch(challengeAction.getRecommendDB(challengeId));
   }, []);
 
-  if(recommendList.length){
+  if(recommendList.length && is_login !== null){
     return (
       <>
         <Grid padding="32px 20px">

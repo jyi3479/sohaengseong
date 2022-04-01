@@ -27,8 +27,8 @@ const ChatRoom = ({ match }) => {
   const dispatch = useDispatch();
 
   // 소켓 통신 객체
-  //const sock = new SockJS("https://byungmin.shop/chatting");
-  const sock = new SockJS("https://sohangsung.shop/chatting");
+  const sock = new SockJS("https://byungmin.shop/chatting");
+  //const sock = new SockJS("https://sohangsung.shop/chatting");
   const client = StompJs.over(sock);
 
   // 방 제목 가져오기
