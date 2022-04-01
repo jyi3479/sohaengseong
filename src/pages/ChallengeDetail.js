@@ -158,7 +158,7 @@ const ChallengeDetail = (props) => {
             dispatch(baseAction.setGnb(true));            
         };
 
-    },[copy]);
+    },[copy, challengeId]);
 
     return(
         <>
