@@ -920,7 +920,7 @@ const ChallengeWrite = (props) => {
           {
             category === "" ? "카테고리를 선택해주세요." 
             : title === "" ? "챌린지 제목을 적어주세요." 
-            : content === "" ? "함께 실천할 습관을 적어주세요." 
+            : content === "" ? "챌린지 내용을 적어주세요."
             : maxMember === "" ? "제한 인원을 작성해주세요." 
             : checkedInputs === null ? "방 공개 여부를 선택해주세요."
             : value.includes(null) ? "기간을 선택해주세요."
