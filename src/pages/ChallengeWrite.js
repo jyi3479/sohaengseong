@@ -382,7 +382,7 @@ const ChallengeWrite = (props) => {
   const [modalType, setModalType] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
   const [toast,setToast] = React.useState(false);
-
+  const rooms = React.useRef();
   const openModal = () => {
     if(!isEdit){
        //필수항목이 모두 입력되었을 때만 모달 팝업 show
@@ -402,7 +402,7 @@ const ChallengeWrite = (props) => {
         }else if(maxMember === "" ){
           document.getElementById('members').focus();
         }else if(checkedInputs === null){
-          document.getElementById('room').scrollIntoView();
+          rooms.current.scrollIntoView();
         }
 
         setToast(true);
@@ -765,7 +765,7 @@ const ChallengeWrite = (props) => {
           />
         </InputBox>
         {/* 비밀방 여부 */}
-        <InputBox id="rooms">
+        <InputBox id="rooms" ref={rooms}>
           {isEdit ? (
             <Grid is_flex padding="0px" style={{justifyContent: "flex-start"}}>
               <p style={{ fontSize: "16px" }}>방 공개 여부</p>
@@ -921,9 +921,9 @@ const ChallengeWrite = (props) => {
             category === "" ? "카테고리를 선택해주세요." 
             : title === "" ? "챌린지 제목을 적어주세요." 
             : content === "" ? "챌린지 내용을 적어주세요."
+            : value.includes(null) ? "기간을 선택해주세요."
             : maxMember === "" ? "제한 인원을 작성해주세요." 
             : checkedInputs === null ? "방 공개 여부를 선택해주세요."
-            : value.includes(null) ? "기간을 선택해주세요."
             : null
           }
         </p>
