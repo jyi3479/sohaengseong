@@ -618,7 +618,7 @@ const ChallengeWrite = (props) => {
               기간을 선택해주세요.
             </p>
             <p className="small sub_color">
-              클릭 시 기간을 다시 설정할 수 있습니다.
+              시작날짜와 종료날짜를 선택하여 기간을 설정할 수 있습니다.
             </p>
             <MobileDateRangePicker              
               calendars={1}
