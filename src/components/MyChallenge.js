@@ -15,14 +15,11 @@ const MyChallenge = (props) => {
   const my_list = useSelector((state) => state.mypage.list);
   const admin_list =
     my_list &&
-    my_list.filter((l) => l.status === "모집중" && l.userId === +userId); //모집 중 & 내가 방장
+    my_list.filter((l) => (l.status === "모집중" || l.status === "진행중") && l.userId === +userId); //모집 중 & 내가 방장
   const before_list =
     my_list &&
     my_list.filter((l) => l.status === "모집중" && l.userId !== +userId); //모집 중 & 내가 참여자
   const ing_list = my_list && my_list.filter((l) => l.status === "진행중"); // 진행 중인 챌린지(오늘의 챌린지)
-  const completed_list =
-    my_list &&
-    my_list.filter((l) => l.status === "성공" || l.status === "실패"); // 지난 챌린지(success+fail)
 
   //탭 클릭하면 활성화  & 탭 내용 보여주기
   const tabClick = (event, tabName) => {
