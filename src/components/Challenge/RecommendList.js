@@ -13,6 +13,7 @@ const RecommendList = (props) => {
   const dispatch = useDispatch();
   const challengeId = useParams().challengeId;
   const recommendList = useSelector((state) => state.challenge.recommendList);
+
   React.useEffect(() => {
     dispatch(challengeAction.getRecommendDB(challengeId));
   }, []);
