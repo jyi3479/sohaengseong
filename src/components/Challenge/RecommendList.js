@@ -14,6 +14,7 @@ const RecommendList = (props) => {
   const challengeId = useParams().challengeId;
   const recommendList = useSelector((state) => state.challenge.recommendList);
   const is_login = useSelector((state) => state.user.user);
+
   React.useEffect(() => {
     if(is_login !== null){
     dispatch(challengeAction.getRecommendDB(challengeId));
