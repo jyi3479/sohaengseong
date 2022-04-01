@@ -11,7 +11,6 @@ import 'swiper/css/pagination';
 
 //배너이미지
 import banner1 from "../image/banner/banner_01.png";
-import banner2 from "../image/banner/banner_02.png";
 import banner3 from "../image/banner/banner_03.png";
 
 const Banner = () => {
@@ -33,8 +32,7 @@ const Banner = () => {
                 >
                 
                 <SwiperSlide className="pointer_slide slide1" onClick={()=>{history.push("/guide/intro")}}></SwiperSlide>
-                <SwiperSlide className="pointer_slide slide2" onClick={() => window.open('https://forms.gle/5gkoWJ2Xb8HU1gsb8', '_blank')}></SwiperSlide>
-                <SwiperSlide className="slide3"></SwiperSlide>
+                <SwiperSlide className="slide2"></SwiperSlide>
             </Swiper>
         </BannerBox>
     );
@@ -60,11 +58,6 @@ const BannerBox = styled.div`
             background-position: center;
         }
         .slide2 {
-            background-image: url(${banner2});
-            background-size: cover;
-            background-position: center;
-        }
-        .slide3 {
             background-image: url(${banner3});
             background-size: cover;
             background-position: center;
