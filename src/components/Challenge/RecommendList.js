@@ -20,7 +20,7 @@ const RecommendList = (props) => {
     if (token) {
       dispatch(challengeAction.getRecommendDB(challengeId));
     }
-  }, []);
+  }, [challengeId]);
 
   if (recommendList.length && token) {
     return (
