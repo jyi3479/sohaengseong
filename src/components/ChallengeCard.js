@@ -64,7 +64,7 @@ const Box = styled.div`
   vertical-align: top;
   cursor: pointer;
   ${(props) =>
-    props.className
+    props.className === "isRecommend"
       ? ``
       : `:nth-child(2n) {
     margin-right: 0;
