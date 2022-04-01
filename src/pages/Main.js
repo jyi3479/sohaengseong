@@ -41,10 +41,7 @@ const Main = (props) => {
             <h1>작은 것부터 하나씩<br/>나를 바꾸는 습관 챌린지</h1>
             <p>이루고 싶은 목표가 있으신가요?<br/>토비가 함께 도와드릴게요!</p>
             <button className="small mt16" onClick={()=>{
-                history.push({                                
-                  pathname: "/category/all",
-                  //state: {notfocus: true},
-              })
+                history.push("/guide/intro")
               }}>시작하기</button>
           </Hero>
         </Grid>
