@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, Button } from "../elements";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import {ActionCreators as userActions} from "../redux/modules/user";
@@ -13,14 +13,15 @@ import notion from "../image/icon/ic_notion@2x.png";
 
 const MyPage = (props) => {
   const dispatch = useDispatch();
-  const userId = localStorage.getItem("userId"); 
+  const userInfo = useSelector(state => state.user.user)
   const logout = () => {
-    dispatch(userActions.logOutAction(userId));
+    dispatch(userActions.logOutAction(userInfo.userId));
   };
 
   React.useEffect(() => {
     dispatch(baseAction.setHeader("마이행성", false,true));
   }, []);
+
 
   return (
     <Grid margin="48px 0px 64px" padding="0px" style={{position:"relative"}}>

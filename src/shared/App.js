@@ -54,7 +54,7 @@ function App() {
   const scrollRef = useRef();
 
   useEffect(() => {
-    if (token && user === null) {
+    if (token && !user) {
       dispatch(userActions.loginCheckDB());
     }
     scrollRef.current.scrollIntoView();

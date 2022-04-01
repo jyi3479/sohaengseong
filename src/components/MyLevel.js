@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Grid, Image } from "../elements";
 
-import { challengeApis, mypageApis } from "../shared/apis";
+import { challengeApis, mypageApis, userApis } from "../shared/apis";
 import { actionCreators as mypageAction } from "../redux/modules/mypage";
+import { ActionCreators as userAction } from "../redux/modules/user";
 
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import bg from "../image/img_bg@2x.png";
@@ -21,11 +22,14 @@ const MyLevel = (props) => {
   const dispatch = useDispatch();
   const my_level = useSelector((state) => state.mypage.myInfo);
   const levelNum = my_level && my_level.levelName.split("_")[0];
+  const userInfo = useSelector((state)=> state.user.user)
 
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    dispatch(mypageAction.getMyInfoDB(userId));
-  }, []);
+  useEffect(()=>{
+    if(userInfo){
+      dispatch(mypageAction.getMyInfoDB(userInfo.userId));
+      }
+  }, [userInfo])
+
 
   return (
     <>
