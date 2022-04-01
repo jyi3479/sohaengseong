@@ -13,34 +13,40 @@ const RecommendList = (props) => {
   const dispatch = useDispatch();
   const challengeId = useParams().challengeId;
   const recommendList = useSelector((state) => state.challenge.recommendList);
-  
+
   React.useEffect(() => {
     dispatch(challengeAction.getRecommendDB(challengeId));
   }, []);
 
-  return (
-    <>
-      <Grid padding="32px 20px">
-        <h2>다른 행성도 둘러보기</h2>
-        <ScrollBar width="500px" direction="ltr">
-          <Container>
-            {recommendList.map((el, i) => {
-              return (
-                <ChallengeCard
-                  key={el.challengeId}
-                  {...el}
-                  _onClick={() => {
-                    history.push(`/challenge/${el.challengeId}`);
-                  }}
-                  className="isRecommend"
-                />
-              );
-            })}
-          </Container>
-        </ScrollBar>
-      </Grid>
-    </>
-  );
+  if(recommendList.length){
+    return (
+      <>
+        <Grid padding="32px 20px">
+          <h2>다른 행성도 둘러보기</h2>
+          <ScrollBar width="500px" direction="ltr">
+            <Container>
+              {recommendList.map((el, i) => {
+                return (
+                  <ChallengeCard
+                    key={el.challengeId}
+                    {...el}
+                    _onClick={() => {
+                      history.push(`/challenge/${el.challengeId}`);
+                    }}
+                    className="isRecommend"
+                  />
+                );
+              })}
+            </Container>
+          </ScrollBar>
+        </Grid>
+      </>
+    );
+  }
+
+  return null;
+
+ 
 };
 
 const Container = styled.div`
