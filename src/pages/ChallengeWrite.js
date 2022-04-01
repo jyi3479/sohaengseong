@@ -89,7 +89,7 @@ const ChallengeWrite = (props) => {
 
   // 날짜 선택 부분
   const [value, setValue] = React.useState([null, null]);
-  const [startDate, setStartDate] = React.useState();
+  const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
   const [dateFocus, setDateFocus] = React.useState(false); // 날짜 선택 입력창 활성화 여부
 
@@ -146,6 +146,7 @@ const ChallengeWrite = (props) => {
 
   // 입력된 태그 삭제 함수
   const deleteTagItem = (e) => {
+    console.log(e.target.parentElement)
     // 지우려는 태그 내용 가져오기
     const deleteTagItem = e.target.parentElement.firstChild.innerText;
     // 지우려는 태그 내용과 다른 태그들만 걸러서 hashArr 업데이트 하기
