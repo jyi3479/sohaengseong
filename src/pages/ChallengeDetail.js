@@ -259,7 +259,7 @@ const ChallengeDetail = (props) => {
                     </Notice>
                 </Grid>
                 {/* 다른 행성도 둘러보기 영역 */}
-               {/* <RecommendList/> */}
+               <RecommendList/>
                 {copyShow? 
                     <CopyDone >
                         <p className="small">클립보드에 복사되었어요.</p>
