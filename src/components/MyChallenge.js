@@ -123,6 +123,7 @@ const MyChallenge = (props) => {
                   {admin_list.map((el, i) => {
                     return (
                       <ChallengeCard
+                        className="admin_challenge"
                         key={el.challengeId}
                         {...el}
                         _onClick={() => {
