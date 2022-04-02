@@ -7,7 +7,7 @@ import { ActionCreators as userActions } from "../redux/modules/user";
 import { userApis } from "../shared/apis";
 import drop from "../image/icons/ic_dropdown@2x.png";
 import deleteIcon from "../image/icon/ic_txt_delete@2x.png";
-import PopModal from "../components/PopModal";
+import PopModal from "../components/shared/PopModal";
 
 const Signup = (props) => {
   const dispatch = useDispatch();

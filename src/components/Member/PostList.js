@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import { useParams } from "react-router-dom";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as memberAction } from "../redux/modules/member";
-import { actionCreators as chatAction } from "../redux/modules/chat";
+import { actionCreators as memberAction } from "../../redux/modules/member";
+import { actionCreators as chatAction } from "../../redux/modules/chat";
 
-import { Grid, Button } from "../elements";
+import { Grid, Button } from "../../elements";
 import PostCard from "./PostCard";
-import InfinityScroll from "../shared/InfiniteScroll";
+import InfinityScroll from "../../shared/InfiniteScroll";
 
-import Notfound from "../image/icon/ic_empty_l@2x.png";
+import Notfound from "../../image/icon/ic_empty_l@2x.png";
 
 const PostList = (props) => {
   const dispatch = useDispatch();

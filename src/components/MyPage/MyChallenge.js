@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Button } from "../elements";
-import ChallengeCard from "./ChallengeCard";
-import { actionCreators as myActions } from "../redux/modules/mypage";
+import { Grid } from "../../elements";
+import ChallengeCard from "../Challenge/ChallengeCard";
+import { actionCreators as myActions } from "../../redux/modules/mypage";
 
-import arrow from "../image/icons/small_arrow.png";
+
+import arrow from "../../image/icons/small_arrow.png";
 
 const MyChallenge = (props) => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const MyChallenge = (props) => {
   const my_list = useSelector((state) => state.mypage.list);
   const admin_list =
     my_list &&
-    my_list.filter((l) => (l.status === "모집중" || l.status === "진행중") && l.userId === +userId); //모집 중 & 내가 방장
+    my_list.filter((l) => (l.status === "모집중" || l.status === "진행중") && l.userId === +userId); //모집 중 이거나 진행중 & 내가 방장
   const before_list =
     my_list &&
     my_list.filter((l) => l.status === "모집중" && l.userId !== +userId); //모집 중 & 내가 참여자
@@ -121,9 +122,9 @@ const MyChallenge = (props) => {
                 </li>
                 <li id="admin" className="tab" style={{ display: "none" }}>
                   {admin_list.map((el, i) => {
-                    return (
+                    return (                                        
                       <ChallengeCard
-                        className="admin_challenge"
+                        className={el.status === "모집중"?"admin_challenge":""}
                         key={el.challengeId}
                         {...el}
                         _onClick={() => {
@@ -143,7 +144,9 @@ const MyChallenge = (props) => {
               <h6>마이 리포트</h6>
               <p>{myInfo.nickname} 님의 지난 기록들 확인하기</p>
             </MyReport>
+            
           </Grid>
+
         </>
       )}
     </>
@@ -183,6 +186,8 @@ const StatusContainer = styled.div`
     }
   }
 `;
+
+
 
 const MyReport = styled.div`
   position: relative;

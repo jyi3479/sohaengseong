@@ -1,7 +1,6 @@
 import React from "react";
-import styled from "styled-components";
-import "../styles/css/modal.css";
-import closeIcon from "../image/icons/icon_close_btn@2x.png";
+import "../../styles/css/modal.css";
+import closeIcon from "../../image/icons/icon_close_btn@2x.png";
 
 
 const Modal = (props) => {

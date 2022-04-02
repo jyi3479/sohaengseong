@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { Grid } from "../elements";
-import MainHeader from "../components/MainHeader";
+import MainHeader from "../components/Main/MainHeader";
 
 //카테고리이미지
 import category_01 from "../image/icon/category/ic_category_daily_l@2x.png";

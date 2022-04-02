@@ -5,23 +5,23 @@ import moment from "moment";
 import "moment/locale/ko";
 
 import { useDispatch, useSelector } from "react-redux";
-import { history } from "../redux/configureStore";
-import { actionCreators as memberActions } from "../redux/modules/member";
-import { actionCreators as challengeActions } from "../redux/modules/challenge";
+import { history } from "../../redux/configureStore";
+import { actionCreators as memberActions } from "../../redux/modules/member";
+import { actionCreators as challengeActions } from "../../redux/modules/challenge";
 import { useParams } from "react-router-dom";
 
-import { Grid, Image } from "../elements";
-import Modal from "./Modal";
-import PostModal from "./Member/PostModal";
+import { Grid, Image } from "../../elements";
+import Modal from "../shared/Modal";
+import PostModal from "./PostModal";
 
-import comment from "../image/icons/ic_relpy@2x.png";
-import deleteIcon from "../image/icons/ic_delete@2x.png";
-import close from "../image/icons/icon_close_btn@2x.png";
-import edit from "../image/icons/ic_edit@2x.png";
-import more from "../image/icons/ic_more@2x.png";
-import crown from "../image/icons/ic_crown@2x.png";
-import defaultImg from "../image/img_profile_defalt @2x.png";
-import InfinityScroll from "../shared/InfiniteScroll";
+import comment from "../../image/icons/ic_relpy@2x.png";
+import deleteIcon from "../../image/icons/ic_delete@2x.png";
+import close from "../../image/icons/icon_close_btn@2x.png";
+import edit from "../../image/icons/ic_edit@2x.png";
+import more from "../../image/icons/ic_more@2x.png";
+import crown from "../../image/icons/ic_crown@2x.png";
+import defaultImg from "../../image/img_profile_defalt @2x.png";
+import InfinityScroll from "../../shared/InfiniteScroll";
 
 const PostCard = (props) => {
   moment.locale("ko"); // 모멘트 한글로 바꾸기

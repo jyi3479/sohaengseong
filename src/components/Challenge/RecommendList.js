@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { actionCreators as challengeAction } from "../../redux/modules/challenge";
 
 import { Grid } from "../../elements";
-import ChallengeCard from "../ChallengeCard";
+import ChallengeCard from "./ChallengeCard";
 import { history } from "../../redux/configureStore";
 import ScrollBar from "../shared/ScrollBar";
 import { getCookie } from "../../shared/cookie";

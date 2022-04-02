@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { actionCreators as baseAction } from "../redux/modules/base";
 
-import PostList from "../components/PostList";
+import PostList from "../components/Member/PostList";
 import { Grid } from "../elements";
 
 const MemberPostList = (props) => {

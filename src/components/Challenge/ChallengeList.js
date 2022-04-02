@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 import { useDispatch, useSelector } from "react-redux";
-import { history } from "../redux/configureStore";
-import { actionCreators as challengeAction } from "../redux/modules/challenge";
+import { history } from "../../redux/configureStore";
+import { actionCreators as challengeAction } from "../../redux/modules/challenge";
 
 import Card from "./Card";
-import InfinityScroll from "../shared/InfiniteScroll";
+import InfinityScroll from "../../shared/InfiniteScroll";
 
 const ChallengeList = (props) => {
   const params = window.location.pathname;

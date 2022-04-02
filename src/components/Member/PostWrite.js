@@ -3,17 +3,17 @@ import styled from "styled-components";
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { history } from "../redux/configureStore";
-import { actionCreators as memberAction } from "../redux/modules/member";
-import { actionCreators as baseAction } from "../redux/modules/base";
-import { memberApis } from "../shared/apis";
+import { history } from "../../redux/configureStore";
+import { actionCreators as memberAction } from "../../redux/modules/member";
+import { actionCreators as baseAction } from "../../redux/modules/base";
+import { memberApis } from "../../shared/apis";
 
-import { Grid, Input, Button } from "../elements";
-import Modal from "./Modal";
+import { Grid, Input, Button } from "../../elements";
+import Modal from "../shared/Modal";
 
-import plus from "../image/icons/ic_plus_xl@2x.png";
-import deleteIcon from "../image/icon/ic_delete_m.png";
-import confirmIcon from "../image/img_good@2x.png";
+import plus from "../../image/icons/ic_plus_xl@2x.png";
+import deleteIcon from "../../image/icon/ic_delete_m.png";
+import confirmIcon from "../../image/img_good@2x.png";
 
 //heic 이미지 파일을 jpeg로 변환하는 라이브러리
 import heic2any from "heic2any";

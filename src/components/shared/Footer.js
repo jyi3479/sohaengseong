@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import { useSelector } from "react-redux";
 
-import home from "../image/icon/navi/ic_home@2x.png";
-import active_home from "../image/icon/navi/ic_home_sel@2x.png";
-import create from "../image/icon/navi/ic_add@2x.png";
-import active_create from "../image/icon/navi/ic_add_sel@2x.png";
-import chat from "../image/icon/navi/ic_chat@2x.png";
-import active_chat from "../image/icon/navi/ic_chat_sel@2x.png";
-import my from "../image/icon/navi/ic_profile@2x.png";
-import active_my from "../image/icon/navi/ic_profile_sel@2x.png";
-import LoginModal from "./shared/LoginModal";
+import home from "../../image/icon/navi/ic_home@2x.png";
+import active_home from "../../image/icon/navi/ic_home_sel@2x.png";
+import create from "../../image/icon/navi/ic_add@2x.png";
+import active_create from "../../image/icon/navi/ic_add_sel@2x.png";
+import chat from "../../image/icon/navi/ic_chat@2x.png";
+import active_chat from "../../image/icon/navi/ic_chat_sel@2x.png";
+import my from "../../image/icon/navi/ic_profile@2x.png";
+import active_my from "../../image/icon/navi/ic_profile_sel@2x.png";
+import LoginModal from "./LoginModal";
 
 const Footer = (props) => {
   const hide = useSelector((state) => state.base.gnb);

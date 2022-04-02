@@ -1,18 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import { useSelector } from "react-redux";
 
-import LoginModal from "./shared/LoginModal";
+import LoginModal from "../shared/LoginModal";
 
-import searchIconW from '../image/icon/ic_ search@2x.png';
-import searchIconB from "../image/icons/ic_search_b@2x.png";
-import noticeIconW from '../image/icon/ic_notice@2x.png'
-import noticeIconB from '../image/icon/ic_notice_b@2x.png'
-import arrow from "../image/icon/ic_arrow_w@2x.png";
-import logo from "../image/logo.png";
-import logo2 from "../image/logo2.png";
+import searchIconW from '../../image/icon/ic_ search@2x.png';
+import searchIconB from "../../image/icons/ic_search_b@2x.png";
+import noticeIconW from '../../image/icon/ic_notice@2x.png'
+import noticeIconB from '../../image/icon/ic_notice_b@2x.png'
+import arrow from "../../image/icon/ic_arrow_w@2x.png";
+import logo from "../../image/logo.png";
+import logo2 from "../../image/logo2.png";
 
 const MainHeader = (props) => {
     
