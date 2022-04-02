@@ -56,7 +56,6 @@ const ChallengeWrite = (props) => {
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
       challengeApis.getOneChallenge(params.challengeId).then((res)=>{
-        console.log(res.data)
         setTitle(res.data.title)
         setContent(res.data.content)
         setCategory(res.data.category)
