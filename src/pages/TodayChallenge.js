@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Grid } from "../elements/index";
 import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from "../redux/modules/base";
-import ChallengeList from "../components/ChallengeList";
+import ChallengeList from "../components/Challenge/ChallengeList";
 
 const TodayChallenge = (props) => {
   const dispatch = useDispatch();

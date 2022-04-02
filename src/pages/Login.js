@@ -6,7 +6,7 @@ import { history } from "../redux/configureStore";
 import { KAKAO_AUTH_URL } from "../shared/OAuth";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { Grid, Input, Button } from "../elements";
-import WarningText from "../components/WarningText";
+import WarningText from "../components/shared/WarningText";
 
 import kakao from "../image/icon/ic_kakao@2x.png";
 import logo from "../image/logo2.png";

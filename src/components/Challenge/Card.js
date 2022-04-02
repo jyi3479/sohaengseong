@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid , Image, Tag} from "../elements/index";
+import { Grid , Image, Tag} from "../../elements/index";
 
-import peopleIcon from "../image/icon/ic_people@2x.png";
-import lock from "../image/icon/ic_lock@2x.png";
-import defaultImg from "../image/ic_empty_s@2x.png";
-import fail from "../image/icon/ic_fail@2x.png";
-import success from "../image/icon/ic_success@2x.png";
+import peopleIcon from "../../image/icon/ic_people@2x.png";
+import lock from "../../image/icon/ic_lock@2x.png";
+import defaultImg from "../../image/ic_empty_s@2x.png";
+import fail from "../../image/icon/ic_fail@2x.png";
+import success from "../../image/icon/ic_success@2x.png";
 
 
 const Card = (props) => {

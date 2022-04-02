@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 
 //이미지 슬라이더(Swiper) import 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,9 +10,9 @@ import 'swiper/css/pagination';
 
 
 //배너이미지
-import banner1 from "../image/banner/banner_01.png";
-import banner2 from "../image/banner/banner_02.png";
-import banner3 from "../image/banner/banner_03.png";
+import banner1 from "../../image/banner/banner_01.png";
+import banner2 from "../../image/banner/banner_02.png";
+import banner3 from "../../image/banner/banner_03.png";
 
 const Banner = () => {
     return(

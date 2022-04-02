@@ -1,5 +1,5 @@
 import React from "react";
-import PostWrite from "../components/PostWrite";
+import PostWrite from "../components/Member/PostWrite";
 import { Grid } from "../elements";
 
 const MemberPostWrite = (props) => {

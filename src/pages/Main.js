@@ -8,11 +8,11 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import { Grid, Button } from "../elements/index";
-import MainHeader from "../components/MainHeader";
-import Footer from "../components/Footer";
+import MainHeader from "../components/Main/MainHeader";
+import Footer from "../components/shared/Footer";
 import RankingList from "../components/Ranking/RankingList";
-import ChallengeList from "../components/ChallengeList";
-import Banner from "../components/Banner";
+import ChallengeList from "../components/Challenge/ChallengeList";
+import Banner from "../components/Main/Banner";
 
 import plus from "../image/icon/ic_plus_l@2x.png";
 import bgImg from "../image/main_bg.png";

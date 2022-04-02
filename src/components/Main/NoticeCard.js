@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 
-import Mark from "../image/icon/ic_notice_mark@2x.png";
+import Mark from "../../image/icon/ic_notice_mark@2x.png";
 
 //날짜 라이브러리
 import moment from "moment";

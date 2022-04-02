@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Tag } from "../elements";
+import { Tag } from "../../elements";
 
-import lock from "../image/icon/ic_lock@2x.png";
-import peopleIcon from "../image/icon/ic_people@2x.png";
-import defaultImg from "../image/ic_empty_s@2x.png";
-import stamp from "../image/icon/ic_stamp@2x.png";
+import lock from "../../image/icon/ic_lock@2x.png";
+import peopleIcon from "../../image/icon/ic_people@2x.png";
+import defaultImg from "../../image/ic_empty_s@2x.png";
+import stamp from "../../image/icon/ic_stamp@2x.png";
 
 const ChallengeCard = (props) => {
   const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;

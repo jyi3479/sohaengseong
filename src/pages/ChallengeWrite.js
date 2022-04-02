@@ -22,7 +22,7 @@ import heic2any from "heic2any";
 import imageCompression from "browser-image-compression";
 
 import { Grid, Input, Button, Image } from "../elements";
-import Modal from "../components/Modal";
+import Modal from "../components/shared/Modal";
 
 import plus from "../image/icon/ic_plus_g@2x.png";
 import drop from "../image/icons/ic_dropdown@2x.png";

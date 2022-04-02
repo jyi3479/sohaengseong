@@ -13,7 +13,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 //모달팝업
-import Modal from "../components/Modal";
+import Modal from "../components/shared/Modal";
 
 //사용자 import
 import { Grid, Image, Button, Tag } from "../elements/index";

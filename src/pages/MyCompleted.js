@@ -5,7 +5,7 @@ import { Grid } from "../elements";
 import { useDispatch,  useSelector } from "react-redux";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as myActions } from "../redux/modules/mypage";
-import Card from "../components/Card";
+import Card from "../components/Challenge/Card";
 
 const MyCompleted = (props) => {
   const dispatch = useDispatch();

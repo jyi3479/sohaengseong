@@ -14,10 +14,10 @@ import star from "../image/img_star2@2x.png";
 import { getCookie } from "./cookie";
 
 //page import
-import MobileFrame from "../components/MobileFrame";
+import MobileFrame from "../components/shared/MobileFrame";
 import { ActionCreators as userActions } from "../redux/modules/user";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/shared/Header";
+import Footer from "../components/shared/Footer";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Main from "../pages/Main";
