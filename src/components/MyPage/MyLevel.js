@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button, Grid, Image } from "../elements";
+import { Button, Grid, Image } from "../../elements";
 
-import { challengeApis, mypageApis, userApis } from "../shared/apis";
-import { actionCreators as mypageAction } from "../redux/modules/mypage";
-import { ActionCreators as userAction } from "../redux/modules/user";
+import { actionCreators as mypageAction } from "../../redux/modules/mypage";
 
-import defaultImg from "../image/img_profile_defalt @2x.png";
-import bg from "../image/img_bg@2x.png";
-import ground from "../image/img_ground@2x.png";
+import defaultImg from "../../image/img_profile_defalt @2x.png";
+import bg from "../../image/img_bg@2x.png";
+import ground from "../../image/img_ground@2x.png";
 
 const MyLevel = (props) => {
   const dispatch = useDispatch();

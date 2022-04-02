@@ -14,7 +14,7 @@ import defaultImg from "../image/img_profile_defalt @2x.png";
 import setIcon from "../image/icon/ic_setting@2x.png";
 
 //모달팝업
-import Modal from "../components/Modal";
+import Modal from "../components/shared/Modal";
 
 //heic 이미지 파일을 jpeg로 변환하는 라이브러리
 import heic2any from "heic2any";

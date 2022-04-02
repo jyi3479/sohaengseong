@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import {ActionCreators as noticeAction} from '../redux/modules/user';
+import {ActionCreators as noticeAction} from '../../redux/modules/user';
 
-import Notfound from "../image/icon/ic_empty_notice_l@2x.png";
-import NoticeCard from "../components/NoticeCard";
+import Notfound from "../../image/icon/ic_empty_notice_l@2x.png";
+import NoticeCard from "./NoticeCard";
 
 
 const NoticeList = (props) => {

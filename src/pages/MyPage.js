@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid, Button } from "../elements";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import {ActionCreators as userActions} from "../redux/modules/user";
-import MyChallenge from "../components/MyChallenge";
-import MyLevel from "../components/MyLevel";
+import MyChallenge from "../components/MyPage/MyChallenge";
+import MyLevel from "../components/MyPage/MyLevel";
 
 import arrow from "../image/icons/small_arrow.png";
 import insta from "../image/icon/ic_insta@2x.png";

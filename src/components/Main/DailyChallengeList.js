@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 import { useDispatch, useSelector } from "react-redux";
-import { history } from "../redux/configureStore";
-import { actionCreators as myActions } from "../redux/modules/mypage";
+import { history } from "../../redux/configureStore";
+import { actionCreators as myActions } from "../../redux/modules/mypage";
 
-import Card from "./Card";
+import Card from "../Challenge/Card";
 
 const DailyChallengeList = (props) => {
   const dispatch = useDispatch();

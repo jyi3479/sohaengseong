@@ -4,7 +4,7 @@ import * as baseAction from '../redux/modules/base';
 
 import { Grid } from "../elements/index";
 
-import NoticeList from "../components/NoticeList";
+import NoticeList from "../components/Main/NoticeList";
 
 
 const Notice = (props) => {

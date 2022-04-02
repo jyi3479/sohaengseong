@@ -1,27 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
+import { Grid, Tag } from "../../elements";
 
-import { Grid, Tag } from "../elements";
-
-import lock from "../image/icon/ic_lock@2x.png";
-import peopleIcon from "../image/icon/ic_people@2x.png";
-import defaultImg from "../image/ic_empty_s@2x.png";
-import stamp from "../image/icon/ic_stamp@2x.png";
-import more from "../image/icons/ic_more_2@2x.png";
+import lock from "../../image/icon/ic_lock@2x.png";
+import peopleIcon from "../../image/icon/ic_people@2x.png";
+import defaultImg from "../../image/ic_empty_s@2x.png";
+import stamp from "../../image/icon/ic_stamp@2x.png";
+import more from "../../image/icons/ic_more_2@2x.png";
 
 
-import { actionCreators as challengeAction } from "../redux/modules/challenge";
+import { actionCreators as challengeAction } from "../../redux/modules/challenge";
 
 //모달
-import Modal from "./Modal";
-import PostModal from "./Member/PostModal";
+import Modal from "../shared/Modal";
+import PostModal from "../Member/PostModal";
 
 
-import deleteIcon from "../image/icons/ic_delete@2x.png";
-import close from "../image/icons/icon_close_btn@2x.png";
-import edit from "../image/icons/ic_edit@2x.png";
+import deleteIcon from "../../image/icons/ic_delete@2x.png";
+import close from "../../image/icons/icon_close_btn@2x.png";
+import edit from "../../image/icons/ic_edit@2x.png";
 
 
 const ChallengeCard = (props) => {

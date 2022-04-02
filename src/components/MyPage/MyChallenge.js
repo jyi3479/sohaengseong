@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as myActions } from "../redux/modules/mypage";
-import { Grid } from "../elements";
-import ChallengeCard from "./ChallengeCard";
+import { Grid } from "../../elements";
+import ChallengeCard from "../Challenge/ChallengeCard";
+import { actionCreators as myActions } from "../../redux/modules/mypage";
 
 
-import arrow from "../image/icons/small_arrow.png";
+import arrow from "../../image/icons/small_arrow.png";
 
 const MyChallenge = (props) => {
   const dispatch = useDispatch();

@@ -8,7 +8,7 @@ import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as memberAction } from "../redux/modules/member";
 import { actionCreators as chatAction } from "../redux/modules/chat";
 
-import PostCard from "../components/PostCard";
+import PostCard from "../components/Member/PostCard";
 import { Grid, Button } from "../elements";
 
 const MemberPostDetail = (props) => {

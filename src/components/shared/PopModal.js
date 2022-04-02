@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import "../styles/css/modal.css";
-import closeIcon from "../image/icons/icon_close_btn@2x.png";
-import { history } from "../redux/configureStore";
-import {Grid,Button} from "../elements/index";
-import confirm_img from "../image/img_confirm@2x.png";
+import "../../styles/css/modal.css";
+import closeIcon from "../../image/icons/icon_close_btn@2x.png";
+import { history } from "../../redux/configureStore";
+import {Grid,Button} from "../../elements/index";
+import confirm_img from "../../image/img_confirm@2x.png";
 
 const PopModal = (props) => {
     const { open, close, btn_click , h2, p, mail} = props;

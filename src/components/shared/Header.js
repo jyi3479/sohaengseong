@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import { useSelector } from "react-redux";
 
-import LoginModal from "./shared/LoginModal";
-import arrow from "../image/icon/ic_arrow@2x.png";
-import searchIconB from "../image/icons/ic_search_b@2x.png";
-import noticeIconB from '../image/icon/ic_notice_b@2x.png'
+import LoginModal from "./LoginModal";
+import arrow from "../../image/icon/ic_arrow@2x.png";
+import searchIconB from "../../image/icons/ic_search_b@2x.png";
+import noticeIconB from '../../image/icon/ic_notice_b@2x.png'
 
 const Header = (props) => {
   const text = useSelector((state) => state.base.header.text);
