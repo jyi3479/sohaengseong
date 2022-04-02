@@ -211,6 +211,7 @@ const ContentBox = styled.div`
       border: none;
       margin-top: 5px;
     }
+    h3 {line-height: 1.3;}
     &.admin {
       display: flex;
       width: 100%;
