@@ -4,13 +4,13 @@ import { getCookie } from "./cookie";
 const test_url = process.env.REACT_APP_SERVER_PORT;
 
 export const apis = axios.create({
-  //baseURL: "https://sohangsung.shop", //운영 서버 주소
-  baseURL: test_url, //테스트 서버 주소 (작업은 여기서만 합니다)
+  baseURL: "https://sohangsung.shop", //운영 서버 주소
+  //baseURL: test_url, //테스트 서버 주소 (작업은 여기서만 합니다)
 });
 
 const imageApis = axios.create({
-  //baseURL: "https://sohangsung.shop", //운영 서버 주소
-  baseURL: test_url, //테스트 서버 주소 (작업은 여기서만 합니다)
+  baseURL: "https://sohangsung.shop", //운영 서버 주소
+  //baseURL: test_url, //테스트 서버 주소 (작업은 여기서만 합니다)
   headers: {
     "Content-type": "multipart/form-data",
     accept: "application/json",

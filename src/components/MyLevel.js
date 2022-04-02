@@ -12,11 +12,6 @@ import { ActionCreators as userAction } from "../redux/modules/user";
 import defaultImg from "../image/img_profile_defalt @2x.png";
 import bg from "../image/img_bg@2x.png";
 import ground from "../image/img_ground@2x.png";
-import level_img1 from "../image/icon/level/img_level1@2x.png";
-import level_img2 from "../image/icon/level/img_level2@2x.png";
-import level_img3 from "../image/icon/level/img_level3@2x.png";
-import level_img4 from "../image/icon/level/img_level4@2x.png";
-import level_img5 from "../image/icon/level/img_level5@2x.png";
 
 const MyLevel = (props) => {
   const dispatch = useDispatch();

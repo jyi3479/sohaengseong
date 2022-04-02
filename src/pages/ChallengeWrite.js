@@ -29,6 +29,7 @@ import drop from "../image/icons/ic_dropdown@2x.png";
 import defaultImg from "../image/ic_empty_s@2x.png";
 import deleteIcon from "../image/icon/btn_delete_g@2x.png";
 import deleteIconW from "../image/icon/btn_delete_s@2x.png";
+import { challengeApis } from "../shared/apis";
 
 const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
@@ -53,8 +54,23 @@ const ChallengeWrite = (props) => {
 
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
-      console.log("수정임",params.challengeId);
-      dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
+      challengeApis.getOneChallenge(params.challengeId).then((res)=>{
+        console.log(res.data)
+        setTitle(res.data.title)
+        setContent(res.data.content)
+        setCategory(res.data.category)
+        setMaxMember(res.data.currentMember)
+        setCompareImage(res.data.challengeImage)
+        setPreview(res.data.challengeImage)
+        setHashArr(res.data.tagName)
+        setStartDate(res.data.startDate)
+        setEndDate(res.data.endDate)
+        setCheckedInputs(res.data.isPrivate ? "private" : "public")
+        setPassword(res.data.isPrivate ? res.data.password : "")
+
+      }).catch((err)=>{
+        console.log(err)
+      })
     }
 
     return () => {
@@ -65,42 +81,32 @@ const ChallengeWrite = (props) => {
 
   // state 관리 부분 ------------------------------------------------------------------------
 
-  const [title, setTitle] = React.useState(isEdit ? target.title : "");
-  const [content, setContent] = React.useState(isEdit ? target.content : "");
-  const [category, setCategory] = React.useState(isEdit ? target.category : "");
+  const [title, setTitle] = React.useState("");
+  const [content, setContent] = React.useState("");
+  const [category, setCategory] = React.useState("");
   const [active, setActive] = React.useState(false); // select 활성화 여부
-  const [maxMember, setMaxMember] = React.useState(
-    isEdit ? target.maxMember : ""
-  );
+  const [maxMember, setMaxMember] = React.useState("");
 
   //이미지 부분
-  const [compareImage, setCompareImage] = React.useState(
-    isEdit ? target.challengeImage : []
-  ); // 기존에 작성했던 이미지 url 담은 state (이미지 수정 시 새로운 이미지 등록과 비교하기 위해)
+  const [compareImage, setCompareImage] = React.useState([]); // 기존에 작성했던 이미지 url 담은 state (이미지 수정 시 새로운 이미지 등록과 비교하기 위해)
   const [image, setImage] = React.useState([]);
-  const [preview, setPreview] = React.useState(
-    isEdit ? target.challengeImage : []
-  );
+  const [preview, setPreview] = React.useState([]);
   const [isWarning, setIsWarning] = React.useState(false);
 
   //해시태그 부분
   const [hashtag, setHashtag] = React.useState(""); //onChange로 관리할 문자열
-  const [hashArr, setHashArr] = React.useState(isEdit ? target.tagName : []); // 태그 담을 배열
+  const [hashArr, setHashArr] = React.useState([]); // 태그 담을 배열
   const [tagFocus, setTagFocus] = React.useState(false); // 태그 입력창 활성화 여부
 
   // 날짜 선택 부분
   const [value, setValue] = React.useState([null, null]);
-  const [startDate, setStartDate] = React.useState(
-    isEdit ? target.startDate : null
-  );
-  const [endDate, setEndDate] = React.useState(isEdit ? target.endDate : null);
+  const [startDate, setStartDate] = React.useState(null);
+  const [endDate, setEndDate] = React.useState(null);
   const [dateFocus, setDateFocus] = React.useState(false); // 날짜 선택 입력창 활성화 여부
 
   // 방 공개 여부
-  const [checkedInputs, setCheckedInputs] = React.useState(
-    isEdit ? (target.isPrivate ? "private" : "public") : null
-  );
-  const [password, setPassword] = React.useState(isEdit ? target.password : "");
+  const [checkedInputs, setCheckedInputs] = React.useState(null);
+  const [password, setPassword] = React.useState("");
 
   // 드롭박스 - 라벨을 클릭시 옵션 목록이 열림/닫힘 -----------------------------------------------------
   const selectClick = () => {
@@ -646,9 +652,9 @@ const ChallengeWrite = (props) => {
                         id="date"
                         style={{ color: "#a2aab3", cursor: "default" }}
                         value={
-                          startDate.split(" ")[0] +
+                          startDate?.split(" ")[0] +
                           " - " +
-                          endDate.split(" ")[0]
+                          endDate?.split(" ")[0]
                         }
                         disabled
                       />

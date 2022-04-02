@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as myActions } from "../redux/modules/mypage";
 import { Grid } from "../elements";
 import ChallengeCard from "./ChallengeCard";
-import { actionCreators as myActions } from "../redux/modules/mypage";
+
 
 import arrow from "../image/icons/small_arrow.png";
 
@@ -35,11 +36,10 @@ const MyChallenge = (props) => {
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.className += " active";
   };
+
   useEffect(() => {
     dispatch(myActions.getMyChallengeDB(userId));
   }, []);
-
-  console.log(admin_list);
 
   return (
     <>

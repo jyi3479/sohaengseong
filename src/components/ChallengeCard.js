@@ -107,7 +107,7 @@ const ChallengeCard = (props) => {
           <Grid width="auto" padding="0px">
             <ModalBox
               onClick={() => {                      
-                history.push(`/challengewrite/${props.challengeId}`);                      
+                history.push(`/challengewrite/${props.challengeId}`);  
               }}
             >
               <img src={edit} />
