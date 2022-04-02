@@ -53,6 +53,7 @@ const ChallengeWrite = (props) => {
 
     if (isEdit) {
       //수정이면 특정 챌린지 1개 조회하기 (default value 위해)
+      console.log("수정임",params.challengeId);
       dispatch(challengeAction.getOneChallengeDB(+params.challengeId));
     }
 
