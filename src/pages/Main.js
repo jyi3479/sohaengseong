@@ -157,10 +157,6 @@ const Main = (props) => {
           </Grid>
         </Wrap>
       </Container>
-      <FeedBack>
-        <img src={popIcon}/>
-        <a href="https://forms.gle/kw8zpnphdhfQ7NwQ6" target="_blank"/>
-      </FeedBack>
       <Footer />
     </>
   );
@@ -273,38 +269,6 @@ const TitleBox = styled.div`
       background-size: 16px;
     }
   }
-`;
-
-const FeedBack = styled.div`
-  position: fixed;
-  right: 0;
-  bottom: 60px;
-  padding-right: 15px;
-  z-index: 11;
-  a {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    background-image: url(${feedbackIcon});
-    background-size: cover;
-    margin-left: 5px;
-    cursor: pointer;
-  }
-  img {
-    visibility: hidden;
-    height: 40px;
-    transition: 0.2s;
-    width: 0;
-  }
-  &:hover {
-    img {
-      visibility: inherit;
-  
-      width: 201px;
-      display: inline-block;
-    }
-  }
-  
 `;
 
 export default Main;

@@ -13,7 +13,7 @@ import notion from "../image/icon/ic_notion@2x.png";
 
 const MyPage = (props) => {
   const dispatch = useDispatch();
-  const userInfo = useSelector(state => state.user.user)
+  const userInfo = useSelector(state => state.user.user);
   const logout = () => {
     dispatch(userActions.logOutAction(userInfo.userId));
   };

@@ -11,7 +11,6 @@ import defaultImg from "../../image/img_profile_defalt @2x.png";
 import bg from "../../image/img_bg@2x.png";
 import ground from "../../image/img_ground@2x.png";
 
-
 const MyLevel = (props) => {
   const dispatch = useDispatch();
   const my_level = useSelector((state) => state.mypage.myInfo);

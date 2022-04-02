@@ -30,7 +30,6 @@ import defaultImg from "../image/ic_empty_s@2x.png";
 import deleteIcon from "../image/icon/btn_delete_g@2x.png";
 import deleteIconW from "../image/icon/btn_delete_s@2x.png";
 import { challengeApis } from "../shared/apis";
-import { set } from "lodash";
 
 const ChallengeWrite = (props) => {
   const dispatch = useDispatch();
