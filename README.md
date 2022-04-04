@@ -20,8 +20,8 @@
 [한태훈👩‍🚀](https://github.com/hantaehoon1/)
 
 <p>저희의 프로젝트가 더 궁금하신가요?⤵️</p>
-[소행성 팀 노션 📍](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b) </br>
-[소행성 인스타그램 📍](https://www.instagram.com/sohangsung.official/?hl=ko)
+[소행성 팀 노션 📍](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b/) </br>
+[소행성 인스타그램 📍](https://www.instagram.com/sohangsung.official/?hl=ko/)
 
 </br>
 
