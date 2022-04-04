@@ -11,8 +11,7 @@
 * 배포 환경 : Amazon S3, CloudFront
 * 협업 툴 : Git / Notion / Zeplin 
 
-</br></br>
-
+</br>
 
 ## 2️⃣ 프로젝트 설명
 <pre>“나와 같은 목표로 함께할 누군가가 필요해!”
