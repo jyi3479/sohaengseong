@@ -3,10 +3,6 @@
 <a harf="https://sohangsung.co.kr/" target="_blank"><img width="651" alt="스크린샷 2022-04-04 오후 8 28 48" src="https://user-images.githubusercontent.com/89513776/161534752-987d41bc-bf24-454f-82c1-acd042e628fc.png"></a>
 
 
-
-
-<hr/>
-
 ## 프로젝트 요약
 
 * 기간 :  2022.02.25 ~ 2022.04.08
@@ -15,7 +11,6 @@
 * 배포 환경 : Amazon S3, CloudFront
 * 협업 툴 : Git / Notion / Zeplin 
 
-<hr/>
 
 ## 프로젝트 설명
 <pre>“나와 같은 목표로 함께할 누군가가 필요해!”
@@ -30,14 +25,12 @@
 [소행성 팀 노션 📍](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b) </br>
 [소행성 인스타그램 📍](https://www.instagram.com/sohangsung.official/?hl=ko)
 
-<hr/>
 
 
 ## 아키텍처
 
 <img src="https://apricot-tarsal-29a.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F59c621b1-4a4b-4e85-8400-ecd509294f7d%2FUntitled.png?table=block&id=fa0c9fa2-8d0b-42a8-b032-c7cda177cdb0&spaceId=758b74dd-be75-47e6-8ad5-a4133966de3f&width=2000&userId=&cache=v2"/>
 
-<hr/>
 
 
 ## 사용한 라이브러리(패키지)
