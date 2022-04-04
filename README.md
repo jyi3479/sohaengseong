@@ -27,8 +27,8 @@
 함께할 수 있는 팀원들을 편하게 구하고, 동기부여까지 받을 수 있는 플랫폼을 기획/제작하였습니다.</pre>
 
 <p>저희의 프로젝트가 더 궁금하신가요?⤵️</p>
-[소행성 팀 노션](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b)
-[소행성 인스타그램](https://www.instagram.com/sohangsung.official/?hl=ko)
+[소행성 팀 노션 📍](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b) </br>
+[소행성 인스타그램 📍](https://www.instagram.com/sohangsung.official/?hl=ko)
 
 <hr/>
 
