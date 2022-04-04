@@ -19,9 +19,8 @@ const MemberPostDetail = (props) => {
 
   const targetPost = useSelector((state) => state.member.target);
 
-
   React.useEffect(() => {
-    dispatch(memberAction.getOnePostDB(challengeId, postId, 0, 5));
+    dispatch(memberAction.getOnePostDB(challengeId, postId, 0, 7));
     // header, footer 부분
     dispatch(baseAction.setHeader("", false));
     dispatch(baseAction.setGnb(false));

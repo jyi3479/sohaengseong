@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { Grid, Button } from "../elements/index";
 import { useSelector, useDispatch } from "react-redux";
-import {useLocation} from "react-router";
+import { useLocation } from "react-router";
 import ChallengeCard from "../components/Challenge/ChallengeCard";
 import SearchHeader from "../components/Challenge/SearchHeader";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
@@ -12,7 +12,6 @@ import _ from "lodash";
 
 //스크롤바 커스텀
 import ScrollBar from "../components/shared/ScrollBar";
-
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -23,7 +22,6 @@ import "swiper/css/scrollbar";
 
 // import required modules
 import { FreeMode, Scrollbar, Mousewheel } from "swiper";
-
 
 //img import
 import notfound from "../image/icon/ic_empty_l@2x.png";
@@ -42,11 +40,9 @@ const CategoryTab = (props) => {
   const challengeInfo = useSelector((state) => state.challenge);
   const categoryList = challengeInfo.categoryList;
   const recommend_list = useSelector((state) => state.search.recommend); //추천검색어
-  const searchInfo = useSelector((state) => state.search.list);
+  const searchInfo = useSelector((state) => state.search);
   const searchList = searchInfo.challengeList;
   const allList = challengeInfo.list;
-
- 
 
   //검색 axios 요청을 줄이기위한 debounce
   const debounce = _.debounce((word) => {
@@ -77,27 +73,23 @@ const CategoryTab = (props) => {
   };
 
   React.useEffect(() => {
-
- 
-      if (tabId === "all") {
-        if (!word) {
-          dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
-          //전체 리스트 불러오기
-          dispatch(challengeAction.getChallengeDB(0, 6));
-        }
-      } else {
-        if(focus){
-          dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
-        }
-        // tabId가 없는 카테고리 리스트 페이지에서 불필요한 get 요청 없애기 위해
-        if(tabId !== undefined){
+    if (tabId === "all") {
+      if (!word) {
+        dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
+        //전체 리스트 불러오기
+        dispatch(challengeAction.getChallengeDB(0, 6));
+      }
+    } else {
+      if (focus) {
+        dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
+      }
+      // tabId가 없는 카테고리 리스트 페이지에서 불필요한 get 요청 없애기 위해
+      if (tabId !== undefined) {
         //전체 탭이 아닐경우 카테고리 리스트 불러오기
         dispatch(challengeAction.categoryChallengeDB(tabId, 0, 6));
         setFocus(false);
-        }
-
       }
-
+    }
   }, [tabId, word]);
 
   // 무한스크롤 callNext 함수들
@@ -124,8 +116,6 @@ const CategoryTab = (props) => {
         }}
         _onFocus={(e) => {
           setFocus(true);
-          
-
         }}
         _onClick={() => {
           dispatch(searchActions.getSearchDB(word, 0, 6));
@@ -146,7 +136,7 @@ const CategoryTab = (props) => {
               modules={[FreeMode, Scrollbar, Mousewheel]}
               className="mySwiper"
             >
-              <SwiperSlide style={{width:"max-content"}}>                
+              <SwiperSlide style={{ width: "max-content" }}>
                 <Tab
                   type="button"
                   className={tabId === "all" ? "active" : ""}
@@ -155,7 +145,7 @@ const CategoryTab = (props) => {
                     history.push(`/category/all`);
                   }}
                 >
-                 전체
+                  전체
                 </Tab>
                 <Tab
                   type="button"
@@ -261,7 +251,7 @@ const CategoryTab = (props) => {
                 categoryList && challengeInfo.totalCnt !== 0 ? (
                   <InfinityScroll
                     callNext={getCategoryList}
-                    paging={{ next: challengeInfo.has_next }}
+                    paging={{ next: challengeInfo.next }}
                   >
                     {categoryList.map((el, i) => {
                       return (
@@ -340,7 +330,7 @@ const CategoryTab = (props) => {
                   ) : (
                     <InfinityScroll
                       callNext={getChallengeList}
-                      paging={{ next: challengeInfo.has_next }}
+                      paging={{ next: challengeInfo.next }}
                     >
                       {allList.map((el, i) => {
                         return (

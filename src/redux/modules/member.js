@@ -42,7 +42,7 @@ const initialState = {
   postList: [],
   target: null,
   page: 0,
-  has_next: false,
+  next: false,
   is_loading: false,
   report: [],
 };
@@ -52,16 +52,10 @@ const getOnePostDB = (challengeId, postId, page, size) => {
     memberApis
       .getOnePost(+challengeId, postId, page, size)
       .then((res) => {
-        let is_next = null;
-        if (res.data.next) {
-          is_next = true;
-        } else {
-          is_next = false;
-        }
         const commentData = {
           commentList: res.data.comments,
           page: page + 1,
-          next: is_next,
+          next: res.data.next,
           commentCnt: res.data.commentCnt,
         };
         dispatch(targetPost(res.data, commentData));
@@ -77,36 +71,16 @@ const getPostDB = (challengeId, page, size) => {
     memberApis
       .getPost(+challengeId, page, size)
       .then((res) => {
-        let is_next = null;
-        if (res.data.next) {
-          is_next = true;
-        } else {
-          is_next = false;
-        }
         const postData = {
           postList: res.data.postList,
           page: page + 1,
-          next: is_next,
+          next: res.data.next,
         };
         dispatch(getPost(postData));
       })
       .catch((err) => {
         console.log("인증게시글 전체 조회 오류", err);
       });
-  };
-};
-
-const addPostDB = (challengeId, post) => {
-  return function (dispatch, getState, { history }) {
-    // console.log(+challengeId);
-    // memberApis
-    //   .addPost(+challengeId, post)
-    //   .then((res) => {
-    //     console.log("인증 게시글 작성", res);
-    //   })
-    //   .catch((err) => {
-    //     console.log("인증 게시글 작성 오류", err);
-    //   });
   };
 };
 
@@ -119,7 +93,7 @@ const deletePostDB = (postId) => {
       })
       .catch((err) => {
         console.log("인증 게시글 삭제 오류", err);
-        window.alert("인증 게시글 삭제 오류")
+        window.alert("인증 게시글 삭제 오류");
       });
   };
 };
@@ -145,7 +119,7 @@ const addCommentDB = (postId, content) => {
       })
       .catch((err) => {
         console.log("댓글 작성 오류", err);
-        window.alert("댓글 작성 오류")
+        window.alert("댓글 작성 오류");
       });
   };
 };
@@ -159,7 +133,7 @@ const deleteCommentDB = (postId, commentId) => {
       })
       .catch((err) => {
         console.log("댓글 삭제 오류", err);
-        window.alert("댓글 삭제 오류")
+        window.alert("댓글 삭제 오류");
       });
   };
 };
@@ -172,9 +146,9 @@ const exitChallengeDB = (challengeId) => {
         history.replace("/");
       })
       .catch((err) => {
-      console.log("챌린지 나가기 오류", err);
-      window.alert("챌린지 나가기 오류")
-    });
+        console.log("챌린지 나가기 오류", err);
+        window.alert("챌린지 나가기 오류");
+      });
   };
 };
 
@@ -202,7 +176,7 @@ export default handleActions(
           draft.postList = action.payload.postData.postList;
         }
         draft.page = action.payload.postData.page;
-        draft.has_next = action.payload.postData.next;
+        draft.next = action.payload.postData.next;
         draft.is_loading = false;
       }),
 
@@ -215,7 +189,7 @@ export default handleActions(
         }
 
         draft.target.page = action.payload.commentData.page;
-        draft.target.has_next = action.payload.commentData.next;
+        draft.target.next = action.payload.commentData.next;
         draft.is_loading = false;
       }),
     [ADD_POST]: (state, action) =>
@@ -261,7 +235,6 @@ const actionCreators = {
   addComment,
   addPost,
   addCommentDB,
-  addPostDB,
   getPostDB,
   deletePostDB,
   deleteCommentDB,

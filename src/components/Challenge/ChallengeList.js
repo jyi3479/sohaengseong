@@ -46,7 +46,7 @@ const ChallengeList = (props) => {
       ) : (
         <InfinityScroll
           callNext={getChallengeList}
-          paging={{ next: challengeInfo.has_next }}
+          paging={{ next: challengeInfo.next }}
         >
           <Box className={props.className}>
             {challenge_list.map((el, i) => {

@@ -23,33 +23,29 @@ const PostList = (props) => {
   const target = useSelector((state) => state.challenge.target);
 
   const getPostList = () => {
-    dispatch(memberAction.getPostDB(challengeId, postInfo.page, 2));
+    dispatch(memberAction.getPostDB(challengeId, postInfo.page, 3));
   };
 
   useEffect(() => {
-    dispatch(memberAction.getPostDB(challengeId, 0, 2));
+    dispatch(memberAction.getPostDB(challengeId, 0, 3));
   }, []);
 
   return (
     <Grid padding="24px 20px 32px" border="1px #dddddd">
-
-      {post_list&&post_list.length !== 0? (
-          <InfinityScroll
-            callNext={getPostList}
-            paging={{ next: postInfo.has_next }}
-          >
-            {post_list.map((el, i) => {
-              return <PostCard key={i} roomId={roomId} {...el}></PostCard>;
-            })}
-          </InfinityScroll>
-        
-      ):(        
+      {post_list && post_list.length !== 0 ? (
+        <InfinityScroll callNext={getPostList} paging={{ next: postInfo.next }}>
+          {post_list.map((el, i) => {
+            return <PostCard key={i} roomId={roomId} {...el}></PostCard>;
+          })}
+        </InfinityScroll>
+      ) : (
         <NotFound className="t_center">
-            <img src={Notfound}/>
-            <h2 className="mt16" style={{color:"#000"}}>게시글이 없습니다.</h2>
-        </NotFound>       
+          <img src={Notfound} />
+          <h2 className="mt16" style={{ color: "#000" }}>
+            게시글이 없습니다.
+          </h2>
+        </NotFound>
       )}
-      
 
       {target?.status === "진행중" && (
         <Fixed>
@@ -68,7 +64,6 @@ const PostList = (props) => {
               width="calc(70% - 4px)"
               _onClick={() => {
                 history.push(`/postwrite/${challengeId}/${roomId}`);
-                
               }}
             >
               인증하기
@@ -81,10 +76,10 @@ const PostList = (props) => {
 };
 
 const NotFound = styled.div`
-    margin-top: 20vh;
-    img {
-        width: 100px;
-    }
+  margin-top: 20vh;
+  img {
+    width: 100px;
+  }
 `;
 
 const Fixed = styled.div`
@@ -97,6 +92,5 @@ const Fixed = styled.div`
   box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.04);
   z-index: 5;
 `;
-
 
 export default PostList;

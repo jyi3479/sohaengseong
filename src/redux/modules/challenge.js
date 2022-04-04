@@ -5,7 +5,6 @@ import { challengeApis } from "../../shared/apis";
 import { mainApis } from "../../shared/apis";
 
 import { actionCreators as chatAction } from "./chat";
-import { set } from "lodash";
 
 const GET_CHALLENGE = "GET_CHALLENGE";
 const TARGET_CHALLENGE = "TARGET_CHALLENGE";
@@ -14,7 +13,7 @@ const GET_CATEGORY_LIST = "GET_CATEGORY_LIST";
 const ADD_CHALLENGE = "ADD_CHALLENGE";
 const EDIT_CHALLENGE = "EDIT_CHALLENGE";
 const DELETE_CHALLENGE = "DELETE_CHALLENGE";
-const GET_RECOMMEND_LIST = "GET_RECOMMEND_LIST"
+const GET_RECOMMEND_LIST = "GET_RECOMMEND_LIST";
 
 const getChallenge = createAction(GET_CHALLENGE, (challenge_data) => ({
   challenge_data,
@@ -37,14 +36,15 @@ const getCategoryList = createAction(
   GET_CATEGORY_LIST,
   (categoryId, category_data) => ({ categoryId, category_data })
 );
-const getRecommendList = createAction(GET_RECOMMEND_LIST, (recommendList)=>({recommendList}))
-
+const getRecommendList = createAction(GET_RECOMMEND_LIST, (recommendList) => ({
+  recommendList,
+}));
 
 const initialState = {
   list: [],
   target: null,
   page: 0,
-  has_next: false,
+  next: false,
   is_loading: false,
   totalCnt: 0,
   categoryList: [],
@@ -56,16 +56,10 @@ const getChallengeDB = (page, size) => {
     challengeApis
       .getChallenge(page, size)
       .then((res) => {
-        let is_next = null;
-        if (res.data.next) {
-          is_next = true;
-        } else {
-          is_next = false;
-        }
         const challenge_data = {
           challenge_list: res.data.challengeList,
           page: page + 1,
-          next: is_next,
+          next: res.data.next,
           totalCnt: res.data.totalCnt,
         };
 
@@ -153,20 +147,13 @@ const deleteChallengeDB = (challengeId) => {
 
 const categoryChallengeDB = (categoryId, page, size) => {
   return function (dispatch, getState, { history }) {
-
     challengeApis
       .categoryChallenge(categoryId, page, size)
       .then((res) => {
-        let is_next = null;
-        if (res.data.next) {
-          is_next = true;
-        } else {
-          is_next = false;
-        }
         const category_data = {
           category_list: res.data.challengeList,
           page: page + 1,
-          next: is_next,
+          next: res.data.next,
           totalCnt: res.data.totalCnt,
         };
 
@@ -191,12 +178,14 @@ const getCategoryDB = () => {
 
 const getRecommendDB = (challengeId) => {
   return function (dispatch, getState, { history }) {
-
-  challengeApis.recommendChallenge(challengeId).then((res)=>{
-    dispatch(getRecommendList(res.data))
-  }).catch((err)=>console.log(err))
-}
-}
+    challengeApis
+      .recommendChallenge(challengeId)
+      .then((res) => {
+        dispatch(getRecommendList(res.data));
+      })
+      .catch((err) => console.log(err));
+  };
+};
 
 export default handleActions(
   {
@@ -210,7 +199,7 @@ export default handleActions(
         }
 
         draft.page = action.payload.challenge_data.page;
-        draft.has_next = action.payload.challenge_data.next;
+        draft.next = action.payload.challenge_data.next;
         draft.totalCnt = action.payload.challenge_data.totalCnt;
         draft.is_loading = false;
       }),
@@ -247,13 +236,14 @@ export default handleActions(
         }
 
         draft.page = action.payload.category_data.page;
-        draft.has_next = action.payload.category_data.next;
+        draft.next = action.payload.category_data.next;
         draft.totalCnt = action.payload.category_data.totalCnt;
         draft.is_loading = false;
       }),
-    [GET_RECOMMEND_LIST]: (state, action) => produce(state, (draft)=>{
-      draft.recommendList = action.payload.recommendList
-    })
+    [GET_RECOMMEND_LIST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.recommendList = action.payload.recommendList;
+      }),
   },
   initialState
 );
@@ -271,7 +261,7 @@ const actionCreators = {
   deleteChallengeDB,
   categoryChallengeDB,
   getCategoryDB,
-  getRecommendDB
+  getRecommendDB,
 };
 
 export { actionCreators };
