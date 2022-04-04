@@ -3,7 +3,7 @@
 <a harf="https://sohangsung.co.kr/" target="_blank"><img width="651" alt="스크린샷 2022-04-04 오후 8 28 48" src="https://user-images.githubusercontent.com/89513776/161534752-987d41bc-bf24-454f-82c1-acd042e628fc.png"></a>
 
 
-## 프로젝트 요약
+## 1️⃣ 프로젝트 요약
 
 * 기간 :  2022.02.25 ~ 2022.04.08
 * 개발 언어 : Javascript
@@ -11,8 +11,10 @@
 * 배포 환경 : Amazon S3, CloudFront
 * 협업 툴 : Git / Notion / Zeplin 
 
+</br></br>
 
-## 프로젝트 설명
+
+## 2️⃣ 프로젝트 설명
 <pre>“나와 같은 목표로 함께할 누군가가 필요해!”
 
 먼 미래보다 행복한 하루를 바라는 MZ세대 나아가 모든 세대들의 트렌드 ‘갓생살기’
@@ -25,15 +27,31 @@
 [소행성 팀 노션 📍](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b) </br>
 [소행성 인스타그램 📍](https://www.instagram.com/sohangsung.official/?hl=ko)
 
+</br></br>
 
 
-## 아키텍처
+
+## 3️⃣ 아키텍처
 
 <img src="https://apricot-tarsal-29a.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F59c621b1-4a4b-4e85-8400-ecd509294f7d%2FUntitled.png?table=block&id=fa0c9fa2-8d0b-42a8-b032-c7cda177cdb0&spaceId=758b74dd-be75-47e6-8ad5-a4133966de3f&width=2000&userId=&cache=v2"/>
 
+</br></br>
 
 
-## 사용한 라이브러리(패키지)
+## 프로젝트 주요기능
+#### ⓞ 주요 기능
+* 로그인, 회원가입, 소셜로그인
+* 기록 : 마이 리포트 
+* 소통 : 레벨업/마이 행성(캐릭터)  
+* 보상 : 랭킹 / 채팅
+
+#### ① 기록
+#### ② 소통
+#### ③ 보상
+
+
+
+## 4️⃣ 사용한 라이브러리(패키지)
 
 |라이브러리명|내용|참고| 
 |:---|:---|:---| 
@@ -53,3 +71,9 @@
 |sockjs-client|소켓 통신|실시간 채팅|
 |stompjs|소켓 통신|실시간 채팅|
 |browser-image-compression|이미지 리사이징||
+
+
+</br></br>
+
+
+
