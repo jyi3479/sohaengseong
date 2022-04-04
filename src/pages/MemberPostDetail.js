@@ -13,7 +13,7 @@ import { Grid, Button } from "../elements";
 
 const MemberPostDetail = (props) => {
   const dispatch = useDispatch();
-  const challengeId = +useParams().challengeId;
+  const challengeId = useParams().challengeId;
   const postId = +useParams().postId;
   const roomId = useParams().roomId;
 

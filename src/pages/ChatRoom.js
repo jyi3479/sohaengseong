@@ -77,7 +77,7 @@ const ChatRoom = ({ match }) => {
         {
           authorization: token,
         },
-        async () => {
+        () => {
           enterMessage();
           client.subscribe(
             `/sub/chat/rooms/${roomId}`,
