@@ -9,11 +9,11 @@
 
 ## 프로젝트 요약
 
-기간 :  2022.02.25 ~ 2022.04.08
-개발 언어 : Javascript
-개발 라이브러리 : React
-배포 환경 : Amazon S3, CloudFront
-협업 툴 : Git / Notion / Zeplin 
+* 기간 :  2022.02.25 ~ 2022.04.08
+* 개발 언어 : Javascript
+* 개발 라이브러리 : React
+* 배포 환경 : Amazon S3, CloudFront
+* 협업 툴 : Git / Notion / Zeplin 
 
 <hr/>
 
