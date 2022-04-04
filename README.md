@@ -45,18 +45,18 @@
 |라이브러리명|내용|참고| 
 |:---|:---|:---| 
 |axios|서버통신|| 
-|redux|상태관리|내용3|
-|lodash|디바운스 쓰로틀링을 사용한 검색 로직 구현|내용3|
-|createAyncThunk|미들웨어|내용3|
-|history|history 동기화|내용3|
-|styled-component|컴포넌트 스타일링|내용3|
-|material-ui|달력 elements|내용3|
-|swiper|이미지 슬라이더|내용3|
-|react-code-input|비밀번호 입력 인풋 커스텀|내용3|
-|react-copy-to-clipboard|URL 복사|내용3|
+|redux|상태관리||
+|lodash|디바운스 쓰로틀링을 사용한 검색 로직 구현||
+|createAyncThunk|미들웨어||
+|history|history 동기화||
+|styled-component|컴포넌트 스타일링||
+|material-ui|달력 elements||
+|swiper|이미지 슬라이더||
+|react-code-input|비밀번호 입력 인풋 커스텀||
+|react-copy-to-clipboard|URL 복사||
 |react-share|sns 공유 기능|페이스북, 라인, 트위터|
-|moment, dayjs|시간 핸들링|내용3|
-|simplebar-react|스크롤바 커스텀|내용3|
+|moment, dayjs|시간 핸들링||
+|simplebar-react|스크롤바 커스텀||
 |sockjs-client|소켓 통신|실시간 채팅|
 |stompjs|소켓 통신|실시간 채팅|
-|browser-image-compression|이미지 리사이징|내용3|
+|browser-image-compression|이미지 리사이징||
