@@ -5,6 +5,12 @@
 
 [소행성 바로가기🚀](https://sohangsung.co.kr/)
 
+#### FRONTEND MEMBERS
+[안진희👩‍🚀](https://github.com/aaanjini/)
+[이주영👩‍🚀](https://github.com/jyi3479/)
+[한태훈👩‍🚀](https://github.com/hantaehoon1/)
+
+
 ## 1️⃣ 프로젝트 설명
 <pre>“나와 같은 목표로 함께할 누군가가 필요해!”
 
@@ -13,11 +19,6 @@
 때로는 가까운 지인이 아닌 나를 봐줄 익명의 다수가 필요한 이들을 위해 
 
 함께할 수 있는 팀원들을 편하게 구하고, 동기부여까지 받을 수 있는 플랫폼을 기획/제작하였습니다.</pre>
-
-### FRONTEND MEMBERS
-[안진희👩‍🚀](https://github.com/aaanjini/)
-[이주영👩‍🚀](https://github.com/jyi3479/)
-[한태훈👩‍🚀](https://github.com/hantaehoon1/)
 
 <p>저희의 프로젝트가 더 궁금하신가요?⤵️</p>
 [소행성 팀 노션 📍](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b/) </br>
