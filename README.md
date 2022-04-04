@@ -1,19 +1,9 @@
-# 소행성 : 나를 바꾸는 습관 🛸
+# 🛸 소행성 : 나를 바꾸는 습관 🛸
 
 <a harf="https://sohangsung.co.kr/" target="_blank"><img width="651" alt="스크린샷 2022-04-04 오후 8 28 48" src="https://user-images.githubusercontent.com/89513776/161534752-987d41bc-bf24-454f-82c1-acd042e628fc.png"></a>
 
 
-## 1️⃣ 프로젝트 요약
-
-* 기간 :  2022.02.25 ~ 2022.04.08
-* 개발 언어 : Javascript
-* 개발 라이브러리 : React
-* 배포 환경 : Amazon S3, CloudFront
-* 협업 툴 : Git / Notion / Zeplin 
-
-</br>
-
-## 2️⃣ 프로젝트 설명
+## 1️⃣ 프로젝트 설명
 <pre>“나와 같은 목표로 함께할 누군가가 필요해!”
 
 먼 미래보다 행복한 하루를 바라는 MZ세대 나아가 모든 세대들의 트렌드 ‘갓생살기’
@@ -22,13 +12,26 @@
 
 함께할 수 있는 팀원들을 편하게 구하고, 동기부여까지 받을 수 있는 플랫폼을 기획/제작하였습니다.</pre>
 
+### FRONTEND MEMBERS
+<a harf="https://github.com/aaanjini">안진희👩‍🚀</a>
+<a harf="https://github.com/jyi3479">이주영👩‍🚀</a>
+<a harf="https://github.com/hantaehoon1">한태훈👩‍🚀</a>
+
 <p>저희의 프로젝트가 더 궁금하신가요?⤵️</p>
 [소행성 팀 노션 📍](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b) </br>
 [소행성 인스타그램 📍](https://www.instagram.com/sohangsung.official/?hl=ko)
 
-</br></br>
+</br>
 
+## 2️⃣ 프로젝트 요약
 
+* 기간 :  2022.02.25 ~ 2022.04.08
+* 개발 언어 : Javascript
+* 개발 라이브러리 : React
+* 배포 환경 : Amazon S3, CloudFront
+* 협업 툴 : Git / Notion / Zeplin 
+
+</br>
 
 ## 3️⃣ 아키텍처
 
