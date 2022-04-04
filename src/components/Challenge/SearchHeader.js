@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { history } from "../../redux/configureStore";
 import arrow from "../../image/icon/ic_arrow@2x.png";
@@ -11,11 +11,11 @@ const SearchHeader = ({_onChange,_deleteBtn,_onClick,value,_ref,_onFocus,_onKeyU
         <Wrap id="Header" className="searchHeader">
             <button onClick={()=>{
                 history.push("/");
-            }}><img src={arrow}/></button>
+            }}><img src={arrow} alt="뒤로가기 아이콘"/></button>
             <div>
                 <input id="search_input" type="text" onFocus={_onFocus} onKeyUp={_onKeyUp} onChange={_onChange} ref={_ref} value={value} placeholder="습관 검색"></input>
-                <button type="button" className="delete" onClick={_deleteBtn} style={{display:value?"block":"none"}}><img src={deleteIcon}></img></button>
-                <button type="button" className="search_btn" onClick={_onClick} ><img src={searchIcon}></img></button>
+                <button type="button" className="delete" onClick={_deleteBtn} style={{display:value?"block":"none"}}><img src={deleteIcon} alt="검색 삭제 아이콘"/></button>
+                <button type="button" className="search_btn" onClick={_onClick} ><img src={searchIcon} alt="검색아이콘"/></button>
             </div>
         </Wrap>
     );
