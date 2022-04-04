@@ -69,7 +69,7 @@ const ChallengeList = (props) => {
 
 const Box = styled.div`
   &.main {
-    .card:nth-child(n + 6) {
+    .card:nth-child(n + 6) {//메인에서는 챌린지 5개까지만 노출
       display: none !important;
     }
   }
