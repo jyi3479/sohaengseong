@@ -3,8 +3,8 @@ import React from "react";
 import { Grid } from "../elements/index";
 import { useDispatch } from "react-redux";
 import * as baseAction from "../redux/modules/base";
-import DailyChallengeList from "../components/Main/DailyChallengeList";
 
+import DailyChallengeList from "../components/Main/DailyChallengeList";
 
 const DailyCertify = (props) => {
   const dispatch = useDispatch();
@@ -24,7 +24,5 @@ const DailyCertify = (props) => {
     </Grid>
   );
 };
-
-
 
 export default DailyCertify;

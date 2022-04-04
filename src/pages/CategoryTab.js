@@ -3,16 +3,11 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { Grid, Button } from "../elements/index";
 import { useSelector, useDispatch } from "react-redux";
-import {useLocation} from "react-router";
 import ChallengeCard from "../components/Challenge/ChallengeCard";
 import SearchHeader from "../components/Challenge/SearchHeader";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as searchActions } from "../redux/modules/search";
 import _ from "lodash";
-
-//스크롤바 커스텀
-import ScrollBar from "../components/shared/ScrollBar";
-
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -46,8 +41,6 @@ const CategoryTab = (props) => {
   const searchList = searchInfo.challengeList;
   const allList = challengeInfo.list;
 
- 
-
   //검색 axios 요청을 줄이기위한 debounce
   const debounce = _.debounce((word) => {
     history.push("/category/all");
@@ -57,6 +50,7 @@ const CategoryTab = (props) => {
     }
   }, 600);
   const keyPress = React.useCallback(debounce, []);
+
 
   const ChangeWord = (e) => {
     //추천 검색어 클릭 시
@@ -76,27 +70,24 @@ const CategoryTab = (props) => {
     setSearch_list(searchList);
   };
 
-  React.useEffect(() => {
-
- 
-      if (tabId === "all") {
-        if (!word) {
-          dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
-          //전체 리스트 불러오기
-          dispatch(challengeAction.getChallengeDB(0, 6));
-        }
-      } else {
-        if(focus){
-          dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
-        }
-        // tabId가 없는 카테고리 리스트 페이지에서 불필요한 get 요청 없애기 위해
-        if(tabId !== undefined){
+  React.useEffect(() => { 
+    if (tabId === "all") {
+      if (!word) {
+        dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
+        //전체 리스트 불러오기
+        dispatch(challengeAction.getChallengeDB(0, 6));
+      }
+    } else {
+      if(focus){
+        dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
+      }
+      // tabId가 없는 카테고리 리스트 페이지에서 불필요한 get 요청 없애기 위해
+      if(tabId !== undefined){
         //전체 탭이 아닐경우 카테고리 리스트 불러오기
         dispatch(challengeAction.categoryChallengeDB(tabId, 0, 6));
         setFocus(false);
-        }
-
       }
+    }
 
   }, [tabId, word]);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Grid, Button } from "../elements/index";
+import { Button } from "../elements/index";
 import { useDispatch } from "react-redux";
 import * as baseAction from "../redux/modules/base";
 import { history } from "../redux/configureStore";

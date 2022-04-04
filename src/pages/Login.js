@@ -42,7 +42,6 @@ const Login = (props) => {
         </button>
       </header>
       <Grid margin="60px 0 0">
-        {/* 플랫폼 로고 들어갈 부분 ▼*/}
         <Logo className="t_center">
           <p>나를 변화시키는 습관</p>
           <img src={logo}></img>
@@ -123,7 +122,6 @@ const Kakao = styled.a`
   background-size: 20px;
   background-position: 102px;
   background-repeat: no-repeat;
-  
 `;
 
 export default Login;

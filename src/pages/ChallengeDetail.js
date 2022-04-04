@@ -1,4 +1,4 @@
-import React,{useRef} from "react";
+import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
@@ -58,6 +58,7 @@ const ChallengeDetail = (props) => {
     const join_day = +today.diff(date1, "day")+1;
     const remaining_day = Math.ceil(days*0.2);
 
+    //챌린지 입장
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
     };
@@ -69,10 +70,8 @@ const ChallengeDetail = (props) => {
     const [checkPrivate, setCheckPrivate] = React.useState(false);//비밀방 비밀번호 맞는지 확인
     const [isNum,setIsNum] = React.useState(false);//비밀방 비밀번호 숫자체크
     const [join, setJoin] = React.useState(false); //입장하기 클릭여부
-    const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
-
-    //클립보드에 복사완료 됐는지 
-    const copy = useSelector(state => state.base.copy);
+    const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value    
+    const copy = useSelector(state => state.base.copy); //클립보드에 복사완료 됐는지 
    
     const joinModal = () => {
         if(!target.isPrivate){
@@ -93,6 +92,7 @@ const ChallengeDetail = (props) => {
         setPrivatePwd("");
     };
 
+    //비밀방 비밀번호 유효성 검사
     const privateCheck = (e) => {   
         setIsNum(false);        
         const pwdRegex = /^[0-9]+$/;   
@@ -108,6 +108,7 @@ const ChallengeDetail = (props) => {
         }
     };
 
+    //비밀방 비밀번호 확인
     const pwdCheck = () => {
         setJoin(true);
         apis.post(`/challenge/${challengeId}/private`, {password:privatePwd})
@@ -151,6 +152,7 @@ const ChallengeDetail = (props) => {
             console.log("특정 챌린지 조회 오류",err);
         });
         
+        //헤더&푸터 분기
         dispatch(baseAction.setGnb(false));
         return()=>{
             dispatch(baseAction.setHeader(false,""));

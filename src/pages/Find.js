@@ -4,11 +4,12 @@ import { useDispatch } from "react-redux";
 import {ActionCreators as userActions} from "../redux/modules/user";
 import { userApis } from "../shared/apis";
 import * as baseAction from '../redux/modules/base';
+
 import {Grid,Button} from "../elements/index";
+
 import drop from "../image/icons/ic_dropdown@2x.png";
 import deleteIcon from "../image/icon/ic_txt_delete@2x.png";
 import PopModal from "../components/shared/PopModal";
-
 
 
 const Find = (props) => {
@@ -18,13 +19,14 @@ const Find = (props) => {
     const [option,setOption] = React.useState("");
     const [domain, setDomain] = React.useState("");
 
-    const [modalOpen, setModalOpen] = React.useState(false);
 
+    //모달--------------------------------------
+    const [modalOpen, setModalOpen] = React.useState(false);
 
     const closeModal = () => {
         setModalOpen(false);
     };
-
+    
     const deleteValue = () => {
         setDomain("");
     };
@@ -55,9 +57,9 @@ const Find = (props) => {
         e.target.value = e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');    
     };
 
+    //비밀번호 찾기
     const findPwd = () => {
         const mail = `${email}@${domain}`;
-
         const send_email = {
          email: mail
         };
@@ -78,6 +80,7 @@ const Find = (props) => {
 
 
     React.useEffect(() => {
+        //헤더 & 푸터 분기
         dispatch(baseAction.setHeader("비밀번호 찾기"));
         dispatch(baseAction.setGnb(false));
         return()=>{
@@ -327,7 +330,7 @@ const Fixed = styled.div`
     background-color: #fff;
     bottom:0;
     left:0;
-    padding:12px 20px;
+    padding:11px 20px;
     box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
