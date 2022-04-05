@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "../../elements";
-import { Select } from "../../styles/ChallengeStyle";
+import { Select } from "../../styles/ChallengeWriteStyle";
 import drop from "../../image/icons/ic_dropdown@2x.png";
 
 const Category = React.memo(({ category, setCategory }) => {

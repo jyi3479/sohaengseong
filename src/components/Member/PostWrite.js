@@ -50,7 +50,12 @@ const PostWrite = (props) => {
       maxSizeMB: 2,
       maxWidthOrHeight: 800,
     };
-    if (fileInput.current.files[0].name.split(".")[1] === "gif" || fileInput.current.files[0].name.split(".")[1] === "GIF") {
+    if (
+      fileInput.current.files[0].name.split(".")[1] === "gif" ||
+      fileInput.current.files[0].name.split(".")[1] === "GIF" ||
+      fileInput.current.files[0].name.split(".")[1] === "heic" ||
+      fileInput.current.files[0].name.split(".")[1] === "HEIC"
+    ) {
       file = fileInput.current.files[0];
     } else {
       file = await imageCompression(fileInput.current.files[0], options);
@@ -107,12 +112,6 @@ const PostWrite = (props) => {
 
   // 인증 게시글 추가하기
   const addPost = () => {
-    // 예외처리
-    if (content === "") {
-      window.alert("내용을 입력해주세요!");
-      return;
-    }
-
     // 서버에 보내기 위한 작업
     let formData = new FormData();
     const contentJson = { content: content };
@@ -143,12 +142,6 @@ const PostWrite = (props) => {
 
   // 인증 게시글 수정하기
   const editPost = () => {
-    // 예외처리
-    if (content === "") {
-      window.alert("내용을 입력해주세요!");
-      return;
-    }
-
     // 서버에 보내기 위한 작업
     let formData = new FormData();
     const contentJson = { content: content };

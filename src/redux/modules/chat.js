@@ -28,14 +28,11 @@ const getMessages = createAction(GET_MESSAGES, (messages) => ({ messages }));
 
 const clearMessages = createAction(CLEAR_MESSAGES, () => ({}));
 
-const setMessages = createAction(
-  SET_MESSAGES,
-  (chatRoomInfo, messages, page) => ({
-    chatRoomInfo,
-    messages,
-    page,
-  })
-);
+const setMessages = createAction(SET_MESSAGES, (chatRoomInfo, messages, page) => ({
+  chatRoomInfo,
+  messages,
+  page,
+}));
 
 const isLoading = createAction(IS_LOADING, (loading) => ({ loading }));
 
@@ -135,12 +132,13 @@ export default handleActions(
     [SET_MESSAGES]: (state, action) =>
       produce(state, (draft) => {
         if (action.payload.page > 1) {
+          // 무한스크롤로 쌓이는 메세지들만 따로 모아두기
           draft.messages.unshift(...action.payload.messages);
         } else {
           draft.messages = action.payload.messages;
         }
+        // 서버에서 주는 페이지 별 채팅 정보(+새로 불러온 메세지만 넣어둠)
         draft.currentChat = action.payload.chatRoomInfo;
-
         draft.currentChat.page = action.payload.page;
         draft.loading = false;
       }),

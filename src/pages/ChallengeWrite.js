@@ -1,22 +1,17 @@
 /* eslint-disable no-loop-func */
 import React from "react";
-import styled from "styled-components";
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { challengeApis } from "../shared/apis";
 import { actionCreators as challengeAction } from "../redux/modules/challenge";
 import { actionCreators as baseAction } from "../redux/modules/base";
 import { actionCreators as searchAction } from "../redux/modules/search";
 
-//스크롤바 커스텀
-import ScrollBar from "../components/shared/ScrollBar";
-
-import { Grid, Input, Button, Image } from "../elements";
+import { Grid, Input, Button } from "../elements";
 import Modal from "../components/shared/Modal";
 import { dateFormat } from "../shared/dateFormat";
-
-import { challengeApis } from "../shared/apis";
-import { ButtonContainer, DateBox, InputBox, InputContainer, Notice, Select, Toast, CountBox, ImgBox, ImageLabel } from "../styles/ChallengeStyle";
+import { ButtonContainer, InputBox, InputContainer, Notice, Toast, CountBox } from "../styles/ChallengeWriteStyle";
 import Tag from "../components/ChallengeWrite/Tag";
 import Category from "../components/ChallengeWrite/Category";
 import DatePicker from "../components/ChallengeWrite/DatePicker";
@@ -218,10 +213,33 @@ const ChallengeWrite = (props) => {
       </InputContainer>
 
       <InputContainer>
-        <DatePicker value={value} setValue={setValue} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} isEdit={isEdit} />
+        <DatePicker
+          value={value}
+          setValue={setValue}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          isEdit={isEdit}
+        />
         <MemberCount maxMember={maxMember} setMaxMember={setMaxMember} isEdit={isEdit} />
-        <ImageUpload image={image} setImage={setImage} preview={preview} setPreview={setPreview} compareImage={compareImage} setCompareImage={setCompareImage} isEdit={isEdit} />
-        <PrivateCheck rooms={rooms} isEdit={isEdit} checkedInputs={checkedInputs} setCheckedInputs={setCheckedInputs} password={password} setPassword={setPassword} />
+        <ImageUpload
+          image={image}
+          setImage={setImage}
+          preview={preview}
+          setPreview={setPreview}
+          compareImage={compareImage}
+          setCompareImage={setCompareImage}
+          isEdit={isEdit}
+        />
+        <PrivateCheck
+          rooms={rooms}
+          isEdit={isEdit}
+          checkedInputs={checkedInputs}
+          setCheckedInputs={setCheckedInputs}
+          password={password}
+          setPassword={setPassword}
+        />
       </InputContainer>
 
       <Notice>
@@ -240,7 +258,12 @@ const ChallengeWrite = (props) => {
             수정하기
           </Button>
         ) : (
-          <Button _onClick={openModal} disabled={title !== "" || content !== "" || category !== "" || maxMember !== "" || checkedInputs !== null || !value.includes(null) ? "" : "disabled"}>
+          <Button
+            _onClick={openModal}
+            disabled={
+              title !== "" || content !== "" || category !== "" || maxMember !== "" || checkedInputs !== null || !value.includes(null) ? "" : "disabled"
+            }
+          >
             개설하기
           </Button>
         )}
@@ -327,7 +350,14 @@ const MemberCount = React.memo(({ maxMember, setMaxMember, isEdit }) => {
   return (
     <InputBox>
       {isEdit ? (
-        <Input id="members" label="제한 인원을 작성해주세요" placeholder="최대 30명" value={maxMember} _onChange={(e) => setMaxMember(e.target.value)} disabled />
+        <Input
+          id="members"
+          label="제한 인원을 작성해주세요"
+          placeholder="최대 30명"
+          value={maxMember}
+          _onChange={(e) => setMaxMember(e.target.value)}
+          disabled
+        />
       ) : (
         <Input
           id="members"

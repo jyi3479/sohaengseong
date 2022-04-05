@@ -9,7 +9,7 @@ import styled from "styled-components";
 import moment from "moment";
 import InfinityScroll from "../../shared/InfiniteScroll";
 
-function MessageList(props) {
+const MessageList = ({ roomId, sendMessage, setIsTalk, isTalk, setIsMsg, isMsg }) => {
   const dispatch = useDispatch();
   // redux에 저장한 이전 메세지 가져오기
   const currentChat = useSelector((state) => state.chat.currentChat);
@@ -28,9 +28,7 @@ function MessageList(props) {
   for (let i = 0; i < dateArr.length; i++) {
     messageSortArr.push({
       date: dateArr[i],
-      messageArr: messages.filter(
-        (el) => (el.createdAt?.split(" ")[0] || undefined) === dateArr[i]
-      ),
+      messageArr: messages.filter((el) => (el.createdAt?.split(" ")[0] || undefined) === dateArr[i]),
     });
   }
 
@@ -39,57 +37,46 @@ function MessageList(props) {
   const infinityRef = useRef();
 
   const getMessageList = () => {
+    // 로딩 false인 경우에만 무한스크롤 콜백 함수 실행
     if (!loading) {
-      dispatch(
-        chatAction.getChatMessagesDB(props.roomId, currentChat.page, 10)
-      );
+      dispatch(chatAction.getChatMessagesDB(roomId, currentChat.page, 10));
       dispatch(chatAction.isLoading(true));
-      props.setIsTalk(false);
-      props.setIsMsg(false)
+      // 메세지 타입의 스크롤 이동 없도록 false로 변경
+      setIsTalk(false);
+      setIsMsg(false);
     }
   };
+
   // 페이지 입장 후 스크롤 이동
   useEffect(() => {
-    if (currentChat.page > 1 && !props.isTalk && !props.isMsg) {
-      setScrollId(
-        currentChat.messageList[currentChat.messageList.length - 1].id
-      );
+    if (currentChat.page > 1 && !isTalk && !isMsg) {
+      // 1) 무한스크롤 작동 시, 스크롤 이동 (스크롤 닿은 메세지 아이템 위치 그대로 유지)
+      setScrollId(currentChat.messageList[currentChat.messageList.length - 1].id);
       infinityRef.current?.scrollIntoView();
-
     } else {
-if(!props.isMsg){
-      scrollRef.current.scrollIntoView();
-}
-
+      // 2) 상대방 입장/퇴장 메세지는 스크롤 이동 없음
+      if (!isMsg) {
+        // 3) 내가 입장 및 TALK 타입 메세지일 경우, 스크롤 아래로 이동
+        scrollRef.current.scrollIntoView();
+      }
     }
   }, [getMessageList]);
-
 
   return (
     <>
       {messageSortArr && (
         <>
-          <InfinityScroll
-            callNext={getMessageList}
-            paging={{ next: currentChat.next }}
-            isChat
-          >
-            {" "}
+          <InfinityScroll callNext={getMessageList} paging={{ next: currentChat.next }} isChat>
             {messageSortArr.map((el, idx) => {
               return (
                 <div key={idx}>
-                  {el.date && (
-                    <p className="caption sub_color t_center">
-                      {moment(el.date, "YYYY.MM.DD").format("YYYY년 MM월 DD일")}
-                    </p>
-                  )}
+                  {el.date && <p className="caption sub_color t_center">{moment(el.date, "YYYY.MM.DD").format("YYYY년 MM월 DD일")}</p>}
 
                   <MessageBox className="chat-window card">
                     {el.messageArr.map((message, index) => {
                       if (scrollId && scrollId === message.id) {
                         return (
                           <div key={index} ref={infinityRef}>
-                            {" "}
                             <MessageItem {...message} />
                           </div>
                         );
@@ -108,7 +95,7 @@ if(!props.isMsg){
       <div ref={scrollRef}> </div>
     </>
   );
-}
+};
 
 const MessageBox = styled.div`
   margin-top: 20px;

@@ -1,5 +1,5 @@
 import React from "react";
-import { InputBox, ImageLabel, ImgBox } from "../../styles/ChallengeStyle";
+import { InputBox, ImageLabel, ImgBox } from "../../styles/ChallengeWriteStyle";
 import { Image } from "../../elements";
 
 //heic 이미지 파일을 jpeg로 변환하는 라이브러리
@@ -41,8 +41,12 @@ const ImageUpload = React.memo(({ image, setImage, preview, setPreview, compareI
 
     // 다중 선택된 이미지 file 객체들을 반복문을 돌리며 preview와 image 배열에 추가하기
     for (let i = 0; i < filesLength; i++) {
-      // file = fileArr[i];
-      if (fileArr[i].name.split(".")[1] === "gif" || fileArr[i].name.split(".")[1] === "GIF") {
+      if (
+        fileArr[i].name.split(".")[1] === "gif" ||
+        fileArr[i].name.split(".")[1] === "GIF" ||
+        fileArr[i].name.split(".")[1] === "heic" ||
+        fileArr[i].name.split(".")[1] === "HEIC"
+      ) {
         file = fileArr[i];
       } else {
         file = await imageCompression(fileArr[i], options);

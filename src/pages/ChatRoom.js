@@ -45,14 +45,7 @@ const ChatRoom = ({ match }) => {
 
   // 헤더&푸터 state (채팅방 바뀔 때마다 헤더 바뀌도록)
   React.useEffect(() => {
-    dispatch(
-      baseAction.setHeader(
-        currentChat.roomName,
-        true,
-        false,
-        currentChat.currentMember
-      )
-    );
+    dispatch(baseAction.setHeader(currentChat.roomName, true, false, currentChat.currentMember));
     dispatch(baseAction.setGnb(false));
 
     return () => {
@@ -65,7 +58,6 @@ const ChatRoom = ({ match }) => {
   React.useEffect(() => {
     dispatch(chatAction.getChatMessagesDB(roomId, 0, 10));
     dispatch(chatAction.isLoading(true));
-    // messageRef.current.scrollIntoView();
   }, []);
 
   // 페이지 입장 후 스크롤 이동
@@ -85,15 +77,17 @@ const ChatRoom = ({ match }) => {
               const newMessage = JSON.parse(data.body);
 
               if (newMessage.type === "TALK") {
+                // 채팅 메세지 형태인 경우
                 setIsTalk(true);
                 setIsMsg(false);
               } else {
                 if (newMessage.user.userId !== userId) {
+                  // 다른 사람의 입장/퇴장 메세지인 경우
                   setIsMsg(true);
                 }
               }
 
-              // 메세지 추가하는 부분 (reducer에서 push)
+              // 메세지 추가하는 부분
               dispatch(chatAction.getMessages(newMessage));
             },
             {
@@ -128,7 +122,7 @@ const ChatRoom = ({ match }) => {
   React.useEffect(() => {
     wsConnectSubscribe();
 
-    // 브라우저 종료 및 새로고침
+    // 브라우저 종료 및 새로고침시 연결 해제
     window.addEventListener("beforeunload", (event) => {
       wsDisConnectUnsubscribe();
     });
@@ -254,14 +248,7 @@ const ChatRoom = ({ match }) => {
       <Grid padding="0" margin="48px 0">
         <ScrollBar height="calc(100vh - 108px)">
           <Grid padding="28px 20px" margin="0" style={{ overflowY: "auto" }}>
-            <MessageList
-              roomId={roomId}
-              sendMessage={sendMessage}
-              setIsTalk={setIsTalk}
-              isTalk={isTalk}
-              setIsMsg={setIsMsg}
-              isMsg={isMsg}
-            />
+            <MessageList roomId={roomId} sendMessage={sendMessage} setIsTalk={setIsTalk} isTalk={isTalk} setIsMsg={setIsMsg} isMsg={isMsg} />
           </Grid>
         </ScrollBar>
       </Grid>

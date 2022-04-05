@@ -1,8 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { InputBox, WholeBox, TagBox, TagItem, DeleteButton, HashButton } from "../../styles/ChallengeStyle";
-import ScrollBar from "../shared/ScrollBar";
+import { InputBox, WholeBox, TagBox, TagItem, DeleteButton, HashButton } from "../../styles/ChallengeWriteStyle";
 import { Grid } from "../../elements";
+//스크롤바 커스텀
+import ScrollBar from "../../components/shared/ScrollBar";
 
 const Tag = React.memo(({ hashArr, setHashArr }) => {
   // 추천 태그 리스트 가져오기

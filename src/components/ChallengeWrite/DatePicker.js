@@ -5,7 +5,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateRangePicker from "@mui/lab/MobileDateRangePicker";
 
-import { DateBox } from "../../styles/ChallengeStyle";
+import { DateBox } from "../../styles/ChallengeWriteStyle";
 import { dateFormat } from "../../shared/dateFormat";
 
 const DatePicker = React.memo(({ value, setValue, startDate, setStartDate, endDate, setEndDate, isEdit }) => {
@@ -45,7 +45,11 @@ const DatePicker = React.memo(({ value, setValue, startDate, setStartDate, endDa
                     ref={startProps.inputRef}
                     {...startProps.inputProps}
                     placeholder="예) 2022.03.06 - 2022.03.19"
-                    value={startDate || endDate ? (startDate ? dateFormat(startDate).split(" ")[0] : "") + " - " + (endDate ? dateFormat(endDate).split(" ")[0] : "") : ""}
+                    value={
+                      startDate || endDate
+                        ? (startDate ? dateFormat(startDate).split(" ")[0] : "") + " - " + (endDate ? dateFormat(endDate).split(" ")[0] : "")
+                        : ""
+                    }
                     onFocus={() => setDateFocus(true)}
                     onBlur={() => setDateFocus(false)}
                   />

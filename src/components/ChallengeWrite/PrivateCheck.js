@@ -1,5 +1,5 @@
 import React from "react";
-import { InputBox } from "../../styles/ChallengeStyle";
+import { InputBox } from "../../styles/ChallengeWriteStyle";
 import { Grid, Input } from "../../elements";
 
 const PrivateCheck = React.memo(({ rooms, isEdit, checkedInputs, setCheckedInputs, password, setPassword }) => {
@@ -93,7 +93,13 @@ const PrivateCheck = React.memo(({ rooms, isEdit, checkedInputs, setCheckedInput
             </div>
           ) : (
             <div className="private_input">
-              <Input label="비밀번호를 설정해주세요." placeholder="비밀번호를 입력해주세요.(숫자 4자리)" value={password} _onChange={(e) => setPassword(e.target.value)} maxLength="4" />
+              <Input
+                label="비밀번호를 설정해주세요."
+                placeholder="비밀번호를 입력해주세요.(숫자 4자리)"
+                value={password}
+                _onChange={(e) => setPassword(e.target.value)}
+                maxLength="4"
+              />
             </div>
           ))}
       </InputBox>
