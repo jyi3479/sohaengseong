@@ -7,7 +7,7 @@ import Notfound from "../../image/icon/ic_empty_notice_l@2x.png";
 import NoticeCard from "./NoticeCard";
 
 
-const NoticeList = (props) => {
+const NoticeList = () => {
     const dispatch = useDispatch();
     const notice_list = useSelector(state => state.user.notice);
 
@@ -27,7 +27,7 @@ const NoticeList = (props) => {
                 </List>
             ):(
                 <NotFound className="t_center">
-                    <img src={Notfound}/>
+                    <img src={Notfound} alt="알림없음 이미지"/>
                     <h2 className="mt16" style={{color:"#000"}}>검색 결과가 없습니다.</h2>
                 </NotFound>
             )}                

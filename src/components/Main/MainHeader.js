@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { history } from "../../redux/configureStore";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import LoginModal from "../shared/LoginModal";
 
@@ -21,7 +22,6 @@ const MainHeader = (props) => {
     const [loading, setLoading] = React.useState(true);
     const [modalOpen, setModalOpen] = React.useState(false);  
     const is_login = useSelector((state) => state.user.user);
-    const params = window.location.pathname;
 
     //스크롤 위치를 업데이트 해주는 변수
     const updateScroll = (scrollY) => {
@@ -68,19 +68,19 @@ const MainHeader = (props) => {
             {props.className === "category"? (
                 <button onClick={()=>{
                     history.go(-1);
-                }}><img src={arrow}></img></button>
+                }}><img src={arrow} alt="뒤로가기 아이콘"/></button>
             ) : (
                 <>
-                    <h1><a href="/"></a></h1>
+                    <h1><Link to="/"></Link></h1>
                     <div>
                         <button onClick={()=>{
                             noticeClick()
-                        }}><img src={scrollPosition > 100 ? noticeIconB : noticeIconW}></img></button>
+                        }}><img src={scrollPosition > 100 ? noticeIconB : noticeIconW} alt="알림 아이콘"/></button>
                         <button 
                             onClick={()=>{
                                 history.push("/category/all");
                             }}                            
-                        ><img src={scrollPosition > 100 ? searchIconB : searchIconW}></img></button>                       
+                        ><img src={scrollPosition > 100 ? searchIconB : searchIconW} alt="검색 아이콘"/></button>                       
                     </div>
                     
                 </>

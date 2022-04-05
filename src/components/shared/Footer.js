@@ -13,7 +13,7 @@ import my from "../../image/icon/navi/ic_profile@2x.png";
 import active_my from "../../image/icon/navi/ic_profile_sel@2x.png";
 import LoginModal from "./LoginModal";
 
-const Footer = (props) => {
+const Footer = () => {
   const hide = useSelector((state) => state.base.gnb);
   const is_login = useSelector((state) => state.user.user);
 
@@ -56,30 +56,28 @@ const Footer = (props) => {
             gnbClick(e, "home");
           }}
         >
-          <img src={params === "/" ? active_home : home}></img>
+          <img src={params === "/" ? active_home : home}/>
         </div>
         <div
           onClick={(e) => {
             gnbClick(e, "write");
           }}
         >
-          <img
-            src={params === "/challengewrite" ? active_create : create}
-          ></img>
+          <img src={params === "/challengewrite" ? active_create : create}/>
         </div>
         <div
           onClick={(e) => {
             gnbClick(e, "chat");
           }}
         >
-          <img src={params === "/chatting" ? active_chat : chat}></img>
+          <img src={params === "/chatting" ? active_chat : chat}/>
         </div>
         <div
           onClick={(e) => {
             gnbClick(e, "my");
           }}
         >
-          <img src={params === "/mypage" ? active_my : my}></img>
+          <img src={params === "/mypage" ? active_my : my}/>
         </div>
       </Wrap>
       <LoginModal
