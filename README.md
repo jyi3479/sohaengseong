@@ -5,6 +5,8 @@
 
 [소행성 바로가기🚀](https://sohangsung.co.kr/)
 
+</br>
+
 #### FRONTEND MEMBERS
 [안진희👩‍🚀](https://github.com/aaanjini/)
 [이주영👩‍🚀](https://github.com/jyi3479/)
