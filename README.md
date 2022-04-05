@@ -135,6 +135,9 @@
 ## 5️⃣ 트러블 슈팅
 
 ## 6️⃣ 데모🎥
+
+<details>
+<summary>데모</summary>
 |메인페이지|오늘의행성(무한스크롤 적용)|사용자가이드| 
 |:---:|:---:|:---:| 
 |<img src="https://user-images.githubusercontent.com/89513776/161700363-6103dccc-5145-4905-915e-6ceabeea6c24.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161700723-a692fc85-aa15-44df-abbe-456d6b26c00b.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161701259-8665226f-0ad8-4ac6-bbcf-ee2e547b6951.gif" width="200"/>|
@@ -146,6 +149,7 @@
 |<img src="https://user-images.githubusercontent.com/89513776/161702057-f8f0ffb1-2e0a-4d67-9b9a-51e5335c1a6c.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702023-c3340c26-4730-4203-b033-09c686c5614f.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702556-198e8c61-9660-4375-b16b-17aaa6b72a1b.gif" width="200"/>|
 |위클리리포트|인증 피드(+댓글)|실시간 채팅(무한스크롤 적용)|
 |<img src="https://user-images.githubusercontent.com/89513776/161702625-0e6382c4-43b1-4984-863b-6d09f06da9e7.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/94282246/161708962-fb9a2949-159e-4abd-a120-5985ef76d01e.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702194-e2c8fa0a-67d6-42e5-9fc7-407353e53be9.gif" width="200"/>|
+</details>
 
 ## 7️⃣ 사용한 라이브러리(패키지)
 
