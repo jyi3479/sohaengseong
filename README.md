@@ -26,7 +26,7 @@
 
 </br></br>
 
-## 2️⃣ 프로젝트 요약
+## 2️⃣ 프로젝트 요약🌈
 
 * 기간 :  2022.02.25 ~ 2022.04.08
 * 개발 언어 : Javascript
@@ -36,14 +36,14 @@
 
 </br>
 
-## 3️⃣ 아키텍처
+## 3️⃣ 아키텍처✨
 
 <img src="https://apricot-tarsal-29a.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F59c621b1-4a4b-4e85-8400-ecd509294f7d%2FUntitled.png?table=block&id=fa0c9fa2-8d0b-42a8-b032-c7cda177cdb0&spaceId=758b74dd-be75-47e6-8ad5-a4133966de3f&width=2000&userId=&cache=v2"/>
 
 </br></br>
 
 
-## 4️⃣ 프로젝트 주요기능
+## 4️⃣ 프로젝트 주요기능🌟
 ### ⓞ 주요 기능
 * 로그인, 회원가입, 소셜로그인
 * 검색
@@ -130,7 +130,7 @@
 
 </br>
 
-## 5️⃣ 트러블 슈팅
+## 5️⃣ 트러블 슈팅🚀
 
 ## 6️⃣ 사이트 데모🎥
 
