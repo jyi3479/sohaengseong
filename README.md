@@ -130,9 +130,21 @@
 ## 5️⃣ 트러블 슈팅
 
 ## 6️⃣ 데모🎥
-|소셜로그인|메인페이지|카테고리| 
+|메인페이지|오늘의행성|사용자가이드| 
 |:---:|:---:|:---:| 
-|<img src="https://user-images.githubusercontent.com/89513776/161700024-d0328d85-eedc-4ec4-938c-429dfecca5c5.gif" width="300"/>|<img src="https://user-images.githubusercontent.com/89513776/161700363-6103dccc-5145-4905-915e-6ceabeea6c24.gif" width="300"/>|<img src="https://user-images.githubusercontent.com/89513776/161700062-bea2a953-fb27-4c6b-b7d3-36c6fd5d3bfc.gif" width="300"/>| 
+|<img src="https://user-images.githubusercontent.com/89513776/161700363-6103dccc-5145-4905-915e-6ceabeea6c24.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161700723-a692fc85-aa15-44df-abbe-456d6b26c00b.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161701259-8665226f-0ad8-4ac6-bbcf-ee2e547b6951.gif" width="200"/>|
+|검색|카테고리|알림| 
+|:---:|:---:|:---:| 
+|<img src="https://user-images.githubusercontent.com/89513776/161700674-a010391b-a6a0-4407-838d-00125f8ac053.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161700062-bea2a953-fb27-4c6b-b7d3-36c6fd5d3bfc.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161701136-79f1089c-f483-4af1-bb98-be52601a8c09.gif" width="200"/>|
+|챌린지 소개|공유기능|챌린지 등록| 
+|:---:|:---:|:---:| 
+|<img src="https://user-images.githubusercontent.com/89513776/161701623-a04a32ba-a091-4e2b-87da-ab8dc2ed26aa.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161701647-d5bfd171-0acd-4964-8d01-ca861eac3292.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161701808-de3b1a05-0ba5-40d0-a9b2-73e5e6ad4521.gif" width="200"/>|
+|마이페이지|챌린지 수정|프로필수정| 
+|:---:|:---:|:---:| 
+|<img src="https://user-images.githubusercontent.com/89513776/161702057-f8f0ffb1-2e0a-4d67-9b9a-51e5335c1a6c.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702023-c3340c26-4730-4203-b033-09c686c5614f.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702556-198e8c61-9660-4375-b16b-17aaa6b72a1b.gif" width="200"/>|
+|위클리리포트|인증 피드|실시간 채팅| 
+|:---:|:---:|:---:| 
+|<img src="https://user-images.githubusercontent.com/89513776/161702625-0e6382c4-43b1-4984-863b-6d09f06da9e7.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702750-c9d482b8-77e8-43a3-bd20-6b1b673474e6.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702194-e2c8fa0a-67d6-42e5-9fc7-407353e53be9.gif" width="200"/>|
 
 ## 7️⃣ 사용한 라이브러리(패키지)
 
