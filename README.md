@@ -132,7 +132,7 @@
 ## 6️⃣ 데모🎥
 |소셜로그인|메인페이지|카테고리| 
 |:---:|:---:|:---:| 
-|<img src="https://user-images.githubusercontent.com/89513776/161700009-c0a79bb1-1f69-40a8-8721-28e78814ef78.gif"/>||| 
+|<img src="https://user-images.githubusercontent.com/89513776/161700024-d0328d85-eedc-4ec4-938c-429dfecca5c5.gif" width="300"/>|<img src="https://user-images.githubusercontent.com/89513776/161700363-6103dccc-5145-4905-915e-6ceabeea6c24.gif" width="300"/>|<img src="https://user-images.githubusercontent.com/89513776/161700062-bea2a953-fb27-4c6b-b7d3-36c6fd5d3bfc.gif" width="300"/>| 
 
 ## 7️⃣ 사용한 라이브러리(패키지)
 
