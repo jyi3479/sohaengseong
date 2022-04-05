@@ -143,7 +143,7 @@
 |마이페이지|챌린지 수정|프로필수정|
 |<img src="https://user-images.githubusercontent.com/89513776/161702057-f8f0ffb1-2e0a-4d67-9b9a-51e5335c1a6c.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702023-c3340c26-4730-4203-b033-09c686c5614f.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702556-198e8c61-9660-4375-b16b-17aaa6b72a1b.gif" width="200"/>|
 |위클리리포트|인증 피드(+댓글)|실시간 채팅(무한스크롤 적용)|
-|<img src="https://user-images.githubusercontent.com/89513776/161702625-0e6382c4-43b1-4984-863b-6d09f06da9e7.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702750-c9d482b8-77e8-43a3-bd20-6b1b673474e6.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702194-e2c8fa0a-67d6-42e5-9fc7-407353e53be9.gif" width="200"/>|
+|<img src="https://user-images.githubusercontent.com/89513776/161702625-0e6382c4-43b1-4984-863b-6d09f06da9e7.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/94282246/161706811-6f69e248-7ef3-4d25-bc63-a9e7f8a1a244.gif" width="200"/>|<img src="https://user-images.githubusercontent.com/89513776/161702194-e2c8fa0a-67d6-42e5-9fc7-407353e53be9.gif" width="200"/>|
 
 ## 7️⃣ 사용한 라이브러리(패키지)
 
