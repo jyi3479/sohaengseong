@@ -24,7 +24,7 @@
 [📍소행성 팀 노션](https://sohaengseong.notion.site/232e061b559f46b3a5f9b38fcfaedb2b/) </br>
 [📍소행성 인스타그램](https://www.instagram.com/sohangsung.official/?hl=ko/)
 
-</br>
+</br></br>
 
 ## 2️⃣ 프로젝트 요약
 
