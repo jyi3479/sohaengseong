@@ -1,6 +1,6 @@
 # 🛸 소행성 : 나를 바꾸는 습관 🛸
 
-<img width="651" alt="스크린샷 2022-04-04 오후 8 28 48" src="https://user-images.githubusercontent.com/89513776/161534752-987d41bc-bf24-454f-82c1-acd042e628fc.png">
+<img width="400" alt="스크린샷 2022-04-04 오후 8 28 48" src="https://user-images.githubusercontent.com/89513776/161534752-987d41bc-bf24-454f-82c1-acd042e628fc.png">
 
 
 [소행성 바로가기🚀](https://sohangsung.co.kr/)
