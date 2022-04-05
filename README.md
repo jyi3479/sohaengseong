@@ -5,15 +5,13 @@
 
 [소행성 바로가기🚀](https://sohangsung.co.kr/)
 
-</br>
-
 #### FRONTEND MEMBERS
 [안진희👩‍🚀](https://github.com/aaanjini/)
 [이주영👩‍🚀](https://github.com/jyi3479/)
 [한태훈👩‍🚀](https://github.com/hantaehoon1/)
 
 
-## 1️⃣ 프로젝트 설명
+## 1️⃣ 프로젝트 설명⚡️
 <pre>“나와 같은 목표로 함께할 누군가가 필요해!”
 
 먼 미래보다 행복한 하루를 바라는 MZ세대 나아가 모든 세대들의 트렌드 ‘갓생살기’
