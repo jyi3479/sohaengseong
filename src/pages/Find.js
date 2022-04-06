@@ -33,7 +33,7 @@ const Find = (props) => {
     };
 
     const send = () => {
-        const mail = `${email}@${domain}`;
+        const mail = `${email}@${domain?domain:option}`;
         dispatch(userActions.emailCheckResend(mail));
     };
 
@@ -44,11 +44,9 @@ const Find = (props) => {
     };
 
     const optionClick = (e) => {
+        setDomain("");
         setOption(e.target.innerText);
         setActive(false);    
-        if (option !== "직접 입력") {
-            setDomain(e.target.innerText);
-        }
     };
 
     //이메일 한글막기
@@ -60,7 +58,8 @@ const Find = (props) => {
 
     //비밀번호 찾기
     const findPwd = () => {
-        const mail = `${email}@${domain}`;
+        const mail = `${email}@${domain?domain:option}`;
+
         const send_email = {
          email: mail
         };
@@ -183,9 +182,8 @@ const Find = (props) => {
                         onChange={(e) => {
                             setDomain(e.target.value);
                         }}
-                        disabled={option === "직접 입력" ? "" : "disabled"}
-                        value={option !== "직접 입력" ? option : domain}
-                        
+                        value={domain}
+                        placeholder="메일을 입력해주세요."            
                     ></input>
                     {domain?<button onClick={deleteValue}></button>:null}
                 </SelfInput>        
@@ -194,7 +192,7 @@ const Find = (props) => {
         <Fixed>                
             <Button _onClick={()=>{
                 findPwd()                
-            }} disabled={email==="" || domain ==="" ? "disabled":""}>계속하기</Button>
+            }} disabled={email==="" || (option==="" && domain ==="") ||  (option==="직접 입력" && domain ==="")? "disabled":""}>계속하기</Button>
         </Fixed>               
         {/* 이메일 전송 팝업 */}
         <PopModal open={modalOpen} close={closeModal} h2="메일함을 확인해주세요!" p={`메일로 임시 비밀번호를 보냈어요.

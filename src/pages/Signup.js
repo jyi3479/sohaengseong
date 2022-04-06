@@ -51,15 +51,13 @@ const Signup = (props) => {
     setOption("");
   };
   const optionClick = (e) => {
+    setDomain("");
     setOption(e.target.innerText);
-    setActive(false);    
-    if (option !== "직접 입력") {
-      setDomain(e.target.innerText);
-    }
+    setActive(false);
   };
 
   const send = () => {
-    const mail = `${email}@${domain}`;
+    const mail = `${email}@${domain?domain:option}`;
     dispatch(userActions.emailCheckResend(mail));
   };
 
@@ -149,7 +147,7 @@ const Signup = (props) => {
 
   const signup = () => {
     if (isPwd === true && samePwd === true && _nickCheck === "true") {
-      const mail = `${email}@${domain}`;    
+      const mail = `${email}@${domain?domain:option}`;
 
       const signup = {
         email: mail,
@@ -186,6 +184,8 @@ const Signup = (props) => {
       dispatch(baseAction.setGnb(true));
     };
   }, []);
+
+  console.log(option,domain);
 
   return (
     <>
@@ -277,8 +277,8 @@ const Signup = (props) => {
             onChange={(e) => {
               setDomain(e.target.value);
             }}
-            disabled={option === "직접 입력" ? "" : "disabled"}
-            value={option !== "직접 입력" ? option : domain}
+            value={domain}
+            placeholder="메일을 입력해주세요."
             
           ></input>
           {domain?<button onClick={deleteValue}></button>:null}          
@@ -398,7 +398,7 @@ const Signup = (props) => {
         <Button _onClick={()=>{
           signup()
         }} 
-        disabled={isPwd === true && samePwd === true && _nickCheck === "true"? "" : "disabled"}
+        disabled={isPwd !== true || samePwd !== true || _nickCheck !== "true" || (option==="직접 입력" && domain ==="") ? "disabled" : ""}
         >가입하기</Button>
       </Fixed>
     </Grid>
