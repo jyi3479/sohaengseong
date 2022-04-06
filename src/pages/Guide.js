@@ -37,7 +37,7 @@ const Guide = (props) => {
     dispatch(baseAction.setHeader("소행성 사용 가이드"));
     dispatch(baseAction.setGnb(false));
     return () => {
-      dispatch(baseAction.setHeader(false, ""));
+      dispatch(baseAction.setHeader(""));
       dispatch(baseAction.setGnb(true));
     };
   });
@@ -55,9 +55,9 @@ const Guide = (props) => {
                   modules={[Pagination]} 
                   className="mySwiper"
                   >                 
-                    <SwiperSlide><img src={slide_1_1}></img></SwiperSlide>     
-                    <SwiperSlide><img src={slide_1_2}></img></SwiperSlide>           
-                    <SwiperSlide><img src={slide_1_3}></img></SwiperSlide>                      
+                    <SwiperSlide><img src={slide_1_1} alt="메인 카테고리 메뉴 이미지"/></SwiperSlide>     
+                    <SwiperSlide><img src={slide_1_2} alt="카테고리 메인화면 이미지"/></SwiperSlide>           
+                    <SwiperSlide><img src={slide_1_3} alt="카테고리 탭 챌린지 카드 이미지"/></SwiperSlide>                      
                 </Swiper>
 
             </SlideBox>
@@ -66,7 +66,7 @@ const Guide = (props) => {
         <Section className="t_center">
             <h2>이제 소행성에 입주해볼까요?<br/><span className="point_color">목표에 한 걸음 가까워졌어요!</span></h2>
             <SlideBox>
-              <img src={slide_2_1}></img>
+              <img src={slide_2_1}/>
             </SlideBox>            
         </Section>
         <Section className="t_center">
@@ -79,11 +79,11 @@ const Guide = (props) => {
                   pagination={true} 
                   modules={[Pagination]} 
                   className="mySwiper"
-                  >                 
-                    <SwiperSlide><img src={slide_3_1}></img></SwiperSlide>     
-                    <SwiperSlide><img src={slide_3_2}></img></SwiperSlide>           
-                    <SwiperSlide><img src={slide_3_3}></img></SwiperSlide>  
-                    <SwiperSlide><img src={slide_3_4}></img></SwiperSlide>                     
+                  >
+                    <SwiperSlide><img src={slide_3_1} alt="메인 인증하기 버튼 이미지"/></SwiperSlide>     
+                    <SwiperSlide><img src={slide_3_2} alt="챌린지 멤버페이지 인증하기 이미지"/></SwiperSlide>           
+                    <SwiperSlide><img src={slide_3_3} alt="인증페이지 이미지"/></SwiperSlide>  
+                    <SwiperSlide><img src={slide_3_4} alt="인증 완료 이미지"/></SwiperSlide>                     
                 </Swiper>
 
             </SlideBox>
@@ -92,7 +92,7 @@ const Guide = (props) => {
         <Section className="t_center">
             <h2>나누는건 다 좋은거니까<br/><span className="point_color">친구랑 함께해요.</span></h2>
             <SlideBox>
-              <img src={slide_4_1}></img>
+              <img src={slide_4_1} alt="공유하기 기능 이미지"/>
             </SlideBox>            
         </Section>
         <Section className="t_center">
@@ -106,9 +106,9 @@ const Guide = (props) => {
                   modules={[Pagination]} 
                   className="mySwiper"
                   >                 
-                    <SwiperSlide><img src={slide_5_1}></img></SwiperSlide>     
-                    <SwiperSlide><img src={slide_5_2}></img></SwiperSlide>           
-                    <SwiperSlide><img src={slide_5_3}></img></SwiperSlide>
+                    <SwiperSlide><img src={slide_5_1} alt="위클리 리포트 이미지"/></SwiperSlide>     
+                    <SwiperSlide><img src={slide_5_2} alt="인증게시글 댓글 이미지"/></SwiperSlide>           
+                    <SwiperSlide><img src={slide_5_3} alt="실시간 채팅이미지"/></SwiperSlide>
                 </Swiper>
 
             </SlideBox>
@@ -118,7 +118,7 @@ const Guide = (props) => {
             <p className="poppins sub_color">STEP.4</p>
             <h2>나와 함께 성장하는<br/><span className="point_color">귀염둥이 토비</span></h2>
             <SlideBox>
-              <img src={slide_6_1}></img>
+              <img src={slide_6_1} alt="마이페이지 이미지"/>
             </SlideBox>
             <p className="sub_color">힘쎈 어른이 되고 싶은 토비는<br/>내 습관 행성에서 살고 있는 작은 외계인이예요.<br/>내가 습관을 실천할 때마다 성장해요.<br/>토비는 어떤 모습으로 성장하게 될까요?</p>
         </Section>

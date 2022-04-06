@@ -206,8 +206,7 @@ const ChallengeWrite = (props) => {
       } else {
         let reader = new FileReader();
         if (
-          file.name.split(".")[1] === "heic" ||
-          file.name.split(".")[1] === "HEIC"
+          file.name.split(".")[1] === "heic" || file.name.split(".")[1] === "HEIC"
         ) {
           let blob = file;
           // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.

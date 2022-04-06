@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import profileBorder from "../image/profile_border.png";
 import  defaultProfile from "../image/img_profile_defalt @2x.png";
 
 const Image = (props) => {

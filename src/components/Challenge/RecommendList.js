@@ -11,7 +11,7 @@ import ScrollBar from "../shared/ScrollBar";
 import { getCookie } from "../../shared/cookie";
 
 
-const RecommendList = (props) => {
+const RecommendList = () => {
   const dispatch = useDispatch();
   const challengeId = useParams().challengeId;
   const recommendList = useSelector((state) => state.challenge.recommendList);

@@ -13,7 +13,7 @@ import more from "../../image/icons/ic_more_2@2x.png";
 
 import { actionCreators as challengeAction } from "../../redux/modules/challenge";
 
-//모달
+//모달 팝업
 import Modal from "../shared/Modal";
 import PostModal from "../Member/PostModal";
 
@@ -69,7 +69,7 @@ const ChallengeCard = (props) => {
         }}
       >
         <p className="small">
-          <img src={peopleIcon} />
+          <img src={peopleIcon}/>
           {props.currentMember}/{props.maxMember}명
         </p>
         {props.dailyAuth && props.dailyAuth === "true" ? <Done></Done> : null}
@@ -97,7 +97,7 @@ const ChallengeCard = (props) => {
             <img
               src={props.isPrivate ? lock : null}
               style={{ width: "16px", verticalAlign: "sub" }}
-            ></img>
+            />
           </div>
         </div>
       </ContentBox>
@@ -109,7 +109,7 @@ const ChallengeCard = (props) => {
                 history.push(`/challengewrite/${props.challengeId}`);  
               }}
             >
-              <img src={edit} />
+              <img src={edit}/>
               <p>수정하기</p>
             </ModalBox>
             <ModalBox
@@ -118,11 +118,11 @@ const ChallengeCard = (props) => {
                 closeModal();
               }}
             >
-              <img src={deleteIcon} />
+              <img src={deleteIcon}/>
               <p>삭제하기</p>
             </ModalBox>
             <ModalBox onClick={closeModal}>
-              <img src={close} />
+              <img src={close} alt="팝업닫기 아이콘"/>
               <p>취소</p>
             </ModalBox>
           </Grid>    

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from "../redux/modules/base";
 import ChallengeList from "../components/Challenge/ChallengeList";
 
-const TodayChallenge = (props) => {
+const TodayChallenge = () => {
   const dispatch = useDispatch();
   const challangeInfo = useSelector((state) => state.challenge);
 
@@ -37,4 +37,4 @@ const TopBox = styled.div`
   border-radius: 8px;
 `;
 
-export default React.memo(TodayChallenge);
+export default TodayChallenge;

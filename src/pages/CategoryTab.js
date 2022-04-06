@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { Grid, Button } from "../elements/index";
@@ -31,7 +31,6 @@ const CategoryTab = (props) => {
 
   const [word, setWord] = React.useState("");
   const [search_list, setSearch_list] = React.useState("");
-  const [active, setActive] = React.useState(true);
   const [focus, setFocus] = React.useState(true);
 
   const challengeInfo = useSelector((state) => state.challenge);
@@ -268,7 +267,7 @@ const CategoryTab = (props) => {
                   </InfinityScroll>
                 ) : (
                   <NotFound className="t_center">
-                    <img src={notfound} />
+                    <img src={notfound} alt="검색결과 없음 이미지"/>
                     <h2>검색 결과가 없습니다.</h2>
                     <p className="sub_color mt12">
                       원하는 챌린지를 찾지 못했다면
@@ -309,7 +308,7 @@ const CategoryTab = (props) => {
                       </InfinityScroll>
                     ) : (
                       <NotFound className="t_center">
-                        <img src={notfound} />
+                        <img src={notfound} alt="검색결과 없음 이미지"/>
                         <h2>검색 결과가 없습니다.</h2>
                         <p className="sub_color mt12">
                           원하는 챌린지를 찾지 못했다면

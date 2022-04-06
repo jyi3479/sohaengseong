@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+
+import '../styles/css/custom.scss';
 import { Grid, Input, Button } from "../elements";
 import { useDispatch, useSelector } from "react-redux";
 import * as baseAction from "../redux/modules/base";
 import { ActionCreators as userActions } from "../redux/modules/user";
 import { userApis } from "../shared/apis";
+
 import drop from "../image/icons/ic_dropdown@2x.png";
-import deleteIcon from "../image/icon/ic_txt_delete@2x.png";
+import deleteIcon from "../image/icon/ic_text_delete@2x.png";
 import PopModal from "../components/shared/PopModal";
 
 const Signup = (props) => {
@@ -48,15 +51,13 @@ const Signup = (props) => {
     setOption("");
   };
   const optionClick = (e) => {
+    setDomain("");
     setOption(e.target.innerText);
-    setActive(false);    
-    if (option !== "직접 입력") {
-      setDomain(e.target.innerText);
-    }
+    setActive(false);
   };
 
   const send = () => {
-    const mail = `${email}@${domain}`;
+    const mail = `${email}@${domain?domain:option}`;
     dispatch(userActions.emailCheckResend(mail));
   };
 
@@ -146,7 +147,7 @@ const Signup = (props) => {
 
   const signup = () => {
     if (isPwd === true && samePwd === true && _nickCheck === "true") {
-      const mail = `${email}@${domain}`;    
+      const mail = `${email}@${domain?domain:option}`;
 
       const signup = {
         email: mail,
@@ -184,6 +185,8 @@ const Signup = (props) => {
     };
   }, []);
 
+  console.log(option,domain);
+
   return (
     <>
     <Grid padding="24px 20px" margin="48px 0 0" bg="#fff" style={{ overflow: "revert" }}>
@@ -196,16 +199,17 @@ const Signup = (props) => {
           margin="7px 0 0"
           style={{ overflow: "revert" }}
         >
-          <EmailInput
+          <input
+            className="email_input"
             onChange={(e)=>{
               setEmail(e.target.value);
             }}
             onKeyUp={onChangeMail}
             placeholder="이메일 주소"
             style={{opacity: option ? "1" : "0.5", imeMode:"disabled"}}
-            ></EmailInput>
+            ></input>
           <p>@</p>
-          <Select className={active ? "active" : option ? "ok" : ""}>
+          <div className={active ? "active custom_select" : option ? "ok custom_select" : "custom_select"}>
             <img src={drop}></img>
             <button
               className="label"
@@ -265,19 +269,19 @@ const Signup = (props) => {
                 직접 입력
               </li>
             </ul>
-          </Select>
+          </div>
         </Grid>
         <SelfInput style={{display: option === "직접 입력" ? "block" : "none"}}>
-          <EmailInput
-            className="width"
+          <input
+            className="email_input width"
             onChange={(e) => {
               setDomain(e.target.value);
             }}
-            disabled={option === "직접 입력" ? "" : "disabled"}
-            value={option !== "직접 입력" ? option : domain}
+            value={domain}
+            placeholder="메일을 입력해주세요."
             
-          ></EmailInput>
-          <button onClick={deleteValue}></button>
+          ></input>
+          {domain?<button onClick={deleteValue}></button>:null}          
         </SelfInput>
       </Grid>
 
@@ -394,7 +398,7 @@ const Signup = (props) => {
         <Button _onClick={()=>{
           signup()
         }} 
-        disabled={isPwd === true && samePwd === true && _nickCheck === "true"? "" : "disabled"}
+        disabled={isPwd !== true || samePwd !== true || _nickCheck !== "true" || (option==="직접 입력" && domain ==="") ? "disabled" : ""}
         >가입하기</Button>
       </Fixed>
     </Grid>
@@ -425,110 +429,6 @@ const InputWrap = styled.div`
     color: #f57391;
   }
 `;
-
-const EmailInput = styled.input`
-  width: calc(50% - 10px);
-  height: 28px;
-  outline: none;
-  padding: 8px 0;
-  box-sizing: border-box;
-  line-height: 1.29;
-  border:none;
-  border-bottom: 1px solid #7c8288;
-  background-color: transparent;
-  opacity: 0.5;
-  &.width {
-    width: 100%;
-    margin-top: 12px;
-  }
-  &:focus {
-    outline: none;
-    opacity: 1;
-    border-bottom: 1px solid #4149d3;
-  }
-  ::placeholder {
-    font-size: 14px;
-    color: #7c8288;
-    line-height: 1.29;
-  }
-`;
-
-const Select = styled.div`
-  position: relative;
-  width: calc(50% - 10px);
-  height: 28px;
-  border:none;
-  border-bottom: 1px solid rgba(124, 130, 136, 0.5);
-  outline: none;
-  
-  img {
-    position: absolute;
-    top: 5px;
-    right: 0;
-    width: 16px;
-  }
-  &.active {
-    outline: none;
-    border-bottom: 1px solid #4149d3;    
-    .label{
-      color:rgba(124, 130, 136, 1);
-    }
-    img {
-      transform: rotate(180deg);
-    }
-  }
-  &.ok {
-    border-bottom: 1px solid #7c8288;
-    .label{
-      color: #030102;
-    }
-  }
-  .label {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: inherit;
-    border: 0 none;
-    outline: 0 none;
-    padding-left: 10px;
-    background: transparent;
-    font-size: 14px;
-    color:rgba(124, 130, 136, 0.5);
-    cursor: pointer;
-  }
-  .optionList {
-    transform: scaleY(0);
-    transform-origin: 0px 0px;
-    position: absolute;
-    top: 30px;
-    left: 0;
-    width: 100%;
-    height: 204px;
-    background: #fff;
-    box-shadow: 0 4px 8px 0 rgba(3, 1, 2, 0.08);
-    border-radius: 4px;
-    overflow: hidden;
-    transition: 0.2s ease-in;
-    opacity: 0;
-    padding: 6px 0;
-    z-index: 2;
-    > li {
-      font-size: 12px;
-      padding: 9px 10px;
-      color: #030102;
-      line-height: 14px;
-      cursor: pointer;
-      :hover {
-        background-color: rgba(162,170,179,0.2);
-      }
-    }
-    &#active {
-      transform: scaleY(1);
-      opacity: 1;
-    }
-  }
-`;
-
 const SelfInput = styled.div`
   position: relative;
   margin-bottom: 42px;
@@ -545,32 +445,14 @@ const SelfInput = styled.div`
   }
 `;
 
-const Content = styled.div`
-    text-align: center;
-    margin:40px 0 8px;
-    h1 {
-        font-size: 18px;
-        margin-bottom: 10px;
-        font-weight: 400;
-    }
-    p {
-        font-size: 14px;
-        line-height: 1.36;
-        letter-spacing: -0.2px;
-    }
-`;
-
 const Fixed = styled.div`
     width: 100%;
     position: fixed;
     background-color: #fff;
     bottom:0;
     left:0;
-    padding:12px 20px;
+    padding:11px 20px;
     box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
-
-
-
 
 export default Signup;
