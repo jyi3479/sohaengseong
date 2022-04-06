@@ -6,8 +6,6 @@ import { chatAPI } from "../../shared/apis";
 
 // 채팅 리스트를 다루는 액션
 const GET_CHAT = "GET_CHAT";
-// 채팅방을 옮기는 액션
-const MOVE_CHAT = "MOVE_CHAT";
 // 채팅방의 대화 내용을 가져오기 (채팅하면서 추가)
 const GET_MESSAGES = "GET_MESSAGES";
 // 저장한 대화 내용 없애기
@@ -22,7 +20,6 @@ const CLEAR_CURRENTCHAT = "CLEAR_CURRENTCHAT";
 const getChat = createAction(GET_CHAT, (chatInfo) => ({
   chatInfo,
 }));
-const moveChat = createAction(MOVE_CHAT, (isChat) => ({ isChat }));
 
 const getMessages = createAction(GET_MESSAGES, (messages) => ({ messages }));
 
@@ -43,24 +40,17 @@ const initialState = {
   chatInfo: [],
   // 현재 접속 채팅 방
   currentChat: {
+    currentMember: null,
+    lastMessage: null,
+    next: false,
+    page: 0,
     roomId: null,
     roomName: null,
-    category: null,
-    page: 0,
-    next: false,
   },
   // 현재 접속 채팅 메시지
   messages: [],
-
-  messageCurPage: null,
-  // 메시지 총 페이지
-  messageTotalPage: null,
   // 메시지 로딩
   loading: false,
-  // 사용자가 설정한 카테고리(채팅방 생성시)
-  selectedCategory: [],
-  // 메세지 하나 추가되면 true
-  editDone: false,
 };
 
 //채팅방 생성
@@ -97,8 +87,15 @@ const getChatMessagesDB = (roomId, page, size) => {
     chatAPI
       .getChatMessages(roomId, page, size)
       .then((res) => {
-        const chatRoomInfo = res.data;
-        const chatMessagesArray = chatRoomInfo.messageList;
+        console.log(res.data.messageList[res.data.messageList.length - 1]);
+        const chatRoomInfo = {
+          currentMember: res.data.currentMember,
+          lastMessage: res.data.messageList[res.data.messageList.length - 1].id,
+          next: res.data.next,
+          roomId: res.data.roomId,
+          roomName: res.data.roomName,
+        };
+        const chatMessagesArray = res.data.messageList;
         dispatch(setMessages(chatRoomInfo, chatMessagesArray, page + 1));
       })
       .catch((err) => {
@@ -117,8 +114,7 @@ export default handleActions(
     [GET_MESSAGES]: (state, action) =>
       produce(state, (draft) => {
         draft.messages.push(action.payload.messages);
-        // state.loading = true;
-        draft.editDone = true;
+        // state.loading = false;
       }),
 
     [CLEAR_MESSAGES]: (state, action) =>
@@ -161,7 +157,6 @@ const actionCreators = {
   getChatListDB,
   createRoomDB,
   getChatMessagesDB,
-  moveChat,
   getMessages,
   clearMessages,
   isLoading,

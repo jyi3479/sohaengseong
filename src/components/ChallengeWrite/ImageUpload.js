@@ -16,7 +16,7 @@ const ImageUpload = React.memo(({ image, setImage, preview, setPreview, compareI
   // 이미지 업로드 부분 ----------------------------------------------------------------------------
   const fileInput = React.useRef();
   const selectFile = async (e) => {
-    // 이미지 resize 옵션 설정 (최대 width을 400px로 지정)
+    // 이미지 resize 옵션 설정
     const options = {
       maxSizeMB: 2,
       maxWidthOrHeight: 800,

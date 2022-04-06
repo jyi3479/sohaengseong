@@ -27,24 +27,20 @@ const ChallengeWrite = (props) => {
   const isEdit = params.challengeId ? true : false;
 
   // state 관리 부분 ------------------------------------------------------------------------
-
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [maxMember, setMaxMember] = React.useState("");
-
   //이미지 부분
   const [image, setImage] = React.useState([]);
   const [compareImage, setCompareImage] = React.useState([]); // 기존에 작성했던 이미지 url 담은 state (이미지 수정 시 새로운 이미지 등록과 비교하기 위해)
   const [preview, setPreview] = React.useState([]);
   //해시태그 부분
   const [hashArr, setHashArr] = React.useState([]); // 태그 담을 배열
-
   // 날짜 선택 부분
   const [value, setValue] = React.useState([null, null]);
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
-
   // 방 공개 여부
   const [checkedInputs, setCheckedInputs] = React.useState(null);
   const [password, setPassword] = React.useState("");
@@ -159,11 +155,12 @@ const ChallengeWrite = (props) => {
     dispatch(challengeAction.editChallengeDB(+params.challengeId, formData));
   };
 
-  // 모달 팝업 ---------------------------------
+  // 모달 팝업 ----------------------------------------------------------------------------------------
   const [modalType, setModalType] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
   const [toast, setToast] = React.useState(false);
   const rooms = React.useRef();
+  const categories = React.useRef();
   const openModal = () => {
     if (!isEdit) {
       //필수항목이 모두 입력되었을 때만 모달 팝업 show
@@ -174,7 +171,7 @@ const ChallengeWrite = (props) => {
       } else {
         //필수항목 중 하나라도 입력이 되지않았다면 토스트 메시지 띄우기
         if (category === "") {
-          document.getElementById("category").focus(); //입력 안된 항목으로 스크롤 포커스
+          categories.current.scrollIntoView(); //입력 안된 항목으로 스크롤 포커스
         } else if (title === "") {
           document.getElementById("title").focus();
         } else if (content === "") {
@@ -205,7 +202,7 @@ const ChallengeWrite = (props) => {
 
   return (
     <Grid margin="48px 0px 64px" padding="0" bg="#f4f6fa">
-      <InputContainer id="category">
+      <InputContainer ref={categories}>
         <Category category={category} setCategory={setCategory} />
         <Title title={title} setTitle={setTitle} />
         <Content content={content} setContent={setContent} />

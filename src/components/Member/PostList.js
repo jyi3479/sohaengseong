@@ -55,7 +55,6 @@ const PostList = (props) => {
               line_btn
               _onClick={() => {
                 history.push(`/chatting/${roomId}`);
-                dispatch(chatAction.moveChat(true));
               }}
             >
               실시간 톡

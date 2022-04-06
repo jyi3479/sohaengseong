@@ -51,7 +51,7 @@ const MessageList = ({ roomId, sendMessage, setIsTalk, isTalk, setIsMsg, isMsg }
   useEffect(() => {
     if (currentChat.page > 1 && !isTalk && !isMsg) {
       // 1) 무한스크롤 작동 시, 스크롤 이동 (스크롤 닿은 메세지 아이템 위치 그대로 유지)
-      setScrollId(currentChat.messageList[currentChat.messageList.length - 1].id);
+      setScrollId(currentChat.lastMessage);
       infinityRef.current?.scrollIntoView();
     } else {
       // 2) 상대방 입장/퇴장 메세지는 스크롤 이동 없음

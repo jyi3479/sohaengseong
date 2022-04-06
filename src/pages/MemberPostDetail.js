@@ -44,7 +44,6 @@ const MemberPostDetail = (props) => {
                 width="calc(30% - 4px)"
                 _onClick={() => {
                   history.push(`/chatting/${roomId}`);
-                  dispatch(chatAction.moveChat(true));
                 }}
               >
                 실시간 톡
