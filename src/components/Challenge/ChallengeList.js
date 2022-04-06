@@ -14,6 +14,7 @@ const ChallengeList = (props) => {
   const challengeInfo = useSelector((state) => state.challenge);
   const challenge_list = challengeInfo.list;
 
+  // 무한스크롤 콜백함수
   const getChallengeList = () => {
     dispatch(challengeAction.getChallengeDB(challengeInfo.page, 6));
   };
@@ -44,10 +45,7 @@ const ChallengeList = (props) => {
           })}
         </Box>
       ) : (
-        <InfinityScroll
-          callNext={getChallengeList}
-          paging={{ next: challengeInfo.has_next }}
-        >
+        <InfinityScroll callNext={getChallengeList} paging={{ next: challengeInfo.next }}>
           <Box className={props.className}>
             {challenge_list.map((el, i) => {
               return (

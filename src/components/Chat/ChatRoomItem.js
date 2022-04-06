@@ -4,11 +4,9 @@ import styled from "styled-components";
 import { history } from "../../redux/configureStore";
 import defaultImg from "../../image/img_profile_defalt @2x.png";
 import { useDispatch } from "react-redux";
-import { actionCreators as chatAction } from "../../redux/modules/chat";
 
 const ChatRoomItem = (props) => {
   const chatInfo = props;
-  const dispatch = useDispatch();
 
   // 타임 스탬프
   let time = "";
@@ -21,7 +19,6 @@ const ChatRoomItem = (props) => {
       onClick={() => {
         // 채팅방 입장
         history.push(`/chatting/${chatInfo.roomId}`);
-        dispatch(chatAction.moveChat(true));
       }}
     >
       <div style={{ width: "calc(100% - 78px)", display: "flex" }}>
@@ -31,29 +28,19 @@ const ChatRoomItem = (props) => {
             <div
               className="one_member"
               style={{
-                backgroundImage: `url(${
-                  chatInfo.chatRoomImg[0] ? chatInfo.chatRoomImg[0] : defaultImg
-                })`,
+                backgroundImage: `url(${chatInfo.chatRoomImg[0] ? chatInfo.chatRoomImg[0] : defaultImg})`,
               }}
             ></div>
           ) : (
             <>
               <div
                 style={{
-                  backgroundImage: `url(${
-                    chatInfo.chatRoomImg[0]
-                      ? chatInfo.chatRoomImg[0]
-                      : defaultImg
-                  })`,
+                  backgroundImage: `url(${chatInfo.chatRoomImg[0] ? chatInfo.chatRoomImg[0] : defaultImg})`,
                 }}
               ></div>
               <div
                 style={{
-                  backgroundImage: `url(${
-                    chatInfo.chatRoomImg[1]
-                      ? chatInfo.chatRoomImg[1]
-                      : defaultImg
-                  })`,
+                  backgroundImage: `url(${chatInfo.chatRoomImg[1] ? chatInfo.chatRoomImg[1] : defaultImg})`,
                 }}
               ></div>
             </>

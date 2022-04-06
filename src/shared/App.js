@@ -45,7 +45,6 @@ import SignComplete from "../pages/SignComplete";
 import Intro from "../pages/Intro";
 import Guide from "../pages/Guide";
 
-
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
@@ -69,28 +68,24 @@ function App() {
           <BackgroundOpacity>
             <div className="titleBox t_center">
               <h1>나를 변화시키는 습관</h1>
-              <img src={logo}></img>
+              <img src={logo} alt="소행성 로고"/>
             </div>
-            <img src={star} className="star1"></img>
-            <img src={star} className="star2"></img>
-            <img src={star} className="star3"></img>
+            <img src={star} className="star1" alt="별똥별이미지"></img>
+            <img src={star} className="star2" alt="별똥별이미지"></img>
+            <img src={star} className="star3" alt="별똥별이미지"></img>
           </BackgroundOpacity>
           <MobileFrame className="MobileFramePage">
             <div ref={scrollRef} />
-            <Switch>              
+            <Switch>
               <Route path="/login" exact component={Login} />
               {/* 로그인 */}
               <Route path="/signup/complete" exact component={SignComplete} />
-                {/* 회원가입 완료 - 인증메일 확인용 */}
+              {/* 회원가입 완료 - 인증메일 확인용 */}
               <Route path="/" exact component={Main} />
               {/* 메인 */}
               <Route path="/category" exact component={CategoryMain} />
               {/* 카테고리메인*/}
-              <Route
-                path="/category/:categoryId"
-                exact
-                component={CategoryTab}
-              />
+              <Route path="/category/:categoryId" exact component={CategoryTab} />
               {/* 카테고리리스트 */}
               <Route path="/search" exact component={CategoryTab} />
               {/* 검색페이지 */}
@@ -103,73 +98,34 @@ function App() {
                   <Route path="/guide/main" exact component={Guide} />
                   {/* 가이드 */}
                   <Route path="/signup" exact component={Signup} />
-                  {/* 회원가입 */}                           
+                  {/* 회원가입 */}
                   <Route path="/today" exact component={TodayChallenge} />
                   {/* 메인 > 오늘의 소행성 */}
                   <Route path="/daily" exact component={DailyCertify} />
                   {/* 메인 > 오늘의 인증 */}
                   <Route path="/notice" exact component={Notice} />
                   {/* 알림페이지 */}
-                  <Route
-                    path="/auth/kakao/callback"
-                    component={OAuth2RedirectHandler}
-                  ></Route>
+                  <Route path="/auth/kakao/callback" component={OAuth2RedirectHandler} />
                   {/* 카카오톡 로그인 */}
-                  <Route
-                    path="/challenge/:challengeId"
-                    exact
-                    component={ChallengeDetail}
-                  />
+                  <Route path="/challenge/:challengeId" exact component={ChallengeDetail} />
                   {/* 챌린지 소개 */}
                   <Route path="/mypage" exact component={MyPage} />
                   {/* 마이페이지 */}
-                  <Route
-                    path="/member/:challengeId"
-                    exact
-                    component={MemberMain}
-                  />
+                  <Route path="/member/:challengeId" exact component={MemberMain} />
                   {/* 챌린지 멤버 전용 */}
-                  <Route
-                    path="/member/detail/:challengeId"
-                    exact
-                    component={MemberDetail}
-                  />
+                  <Route path="/member/detail/:challengeId" exact component={MemberDetail} />
                   {/* 챌린지 멤버 전용 상세*/}
-                  <Route
-                    path="/post/:challengeId/:roomId"
-                    exact
-                    component={MemberPostList}
-                  />
+                  <Route path="/post/:challengeId/:roomId" exact component={MemberPostList} />
                   {/* 챌린지 멤버 전용 속 인증 페이지 */}
-                  <Route
-                    path="/postwrite/:challengeId/:roomId"
-                    exact
-                    component={MemberPostWrite}
-                  />
+                  <Route path="/postwrite/:challengeId/:roomId" exact component={MemberPostWrite} />
                   {/* 인증 페이지 속 인증글 작성 페이지 */}
-                  <Route
-                    path="/postwrite/:challengeId/:roomId/:postId"
-                    exact
-                    component={MemberPostWrite}
-                  />
+                  <Route path="/postwrite/:challengeId/:roomId/:postId" exact component={MemberPostWrite} />
                   {/* 인증 페이지 속 인증글 수정 페이지 */}
-                  <Route
-                    path="/post/:challengeId/detail/:postId/:roomId"
-                    exact
-                    component={MemberPostDetail}
-                  />
+                  <Route path="/post/:challengeId/detail/:postId/:roomId" exact component={MemberPostDetail} />
                   {/* 인증 페이지 속 인증글 상세 페이지*/}
-                  <Route
-                    path="/challengewrite"
-                    exact
-                    component={ChallengeWrite}
-                  />
+                  <Route path="/challengewrite" exact component={ChallengeWrite} />
                   {/* 챌린지 작성 페이지 */}
-                  <Route
-                    path="/challengewrite/:challengeId"
-                    exact
-                    component={ChallengeWrite}
-                  />
+                  <Route path="/challengewrite/:challengeId" exact component={ChallengeWrite} />
                   {/* 챌린지 수정 페이지 */}
                   <Route path="/find" exact component={Find} />
                   {/* 비밀번호찾기 */}
@@ -177,19 +133,11 @@ function App() {
                   {/* 채팅리스트 */}
                   <Route path="/chatting/:roomId" exact component={ChatRoom} />
                   {/* 채팅방*/}
-                  <Route
-                    path="/mypage/completed"
-                    exact
-                    component={MyCompleted}
-                  />
+                  <Route path="/mypage/completed" exact component={MyCompleted} />
                   {/* 마이페이지 - 성공실패 */}
                   <Route path="/mypage/profile" exact component={MyEdit} />
                   {/* 마이페이지 - 프로필수정 비번확인 */}
-                  <Route
-                    path="/mypage/profile/edit"
-                    exact
-                    component={MyProfile}
-                  />
+                  <Route path="/mypage/profile/edit" exact component={MyProfile} />
                   {/* 마이페이지 - 프로필수정 */}
                 </Wrap>
               </>

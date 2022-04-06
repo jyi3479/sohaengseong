@@ -6,7 +6,6 @@ import { Grid } from "../../elements";
 import ChallengeCard from "../Challenge/ChallengeCard";
 import { actionCreators as myActions } from "../../redux/modules/mypage";
 
-
 import arrow from "../../image/icons/small_arrow.png";
 
 const MyChallenge = (props) => {

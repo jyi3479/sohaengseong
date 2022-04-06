@@ -13,15 +13,14 @@ import { Grid, Button } from "../elements";
 
 const MemberPostDetail = (props) => {
   const dispatch = useDispatch();
-  const challengeId = +useParams().challengeId;
+  const challengeId = useParams().challengeId;
   const postId = +useParams().postId;
   const roomId = useParams().roomId;
 
   const targetPost = useSelector((state) => state.member.target);
 
-
   React.useEffect(() => {
-    dispatch(memberAction.getOnePostDB(challengeId, postId, 0, 5));
+    dispatch(memberAction.getOnePostDB(challengeId, postId, 0, 7));
     // header, footer 부분
     dispatch(baseAction.setHeader("", false));
     dispatch(baseAction.setGnb(false));
@@ -45,7 +44,6 @@ const MemberPostDetail = (props) => {
                 width="calc(30% - 4px)"
                 _onClick={() => {
                   history.push(`/chatting/${roomId}`);
-                  dispatch(chatAction.moveChat(true));
                 }}
               >
                 실시간 톡

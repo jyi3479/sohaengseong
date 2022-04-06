@@ -108,5 +108,4 @@ const Fixed = styled.div`
     box-shadow: 0 -4px 8px 0 rgba(3, 1, 2, 0.04);
 `;
 
-
 export default MyEdit;
