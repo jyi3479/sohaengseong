@@ -379,9 +379,9 @@ const MyProfile = (props) => {
             <Button
               _onClick={comfirmModal}
               disabled={
-                (password === "" && !preview && (userInfo.nickname === nickname || nickname === "")) ||
+                (password === "" && !preview && (userInfo.nickname === nickname || nickname === "")) || 
                 (password && (!isPwd || !samePwd)) ||
-                (nickname && userInfo.nickname !== nickname && (_nickCheck !== "true" || !isCheck || !keypressNick))
+                (nickname && userInfo.nickname !== nickname && (_nickCheck !== "true" || isCheck || !keypressNick))
                   ? "disabeld"
                   : ""
               }

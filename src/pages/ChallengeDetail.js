@@ -1,4 +1,4 @@
-import React,{useRef} from "react";
+import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
@@ -54,10 +54,11 @@ const ChallengeDetail = (props) => {
     const today = dayjs();
     const date1 = dayjs(startDate,"YYYY-MM-DD",'ko');
     const date2 = dayjs(endDate,"YYYY-MM-DD",'ko');
-    const days = Number(date2.diff(date1, "day"))+1;
-    const join_day = +today.diff(date1, "day")+1;
-    const remaining_day = Math.ceil(days*0.2);
+    const days = Number(date2.diff(date1, "day"))+1; //챌린지 전체 기간 (startDate ~ endDate)
+    const join_day = +today.diff(date1, "day")+1;//챌린지 시작일 ~ 오늘
+    const remaining_day = Math.ceil(days*0.2); // 전체 기간의 20%
 
+    //챌린지 입장
     const joinChallenge = () => {
         dispatch(challengeAction.joinChallengeDB(challengeId));
     };
@@ -69,10 +70,8 @@ const ChallengeDetail = (props) => {
     const [checkPrivate, setCheckPrivate] = React.useState(false);//비밀방 비밀번호 맞는지 확인
     const [isNum,setIsNum] = React.useState(false);//비밀방 비밀번호 숫자체크
     const [join, setJoin] = React.useState(false); //입장하기 클릭여부
-    const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value
-
-    //클립보드에 복사완료 됐는지 
-    const copy = useSelector(state => state.base.copy);
+    const [privatePwd, setPrivatePwd] = React.useState(""); //비밀방 비밀번호 value    
+    const copy = useSelector(state => state.base.copy); //클립보드에 복사완료 됐는지 
    
     const joinModal = () => {
         if(!target.isPrivate){
@@ -93,6 +92,7 @@ const ChallengeDetail = (props) => {
         setPrivatePwd("");
     };
 
+    //비밀방 비밀번호 유효성 검사
     const privateCheck = (e) => {   
         setIsNum(false);        
         const pwdRegex = /^[0-9]+$/;   
@@ -108,6 +108,7 @@ const ChallengeDetail = (props) => {
         }
     };
 
+    //비밀방 비밀번호 확인
     const pwdCheck = () => {
         setJoin(true);
         apis.post(`/challenge/${challengeId}/private`, {password:privatePwd})
@@ -151,6 +152,7 @@ const ChallengeDetail = (props) => {
             console.log("특정 챌린지 조회 오류",err);
         });
         
+        //헤더&푸터 분기
         dispatch(baseAction.setGnb(false));
         return()=>{
             dispatch(baseAction.setHeader(false,""));
@@ -166,8 +168,8 @@ const ChallengeDetail = (props) => {
                 <SlideBox>                    
                     {imageList.length > 0?
                         <Swiper
-                            spaceBetween={0}
-                            slidesPerView={1}
+                            spaceBetween={0} //슬라이드 사이 마진값
+                            slidesPerView={1} //한 화면에 보일 슬라이드 갯수
                             pagination={{
                                 type : 'fraction', //페이지네이션 타입
                             }}
@@ -226,7 +228,7 @@ const ChallengeDetail = (props) => {
                                 level={admin.levelName}
                                 profile={admin.profileImage !== null ? admin.profileImage : defaultImg}
                             >
-                            </Image>                            
+                            </Image>
                             <h3>{admin.nickname}</h3>
                         </div>
                         <pre style={{fontSize:"14px",whiteSpace: "pre-wrap"}}>{target.content}</pre>
@@ -289,8 +291,7 @@ const ChallengeDetail = (props) => {
                            >마감된 행성입니다.</Button>
                        )}
                        </>
-                    )}
-                    
+                    )}                    
                 </Fixed>   
                 {/* 입장하기 버튼 클릭 시 뜨는 모달팝업 - 공개방 */}
                 <Modal open={modalType === "joinModal"? modalOpen : ""} close={closeModal} double_btn btn_text="입장" _onClick={()=>{

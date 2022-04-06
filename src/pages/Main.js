@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 //날짜 라이브러리
 import dayjs from "dayjs";
@@ -18,8 +18,6 @@ import plus from "../image/icon/ic_plus_l@2x.png";
 import bgImg from "../image/main_bg.png";
 import arrow from "../image/icon/ic_arrow_s@2x.png";
 import arrow_w from "../image/icon/arrow_ws@2x.png";
-import feedbackIcon from "../image/icon/ic_feedback_b@2x.png";
-import popIcon from "../image/icon/ic_popup_b@2x.png";
 
 //카테고리이미지 (순서대로 앞 3번째까지만 노출)
 import category_01 from "../image/icon/category/ic_category_daily_l@2x.png";
@@ -32,6 +30,7 @@ const Main = (props) => {
 
   const userInfo = useSelector((state) => state.user.user);
   const yesterday = dayjs().subtract(1, "day").format("YYYY.MM.DD");
+
   return (
     <>
       <MainHeader />

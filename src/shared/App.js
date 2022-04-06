@@ -68,11 +68,11 @@ function App() {
           <BackgroundOpacity>
             <div className="titleBox t_center">
               <h1>나를 변화시키는 습관</h1>
-              <img src={logo}></img>
+              <img src={logo} alt="소행성 로고"/>
             </div>
-            <img src={star} className="star1"></img>
-            <img src={star} className="star2"></img>
-            <img src={star} className="star3"></img>
+            <img src={star} className="star1" alt="별똥별이미지"></img>
+            <img src={star} className="star2" alt="별똥별이미지"></img>
+            <img src={star} className="star3" alt="별똥별이미지"></img>
           </BackgroundOpacity>
           <MobileFrame className="MobileFramePage">
             <div ref={scrollRef} />

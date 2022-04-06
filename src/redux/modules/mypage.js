@@ -1,13 +1,14 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
-import axios from "axios";
 import { mypageApis } from "../../shared/apis";
 
 const GET_MYINFO = "GET_MYINFO";
 const GET_MYCHALLENGE  = "GET_MYCHALLENGE";
 
+//유저 정보 가져오는 액션
 const getMyInfo = createAction(GET_MYINFO, (myInfo) => ({ myInfo }));
+//유저 챌린지 가져오는 액션
 const getMyChallenge = createAction(GET_MYCHALLENGE, (myList) => ({ myList }));
 
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
 
 
 const getMyInfoDB = (userId) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch) {
     mypageApis
       .getMyInfo(userId)
       .then((res) => {
@@ -30,7 +31,7 @@ const getMyInfoDB = (userId) => {
 };
 
 const getMyChallengeDB = (userId) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch) {
     mypageApis
       .getMyChallenge(userId)
       .then((res) => {

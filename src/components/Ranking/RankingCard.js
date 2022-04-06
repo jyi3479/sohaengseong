@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "../../elements/index";
-import { useSelector } from "react-redux";
 
 import down from "../../image/icon/ic_down@2x.png";
 import up from "../../image/icon/ic_up@2x.png";
@@ -26,12 +25,12 @@ const RankingCard = (props) => {
             <State>
               {props.status !== "유지" ? (
                 props.status === "상승" ? (
-                  <img src={up} />
+                  <img src={up} alt="랭킹 상승 아이콘"/>
                 ) : (
-                  <img src={down} />
+                  <img src={down} alt="랭킹 하락 아이콘"/>
                 )
               ) : (
-                <img src={same} />
+                <img src={same} alt="랭킹 유지 아이콘"/>
               )}
             </State>
             <Image

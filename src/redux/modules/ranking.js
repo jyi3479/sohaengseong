@@ -1,13 +1,11 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import axios from "axios";
+
 import { mainApis } from "../../shared/apis";
-import _ from "lodash";
 
 const GET_RANK = "GET_RANK";
-
+//DB에서 가져온 랭킹 정보 리덕스에 넣기
 const getRank = createAction(GET_RANK, (rank_list)=>({rank_list}));
-
 
 const initialState = {
     list:[]

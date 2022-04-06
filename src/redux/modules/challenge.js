@@ -12,33 +12,37 @@ const GET_CATEGORY = "GET_CATEGORY";
 const GET_CATEGORY_LIST = "GET_CATEGORY_LIST";
 const ADD_CHALLENGE = "ADD_CHALLENGE";
 const EDIT_CHALLENGE = "EDIT_CHALLENGE";
-const DELETE_CHALLENGE = "DELETE_CHALLENGE";
-const GET_RECOMMEND_LIST = "GET_RECOMMEND_LIST";
+const GET_RECOMMEND_LIST = "GET_RECOMMEND_LIST"
 
+//DB에서 챌린지 전체 리스트 가져오는 액션
 const getChallenge = createAction(GET_CHALLENGE, (challenge_data) => ({
   challenge_data,
 }));
+//DB에서 특정 챌린지 가져오는 액션
 export const targetChallenge = createAction(TARGET_CHALLENGE, (target) => ({
   target,
 }));
+//챌린지 등록 액션
 const addChallenge = createAction(ADD_CHALLENGE, (challenge) => ({
   challenge,
 }));
+//챌린지 수정 액션
 const editChallenge = createAction(
   EDIT_CHALLENGE,
   (challengeId, challenge) => ({ challengeId, challenge })
 );
-const deleteChallenge = createAction(DELETE_CHALLENGE, (challengeId) => ({
-  challengeId,
-}));
+//카테고리를 가져오는 액션
 const getCategory = createAction(GET_CATEGORY, (category) => ({ category }));
+//카테고리에 맞는 챌린지 리스트를 가져오는 액션
 const getCategoryList = createAction(
   GET_CATEGORY_LIST,
   (categoryId, category_data) => ({ categoryId, category_data })
 );
+
 const getRecommendList = createAction(GET_RECOMMEND_LIST, (recommendList) => ({
   recommendList,
 }));
+
 
 const initialState = {
   list: [],

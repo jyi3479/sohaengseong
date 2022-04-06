@@ -1,11 +1,11 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import axios from "axios";
 
 const SET_HEADER = "SET_HEADER";
 const SET_GNB = "SET_GNB";
 const SET_COPY = "SET_COPY";
 
+//헤더 타입별 분기 (text=타이틀,search_btn=검색버튼,notice=알림버튼,currentMember=채팅멤버수)
 export const setHeader = createAction(
   SET_HEADER,
   (text, search_btn, notice, currentMember) => ({
@@ -15,7 +15,9 @@ export const setHeader = createAction(
     currentMember,
   })
 );
+//GNB(footer) 분기 (true면 보이고 false면 안보임)
 export const setGnb = createAction(SET_GNB, (state) => ({ state }));
+//공유기능 실행 시 클립보드에 주소가 잘 복사 됐는지 확인하는 액션
 export const setCopy = createAction(SET_COPY, (copy) => ({copy}));
 
 const initialState = {

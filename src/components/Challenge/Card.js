@@ -34,7 +34,7 @@ const Card = (props) => {
           })}      
           <Grid is_flex  padding="0" margin="6px 0 0" style={{}}>
             <p className="small caption_color">{startDate} - {endDate}</p>
-            <img src={props.isPrivate?lock:null} style={{width:"16px"}}></img>
+            <img src={props.isPrivate?lock:null} style={{width:"16px"}}/>
           </Grid>
         </div>
       </Grid>

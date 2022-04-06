@@ -5,16 +5,16 @@ import { history } from "../redux/configureStore";
 import {Grid,Button} from "../elements/index";
 import confirm_img from "../image/img_good@2x.png";
 import logo from "../image/logo2.png";
-const SignComplete = (props) => {
 
+const SignComplete = () => {
     return(
         <>
             <Grid style={{height: "80vh", display: "flex", alignItems: "center", justifyContent: "center", flexFlow: "column"}}>
                 <Logo className="t_center">
                     <p>나를 변화시키는 습관</p>
-                    <img src={logo}></img>
+                    <img src={logo} alt="플랫폼 로고이미지"/>
                 </Logo>                              
-                <Img src={confirm_img}/>
+                <Img src={confirm_img} alt="회원가입 완료이미지"/>
                 <Content className="popup">
                     <h2>회원가입이 완료되었습니다!</h2>
                 </Content>  
@@ -31,7 +31,6 @@ const Logo = styled.div`
     margin-top: 2px;
   }
 `;
-
 
 const Img = styled.img`
     width: 160px;

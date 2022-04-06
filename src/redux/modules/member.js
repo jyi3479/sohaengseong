@@ -1,7 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
-import axios from "axios";
 import { memberApis } from "../../shared/apis";
 import moment from "moment";
 
@@ -85,7 +84,7 @@ const getPostDB = (challengeId, page, size) => {
 };
 
 const deletePostDB = (postId) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch) {
     memberApis
       .deletePost(+postId)
       .then((res) => {
@@ -99,7 +98,7 @@ const deletePostDB = (postId) => {
 };
 
 const addCommentDB = (postId, content) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch, getState) {
     const userInfo = getState().user.user;
 
     memberApis
@@ -125,7 +124,7 @@ const addCommentDB = (postId, content) => {
 };
 
 const deleteCommentDB = (postId, commentId) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch) {
     memberApis
       .deleteComment(+commentId)
       .then((res) => {
@@ -139,7 +138,7 @@ const deleteCommentDB = (postId, commentId) => {
 };
 
 const exitChallengeDB = (challengeId) => {
-  return function (dispatch, getState, { history }) {
+  return function ({ history }) {
     memberApis
       .exitChallenge(challengeId)
       .then((res) => {
@@ -153,7 +152,7 @@ const exitChallengeDB = (challengeId) => {
 };
 
 const getReportDB = (challengeId, startDate) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch) {
     memberApis
       .getReport(challengeId, startDate)
       .then((res) => {

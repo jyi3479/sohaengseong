@@ -5,10 +5,12 @@ import { searchApis } from "../../shared/apis";
 const GET_SEARCH = "GET_SEARCH";
 const GET_RECOMMEND = "GET_RECOMMEND";
 
+//검색 리스트 저장하는 액션
 const getSearch = createAction(GET_SEARCH, (search_list, page) => ({
   search_list,
   page,
 }));
+//추천 검색어 액션
 const getRecommend = createAction(GET_RECOMMEND, (recommend_list) => ({
   recommend_list,
 }));
@@ -23,11 +25,10 @@ const initialState = {
 };
 
 const getSearchDB = (word, page, size) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch) {
     searchApis
       .getSearch(word, page, size)
       .then((res) => {
-        //console.log("검색어 불러오기",res);
         dispatch(getSearch(res.data, page + 1));
       })
       .catch((err) => {
@@ -37,11 +38,10 @@ const getSearchDB = (word, page, size) => {
 };
 
 const getRecommendDB = () => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch) {
     searchApis
       .recommend()
       .then((res) => {
-        //console.log("추천 검색어 불러오기",res);
         dispatch(getRecommend(res.data));
       })
       .catch((err) => {
