@@ -10,20 +10,24 @@ import defaultImg from "../../image/ic_empty_s@2x.png";
 import stamp from "../../image/icon/ic_stamp@2x.png";
 import more from "../../image/icons/ic_more_2@2x.png";
 
+
 import { actionCreators as challengeAction } from "../../redux/modules/challenge";
 
 //모달 팝업
 import Modal from "../shared/Modal";
 import PostModal from "../Member/PostModal";
 
+
 import deleteIcon from "../../image/icons/ic_delete@2x.png";
 import close from "../../image/icons/icon_close_btn@2x.png";
 import edit from "../../image/icons/ic_edit@2x.png";
+
 
 const ChallengeCard = (props) => {
   const dispatch = useDispatch();
   const startDate = `${props.startDate.split(" ")[0].split("-")[0]}`;
   const endDate = `${props.endDate.split(" ")[0].split("-")[0]}`;
+
 
   // 모달 팝업1 (인증 게시글 상세버튼 클릭 시 모달 - 수정/삭제) -------------------------------------------------
   const [modalState, setModalState] = React.useState(false);
@@ -54,7 +58,7 @@ const ChallengeCard = (props) => {
 
   return (
     <>
-    <Box className={props.className}>
+    <Box  className={props.className}>
       <ImageBox
         onClick={props._onClick}
         status={props.status}
@@ -79,42 +83,30 @@ const ChallengeCard = (props) => {
           <p className="caption caption_color" style={{ margin: "2px 0 6px" }}>
             {props.category}
           </p>
-          {props.dailyAuth && props.dailyAuth === "true" ? <Done></Done> : null}
-        </ImageBox>
-        <ContentBox>
-          <div style={{ height: "58px" }}>
-            <div className={props.className === "admin_challenge" ? "title_box admin" : "title_box"}>
-              <h3 className="ellipsis2">{props.title}</h3>
-              <button className="menu_btn" onClick={openModal}></button>
-            </div>
-            <p className="caption caption_color" style={{ margin: "2px 0 6px" }}>
-              {props.category}
+        </div>
+        <div className="contents">
+          <div>
+            {props.tagName?.map((el, i) => {
+              return <Tag key={i} tag={el}></Tag>;
+            })}
+          </div>
+          <div className="date">
+            <p className="small caption_color" style={{ marginRight: "6px" }}>
+              {startDate} - {endDate}
             </p>
             <img
               src={props.isPrivate ? lock : null}
               style={{ width: "16px", verticalAlign: "sub" }}
             />
           </div>
-          <div className="contents">
-            <div>
-              {props.tagName?.map((el, i) => {
-                return <Tag key={i} tag={el}></Tag>;
-              })}
-            </div>
-            <div className="date">
-              <p className="small caption_color" style={{ marginRight: "6px" }}>
-                {startDate} - {endDate}
-              </p>
-              <img src={props.isPrivate ? lock : null} style={{ width: "16px", verticalAlign: "sub" }}></img>
-            </div>
-          </div>
-        </ContentBox>
-        {/* 상세 버튼 클릭 시 모달 */}
-        <PostModal state={modalState} _handleModal={closeModal}>
+        </div>
+      </ContentBox>
+      {/* 상세 버튼 클릭 시 모달 */}
+      <PostModal state={modalState} _handleModal={closeModal}>   
           <Grid width="auto" padding="0px">
             <ModalBox
-              onClick={() => {
-                history.push(`/challengewrite/${props.challengeId}`);
+              onClick={() => {                      
+                history.push(`/challengewrite/${props.challengeId}`);  
               }}
             >
               <img src={edit}/>
@@ -133,22 +125,24 @@ const ChallengeCard = (props) => {
               <img src={close} alt="팝업닫기 아이콘"/>
               <p>취소</p>
             </ModalBox>
-          </Grid>
-        </PostModal>
-        {/* 챌린지 삭제 버튼 클릭 시 모달 */}
-        <Modal
-          open={modalType === "openModal" ? modalOpen : ""}
-          close={closeDeleteModal}
-          double_btn
-          btn_text="삭제"
-          _onClick={() => {
-            deleteChallenge(props.challengeId);
-          }}
-        >
-          <p>해당 챌린지를 삭제하시겠어요?</p>
-        </Modal>
-      </Box>
-    </>
+          </Grid>    
+      </PostModal>
+      {/* 챌린지 삭제 버튼 클릭 시 모달 */}
+      <Modal
+        open={modalType === "openModal" ? modalOpen : ""}
+        close={closeDeleteModal}
+        double_btn
+        btn_text="삭제"
+        _onClick={() => {
+          deleteChallenge(props.challengeId);
+        }}
+      >
+        <p>
+          해당 챌린지를 삭제하시겠어요?
+        </p>
+      </Modal>
+    </Box>
+  </>
   );
 };
 
@@ -206,7 +200,7 @@ const Done = styled.div`
 const ContentBox = styled.div`
   height: 105px;
   position: relative;
-  .title_box {
+  .title_box {    
     .menu_btn {
       display: none;
       width: 13px;
@@ -230,7 +224,7 @@ const ContentBox = styled.div`
         display: inline-block;
       }
     }
-  }
+  }  
   .contents {
     width: 100%;
     position: absolute;
