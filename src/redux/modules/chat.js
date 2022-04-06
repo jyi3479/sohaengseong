@@ -41,7 +41,7 @@ const initialState = {
   // 현재 접속 채팅 방
   currentChat: {
     currentMember: null,
-    lastMessage: null,
+    lastMessageId: null,
     next: false,
     page: 0,
     roomId: null,
@@ -90,7 +90,7 @@ const getChatMessagesDB = (roomId, page, size) => {
         console.log(res.data.messageList[res.data.messageList.length - 1]);
         const chatRoomInfo = {
           currentMember: res.data.currentMember,
-          lastMessage: res.data.messageList[res.data.messageList.length - 1].id,
+          lastMessageId: res.data.messageList[res.data.messageList.length - 1].id,
           next: res.data.next,
           roomId: res.data.roomId,
           roomName: res.data.roomName,

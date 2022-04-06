@@ -265,7 +265,7 @@ const ChatRoom = ({ match }) => {
       <Grid padding="0" margin="48px 0">
         <ScrollBar height="calc(100vh - 108px)">
           <Grid padding="28px 20px" margin="0" style={{ overflowY: "auto" }}>
-            <MessageList roomId={roomId} sendMessage={sendMessage} setIsTalk={setIsTalk} isTalk={isTalk} setIsMsg={setIsMsg} isMsg={isMsg} />
+            <MessageList roomId={roomId} setIsTalk={setIsTalk} isTalk={isTalk} setIsMsg={setIsMsg} isMsg={isMsg} />
           </Grid>
         </ScrollBar>
       </Grid>
