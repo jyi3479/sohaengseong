@@ -191,7 +191,7 @@
     - 모든 기능을 담아 무거워진 컴포넌트를 분리하고 자식 컴포넌트들의 불필요한 리렌더링을 방지하는 것이 필요
   * 의견 결정
     - 컴포넌트 분리 후 props 변화가 없다면 리렌더링이 되지 않도록 React.memo 적용
-  <img src="https://user-images.githubusercontent.com/89513776/161964569-b7febd69-b908-46c6-b007-b758d746bd92.png" width="250" style="border:1px solid #eee"/>
+  <img src="https://user-images.githubusercontent.com/89513776/161964569-b7febd69-b908-46c6-b007-b758d746bd92.png" width="250"/>
   
   </details>
 
@@ -205,7 +205,9 @@
   * 개선 내용
     - 원하는 기능을 원하는 곳에서 찾을 수 있도록, 마이페이지 > 개설 탭에 수정/삭제 기능 추가
   
-  </details>
+  <img width="250" alt="image" src="https://user-images.githubusercontent.com/89513776/161965405-93b858d1-f86c-4478-9055-cbe7002fc433.png">
+  
+</details>
   
 <details>
   <summary>챌린지 등록 페이지 작성 편의성 향상</summary>
@@ -215,7 +217,9 @@
   * 개선 내용
     - 미입력 값이 무엇인지 사용자가 고민하지 않도록, 토스트 메시지 노출과 미입력 항목으로 스크롤 이동 및 포커싱 적용
   
-  </details>
+  <img width="200" alt="image" src="https://user-images.githubusercontent.com/89513776/161965459-24a25ecc-e18a-4793-bca7-75ff28ff4d2e.png">
+  
+</details>
   
 <details>
   <summary>서비스에 대한 이해 부족으로 이탈률이 높아지는 것에 대한 이슈 개선</summary>
@@ -226,7 +230,10 @@
     - 소행성을 사용자가 더 잘 사용할 수 있도록 사용자 가이드 추가
     - 메인에 후킹 요소로 배치하여 클릭 유도
   
-  </details>
+  <img width="200" alt="image" src="https://user-images.githubusercontent.com/89513776/161965719-d8a1ae87-773f-4ee5-b702-1f432b803b1c.png">
+  
+  
+</details>
 
 
 ## 7️⃣ 사이트 데모🎥
