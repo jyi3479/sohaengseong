@@ -59,9 +59,7 @@ function MessageForm(props) {
           value=" "
           className="send_btn"
           style={{
-            backgroundColor: messageText
-              ? "#4149d3"
-              : "rgba(162, 170, 179, 0.5)",
+            backgroundColor: messageText ? "#4149d3" : "rgba(162, 170, 179, 0.5)",
           }}
           onClick={() => {
             sendMessage(msg.defaultValue);

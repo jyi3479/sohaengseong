@@ -16,12 +16,10 @@ const getRecommend = createAction(GET_RECOMMEND, (recommend_list) => ({
 }));
 
 const initialState = {
-  list: {
-    challengeList: [],
-    next: false,
-    page: 0,
-    totalCnt: 0,
-  },
+  challengeList: [],
+  next: false,
+  page: 0,
+  totalCnt: 0,
   recommend: [],
   is_loading: false,
 };
@@ -57,16 +55,14 @@ export default handleActions(
     [GET_SEARCH]: (state, action) =>
       produce(state, (draft) => {
         if (action.payload.page > 1) {
-          draft.list.challengeList.push(
-            ...action.payload.search_list.challengeList
-          );
+          draft.challengeList.push(...action.payload.search_list.challengeList);
         } else {
-          draft.list.challengeList = action.payload.search_list.challengeList;
+          draft.challengeList = action.payload.search_list.challengeList;
         }
 
-        draft.list.page = action.payload.page;
-        draft.list.next = action.payload.search_list.next;
-        draft.list.totalCnt = action.payload.search_list.totalCnt;
+        draft.page = action.payload.page;
+        draft.next = action.payload.search_list.next;
+        draft.totalCnt = action.payload.search_list.totalCnt;
         draft.is_loading = false;
       }),
     [GET_RECOMMEND]: (state, action) =>

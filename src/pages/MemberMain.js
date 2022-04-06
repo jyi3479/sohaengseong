@@ -21,7 +21,7 @@ const MemberMain = (props) => {
   // header, footer 부분
   React.useEffect(() => {
     dispatch(challengeAction.getOneChallengeDB(challengeId));
-    dispatch(baseAction.setHeader("", true,true));
+    dispatch(baseAction.setHeader("", true, true));
     dispatch(baseAction.setGnb(false));
     return () => {
       dispatch(baseAction.setHeader(""));
@@ -48,7 +48,6 @@ const MemberMain = (props) => {
                       style={{ color: "#030102", border: "1px solid #666" }}
                       _onClick={() => {
                         history.push(`/chatting/${target.roomId}`);
-                        dispatch(chatAction.moveChat(true));
                       }}
                     >
                       실시간 톡
@@ -56,16 +55,14 @@ const MemberMain = (props) => {
                     <Button
                       width="calc(70% - 5px)"
                       _onClick={() => {
-                        history.push(
-                          `/postwrite/${challengeId}/${target.roomId}`
-                        );
+                        history.push(`/postwrite/${challengeId}/${target.roomId}`);
                       }}
                     >
                       인증하기
                     </Button>
                   </Grid>
                 </Fixed>
-              )}              
+              )}
             </>
           )}
         </Grid>

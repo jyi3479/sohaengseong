@@ -32,13 +32,9 @@ const PostWrite = (props) => {
   const targetPost = postList.filter((el) => el.postId === postId)[0];
 
   const isEdit = postId ? true : false; // 인증 게시글 수정 여부
-  const [content, setContent] = React.useState(
-    isEdit ? targetPost.content : ""
-  ); // 인증 게시글 내용
+  const [content, setContent] = React.useState(isEdit ? targetPost.content : ""); // 인증 게시글 내용
   const [image, setImage] = React.useState(null); // 이미지 file 객체 담는 곳
-  const [preview, setPreview] = React.useState(
-    isEdit ? targetPost.postImage : ""
-  ); // filereader 후 미리보기 데이터 담는 곳
+  const [preview, setPreview] = React.useState(isEdit ? targetPost.postImage : ""); // filereader 후 미리보기 데이터 담는 곳
   const [isWarning, setIsWarning] = React.useState(false);
 
   const [isLevelUp, setIsLevelup] = React.useState(false); // 레벨업 여부
@@ -47,28 +43,30 @@ const PostWrite = (props) => {
   // 이미지 업로드 부분
   const fileInput = React.useRef();
   const selectFile = async (e) => {
-  const reader = new FileReader();
-  let file;
-    // 이미지 resize 옵션 설정 (최대 width을 400px로 지정)
+    const reader = new FileReader();
+    let file;
+    // 이미지 resize 옵션 설정
     const options = {
       maxSizeMB: 2,
       maxWidthOrHeight: 800,
     };
-    if(fileInput.current.files[0].name.split(".")[1] === "gif" || fileInput.current.files[0].name.split(".")[1] === "GIF"){
-      file = fileInput.current.files[0]
-    }else{
+    if (
+      fileInput.current.files[0].name.split(".")[1] === "gif" ||
+      fileInput.current.files[0].name.split(".")[1] === "GIF" ||
+      fileInput.current.files[0].name.split(".")[1] === "heic" ||
+      fileInput.current.files[0].name.split(".")[1] === "HEIC"
+    ) {
+      file = fileInput.current.files[0];
+    } else {
       file = await imageCompression(fileInput.current.files[0], options);
     }
-   
+
     const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
     if (file.size > maxSize) {
       setIsWarning(true);
     } else {
       setIsWarning(false);
-      if (
-        file.name.split(".")[1] === "heic" ||
-        file.name.split(".")[1] === "HEIC"
-      ) {
+      if (file.name.split(".")[1] === "heic" || file.name.split(".")[1] === "HEIC") {
         let blob = fileInput.current.files[0];
         // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.
         // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
@@ -114,19 +112,10 @@ const PostWrite = (props) => {
 
   // 인증 게시글 추가하기
   const addPost = () => {
-    // 예외처리
-    if (content === "") {
-      window.alert("내용을 입력해주세요!");
-      return;
-    }
-
     // 서버에 보내기 위한 작업
     let formData = new FormData();
     const contentJson = { content: content };
-    formData.append(
-      "post",
-      new Blob([JSON.stringify(contentJson)], { type: "application/json" })
-    );
+    formData.append("post", new Blob([JSON.stringify(contentJson)], { type: "application/json" }));
     formData.append("postImage", image);
 
     // 인증 게시글 추가 api 호출
@@ -153,19 +142,10 @@ const PostWrite = (props) => {
 
   // 인증 게시글 수정하기
   const editPost = () => {
-    // 예외처리
-    if (content === "") {
-      window.alert("내용을 입력해주세요!");
-      return;
-    }
-
     // 서버에 보내기 위한 작업
     let formData = new FormData();
     const contentJson = { content: content };
-    formData.append(
-      "post",
-      new Blob([JSON.stringify(contentJson)], { type: "application/json" })
-    );
+    formData.append("post", new Blob([JSON.stringify(contentJson)], { type: "application/json" }));
     formData.append("postImage", image);
 
     // 인증 게시글 수정 api 호출
@@ -217,26 +197,12 @@ const PostWrite = (props) => {
 
             {/* 이미지 업로드 부분 */}
             <div style={{ position: "relative" }}>
-              <ImageLabel
-                className="input-file-button"
-                htmlFor="input-file"
-                src={preview ? preview : ""}
-                default={plus}
-              >
+              <ImageLabel className="input-file-button" htmlFor="input-file" src={preview ? preview : ""} default={plus}>
                 <button onClick={() => deleteImage()}></button>
               </ImageLabel>
-              <input
-                id="input-file"
-                type="file"
-                onChange={selectFile}
-                ref={fileInput}
-                style={{ display: "none" }}
-              />
+              <input id="input-file" type="file" onChange={selectFile} ref={fileInput} style={{ display: "none" }} />
               {isWarning && (
-                <p
-                  className="fail_color caption"
-                  style={{ position: "absolute", bottom: "-1px" }}
-                >
+                <p className="fail_color caption" style={{ position: "absolute", bottom: "-1px" }}>
                   첨부 가능한 용량을 초과합니다. 20MB 이하의 파일을 올려주세요.
                 </p>
               )}
@@ -255,19 +221,13 @@ const PostWrite = (props) => {
             <p className="bold sub_color">유의사항</p>
             <ul>
               <li className="sub_color">인증 사진은 필수입니다. (최대 20MB)</li>
-              <li className="sub_color mt4">
-                타인을 불쾌하게 하는 사진을 업로드 시 관리자의 권한에 따라
-                삭제될 수 있습니다.{" "}
-              </li>
+              <li className="sub_color mt4">타인을 불쾌하게 하는 사진을 업로드 시 관리자의 권한에 따라 삭제될 수 있습니다. </li>
             </ul>
           </Notice>
 
           {/* PostWrite의 fixed 버튼*/}
           <Fixed>
-            <Button
-              _onClick={openModal}
-              disabled={preview === "" || content === "" ? "disabled" : ""}
-            >
+            <Button _onClick={openModal} disabled={preview === "" || content === "" ? "disabled" : ""}>
               {isEdit ? "수정하기" : "저장하기"}
             </Button>
           </Fixed>
@@ -290,12 +250,7 @@ const PostWrite = (props) => {
           </Modal>
 
           {/* 인증 게시글 작성 성공하면 나오는 모달*/}
-          <Modal
-            open={modalType === "okModal" ? modalOpen : ""}
-            close={closeModal}
-            header
-            isPrivate
-          >
+          <Modal open={modalType === "okModal" ? modalOpen : ""} close={closeModal} header isPrivate>
             <Grid>
               <CharacterImg></CharacterImg>
               <h2 style={{ marginBottom: "9px" }}>인증 완료</h2>
@@ -322,12 +277,7 @@ const PostWrite = (props) => {
           </Modal>
 
           {/* 레벨업 모달 */}
-          <Modal
-            open={modalType === "levelUpModal" ? modalOpen : ""}
-            close={closeModal}
-            header
-            isPrivate
-          >
+          <Modal open={modalType === "levelUpModal" ? modalOpen : ""} close={closeModal} header isPrivate>
             <Grid>
               <CharacterImg></CharacterImg>
               <h2 style={{ marginBottom: "9px" }}>Level UP!</h2>

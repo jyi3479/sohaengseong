@@ -96,7 +96,7 @@ const PostCard = (props) => {
 
   const getCommentList = () => {
     dispatch(
-      memberActions.getOnePostDB(challengeId, props.postId, props.page, 5)
+      memberActions.getOnePostDB(challengeId, props.postId, props.page, 7)
     );
   };
 
@@ -205,7 +205,7 @@ const PostCard = (props) => {
                 <Grid padding={no_comment ? "0" : "15px 0 0"}>
                   <InfinityScroll
                     callNext={getCommentList}
-                    paging={{ next: props.has_next }}
+                    paging={{ next: props.next }}
                   >
                     {comments.map((el, i) => {
                       return (

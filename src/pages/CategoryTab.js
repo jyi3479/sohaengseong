@@ -19,7 +19,6 @@ import "swiper/css/scrollbar";
 // import required modules
 import { FreeMode, Scrollbar, Mousewheel } from "swiper";
 
-
 //img import
 import notfound from "../image/icon/ic_empty_l@2x.png";
 import InfinityScroll from "../shared/InfiniteScroll";
@@ -36,7 +35,7 @@ const CategoryTab = (props) => {
   const challengeInfo = useSelector((state) => state.challenge);
   const categoryList = challengeInfo.categoryList;
   const recommend_list = useSelector((state) => state.search.recommend); //추천검색어
-  const searchInfo = useSelector((state) => state.search.list);
+  const searchInfo = useSelector((state) => state.search);
   const searchList = searchInfo.challengeList;
   const allList = challengeInfo.list;
 
@@ -69,7 +68,7 @@ const CategoryTab = (props) => {
     setSearch_list(searchList);
   };
 
-  React.useEffect(() => { 
+  React.useEffect(() => {
     if (tabId === "all") {
       if (!word) {
         dispatch(searchActions.getRecommendDB()); //추천 검색어 가져오기
@@ -87,7 +86,6 @@ const CategoryTab = (props) => {
         setFocus(false);
       }
     }
-
   }, [tabId, word]);
 
   // 무한스크롤 callNext 함수들
@@ -114,8 +112,6 @@ const CategoryTab = (props) => {
         }}
         _onFocus={(e) => {
           setFocus(true);
-          
-
         }}
         _onClick={() => {
           dispatch(searchActions.getSearchDB(word, 0, 6));
@@ -136,7 +132,7 @@ const CategoryTab = (props) => {
               modules={[FreeMode, Scrollbar, Mousewheel]}
               className="mySwiper"
             >
-              <SwiperSlide style={{width:"max-content"}}>                
+              <SwiperSlide style={{ width: "max-content" }}>
                 <Tab
                   type="button"
                   className={tabId === "all" ? "active" : ""}
@@ -145,7 +141,7 @@ const CategoryTab = (props) => {
                     history.push(`/category/all`);
                   }}
                 >
-                 전체
+                  전체
                 </Tab>
                 <Tab
                   type="button"
@@ -251,7 +247,7 @@ const CategoryTab = (props) => {
                 categoryList && challengeInfo.totalCnt !== 0 ? (
                   <InfinityScroll
                     callNext={getCategoryList}
-                    paging={{ next: challengeInfo.has_next }}
+                    paging={{ next: challengeInfo.next }}
                   >
                     {categoryList.map((el, i) => {
                       return (
@@ -330,7 +326,7 @@ const CategoryTab = (props) => {
                   ) : (
                     <InfinityScroll
                       callNext={getChallengeList}
-                      paging={{ next: challengeInfo.has_next }}
+                      paging={{ next: challengeInfo.next }}
                     >
                       {allList.map((el, i) => {
                         return (

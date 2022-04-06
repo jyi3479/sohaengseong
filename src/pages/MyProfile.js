@@ -39,8 +39,8 @@ const MyProfile = (props) => {
   const [isNick, setIsNick] = React.useState("");
   //중복검사
   const _nickCheck = useSelector((state) => state.user.nickCk);
-  const [err,setErr] = React.useState(false); // 닉네임 중복검사 에러
-  const [errMsg,setErrMsg] = React.useState(""); // 닉네임 중복검사 에러메시지
+  const [err, setErr] = React.useState(false); // 닉네임 중복검사 에러
+  const [errMsg, setErrMsg] = React.useState(""); // 닉네임 중복검사 에러메시지
   const [isCheck, setIsCheck] = React.useState(false); // 중복검사를 한 번이라도 눌렀는지 여부
 
   //유효성 검사
@@ -99,8 +99,7 @@ const MyProfile = (props) => {
 
   const onChangePwd = (e) => {
     setSamePwd(false);
-    const pwdRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/;
+    const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/;
     const pwdcurrent = e.target.value;
     let PwdRegex = pwdRegex.test(e.target.value);
     setpassword(pwdcurrent);
@@ -143,9 +142,14 @@ const MyProfile = (props) => {
       maxSizeMB: 2,
       maxWidthOrHeight: 200,
     };
-    if(fileInput.current.files[0].name.split(".")[1] === "gif" || fileInput.current.files[0].name.split(".")[1] === "GIF"){
-      file = fileInput.current.files[0]
-    }else{
+    if (
+      fileInput.current.files[0].name.split(".")[1] === "gif" ||
+      fileInput.current.files[0].name.split(".")[1] === "GIF" ||
+      fileInput.current.files[0].name.split(".")[1] === "heic" ||
+      fileInput.current.files[0].name.split(".")[1] === "HEIC"
+    ) {
+      file = fileInput.current.files[0];
+    } else {
       file = await imageCompression(fileInput.current.files[0], options);
     }
     const maxSize = 20 * 1024 * 1024; // 파일 용량 제한 (20MB)
@@ -153,10 +157,7 @@ const MyProfile = (props) => {
       setIsWarning(true);
     } else {
       setIsWarning(false);
-      if (
-        file.name.split(".")[1] === "heic" ||
-        file.name.split(".")[1] === "HEIC"
-      ) {
+      if (file.name.split(".")[1] === "heic" || file.name.split(".")[1] === "HEIC") {
         let blob = fileInput.current.files[0];
         // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.
         // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
@@ -201,10 +202,7 @@ const MyProfile = (props) => {
       passwordCheck: passwordCheck,
       nickname: nickname === userInfo.nickname ? "" : nickname,
     };
-    formData.append(
-      "profile",
-      new Blob([JSON.stringify(data)], { type: "application/json" })
-    );
+    formData.append("profile", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
     mypageApis
       .editMyInfo(userId, formData)
@@ -233,49 +231,27 @@ const MyProfile = (props) => {
     };
   }, []);
 
-
   return (
     <>
       {userInfo && (
         <Grid margin="48px 0 0" padding="0">
           <Grid padding="28px 20px 32px" bg="#fff">
-            <Grid
-              margin="0 auto 60px"
-              width="90px"
-              padding="0"
-              style={{ position: "relative", overflow: "initial" }}
-            >
+            <Grid margin="0 auto 60px" width="90px" padding="0" style={{ position: "relative", overflow: "initial" }}>
               <Image
                 className="edit"
                 shape="rectangle"
                 size="90"
                 radius="30px"
-                src={
-                  preview
-                    ? preview
-                    : userInfo.profileUrl
-                    ? userInfo.profileUrl
-                    : defaultImg
-                }
+                src={preview ? preview : userInfo.profileUrl ? userInfo.profileUrl : defaultImg}
               ></Image>
               <FileBox>
                 {/* 이미지 업로드 */}
                 <label htmlFor="file_input" className="upload-box"></label>
-                <input
-                  type="file"
-                  id="file_input"
-                  ref={fileInput}
-                  onChange={selectFile}
-                />
+                <input type="file" id="file_input" ref={fileInput} onChange={selectFile} />
               </FileBox>
               <WarningBox>
                 <p className="caption sub_color">※ 최대 20MB</p>
-                {isWarning && (
-                  <p className="fail_color caption">
-                    첨부 가능한 용량을 초과합니다. 20MB 이하의 파일을
-                    올려주세요.
-                  </p>
-                )}
+                {isWarning && <p className="fail_color caption">첨부 가능한 용량을 초과합니다. 20MB 이하의 파일을 올려주세요.</p>}
               </WarningBox>
             </Grid>
 
@@ -296,39 +272,53 @@ const MyProfile = (props) => {
                   placeholder="닉네임을 입력하세요."
                   btnClick={nicknameCheck}
                   btn_disabled={
-                    ((isNick === true && _nickCheck === null) ||
-                      keypressNick === false) &&
-                    userInfo.nickname !== nickname
+                    ((isNick === true && _nickCheck === null) || keypressNick === false) && userInfo.nickname !== nickname
                       ? ""
-                      : isNick === true &&
-                        _nickCheck === undefined &&
-                        userInfo.nickname !== nickname
+                      : isNick === true && _nickCheck === undefined && userInfo.nickname !== nickname
                       ? ""
                       : "disabled"
                   }
                   _onChange={onChangeNick}
                   className={
-                    isNick === null || (isNick === false && nickname === "") || userInfo.nickname === nickname ? ""
-                      : isNick === false && _nickCheck === null ? ""
-                      : isNick === false && _nickCheck === "true" ? ""
-                      : (isNick === true && _nickCheck === null) || keypressNick === false ? "red"
-                      : isNick === true && _nickCheck === undefined ? "red" : "green"
+                    isNick === null || (isNick === false && nickname === "") || userInfo.nickname === nickname
+                      ? ""
+                      : isNick === false && _nickCheck === null
+                      ? ""
+                      : isNick === false && _nickCheck === "true"
+                      ? ""
+                      : (isNick === true && _nickCheck === null) || keypressNick === false
+                      ? "red"
+                      : isNick === true && _nickCheck === undefined
+                      ? "red"
+                      : "green"
                   }
                 />
                 <span
                   className={
-                      isNick === null || (isNick === false && nickname === "") || userInfo.nickname === nickname ? ""
-                      : isNick === false && _nickCheck === null ? ""
-                      : isNick === false && _nickCheck === "true" ? ""
-                      : (isNick === true && _nickCheck === null) || keypressNick === false ? "red"
-                      : isNick === true && _nickCheck === undefined ? "red" : "green"
+                    isNick === null || (isNick === false && nickname === "") || userInfo.nickname === nickname
+                      ? ""
+                      : isNick === false && _nickCheck === null
+                      ? ""
+                      : isNick === false && _nickCheck === "true"
+                      ? ""
+                      : (isNick === true && _nickCheck === null) || keypressNick === false
+                      ? "red"
+                      : isNick === true && _nickCheck === undefined
+                      ? "red"
+                      : "green"
                   }
                 >
-                  {isNick === null || isNick === "" || (isNick === false && nickname === "") || userInfo.nickname === nickname ? ""
-                    : isNick === false && _nickCheck === undefined ? "2-8자의 닉네임을 입력하세요."
-                    : isNick === false && _nickCheck === "true" ? "2-8자의 닉네임을 입력하세요."
-                    : (isNick === true && _nickCheck === undefined && !err && errMsg === "" ) && keypressNick === false ? "중복확인을 해주세요"
-                    : (isNick === true && _nickCheck === undefined && err) && keypressNick === false ? errMsg : "사용 가능한 닉네임입니다"}
+                  {isNick === null || isNick === "" || (isNick === false && nickname === "") || userInfo.nickname === nickname
+                    ? ""
+                    : isNick === false && _nickCheck === undefined
+                    ? "2-8자의 닉네임을 입력하세요."
+                    : isNick === false && _nickCheck === "true"
+                    ? "2-8자의 닉네임을 입력하세요."
+                    : isNick === true && _nickCheck === undefined && !err && errMsg === "" && keypressNick === false
+                    ? "중복확인을 해주세요"
+                    : isNick === true && _nickCheck === undefined && err && keypressNick === false
+                    ? errMsg
+                    : "사용 가능한 닉네임입니다"}
                 </span>
               </InputWrap>
             </Grid>
@@ -336,14 +326,7 @@ const MyProfile = (props) => {
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap>
                 {userInfo.kakao ? (
-                  <Input
-                    type="password"
-                    label="새 비밀번호"
-                    value={password}
-                    is_submit
-                    placeholder="카카오 사용자입니다."
-                    disabled
-                  />
+                  <Input type="password" label="새 비밀번호" value={password} is_submit placeholder="카카오 사용자입니다." disabled />
                 ) : (
                   <Input
                     type="password"
@@ -352,25 +335,11 @@ const MyProfile = (props) => {
                     is_submit
                     placeholder="비밀번호를 입력하세요."
                     _onChange={onChangePwd}
-                    className={
-                      password.length === 0
-                        ? ""
-                        : isPwd && password.length
-                        ? "green"
-                        : "red"
-                    }
+                    className={password.length === 0 ? "" : isPwd && password.length ? "green" : "red"}
                   />
                 )}
 
-                <span
-                  className={
-                    password.length === 0
-                      ? ""
-                      : isPwd && password.length
-                      ? "green"
-                      : "red"
-                  }
-                >
+                <span className={password.length === 0 ? "" : isPwd && password.length ? "green" : "red"}>
                   {password === null || password === ""
                     ? ""
                     : isPwd && password.length
@@ -383,14 +352,7 @@ const MyProfile = (props) => {
             <Grid padding="0" margin="0 0 24px" style={{ overflow: "revert" }}>
               <InputWrap>
                 {userInfo.kakao ? (
-                  <Input
-                    type="password"
-                    label="비밀번호 확인"
-                    value={passwordCheck}
-                    is_submit
-                    placeholder="카카오 사용자입니다."
-                    disabled
-                  />
+                  <Input type="password" label="비밀번호 확인" value={passwordCheck} is_submit placeholder="카카오 사용자입니다." disabled />
                 ) : (
                   <Input
                     type="password"
@@ -399,25 +361,11 @@ const MyProfile = (props) => {
                     is_submit
                     placeholder="비밀번호를 재입력하세요."
                     _onChange={checkPwd}
-                    className={
-                      passwordCheck.length === 0
-                        ? ""
-                        : samePwd && passwordCheck.length
-                        ? "green"
-                        : "red"
-                    }
+                    className={passwordCheck.length === 0 ? "" : samePwd && passwordCheck.length ? "green" : "red"}
                   />
                 )}
 
-                <span
-                  className={
-                    passwordCheck.length === 0
-                      ? ""
-                      : samePwd && passwordCheck.length
-                      ? "green"
-                      : "red"
-                  }
-                >
+                <span className={passwordCheck.length === 0 ? "" : samePwd && passwordCheck.length ? "green" : "red"}>
                   {passwordCheck === null || passwordCheck === ""
                     ? ""
                     : samePwd && passwordCheck.length

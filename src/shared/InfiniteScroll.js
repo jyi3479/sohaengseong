@@ -14,6 +14,7 @@ const InfinityScroll = ({ children, callNext, paging, type, isChat }) => {
     }
   });
 
+  // paging(다음 페이지 있는지 여부)이 업데이트 될 때마다 실행
   useEffect(() => {
     // 다음으로 불러올 데이터 없으면 (관찰을) 실행하지 않는다.
     if (paging.next === false) return;
@@ -23,7 +24,7 @@ const InfinityScroll = ({ children, callNext, paging, type, isChat }) => {
     handleObserver.observe(spinnerRef.current);
 
     return () => {
-      // 관찰하고 있던 대상 요소 관찰 중지
+      // 관찰하고 있던 대상 요소가 있었다면 관찰 중지
       spinnerRef.current && handleObserver.unobserve(spinnerRef.current);
     };
   }, [paging]);
@@ -31,12 +32,9 @@ const InfinityScroll = ({ children, callNext, paging, type, isChat }) => {
   return (
     <>
       {!isChat && children}
-
       {paging.next && (
         <Spinner ref={spinnerRef}>
-          <CircularProgress
-            sx={{ color: `${type === "white" ? "#FFFFFF" : "#444444"}` }}
-          />
+          <CircularProgress sx={{ color: `${type === "white" ? "#FFFFFF" : "#444444"}` }} />
         </Spinner>
       )}
       {isChat && children}
