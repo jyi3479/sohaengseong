@@ -191,7 +191,7 @@
     - 모든 기능을 담아 무거워진 컴포넌트를 분리하고 자식 컴포넌트들의 불필요한 리렌더링을 방지하는 것이 필요
   * 의견 결정
     - 컴포넌트 분리 후 props 변화가 없다면 리렌더링이 되지 않도록 React.memo 적용
-  <img src="https://user-images.githubusercontent.com/89513776/161964569-b7febd69-b908-46c6-b007-b758d746bd92.png" width="250"/>
+  <img src="https://user-images.githubusercontent.com/89513776/161964569-b7febd69-b908-46c6-b007-b758d746bd92.png" width="250" style="border:1px solid #eee"/>
   
   </details>
 
