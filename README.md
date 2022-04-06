@@ -172,6 +172,9 @@
   * 의견 결정
     - 라이브러리(browser-image-compression)를 사용하여 이미지 압축
     - 리사이징 전 대비 로딩시간 50% 
+  
+  <img width="800" alt="스크린샷 2022-04-06 오후 8 56 36" src="https://user-images.githubusercontent.com/89513776/161969630-e3a58a1f-cfe4-476c-bf30-65d6f9f7b558.png">
+  
   </details>
   
 ### 렌더링 최적화
