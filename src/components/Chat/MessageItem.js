@@ -7,9 +7,7 @@ import moment from "moment";
 function MessageItem(props) {
   const message = props;
   const userId = parseInt(localStorage.getItem("userId"));
-  const profileUrl = message.user.profileUrl
-    ? message.user.profileUrl
-    : defaultImg;
+  const profileUrl = message.user.profileUrl ? message.user.profileUrl : defaultImg;
 
   // 타임 스탬프
   let time = "";
@@ -30,16 +28,9 @@ function MessageItem(props) {
   if (userId === message.user.userId) {
     return (
       <Item className="is_me">
-        <Image
-          shape="border"
-          size="40"
-          level={message.user.levelName}
-          profile={profileUrl}
-        ></Image>
+        <Image shape="border" size="40" level={message.user.levelName} profile={profileUrl}></Image>
         <Bubble className="is_me">
-          <p className="small bold">
-            {message.user ? message.user.nickname : message.sender}
-          </p>
+          <p className="small bold">{message.user ? message.user.nickname : message.sender}</p>
           <div>
             <Text className="is_me">{message.message}</Text>
             <p className="time caption_color">{time}</p>
@@ -52,17 +43,9 @@ function MessageItem(props) {
       <>
         {/* 다른 사용자가 보낸 메세지 */}
         <Item>
-          <Image
-            shape="border"
-            size="40"
-            level={message.user.levelName}
-            profile={profileUrl}
-          ></Image>
+          <Image shape="border" size="40" level={message.user.levelName} profile={profileUrl}></Image>
           <Bubble>
-            <p className="small bold">
-              {" "}
-              {message.user ? message.user.nickname : message.sender}
-            </p>
+            <p className="small bold">{message.user ? message.user.nickname : message.sender}</p>
             <div>
               <Text>{message.message}</Text>
               <p className="time caption_color">{time}</p>
