@@ -54,30 +54,17 @@ const ChallengeCard = (props) => {
 
   return (
     <>
-    <Box className={props.className}>
-      <ImageBox
-        onClick={props._onClick}
-        status={props.status}
-        style={{
-          backgroundImage: `url(${
-            props.challengeImage[0] ? props.challengeImage[0] : defaultImg
-          })`,
-        }}
-      >
-        <p className="small">
-          <img src={peopleIcon}/>
-          {props.currentMember}/{props.maxMember}명
-        </p>
-        {props.dailyAuth && props.dailyAuth === "true" ? <Done></Done> : null}
-      </ImageBox>
-      <ContentBox>
-        <div style={{ height: "58px" }}>
-          <div className={props.className === "admin_challenge"? "title_box admin":"title_box"}>
-            <h3 className="ellipsis2">{props.title}</h3>
-            <button className="menu_btn" onClick={openModal}></button>
-          </div>
-          <p className="caption caption_color" style={{ margin: "2px 0 6px" }}>
-            {props.category}
+      <Box className={props.className}>
+        <ImageBox
+          onClick={props._onClick}
+          status={props.status}
+          style={{
+            backgroundImage: `url(${props.challengeImage[0] ? props.challengeImage[0] : defaultImg})`,
+          }}
+        >
+          <p className="small">
+            <img src={peopleIcon} />
+            {props.currentMember}/{props.maxMember}명
           </p>
           {props.dailyAuth && props.dailyAuth === "true" ? <Done></Done> : null}
         </ImageBox>
@@ -90,10 +77,6 @@ const ChallengeCard = (props) => {
             <p className="caption caption_color" style={{ margin: "2px 0 6px" }}>
               {props.category}
             </p>
-            <img
-              src={props.isPrivate ? lock : null}
-              style={{ width: "16px", verticalAlign: "sub" }}
-            />
           </div>
           <div className="contents">
             <div>
@@ -105,7 +88,7 @@ const ChallengeCard = (props) => {
               <p className="small caption_color" style={{ marginRight: "6px" }}>
                 {startDate} - {endDate}
               </p>
-              <img src={props.isPrivate ? lock : null} style={{ width: "16px", verticalAlign: "sub" }}></img>
+              <img src={props.isPrivate ? lock : null} style={{ width: "16px", verticalAlign: "sub" }} />
             </div>
           </div>
         </ContentBox>
@@ -117,7 +100,7 @@ const ChallengeCard = (props) => {
                 history.push(`/challengewrite/${props.challengeId}`);
               }}
             >
-              <img src={edit}/>
+              <img src={edit} />
               <p>수정하기</p>
             </ModalBox>
             <ModalBox
@@ -126,11 +109,11 @@ const ChallengeCard = (props) => {
                 closeModal();
               }}
             >
-              <img src={deleteIcon}/>
+              <img src={deleteIcon} />
               <p>삭제하기</p>
             </ModalBox>
             <ModalBox onClick={closeModal}>
-              <img src={close} alt="팝업닫기 아이콘"/>
+              <img src={close} alt="팝업닫기 아이콘" />
               <p>취소</p>
             </ModalBox>
           </Grid>
@@ -217,7 +200,9 @@ const ContentBox = styled.div`
       border: none;
       margin-top: 5px;
     }
-    h3 {line-height: 1.3;}
+    h3 {
+      line-height: 1.3;
+    }
     &.admin {
       display: flex;
       width: 100%;

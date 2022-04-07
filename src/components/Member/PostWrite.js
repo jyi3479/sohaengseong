@@ -23,18 +23,15 @@ import imageCompression from "browser-image-compression";
 
 const PostWrite = (props) => {
   const dispatch = useDispatch();
-  const challengeId = +useParams().challengeId;
+  const challengeId = useParams().challengeId;
   const postId = +useParams().postId;
   const roomId = useParams().roomId;
 
   const userInfo = useSelector((state) => state.user.user);
-  const postList = useSelector((state) => state.member.postList);
-  const targetPost = postList.filter((el) => el.postId === postId)[0];
-
   const isEdit = postId ? true : false; // 인증 게시글 수정 여부
-  const [content, setContent] = React.useState(isEdit ? targetPost.content : ""); // 인증 게시글 내용
+  const [content, setContent] = React.useState(""); // 인증 게시글 내용
   const [image, setImage] = React.useState(null); // 이미지 file 객체 담는 곳
-  const [preview, setPreview] = React.useState(isEdit ? targetPost.postImage : ""); // filereader 후 미리보기 데이터 담는 곳
+  const [preview, setPreview] = React.useState(""); // filereader 후 미리보기 데이터 담는 곳
   const [isWarning, setIsWarning] = React.useState(false);
 
   const [isLevelUp, setIsLevelup] = React.useState(false); // 레벨업 여부
@@ -167,7 +164,10 @@ const PostWrite = (props) => {
 
     if (isEdit) {
       //수정이면 특정 포스트 1개 조회하기 (default value 위해)
-      dispatch(memberAction.getPostDB(challengeId));
+      memberApis.getOnePost(challengeId, postId, 0, 1).then((res) => {
+        setContent(res.data.content);
+        setPreview(res.data.postImage);
+      });
     }
     dispatch(baseAction.setGnb(false));
     return () => {
