@@ -94,6 +94,10 @@ const ChallengeCard = (props) => {
             <p className="small caption_color" style={{ marginRight: "6px" }}>
               {startDate} - {endDate}
             </p>
+            <img
+              src={props.isPrivate ? lock : null}
+              style={{ width: "16px", verticalAlign: "sub" }}
+            />
           </div>
         </div>
       </ContentBox>
@@ -105,7 +109,7 @@ const ChallengeCard = (props) => {
                 history.push(`/challengewrite/${props.challengeId}`);  
               }}
             >
-              <img src={edit} />
+              <img src={edit}/>
               <p>수정하기</p>
             </ModalBox>
             <ModalBox
@@ -114,11 +118,11 @@ const ChallengeCard = (props) => {
                 closeModal();
               }}
             >
-              <img src={deleteIcon} />
+              <img src={deleteIcon}/>
               <p>삭제하기</p>
             </ModalBox>
             <ModalBox onClick={closeModal}>
-              <img src={close} alt="팝업닫기 아이콘" />
+              <img src={close} alt="팝업닫기 아이콘"/>
               <p>취소</p>
             </ModalBox>
           </Grid>    
@@ -207,9 +211,7 @@ const ContentBox = styled.div`
       border: none;
       margin-top: 5px;
     }
-    h3 {
-      line-height: 1.3;
-    }
+    h3 {line-height: 1.3;}
     &.admin {
       display: flex;
       width: 100%;
