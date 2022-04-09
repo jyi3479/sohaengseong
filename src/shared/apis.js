@@ -19,8 +19,7 @@ const imageApis = axios.create({
 
 apis.interceptors.request.use(function (config) {
   const token = getCookie("token");
-  config.headers["Content-Type"] =
-    "application/json;charset=UTF-8; charset=UTF-8";
+  config.headers["Content-Type"] = "application/json;charset=UTF-8; charset=UTF-8";
   config.headers.common["authorization"] = `Bearer ${token}`;
   return config;
 });
@@ -45,8 +44,7 @@ export const userApis = {
     }),
 
   //닉네임 중복체크
-  nicknameCheck: (nickname) =>
-    apis.post("/auth/nickname-check", { nickname: nickname }),
+  nicknameCheck: (nickname) => apis.post("/auth/nickname-check", { nickname: nickname }),
 
   //로그인 유저 확인
   useInfo: () => apis.get("/auth/user-info"),
@@ -69,12 +67,10 @@ export const userApis = {
 
 export const challengeApis = {
   //챌린지 전체 조회
-  getChallenge: (page, size) =>
-    apis.get(`/challenge?page=${page}&size=${size}`),
+  getChallenge: (page, size) => apis.get(`/challenge?page=${page}&size=${size}`),
 
   //카테고리와 일치하는 챌린지 조회
-  categoryChallenge: (categoryId, page, size) =>
-    apis.get(`/challenge/category/${categoryId}?page=${page}&size=${size}`),
+  categoryChallenge: (categoryId, page, size) => apis.get(`/challenge/category/${categoryId}?page=${page}&size=${size}`),
 
   //특정 챌린지 조회
   getOneChallenge: (challengeId) => apis.get(`/challenge/${challengeId}`),
@@ -86,31 +82,24 @@ export const challengeApis = {
   joinChallenge: (challengeId) => apis.post(`/challenge/${challengeId}/user`),
 
   //챌린지 수정하기
-  editChallenge: (challengeId, challenge) =>
-    imageApis.patch(`/challenge/${challengeId}`, challenge),
+  editChallenge: (challengeId, challenge) => imageApis.patch(`/challenge/${challengeId}`, challenge),
 
   //챌린지 삭제하기
   deleteChallenge: (challengeId) => apis.delete(`/challenge/${challengeId}`),
 
   // 다른 챌린지 둘러보기
-  recommendChallenge: (challengeId) =>
-    apis.get(`challenge/recommend/${challengeId}`),
+  recommendChallenge: (challengeId) => apis.get(`challenge/recommend/${challengeId}`),
 };
 
 export const memberApis = {
   //인증게시글(sns) 전체 조회
-  getPost: (challengeId, page, size) =>
-    apis.get(`/challenge/${challengeId}/posts?page=${page}&size=${size}`),
+  getPost: (challengeId, page, size) => apis.get(`/challenge/${challengeId}/posts?page=${page}&size=${size}`),
 
   //특정 인증게시글(sns) 조회
-  getOnePost: (challengeId, postId, page, size) =>
-    apis.get(
-      `/challenge/${challengeId}/posts/${postId}?page=${page}&size=${size}`
-    ),
+  getOnePost: (challengeId, postId, page, size) => apis.get(`/challenge/${challengeId}/posts/${postId}?page=${page}&size=${size}`),
 
   //인증게시글 등록
-  addPost: (challengeId, post) =>
-    imageApis.post(`/challenge/${challengeId}/posts`, post),
+  addPost: (challengeId, post) => imageApis.post(`/challenge/${challengeId}/posts`, post),
 
   //인증게시글 수정
   editPost: (postId, post) => imageApis.patch(`/posts/${postId}`, post),
@@ -119,8 +108,7 @@ export const memberApis = {
   deletePost: (postId) => apis.delete(`/posts/${postId}`),
 
   //댓글 작성
-  addComment: (postId, comment) =>
-    apis.post(`/posts/${postId}/comments`, comment),
+  addComment: (postId, comment) => apis.post(`/posts/${postId}/comments`, comment),
 
   //댓글 삭제
   deleteComment: (commentId) => apis.delete(`/comments/${commentId}`),
@@ -129,8 +117,7 @@ export const memberApis = {
   exitChallenge: (challengeId) => apis.delete(`/challenge/${challengeId}/user`),
 
   //챌린지 팀원 리포트
-  getReport: (challengeId, startDate) =>
-    apis.post(`/challenge/${challengeId}/report`, { startDate: startDate }),
+  getReport: (challengeId, startDate) => apis.post(`/challenge/${challengeId}/report`, { startDate: startDate }),
 };
 
 export const searchApis = {
@@ -138,10 +125,7 @@ export const searchApis = {
   recommend: () => apis.get("/challenge/recommend"),
 
   //검색 결과 조회
-  getSearch: (searchWord, page, size) =>
-    apis.get(
-      `/challenge/search?keyword=${searchWord}&page=${page}&size=${size}`
-    ),
+  getSearch: (searchWord, page, size) => apis.get(`/challenge/search?keyword=${searchWord}&page=${page}&size=${size}`),
 };
 
 export const mainApis = {
