@@ -187,7 +187,14 @@
   * 도입 이유 : 불필요한 리렌더링을 막고, 반응이 빠른 UI 성능을 제공하기 위함
   * 문제 상황
     - input element가 많은 챌린지 작성 컴포넌트에서 과도한 리렌더링 발생
+  
+     <img src="https://user-images.githubusercontent.com/94282246/162983041-e94dee70-1474-43ca-998a-940e0dd1834b.gif" width="250"/>
+  
     - 기능별 코드 응집도가 부족함
+  
+     <img src="https://user-images.githubusercontent.com/94282246/162983878-d6e39157-b981-4b6e-80bf-641b0a8381e7.png" width="400"/>
+     <img src="https://user-images.githubusercontent.com/94282246/162984452-945ec247-81d7-4bf0-9957-baba579aade1.png" width="400"/>
+  
   * 해결 방안
     - React.memo
     - 컴포넌트 분리
